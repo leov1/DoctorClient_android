@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/top_title"></include>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:padding="30dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/register_improve"
+                android:textSize="@dimen/text_size_23"
+                android:text="@string/evip_other" />
+
+            <Button
+                android:id="@+id/btn_hosital"
+                style="@style/btn_address"
+                android:layout_marginTop="@dimen/space_20"
+                android:text="@string/evip_hospital" />
+
+            <Button
+                android:id="@+id/btn_office"
+                style="@style/btn_address"
+                android:layout_marginTop="@dimen/space_5"
+                android:text="@string/evip_office" />
+
+            <Button
+                android:id="@+id/btn_phone"
+                style="@style/btn_address"
+                android:layout_marginTop="@dimen/space_5"
+                android:text="@string/evip_phone" />
+
+            <Button
+                android:id="@+id/btn_ranks"
+                style="@style/btn_address"
+                android:layout_marginTop="@dimen/space_5"
+                android:text="@string/evip_ranks" />
+
+            <EditText
+                style="@style/edit_blue"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="@dimen/space_17"
+                android:gravity="top"
+                android:hint="@string/evip_brief"
+                android:padding="@dimen/space_10" />
+
+            <Button
+                android:id="@+id/next_btn"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="83dp"
+                android:background="@drawable/btn_bg_selecter"
+                android:text="@string/next"
+                android:textColor="@color/text_color_white" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

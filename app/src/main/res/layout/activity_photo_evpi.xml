@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/top_title"></include>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="30dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/evip_remark"
+                    android:textColor="@color/text_color_black"
+                    android:textSize="@dimen/text_size_18" />
+
+                <ImageView
+                    android:id="@+id/imageview"
+                    android:layout_width="77dp"
+                    android:layout_height="77dp"
+                    android:layout_marginTop="@dimen/text_size_20"
+                    android:background="@mipmap/photo_rect_add" />
+
+            </LinearLayout>
+        </ScrollView>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="30dp"
+            android:textColor="@color/text_color_white"
+            android:textSize="@dimen/text_size_16"
+            android:background="@drawable/btn_bg_selecter"
+            android:text="@string/register" />
+
+    </RelativeLayout>
+
+</LinearLayout>
