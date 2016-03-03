@@ -14,8 +14,10 @@ import com.hxqydyl.app.ys.bean.DoctorInfo;
 import com.hxqydyl.app.ys.bean.DoctorResult;
 import com.hxqydyl.app.ys.http.OkHttpClientManager;
 import com.hxqydyl.app.ys.http.login.LoginNet;
+import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.ui.swipebacklayout.SwipeBackActivity;
 import com.hxqydyl.app.ys.utils.Constants;
+import com.hxqydyl.app.ys.utils.LoginManager;
 import com.hxqydyl.app.ys.utils.SharedPreferences;
 import com.hxqydyl.app.ys.utils.StringUtils;
 import com.squareup.okhttp.Request;
@@ -76,16 +78,14 @@ public class LoginActivity extends BaseTitleActivity implements View.OnClickList
                 finish();
                 break;
             case R.id.forget_btn:
-               Intent forgetIntent = new Intent(this,ForgetPasswordActivity.class);
+                Intent forgetIntent = new Intent(this,ForgetPasswordActivity.class);
                 startActivity(forgetIntent);
                 break;
             case R.id.register_btn:
-                Intent registerIntent = new Intent(this,RegisterActivity.class);
-                startActivity(registerIntent);
+               UIHelper.showRegister(this);
                 break;
             case R.id.login_btn:
                 loginNet.loginData(mobileEdit.getText().toString(), passwordEdit.getText().toString());
-                finish();
                 break;
         }
     }
@@ -94,11 +94,13 @@ public class LoginActivity extends BaseTitleActivity implements View.OnClickList
     public void requestLoginNetSuccess(DoctorInfo doctorInfo) {
         System.out.println("doctorinfo--->"+doctorInfo);
         SharedPreferences.getInstance().putString("doctorUuid", doctorInfo.getDoctorUuid());
-        SharedPreferences.getInstance().putBoolean(SharedPreferences.KEY_LOGIN_TYPE, true);
+        LoginManager.setLoginStatus(true);
+        UIHelper.ToastMessage(LoginActivity.this, "登陆成功");
+        finish();
     }
 
     @Override
     public void requestLoginNetFail(int statusCode) {
-
+        UIHelper.ToastMessage(LoginActivity.this,"登陆失败");
     }
 }

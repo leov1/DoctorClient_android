@@ -6,6 +6,8 @@ package com.hxqydyl.app.ys.utils;
  */
 public class Constants {
 
+    public static String CALLBACK = "xch";
+
     //请求网络成功
     public static int REQUEST_SUCCESS = 1100;
     //请求网络失败

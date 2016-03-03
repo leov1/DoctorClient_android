@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.hxqydyl.app.ys.activity.LoginActivity;
 import com.hxqydyl.app.ys.activity.MainActivity;
+import com.hxqydyl.app.ys.activity.register.RegisterActivity;
 
 /**
  * 应用程序UI工具包：封装UI相关的一些操作
@@ -49,9 +50,9 @@ public class UIHelper {
         context.startActivity(intent);
     }
 
-    public static void showHouseDetailActivity(Activity context){
-//        Intent intent = new Intent(context, HouseDetailActivity.class);
-//        context.startActivity(intent);
+    public static void showRegister(Activity context){
+        Intent intent = new Intent(context, RegisterActivity.class);
+        context.startActivity(intent);
     }
 
 }

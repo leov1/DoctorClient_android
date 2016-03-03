@@ -32,7 +32,7 @@ public class LoginNet {
         Map<String,String> params = new HashMap<>();
         params.put("mobile", mobile);
         params.put("password",password);
-        params.put("callback", "xch");
+        params.put("callback", Constants.CALLBACK);
         OkHttpClientManager.postAsyn(Constants.LOGIN_URL, params, new OkHttpClientManager.ResultCallback<String>() {
             @Override
             public void onError(Request request, Exception e) {

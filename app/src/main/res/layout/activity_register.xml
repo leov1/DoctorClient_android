@@ -48,6 +48,7 @@
             android:orientation="horizontal">
 
             <EditText
+                android:id="@+id/edit_code"
                 style="@style/edit_blue"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -58,6 +59,7 @@
 
 
             <Button
+                android:id="@+id/btn_code"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="7dp"

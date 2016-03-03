@@ -21,9 +21,11 @@ import com.hxqydyl.app.ys.utils.SharedPreferences;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import framework.BaseFragmentActivity;
+
 
 /**
- * Created by tiansj on 15/7/29.
+ * 引导页
  */
 public class SplashActivity extends FragmentActivity {
 

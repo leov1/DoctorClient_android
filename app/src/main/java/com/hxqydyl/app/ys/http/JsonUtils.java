@@ -4,7 +4,9 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.hxqydyl.app.ys.bean.DoctorInfo;
+import com.hxqydyl.app.ys.bean.DoctorInfoNew;
 import com.hxqydyl.app.ys.bean.DoctorResult;
+import com.hxqydyl.app.ys.bean.DoctorResultNew;
 import com.hxqydyl.app.ys.utils.StringUtils;
 
 import org.json.JSONException;
@@ -25,5 +27,16 @@ public class JsonUtils {
         if (TextUtils.isEmpty(string)) return  null;
         DoctorResult doctorResult = new Gson().fromJson(StringUtils.cutoutBracketToString(string), DoctorResult.class);
         return doctorResult.getServiceStaff();
+    }
+
+    /**
+     * 主页获取医生信息
+     * @param string
+     * @return
+     */
+    public static DoctorInfoNew JsonDoctorInfoNew(String string){
+        if (TextUtils.isEmpty(string)) return null;
+        DoctorResultNew doctorResultNew = new Gson().fromJson(StringUtils.cutoutBracketToString(string), DoctorResultNew.class);
+        return doctorResultNew.getDoctorInfo();
     }
 }

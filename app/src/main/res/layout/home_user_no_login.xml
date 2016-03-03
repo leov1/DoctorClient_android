@@ -19,7 +19,7 @@
             android:src="@mipmap/ic_logo" />
 
         <TextView
-            android:id="@+id/logo_btn"
+            android:id="@+id/login_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"

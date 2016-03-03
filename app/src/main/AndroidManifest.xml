@@ -45,7 +45,8 @@
         <activity android:name=".activity.register.EvpiPhotoActivity" />
         <activity android:name=".activity.register.EvpiAddressActivity" />
         <activity android:name=".activity.register.EvpiUserActivity" />
-        <activity android:name=".activity.BaseTitleActivity"></activity>
+        <activity android:name=".activity.BaseTitleActivity" />
+        <activity android:name=".activity.reading.ReadingActivity"></activity>
     </application>
 
 </manifest>

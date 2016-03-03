@@ -14,6 +14,8 @@ import com.hxqydyl.app.ys.fragment.MyPatientFrg;
 import com.hxqydyl.app.ys.fragment.MyTaskFrg;
 import com.hxqydyl.app.ys.fragment.PersonalFrg;
 import com.hxqydyl.app.ys.ui.UIHelper;
+import com.hxqydyl.app.ys.utils.LoginManager;
+
 import framework.BaseFragmentActivity;
 
 import java.util.ArrayList;
@@ -88,7 +90,7 @@ public class MainActivity extends BaseFragmentActivity {
     }
 
     private void showFragment() {
-        if (currIndex == 3) {
+        if (currIndex == 3 && !LoginManager.isHasLogin()) {
             UIHelper.showLogin(MainActivity.this);
         }
 
