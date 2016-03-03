@@ -21,6 +21,8 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
+import org.json.JSONException;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -302,7 +304,11 @@ public class OkHttpClientManager
             @Override
             public void run()
             {
-                callback.onResponse(object);
+                try {
+                    callback.onResponse(object);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 callback.onAfter();
             }
         });
@@ -390,7 +396,7 @@ public class OkHttpClientManager
 
         public abstract void onError(Request request, Exception e);
 
-        public abstract void onResponse(T response);
+        public abstract void onResponse(T response) throws JSONException;
     }
 
     private final ResultCallback<String> DEFAULT_RESULT_CALLBACK = new ResultCallback<String>()

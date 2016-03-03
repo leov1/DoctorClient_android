@@ -6,6 +6,11 @@ package com.hxqydyl.app.ys.utils;
  */
 public class Constants {
 
+    //请求网络成功
+    public static int REQUEST_SUCCESS = 1100;
+    //请求网络失败
+    public static int REQUEST_FAIL = 1101;
+
     private static String url = "http://172.168.1.54";
     public static String phone = "10000000000";
     public static String password = "000000";

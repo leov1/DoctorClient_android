@@ -2,82 +2,93 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color"
-    android:fitsSystemWindows="true"
     android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:paddingLeft="@dimen/space_30"
-    android:paddingRight="@dimen/space_30">
+    android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dip"
-        android:src="@mipmap/ic_launcher" />
+    <include layout="@layout/top_title"></include>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="@string/login"
-        android:textColor="@color/login_text_color"
-        android:textSize="@dimen/text_size_22" />
-
-    <EditText
-        android:id="@+id/mobile_edit"
-        style="@style/edit_blue"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginTop="@dimen/space_26"
-        android:hint="@string/phone"
-        android:inputType="number"
-        android:maxLength="11"
-        android:paddingLeft="@dimen/space_15" />
+        android:layout_height="match_parent"
+        android:background="@color/background_color"
+        android:fitsSystemWindows="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/space_30"
+        android:paddingRight="@dimen/space_30">
 
-    <EditText
-        android:id="@+id/password_edit"
-        style="@style/edit_blue"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginTop="@dimen/space_26"
-        android:hint="@string/password"
-        android:inputType="number"
-        android:maxLength="11"
-        android:paddingLeft="@dimen/space_15" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/space_10">
-
-        <TextView
-            android:id="@+id/forget_btn"
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:padding="@dimen/space_8"
-            android:text="@string/login_forget"
-            android:textColor="@color/gray"
-            android:textSize="@dimen/text_size_13" />
-    </RelativeLayout>
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="60dip"
+            android:src="@mipmap/ic_launcher" />
 
-    <Button
-        android:id="@+id/login_btn"
-        android:layout_width="match_parent"
-        android:layout_height="40dip"
-        android:layout_marginTop="35dp"
-        android:background="@drawable/btn_bg_selecter"
-        android:text="@string/login"
-        android:textColor="@color/text_color_white"
-        android:textSize="@dimen/text_size_18" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/login"
+            android:textColor="@color/login_text_color"
+            android:textSize="@dimen/text_size_22" />
 
-    <TextView
-        android:id="@+id/register_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/space_10"
-        android:text="@string/login_toregister"
-        android:textColor="@color/login_forget_color"
-        android:textSize="@dimen/text_size_18" />
+        <EditText
+            android:id="@+id/mobile_edit"
+            style="@style/edit_blue"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="@dimen/space_26"
+            android:hint="@string/phone"
+            android:inputType="number"
+            android:maxLength="11"
+            android:paddingLeft="@dimen/space_15" />
+
+        <EditText
+            android:id="@+id/password_edit"
+            style="@style/edit_blue"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="@dimen/space_26"
+            android:hint="@string/password"
+            android:inputType="number"
+            android:maxLength="11"
+            android:paddingLeft="@dimen/space_15" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_10">
+
+            <TextView
+                android:id="@+id/forget_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:padding="@dimen/space_8"
+                android:text="@string/login_forget"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/text_size_13" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/login_btn"
+            android:layout_width="match_parent"
+            android:layout_height="40dip"
+            android:layout_marginTop="35dp"
+            android:background="@drawable/btn_bg_selecter"
+            android:text="@string/login"
+            android:textColor="@color/text_color_white"
+            android:textSize="@dimen/text_size_18" />
+
+        <TextView
+            android:id="@+id/register_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_10"
+            android:text="@string/login_toregister"
+            android:textColor="@color/login_forget_color"
+            android:textSize="@dimen/text_size_18" />
+    </LinearLayout>
+
+
 </LinearLayout>

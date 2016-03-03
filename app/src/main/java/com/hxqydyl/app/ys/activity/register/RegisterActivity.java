@@ -7,12 +7,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
+import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.ui.swipebacklayout.SwipeBackActivity;
 
 /**
  * 注册页面
  */
-public class RegisterActivity extends SwipeBackActivity implements View.OnClickListener{
+public class RegisterActivity extends BaseTitleActivity implements View.OnClickListener{
 
     private TextView registerOrderBtn;
     private Button nextBtn;//下一步
@@ -26,11 +27,13 @@ public class RegisterActivity extends SwipeBackActivity implements View.OnClickL
     }
 
     private void initListeners() {
+        setBackListener(this);
         registerOrderBtn.setOnClickListener(this);
         nextBtn.setOnClickListener(this);
     }
 
     private void initViews() {
+        initViewOnBaseTitle("注册");
         registerOrderBtn = (TextView) findViewById(R.id.textview_register_order);
         nextBtn = (Button) findViewById(R.id.next_btn);
     }
@@ -45,6 +48,9 @@ public class RegisterActivity extends SwipeBackActivity implements View.OnClickL
           case R.id.next_btn://下一步
               Intent nextIntent = new Intent(this,EvpiUserActivity.class);
               startActivity(nextIntent);
+              break;
+          case R.id.back_img:
+              finish();
               break;
       }
     }

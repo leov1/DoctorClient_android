@@ -10,8 +10,10 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.register.RegisterActivity;
+import com.hxqydyl.app.ys.bean.DoctorInfo;
 import com.hxqydyl.app.ys.bean.DoctorResult;
 import com.hxqydyl.app.ys.http.OkHttpClientManager;
+import com.hxqydyl.app.ys.http.login.LoginNet;
 import com.hxqydyl.app.ys.ui.swipebacklayout.SwipeBackActivity;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.hxqydyl.app.ys.utils.SharedPreferences;
@@ -25,7 +27,7 @@ import java.util.Map;
  * Created by hxq on 2016/2/25.
  * 登陆页面
  */
-public class LoginActivity extends SwipeBackActivity implements View.OnClickListener{
+public class LoginActivity extends BaseTitleActivity implements View.OnClickListener,LoginNet.OnLoginNetListener{
 
     private TextView forgetBtn;
     private TextView registerBtn;
@@ -34,6 +36,8 @@ public class LoginActivity extends SwipeBackActivity implements View.OnClickList
     private EditText passwordEdit;
 
     private Button loginBtn;
+
+    private LoginNet loginNet = new LoginNet();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,7 @@ public class LoginActivity extends SwipeBackActivity implements View.OnClickList
     }
 
     private void initViews() {
+        initViewOnBaseTitle(getResources().getString(R.string.login));
         forgetBtn = (TextView) findViewById(R.id.forget_btn);
         registerBtn = (TextView) findViewById(R.id.register_btn);
         mobileEdit = (EditText) findViewById(R.id.mobile_edit);
@@ -54,6 +59,8 @@ public class LoginActivity extends SwipeBackActivity implements View.OnClickList
     }
 
     private void initListener() {
+        loginNet.setmListener(this);
+        setBackListener(this);
         mobileEdit.setText(Constants.phone);
         passwordEdit.setText(Constants.password);
 
@@ -65,6 +72,9 @@ public class LoginActivity extends SwipeBackActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case R.id.back_img:
+                finish();
+                break;
             case R.id.forget_btn:
                Intent forgetIntent = new Intent(this,ForgetPasswordActivity.class);
                 startActivity(forgetIntent);
@@ -74,27 +84,21 @@ public class LoginActivity extends SwipeBackActivity implements View.OnClickList
                 startActivity(registerIntent);
                 break;
             case R.id.login_btn:
-                Map<String,String> map = new HashMap<>();
-                map.put("mobile", mobileEdit.getText().toString());
-                map.put("password",passwordEdit.getText().toString());
-                map.put("callback", "xch");
-                OkHttpClientManager.postAsyn(Constants.LOGIN_URL, map, new OkHttpClientManager.ResultCallback<String>() {
-                    @Override
-                    public void onError(Request request, Exception e) {
-                        System.out.println("request--->" + request.toString());
-                    }
-
-                    @Override
-                    public void onResponse(String response) {
-                        System.out.println("response1--->" + response.toString());
-                        DoctorResult doctorResult = new Gson().fromJson(StringUtils.cutoutBracketToString(response), DoctorResult.class);
-                        System.out.println("response2--->" + doctorResult.getServiceStaff().getDoctorUuid());
-                        SharedPreferences.getInstance().putString("doctorUuid",doctorResult.getServiceStaff().getDoctorUuid());
-                        SharedPreferences.getInstance().putBoolean(SharedPreferences.KEY_LOGIN_TYPE, true);
-                        finish();
-                    }
-                });
+                loginNet.loginData(mobileEdit.getText().toString(), passwordEdit.getText().toString());
+                finish();
                 break;
         }
+    }
+
+    @Override
+    public void requestLoginNetSuccess(DoctorInfo doctorInfo) {
+        System.out.println("doctorinfo--->"+doctorInfo);
+        SharedPreferences.getInstance().putString("doctorUuid", doctorInfo.getDoctorUuid());
+        SharedPreferences.getInstance().putBoolean(SharedPreferences.KEY_LOGIN_TYPE, true);
+    }
+
+    @Override
+    public void requestLoginNetFail(int statusCode) {
+
     }
 }

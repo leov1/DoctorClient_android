@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.hxqydyl.app.ys.R;
+import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.http.OkHttpClientManager;
 import com.hxqydyl.app.ys.ui.pickerview.lib.OptionsPopupWindow;
 import com.hxqydyl.app.ys.utils.Constants;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 /**
  * 完善单位信息页面
  */
-public class EvpiAddressActivity extends Activity implements View.OnClickListener,OptionsPopupWindow.OnOptionsSelectListener{
+public class EvpiAddressActivity extends BaseTitleActivity implements View.OnClickListener,OptionsPopupWindow.OnOptionsSelectListener{
 
     private Button nextBtn;
     private ArrayList<String> optionsItems = new ArrayList<>();
@@ -59,6 +60,7 @@ public class EvpiAddressActivity extends Activity implements View.OnClickListene
     }
 
     private void initViews(){
+        initViewOnBaseTitle("完善信息");
         optionsPopupWindow = new OptionsPopupWindow(this);
 
         nextBtn = (Button) findViewById(R.id.next_btn);
@@ -71,6 +73,8 @@ public class EvpiAddressActivity extends Activity implements View.OnClickListene
     }
 
     private void initListeners() {
+        setBackListener(this);
+
         nextBtn.setOnClickListener(this);
         btnHosital.setOnClickListener(this);
         btnOffice.setOnClickListener(this);
@@ -84,6 +88,9 @@ public class EvpiAddressActivity extends Activity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case R.id.back_img:
+                finish();
+                break;
             case R.id.next_btn:
                 Intent nextIntent = new Intent(this,GoodChoiceActivity.class);
                 startActivity(nextIntent);
