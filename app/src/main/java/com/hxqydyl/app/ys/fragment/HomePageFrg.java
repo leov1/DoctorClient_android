@@ -1,6 +1,7 @@
 package com.hxqydyl.app.ys.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.hxqydyl.app.ys.R;
+import com.hxqydyl.app.ys.activity.reading.ReadingActivity;
 import com.hxqydyl.app.ys.adapter.GalleryPagerAdapter;
 import com.hxqydyl.app.ys.adapter.LineGridViewAdapter;
 import com.hxqydyl.app.ys.bean.DoctorInfo;
@@ -151,7 +153,7 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
         OkHttpClientManager.getDisplayImageDelegate().displayImage(headImg, doctorInfo.getDoctorIcon());
         headName.setText(doctorInfo.getDoctorName());
         suffererNum.setText(doctorInfo.getCustomerNum()+"");
-        followNum.setText(doctorInfo.getVisitNum()+"");
+        followNum.setText(doctorInfo.getVisitNum() + "");
         income.setText(doctorInfo.getIncome());
     }
 
@@ -216,7 +218,8 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
 
         switch (position){
             case 0://阅读
-
+                Intent readIntent = new Intent(getActivity(), ReadingActivity.class);
+                startActivity(readIntent);
                 break;
             case 1://讲堂
 

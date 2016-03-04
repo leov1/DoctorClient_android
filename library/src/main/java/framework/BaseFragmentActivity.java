@@ -19,10 +19,10 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
         // 添加Activity到堆栈
         AppManager.getAppManager().addActivity(this);
 
-        // 修改状态栏颜色，4.4+生效
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            setTranslucentStatus();
-        }
+//        // 修改状态栏颜色，4.4+生效
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            setTranslucentStatus();
+//        }
        // SystemBarTintManager tintManager = new SystemBarTintManager(this);
        // tintManager.setStatusBarTintEnabled(true);
        // tintManager.setStatusBarTintResource(R.color.status_bar_bg);//通知栏所需颜色
