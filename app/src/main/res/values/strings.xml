@@ -68,4 +68,31 @@
     <string name="evip_phone">选择科室电话</string>
     <string name="evip_ranks">职称</string>
     <string name="evip_brief">个人简介</string>
+
+    <!--随访-->
+    <string name="follow_apply">随访申请</string>
+    <string name="follow_manager">随访方案管理</string>
+    <string name="follow_user">随访患者</string>
+    <string name="follow_notice">群发通知</string>
+    <string name="follow_article">患教库</string>
+
+    <!--患者信息-->
+    <string name="user_phone">手机号</string>
+    <string name="user_nick">昵称</string>
+    <string name="user_name">姓名</string>
+    <string name="user_sex">性别</string>
+    <string name="user_birthday">出生日期</string>
+    <string name="user_card">身份证号</string>
+    <string name="user_email">邮箱</string>
+    <string name="user_marriage">婚姻状况</string>
+    <string name="user_vocation">职业</string>
+    <string name="user_address">地址</string>
+    <string name="user_time">病程</string>
+    <string name="user_begin_time">首次就诊时间</string>
+    <string name="user_relapse">是否复发</string>
+    <string name="user_times">复发次数</string>
+    <string name="user_height">身高(m)</string>
+    <string name="user_weight">体重(kg)</string>
+    <string name="user_use_condition">近3月使用药物</string>
+    <string name="user_disease">病情描述</string>
 </resources>

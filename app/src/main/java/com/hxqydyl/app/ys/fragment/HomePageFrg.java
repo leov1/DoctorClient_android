@@ -14,7 +14,14 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.hxqydyl.app.ys.R;
+import com.hxqydyl.app.ys.activity.follow.ArticleActivity;
+import com.hxqydyl.app.ys.activity.follow.ChoiceScaleActivity;
+import com.hxqydyl.app.ys.activity.follow.FollowGroupsMgrActivity;
+import com.hxqydyl.app.ys.activity.follow.FollowMainActivity;
+import com.hxqydyl.app.ys.activity.follow.MassActivity;
+import com.hxqydyl.app.ys.activity.follow.PatientInfoActivity;
 import com.hxqydyl.app.ys.activity.reading.ReadingActivity;
+import com.hxqydyl.app.ys.activity.video.VideoActivity;
 import com.hxqydyl.app.ys.adapter.GalleryPagerAdapter;
 import com.hxqydyl.app.ys.adapter.LineGridViewAdapter;
 import com.hxqydyl.app.ys.bean.DoctorInfo;
@@ -222,10 +229,12 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
                 startActivity(readIntent);
                 break;
             case 1://讲堂
-
+                Intent videoIntent = new Intent(getActivity(), VideoActivity.class);
+                startActivity(videoIntent);
                 break;
             case 2://随访
-
+                Intent followIntent = new Intent(getActivity(), FollowMainActivity.class);
+                startActivity(followIntent);
                 break;
             case 3://诊所
 

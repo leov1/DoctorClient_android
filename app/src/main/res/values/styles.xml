@@ -112,6 +112,35 @@
 		<item name="android:background">@drawable/btn_address_selecter</item>
 	</style>
 
+	<style name="btn_blue">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">40dp</item>
+		<item name="android:background">@drawable/btn_bg_selecter</item>
+		<item name="android:textColor">@color/text_color_white</item>
+		<item name="android:textSize">@dimen/text_size_18</item>
+	</style>
+
+	<style name="follow_text_20">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:textColor">@color/text_color_black</item>
+		<item name="android:textSize">@dimen/text_size_20</item>
+	</style>
+
+	<style name="patient_info_20">
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:textSize">@dimen/text_size_20</item>
+		<item name="android:layout_centerVertical">true</item>
+	</style>
+
+	<style name="gray_line">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">@dimen/space_1</item>
+		<item name="android:background">@color/gray_light</item>
+		<item name="android:layout_alignParentBottom">true</item>
+	</style>
+
 	<!-- 时间选择器popwidnow 显示消失动画 -->
 	<style name="timepopwindow_anim_style">
 		<item name="android:windowEnterAnimation">@anim/timepicker_anim_enter_bottom</item>

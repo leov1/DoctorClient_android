@@ -2,28 +2,21 @@ package com.hxqydyl.app.ys.activity.reading;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+import com.hxqydyl.app.ys.utils.Constants;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -41,7 +34,8 @@ public class ReadingActivity extends BaseTitleActivity implements View.OnClickLi
         initViews();
         initListeners();
         Random random=new Random();
-        loadDataAndURL("http://admin.hxqydyl.com/html/thedoctorinformation/index.shtml?rnd="+random);
+      //  loadDataAndURL(Constants.GET_READING);
+        loadDataAndURL("file:///android_asset/demo.html");
     }
 
     private void loadDataAndURL(String url) {
@@ -129,7 +123,7 @@ public class ReadingActivity extends BaseTitleActivity implements View.OnClickLi
         //webView.setHorizontalScrollBarEnabled(false);
         //webView.setVerticalScrollBarEnabled(false);
 
-        webView.addJavascriptInterface(this, CLIENT_INTERFACE_NAME);
+        webView.addJavascriptInterface(new DemoJavaScriptInterface(), "demo");
 //        btn_back = (ImageView) findViewById(R.id.title_back_btn);
         //btn_back.setOnClickListener(this);
 //        mRefreshImg = (ImageView) findViewById(R.id.webView_refresh_img);
@@ -333,6 +327,23 @@ public class ReadingActivity extends BaseTitleActivity implements View.OnClickLi
 //                mHandlerJpush.sendMessage(mHandlerJpush.obtainMessage(MSG_SET_ALIAS, alias2));
 //
 //                break;
+        }
+    }
+
+    private Handler handler = new Handler();
+
+    final class DemoJavaScriptInterface{
+        DemoJavaScriptInterface(){
+        }
+
+        @JavascriptInterface
+        public void clickOnAndroid(){
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                 webView.loadUrl("javascript:wave()");
+                }
+            });
         }
     }
 }

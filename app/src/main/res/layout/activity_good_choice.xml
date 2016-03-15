@@ -14,26 +14,25 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="30dp"
             android:paddingLeft="50dp"
             android:paddingRight="50dp"
-            android:paddingBottom="30dp"
-            android:paddingTop="30dp"
-            android:orientation="vertical">
+            android:paddingTop="30dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:text="@string/good_choice"
                 android:textColor="@color/register_good"
-                android:layout_marginTop="10dp"
-                android:textSize="@dimen/text_size_23"
-                />
+                android:textSize="@dimen/text_size_23" />
 
             <com.hxqydyl.app.ys.ui.scrollviewandgridview.MyGridView
                 android:id="@+id/gridview"
-                android:layout_marginTop="35dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="35dp"
                 android:columnWidth="75dp"
                 android:gravity="center"
                 android:horizontalSpacing="16dip"
@@ -49,24 +48,18 @@
 
                 <Button
                     android:id="@+id/next_btn"
+                    style="@style/btn_blue"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:layout_height="40dp"
-                    android:background="@drawable/btn_bg_selecter"
-                    android:text="@string/next"
-                    android:textColor="@color/text_color_white"
-                    android:textSize="@dimen/text_size_13" />
+                    android:text="@string/next" />
 
                 <Button
                     android:id="@+id/later_btn"
+                    style="@style/btn_blue"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="40dp"
                     android:layout_marginLeft="25dp"
-                    android:background="@drawable/btn_bg_selecter"
-                    android:text="@string/later"
-                    android:textColor="@color/text_color_white"
-                    android:textSize="@dimen/text_size_13" />
+                    android:layout_weight="1"
+                    android:text="@string/later" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

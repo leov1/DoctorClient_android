@@ -36,15 +36,44 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".activity.register.RegisterActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.ForgetPasswordActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.register.RegisterOrderActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.register.GoodChoiceActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.register.EvpiPhotoActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.register.EvpiAddressActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.register.EvpiUserActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.BaseTitleActivity" android:screenOrientation="portrait" />
-        <activity android:name=".activity.reading.ReadingActivity" android:screenOrientation="portrait" ></activity>
+        <activity
+            android:name=".activity.register.RegisterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ForgetPasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.register.RegisterOrderActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.register.GoodChoiceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.register.EvpiPhotoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.register.EvpiAddressActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.register.EvpiUserActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.BaseTitleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.reading.ReadingActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activity.video.VideoActivity" />
+        <activity android:name=".activity.follow.PatientInfoActivity" />
+        <activity android:name=".activity.follow.ArticleActivity" />
+        <activity android:name=".activity.follow.FollowGroupsMgrActivity" />
+        <activity android:name=".activity.follow.ChoiceUserActivity" />
+        <activity android:name=".activity.follow.MassActivity" />
+        <activity android:name=".activity.follow.ChoiceScaleActivity" />
+        <activity android:name=".activity.follow.ChoiceSelfActivity" />
+        <activity android:name=".activity.follow.FollowMainActivity" />
+        <activity android:name=".activity.follow.FollowApplyActivity" />
+        <activity android:name=".activity.follow.PlanMgrActivity"></activity>
     </application>
 
 </manifest>

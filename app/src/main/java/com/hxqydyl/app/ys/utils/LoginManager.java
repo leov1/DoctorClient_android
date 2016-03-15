@@ -20,4 +20,12 @@ public class LoginManager {
     public static void setLoginStatus(Boolean b){
         SharedPreferences.getInstance().putBoolean(SharedPreferences.KEY_LOGIN_TYPE, b);
     }
+
+    /**
+     * 获取医生uuid
+     * @return
+     */
+    public static String getDoctorUuid(){
+        return SharedPreferences.getInstance().getString("doctorUuid", "");
+    }
 }

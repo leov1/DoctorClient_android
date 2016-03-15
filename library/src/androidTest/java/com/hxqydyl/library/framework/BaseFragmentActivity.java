@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.hxq.library.common.AppManager;
+import common.AppManager;
 
 
 public abstract class BaseFragmentActivity extends FragmentActivity {

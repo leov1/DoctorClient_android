@@ -11,7 +11,15 @@ import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+import com.hxqydyl.app.ys.http.OkHttpClientManager;
 import com.hxqydyl.app.ys.ui.swipebacklayout.SwipeBackActivity;
+import com.hxqydyl.app.ys.utils.Constants;
+import com.squareup.okhttp.Request;
+
+import org.json.JSONException;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 注册页面
@@ -22,6 +30,7 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
     private Button nextBtn;//下一步
     private Button codeBtn;//获取验证码
     private EditText codeEdit;//验证码
+    private EditText mobileEdit;//手机号
 
     private int timeCount = 60;
     public static final int GET_VERIFICATION = 0x23;
@@ -65,6 +74,9 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
         registerOrderBtn = (TextView) findViewById(R.id.textview_register_order);
         nextBtn = (Button) findViewById(R.id.next_btn);
         codeBtn = (Button) findViewById(R.id.btn_code);
+
+        mobileEdit = (EditText) findViewById(R.id.mobile_edit);
+
     }
 
     @Override
@@ -87,9 +99,25 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
       }
     }
 
+    /**
+     * 获取验证码
+     */
     private void  requestForVerification(){
         codeBtn.setEnabled(false);
         timeCount = 60;
         handler.sendEmptyMessage(GET_VERIFICATION);
+
+        Map<String,String> params = new HashMap<>();
+        OkHttpClientManager.getAsyn(Constants.GET_VERIFICATION_CODE+"?mobile="+mobileEdit.getText().toString()+"&callback=hxq", new OkHttpClientManager.ResultCallback<String>() {
+            @Override
+            public void onError(Request request, Exception e) {
+
+            }
+
+            @Override
+            public void onResponse(String response) throws JSONException {
+               System.out.println("response----->"+response);
+            }
+        });
     }
 }

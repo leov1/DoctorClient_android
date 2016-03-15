@@ -2,6 +2,7 @@ package com.hxqydyl.app.ys.activity.register;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -83,6 +84,8 @@ public class EvpiAddressActivity extends BaseTitleActivity implements View.OnCli
 
         optionsPopupWindow.setOnoptionsSelectListener(this);
         optionsPopupWindow.setPicker(optionsItems);
+        optionsPopupWindow.setFocusable(true);
+        optionsPopupWindow.setBackgroundDrawable(new BitmapDrawable());
     }
 
     @Override
