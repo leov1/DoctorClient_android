@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="60dip"
+        android:textColor="@color/black"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/text_size_20"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/space_20"
+        android:text="精神压力对血压有何影响"/>
+
+    <TextView
+        android:id="@+id/tag_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="已选用"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/blue_light"
+        android:textSize="@dimen/text_size_16"
+        android:layout_marginRight="20dp"
+        android:layout_centerVertical="true"
+        android:drawablePadding="10dp"
+        android:drawableRight="@mipmap/xmxq_button_right_high"/>
+</RelativeLayout>

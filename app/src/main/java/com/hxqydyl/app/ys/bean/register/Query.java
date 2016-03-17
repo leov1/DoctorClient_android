@@ -1,4 +1,4 @@
-package com.hxqydyl.app.ys.bean;
+package com.hxqydyl.app.ys.bean.register;
 
 /**
  * Created by hxq on 2016/3/1.

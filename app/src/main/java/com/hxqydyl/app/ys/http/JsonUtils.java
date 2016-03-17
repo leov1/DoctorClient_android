@@ -3,10 +3,10 @@ package com.hxqydyl.app.ys.http;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
-import com.hxqydyl.app.ys.bean.DoctorInfo;
-import com.hxqydyl.app.ys.bean.DoctorInfoNew;
-import com.hxqydyl.app.ys.bean.DoctorResult;
-import com.hxqydyl.app.ys.bean.DoctorResultNew;
+import com.hxqydyl.app.ys.bean.register.DoctorInfo;
+import com.hxqydyl.app.ys.bean.register.DoctorInfoNew;
+import com.hxqydyl.app.ys.bean.register.DoctorResult;
+import com.hxqydyl.app.ys.bean.register.DoctorResultNew;
 import com.hxqydyl.app.ys.utils.StringUtils;
 
 import org.json.JSONException;

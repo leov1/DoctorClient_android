@@ -1,14 +1,10 @@
 package com.hxqydyl.app.ys.http.login;
 
-import com.google.gson.Gson;
-import com.hxqydyl.app.ys.bean.BaseBean;
-import com.hxqydyl.app.ys.bean.DoctorInfo;
+import com.hxqydyl.app.ys.bean.register.DoctorInfo;
 import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.http.OkHttpClientManager;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.squareup.okhttp.Request;
-
-import org.json.JSONException;
 
 import java.util.HashMap;
 import java.util.Map;

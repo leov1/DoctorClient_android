@@ -26,6 +26,9 @@ public class Constants {
     public static  String GET_DOCTOR_INFO = url+"/app/service/doctor/getDoctorInfo";
     //获取医院
     public static String GET_HOSPITAL = url+"/app/service/doctor/getHospital";
+    //上传图片
+    public static String UPLOAD_IMAGE = url+"/app/pub/doctor/uploadIcon";
+
     //获取阅读列表
     public static String GET_READING = url +"/html/thedoctorinformation/index.shtml";
     //获取讲堂列表信息

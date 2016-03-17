@@ -7,23 +7,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.hxqydyl.app.ys.R;
-import com.hxqydyl.app.ys.activity.register.RegisterActivity;
-import com.hxqydyl.app.ys.bean.DoctorInfo;
-import com.hxqydyl.app.ys.bean.DoctorResult;
-import com.hxqydyl.app.ys.http.OkHttpClientManager;
+import com.hxqydyl.app.ys.bean.register.DoctorInfo;
 import com.hxqydyl.app.ys.http.login.LoginNet;
 import com.hxqydyl.app.ys.ui.UIHelper;
-import com.hxqydyl.app.ys.ui.swipebacklayout.SwipeBackActivity;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.hxqydyl.app.ys.utils.LoginManager;
 import com.hxqydyl.app.ys.utils.SharedPreferences;
-import com.hxqydyl.app.ys.utils.StringUtils;
-import com.squareup.okhttp.Request;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by hxq on 2016/2/25.

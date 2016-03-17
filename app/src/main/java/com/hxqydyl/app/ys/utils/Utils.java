@@ -9,6 +9,8 @@ import android.os.Bundle;
 
 import com.hxqydyl.app.ys.common.AppContext;
 
+import java.util.regex.Pattern;
+
 
 /**
  * Created by tiansj on 15/7/29.
@@ -101,9 +103,6 @@ public class Utils {
         else
             return false;
     }
-
-
-
 
     static String getString(Context context, int resId){
         return context.getResources().getString(resId);

@@ -1,6 +1,6 @@
 package com.hxqydyl.app.ys.http.homepage;
 
-import com.hxqydyl.app.ys.bean.DoctorInfoNew;
+import com.hxqydyl.app.ys.bean.register.DoctorInfoNew;
 import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.http.OkHttpClientManager;
 import com.hxqydyl.app.ys.utils.Constants;

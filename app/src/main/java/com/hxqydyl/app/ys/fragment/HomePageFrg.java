@@ -3,7 +3,6 @@ package com.hxqydyl.app.ys.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,35 +11,22 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.hxqydyl.app.ys.R;
-import com.hxqydyl.app.ys.activity.follow.ArticleActivity;
-import com.hxqydyl.app.ys.activity.follow.ChoiceScaleActivity;
-import com.hxqydyl.app.ys.activity.follow.FollowGroupsMgrActivity;
 import com.hxqydyl.app.ys.activity.follow.FollowMainActivity;
-import com.hxqydyl.app.ys.activity.follow.MassActivity;
-import com.hxqydyl.app.ys.activity.follow.PatientInfoActivity;
 import com.hxqydyl.app.ys.activity.reading.ReadingActivity;
 import com.hxqydyl.app.ys.activity.video.VideoActivity;
 import com.hxqydyl.app.ys.adapter.GalleryPagerAdapter;
 import com.hxqydyl.app.ys.adapter.LineGridViewAdapter;
-import com.hxqydyl.app.ys.bean.DoctorInfo;
-import com.hxqydyl.app.ys.bean.DoctorInfoNew;
-import com.hxqydyl.app.ys.bean.DoctorResult;
-import com.hxqydyl.app.ys.bean.DoctorResultNew;
+import com.hxqydyl.app.ys.bean.register.DoctorInfoNew;
 import com.hxqydyl.app.ys.http.OkHttpClientManager;
 import com.hxqydyl.app.ys.http.homepage.GainDoctorInfoNet;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.ui.linegridview.LineGridView;
 import com.hxqydyl.app.ys.ui.loopviewpager.AutoLoopViewPager;
 import com.hxqydyl.app.ys.ui.viewpagerindicator.CirclePageIndicator;
-import com.hxqydyl.app.ys.utils.Constants;
 import com.hxqydyl.app.ys.utils.LoginManager;
 import com.hxqydyl.app.ys.utils.SharedPreferences;
-import com.hxqydyl.app.ys.utils.StringUtils;
-import com.squareup.okhttp.Request;
-
-import org.w3c.dom.Text;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * 首页frg
@@ -157,7 +143,8 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
      */
     private void updateDoctorInfo(DoctorInfoNew doctorInfo) {
         updateLinear(LoginManager.isHasLogin());
-        OkHttpClientManager.getDisplayImageDelegate().displayImage(headImg, doctorInfo.getDoctorIcon());
+        ImageLoader.getInstance().displayImage(doctorInfo.getDoctorIcon(),headImg);
+ //     OkHttpClientManager.getDisplayImageDelegate().displayImage(headImg, doctorInfo.getDoctorIcon());
         headName.setText(doctorInfo.getDoctorName());
         suffererNum.setText(doctorInfo.getCustomerNum()+"");
         followNum.setText(doctorInfo.getVisitNum() + "");

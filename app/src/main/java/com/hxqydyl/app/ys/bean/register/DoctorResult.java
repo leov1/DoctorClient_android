@@ -1,4 +1,4 @@
-package com.hxqydyl.app.ys.bean;
+package com.hxqydyl.app.ys.bean.register;
 
 /**
  * 登陆时返回的数据bean
