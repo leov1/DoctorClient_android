@@ -84,4 +84,13 @@
 
     <!--选择擅长-->
     <color name="register_good">#696969</color>
+
+    <!-- 分组管理 -->
+    <color name="color_f7f7f7">#f7f7f7</color>
+    <color name="color_ececec">#ececec</color>
+    <color name="color_dfdfdf">#dfdfdf</color>
+    <color name="color_efefef">#efefef</color>
+    <color name="color_7e7e7e">#7e7e7e</color>
+    <color name="color_2080ba">#2080ba</color>
+    <color name="color_b2b2b2">#b2b2b2</color>
 </resources>

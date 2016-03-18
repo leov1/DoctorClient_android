@@ -33,4 +33,6 @@ public class Constants {
     public static String GET_READING = url +"/html/thedoctorinformation/index.shtml";
     //获取讲堂列表信息
     public static String GET_VIDEOS = url+"/html/lecture/all_course.shtml";
+
+    public static final String GET_PATIENT_GROUP = url + "/app/service/customer/%s/getCaseGroupByDoctorId";
 }
