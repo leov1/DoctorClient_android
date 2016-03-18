@@ -14,6 +14,9 @@
     <string name="cancel">取消</string>
     <string name="pwSubmit">确定</string>
 
+    <string name="take_picture">拍照</string>
+    <string name="select_local_picture">选择本地图片</string>
+
     <!-- -->
     <string name="progress_loading">加载中，请稍候</string>
     <string name="progress_load_error">加载失败，点击屏幕刷新</string>

@@ -6,6 +6,9 @@
     <color name="color_home_topbar">#1F80B8</color>
     <color name="color_home_info_background">#3496CE</color>
     <color name="grid_line">#ffd3dde6</color>
+    <color name="edit_photo_bg_color">#f1f4f2</color>
+    <color name="blue_text">#007aff</color>
+    <color name="item_selected_gray">#d9d9d9</color>
 
     <color name="tab_text_red">#9d0f15</color>
     <color name="otherspace_normal_gray">#ff707788</color>

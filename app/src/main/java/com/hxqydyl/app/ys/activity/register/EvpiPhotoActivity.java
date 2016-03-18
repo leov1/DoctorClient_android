@@ -1,19 +1,24 @@
 package com.hxqydyl.app.ys.activity.register;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+import android.graphics.BitmapFactory;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
+import android.support.v4.content.CursorLoader;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
@@ -22,16 +27,11 @@ import com.hxqydyl.app.ys.bean.register.Bimp;
 import com.hxqydyl.app.ys.bean.register.ImageItem;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.ui.scrollviewandgridview.MyGridView;
-import com.hxqydyl.app.ys.ui.swipebacklayout.SwipeBackActivity;
-import com.hxqydyl.app.ys.ui.uploadimage.ImgManage;
-import com.hxqydyl.app.ys.ui.uploadimage.ImgSelectDialog;
+import com.hxqydyl.app.ys.ui.uploadimage.UploadPhotoUtil;
 import com.hxqydyl.app.ys.utils.Constants;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-
+import java.io.FileNotFoundException;
 /**
  * 完善注册z照片信息
  */
@@ -40,10 +40,17 @@ public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClick
     private MyGridView gridView;
     private EvpiPhotoAdapter adapter;
 
-    private ImgManage imgManage;
-    private ImgSelectDialog dialog;
     private Boolean isCutImg = true;
 
+    private Animation get_photo_layout_out_from_up, get_photo_layout_in_from_down;
+    private RelativeLayout edit_photo_fullscreen_layout;
+    private RelativeLayout edit_photo_outer_layout;
+    private TextView take_picture;
+    private TextView select_local_picture;
+    private TextView cancel;
+
+    File sdcardDir = Environment.getExternalStorageDirectory();
+    private String photo_path = sdcardDir.getPath() + "/Gosu/cache/photoes/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +63,11 @@ public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClick
     private void initViews() {
         initViewOnBaseTitle("完善信息");
 
-        imgManage = new ImgManage(EvpiPhotoActivity.this, Constants.UPLOAD_IMAGE,isCutImg);
+        edit_photo_fullscreen_layout = (RelativeLayout) findViewById(R.id.edit_photo_fullscreen_layout);
+        edit_photo_outer_layout = (RelativeLayout) findViewById(R.id.edit_photo_outer_layout);
+        take_picture = (TextView) findViewById(R.id.take_picture);
+        select_local_picture = (TextView) findViewById(R.id.select_local_picture);
+        cancel = (TextView) findViewById(R.id.cancel);
 
         gridView = (MyGridView) findViewById(R.id.gridview);
         adapter = new EvpiPhotoAdapter(this);
@@ -65,12 +76,16 @@ public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClick
 
     private void initListeners() {
         setBackListener(this);
+        take_picture.setOnClickListener(this);
+        select_local_picture.setOnClickListener(this);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position == Bimp.tempSelectBitmap.size()) {
-                    showDialog();
+                    edit_photo_fullscreen_layout.setVisibility(View.VISIBLE);
+                    get_photo_layout_in_from_down = AnimationUtils.loadAnimation(EvpiPhotoActivity.this,R.anim.search_layout_in_from_down);
+                    edit_photo_outer_layout.startAnimation(get_photo_layout_in_from_down);
                 } else {
                     UIHelper.ToastMessage(EvpiPhotoActivity.this, "--" + position);
                 }
@@ -78,114 +93,113 @@ public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClick
         });
     }
 
+    private String takePictureUrl;
+    private int addTakePicCount = 1;
+    private Intent intent;
+    private int TAKE_PICTURE = 1, LOCAL_PICTURE = 2;
+    private final int SHOW_TAKE_PICTURE = 9;
+    private final int SHOW_LOCAL_PICTURE = 10;
+
     @Override
     public void onClick(View v) {
+        Intent intent;
         switch (v.getId()) {
             case R.id.back_img:
                 finish();
                 break;
-        }
-    }
-
-    //提示对话框方法
-    private void showDialog() {
-        dialog = new ImgSelectDialog(EvpiPhotoActivity.this, new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case ImgSelectDialog.PIC_FROM_CAMERA:
-                        imgManage.getImg(ImgSelectDialog.PIC_FROM_CAMERA);
-                        break;
-
-                    case ImgSelectDialog.PIC_FROM_LOCALPHOTO:
-                        imgManage.getImg(ImgSelectDialog.PIC_FROM_LOCALPHOTO);
-                        break;
-
-                    case ImgSelectDialog.CANCEL:
-                        imgManage.getImg(ImgSelectDialog.PIC_CUT);
-                        break;
-
-                    default:
-                        break;
+            case R.id.take_picture:
+                edit_photo_fullscreen_layout.setVisibility(View.GONE);
+                takePictureUrl = photo_path + "take_pic"
+                        + addTakePicCount + ".png";
+                File file = new File(takePictureUrl);
+                if (file.exists()) {
+                    if (file.exists()) {
+                        file.delete();
+                    }
                 }
-            }
-        });
-
-       dialog.Create();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-
+                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+                startActivityForResult(intent, TAKE_PICTURE);
+                addTakePicCount++;
+                break;
+            case R.id.select_local_picture:
+                edit_photo_fullscreen_layout.setVisibility(View.GONE);
+                intent = new Intent();
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        "image/*");
+                startActivityForResult(intent, LOCAL_PICTURE);
+                break;
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case ImgSelectDialog.PIC_FROM_CAMERA:
-                imgManage.displayImg(ImgSelectDialog.PIC_FROM_CAMERA, data);
+        if (requestCode == TAKE_PICTURE) {
+            handler.sendEmptyMessage(SHOW_TAKE_PICTURE);
+            return;
+        }
 
-                    imgManage.setImgUploadListener(new ImgManage.ImgUploadListener() {
-
-                        @Override
-                        public void uploadResult(String url) {
-                            if (null == url) {
-                                Toast.makeText(EvpiPhotoActivity.this, "上传失败", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(EvpiPhotoActivity.this, "图片地址："+url, Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-
-                break;
-
-            case ImgSelectDialog.PIC_FROM_LOCALPHOTO:
-                imgManage.displayImg(ImgSelectDialog.PIC_FROM_LOCALPHOTO, data);
-                    imgManage.setImgUploadListener(new ImgManage.ImgUploadListener() {
-
-                        @Override
-                        public void uploadResult(String url) {
-                            if (null == url) {
-                                Toast.makeText(EvpiPhotoActivity.this, "上传失败", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(EvpiPhotoActivity.this, "图片地址："+url, Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                break;
-
-            case ImgSelectDialog.PIC_CUT:
-                setPicToView(data);
-                imgManage.setImgUploadListener(new ImgManage.ImgUploadListener() {
-
-                        @Override
-                        public void uploadResult(String url) {
-                            if (null == url) {
-                                Toast.makeText(EvpiPhotoActivity.this, "上传失败", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(EvpiPhotoActivity.this, "图片地址："+url, Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                break;
-            default:
-                break;
+        if (resultCode == Activity.RESULT_OK) {
+            this.intent = data;
+            handler.sendEmptyMessage(SHOW_LOCAL_PICTURE);
         }
     }
 
-    //将进行剪裁后的图片显示到UI界面上
-    @SuppressWarnings("deprecation")
-    private void setPicToView(Intent picdata) {
-        Bundle bundle = picdata.getExtras();
-        if (bundle != null) {
-            Bitmap photo = bundle.getParcelable("data");
-            ImageItem takePhoto = new ImageItem();
-            takePhoto.setBitmap(photo);
-            Bimp.tempSelectBitmap.add(takePhoto);
-        }
-        adapter.update();
-    }
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case SHOW_TAKE_PICTURE:
+                    Bitmap bitmap = UploadPhotoUtil.getInstance()
+                            .trasformToZoomBitmapAndLessMemory(takePictureUrl);
+                    ImageItem takePhoto = new ImageItem();
+                    takePhoto.setBitmap(bitmap);
+                    Bimp.tempSelectBitmap.add(takePhoto);
+                    adapter.update();
+                    break;
 
+                case SHOW_LOCAL_PICTURE:
+                    Uri uri = intent.getData();
+                    String[] pojo = {MediaStore.Images.Media.DATA};
+
+                    CursorLoader cursorLoader = new CursorLoader(EvpiPhotoActivity.this, uri, pojo, null,null, null);
+                    Cursor cursor = cursorLoader.loadInBackground();
+                    cursor.moveToFirst();
+                    String photo_local_file_path = cursor.getString(cursor.getColumnIndex(pojo[0]));
+                    Bitmap bitmap2 = UploadPhotoUtil.getInstance()
+                            .trasformToZoomBitmapAndLessMemory(photo_local_file_path);
+                    ImageItem takePhoto1 = new ImageItem();
+                    takePhoto1.setBitmap(bitmap2);
+                    Bimp.tempSelectBitmap.add(takePhoto1);
+                    adapter.update();
+
+                    break;
+            }
+        }
+    };
+
+    public void hideEditPhotoLayout(View view) {
+        get_photo_layout_out_from_up = AnimationUtils.loadAnimation(
+                this, R.anim.search_layout_out_from_up);
+        edit_photo_outer_layout.startAnimation(get_photo_layout_out_from_up);
+        get_photo_layout_out_from_up
+                .setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationEnd(Animation arg0) {
+                        // TODO Auto-generated method stub
+                        edit_photo_fullscreen_layout.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation arg0) {
+                        // TODO Auto-generated method stub
+                    }
+
+                    @Override
+                    public void onAnimationStart(Animation arg0) {
+                        // TODO Auto-generated method stub
+                    }
+                });
+    }
 }
