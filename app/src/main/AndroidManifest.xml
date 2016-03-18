@@ -75,7 +75,8 @@
         <activity android:name=".activity.follow.ChoiceSelfActivity" />
         <activity android:name=".activity.follow.FollowMainActivity" />
         <activity android:name=".activity.follow.FollowApplyActivity" />
-        <activity android:name=".activity.follow.PlanMgrActivity"></activity>
+        <activity android:name=".activity.follow.PlanMgrActivity" />
+        <activity android:name=".activity.patient_group.PatientGroupManageActivity"></activity>
     </application>
 
 </manifest>

@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+import com.hxqydyl.app.ys.activity.patient_group.PatientGroupManageActivity;
 
 /**
  * 随访主页
@@ -50,6 +51,7 @@ public class FollowMainActivity extends BaseTitleActivity implements View.OnClic
         mgrBtn.setOnClickListener(this);
         noticeBtn.setOnClickListener(this);
         articeBtn.setOnClickListener(this);
+        patientBtn.setOnClickListener(this);
     }
 
     @Override
@@ -73,6 +75,10 @@ public class FollowMainActivity extends BaseTitleActivity implements View.OnClic
             case R.id.rl_articl://患教库
                 Intent articleIntent = new Intent(FollowMainActivity.this,ArticleActivity.class);
                 startActivity(articleIntent);
+                break;
+            case R.id.rl_patient:
+                Intent groupManageIntent = new Intent(FollowMainActivity.this, PatientGroupManageActivity.class);
+                startActivity(groupManageIntent);
                 break;
         }
     }
