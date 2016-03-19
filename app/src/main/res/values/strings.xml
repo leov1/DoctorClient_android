@@ -99,4 +99,10 @@
     <string name="user_weight">体重(kg)</string>
     <string name="user_use_condition">近3月使用药物</string>
     <string name="user_disease">病情描述</string>
+
+    <!-- 患者分组管理 -->
+    <string name="add_patient_group">添加分组</string>
+    <string name="patient_group_manage">患者分组管理</string>
+    <string name="save">保存</string>
+
 </resources>

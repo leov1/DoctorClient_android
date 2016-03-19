@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/space_15"
+    android:paddingBottom="@dimen/space_15"
+    android:paddingLeft="@dimen/space_20"
+    android:paddingRight="@dimen/space_20"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:text="@string/add_patient_group"/>
+
+    <EditText
+        android:id="@+id/etGroupName"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/shape_add_patient_group_et"/>
+
+    <Button
+        android:id="@+id/bSaveGroup"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="@dimen/space_20"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/white"
+        android:background="@drawable/b_add_patient_group_confirm"
+        android:text="@string/save"/>
+
+</LinearLayout>
