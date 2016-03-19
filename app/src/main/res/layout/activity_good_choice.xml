@@ -35,7 +35,7 @@
                 android:layout_marginTop="35dp"
                 android:columnWidth="75dp"
                 android:gravity="center"
-                android:horizontalSpacing="16dip"
+                android:horizontalSpacing="15dip"
                 android:numColumns="3"
                 android:scrollbars="none"
                 android:verticalSpacing="14dp"></com.hxqydyl.app.ys.ui.scrollviewandgridview.MyGridView>

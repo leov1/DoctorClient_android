@@ -6,95 +6,112 @@
 
     <include layout="@layout/top_title"></include>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/background_color"
-        android:fitsSystemWindows="true"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:paddingLeft="@dimen/space_30"
-        android:paddingRight="@dimen/space_30">
+        android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/img_margin_top">
-
-            <ImageView
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_centerHorizontal="true"
-                android:src="@mipmap/upload_photo" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:paddingTop="95dp"
-                android:text="@string/upload_photo"
-                android:textColor="@color/text_color_white"
-                android:textSize="@dimen/text_size_18" />
-        </RelativeLayout>
-
-        <EditText
-            style="@style/edit_blue"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginTop="@dimen/space_26"
-            android:hint="@string/evip_name"
-            android:maxLength="11"
-            android:paddingLeft="@dimen/space_15" />
+            android:layout_height="match_parent"
+            android:background="@color/background_color"
+            android:fitsSystemWindows="true"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/space_30"
+            android:paddingRight="@dimen/space_30">
 
-        <EditText
-            style="@style/edit_blue"
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/img_margin_top">
+
+                <ImageView
+                    android:id="@+id/image_upload"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:onClick="showEditPhotoLayout"
+                    android:layout_centerHorizontal="true"
+                    android:src="@mipmap/upload_photo" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:paddingTop="95dp"
+                    android:text="@string/upload_photo"
+                    android:textColor="@color/text_color_white"
+                    android:textSize="@dimen/text_size_18" />
+            </RelativeLayout>
+
+            <EditText
+                android:id="@+id/text_nick"
+                style="@style/edit_blue"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="@dimen/space_26"
+                android:hint="@string/evip_name"
+                android:maxLength="11"
+                android:paddingLeft="@dimen/space_15" />
+
+            <EditText
+                android:id="@+id/text_email"
+                style="@style/edit_blue"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="@dimen/space_26"
+                android:hint="@string/evip_email"
+                android:paddingLeft="@dimen/space_15" />
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_size_26"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/radio_btn"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/space_15"
+                    android:paddingLeft="@dimen/space_30"
+                    android:paddingRight="@dimen/space_30"
+                    android:paddingTop="@dimen/space_15"
+                    android:text="@string/evip_man"
+                    android:textColor="@drawable/tags_text_color_seletor"
+                    android:textSize="15sp" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/radio_btn"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/space_15"
+                    android:paddingLeft="@dimen/space_30"
+                    android:paddingRight="@dimen/space_30"
+                    android:paddingTop="@dimen/space_15"
+                    android:text="@string/evip_wemon"
+                    android:textColor="@drawable/tags_text_color_seletor"
+                    android:textSize="15sp" />
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/next_btn"
+                style="@style/btn_blue"
+                android:layout_marginTop="35dp"
+                android:text="@string/next" />
+        </LinearLayout>
+
+        <include layout="@layout/photo_fullscreen_layout"></include>
+
+        <include
+            android:id="@+id/uploading_photo_progress"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginTop="@dimen/space_26"
-            android:hint="@string/evip_email"
-            android:paddingLeft="@dimen/space_15" />
-
-        <RadioGroup
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/text_size_26"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/radio_btn"
-                android:button="@null"
-                android:gravity="center"
-                android:paddingBottom="@dimen/space_15"
-                android:paddingLeft="@dimen/space_30"
-                android:paddingRight="@dimen/space_30"
-                android:paddingTop="@dimen/space_15"
-                android:text="@string/evip_man"
-                android:textColor="@drawable/tags_text_color_seletor"
-                android:textSize="15sp" />
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/radio_btn"
-                android:button="@null"
-                android:gravity="center"
-                android:paddingBottom="@dimen/space_15"
-                android:paddingLeft="@dimen/space_30"
-                android:paddingRight="@dimen/space_30"
-                android:paddingTop="@dimen/space_15"
-                android:text="@string/evip_wemon"
-                android:textColor="@drawable/tags_text_color_seletor"
-                android:textSize="15sp" />
-        </RadioGroup>
-
-        <Button
-            android:id="@+id/next_btn"
-            style="@style/btn_blue"
-            android:layout_marginTop="35dp"
-            android:text="@string/next" />
-    </LinearLayout>
-
-
+            android:layout_height="match_parent"
+            layout="@layout/progress_layout"
+            android:clickable="true"
+            android:visibility="gone" />
+    </RelativeLayout>
 </LinearLayout>

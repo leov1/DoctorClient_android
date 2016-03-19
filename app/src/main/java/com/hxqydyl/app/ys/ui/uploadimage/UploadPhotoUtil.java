@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -38,6 +39,7 @@ public class UploadPhotoUtil<MultipartEntity> {
                 fileName.length());
     }
 
+    //imgToBase64
     public String getUploadBitmapZoomString(String filePath) {
 
         String fileString = "";
@@ -45,11 +47,11 @@ public class UploadPhotoUtil<MultipartEntity> {
             Log.d("gaolei",
                     "file.length()------------------------"
                             + new Date(System.currentTimeMillis()));
-            Bitmap bitmap = trasformToZoomBitmapAndLessMemory(filePath);// ת��ͼƬ
+            Bitmap bitmap = trasformToZoomBitmapAndLessMemory(filePath);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             bitmap.compress(CompressFormat.PNG, 100, bos);
             byte[] result = bos.toByteArray();
-            fileString = new String(result, "ISO-8859-1");
+            fileString = Base64.encodeToString(result,Base64.DEFAULT);
             Log.d("gaolei",
                     "UploadPhotoZoom--------end---------"
                             + new Date(System.currentTimeMillis()));

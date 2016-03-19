@@ -32,6 +32,7 @@ import com.hxqydyl.app.ys.utils.Constants;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+
 /**
  * 完善注册z照片信息
  */
@@ -51,6 +52,7 @@ public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClick
 
     File sdcardDir = Environment.getExternalStorageDirectory();
     private String photo_path = sdcardDir.getPath() + "/Gosu/cache/photoes/";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +86,7 @@ public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClick
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position == Bimp.tempSelectBitmap.size()) {
                     edit_photo_fullscreen_layout.setVisibility(View.VISIBLE);
-                    get_photo_layout_in_from_down = AnimationUtils.loadAnimation(EvpiPhotoActivity.this,R.anim.search_layout_in_from_down);
+                    get_photo_layout_in_from_down = AnimationUtils.loadAnimation(EvpiPhotoActivity.this, R.anim.search_layout_in_from_down);
                     edit_photo_outer_layout.startAnimation(get_photo_layout_in_from_down);
                 } else {
                     UIHelper.ToastMessage(EvpiPhotoActivity.this, "--" + position);
@@ -109,8 +111,7 @@ public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClick
                 break;
             case R.id.take_picture:
                 edit_photo_fullscreen_layout.setVisibility(View.GONE);
-                takePictureUrl = photo_path + "take_pic"
-                        + addTakePicCount + ".png";
+                takePictureUrl = photo_path + "take_pic" + addTakePicCount + ".png";
                 File file = new File(takePictureUrl);
                 if (file.exists()) {
                     if (file.exists()) {
@@ -151,8 +152,7 @@ public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClick
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case SHOW_TAKE_PICTURE:
-                    Bitmap bitmap = UploadPhotoUtil.getInstance()
-                            .trasformToZoomBitmapAndLessMemory(takePictureUrl);
+                    Bitmap bitmap = UploadPhotoUtil.getInstance().trasformToZoomBitmapAndLessMemory(takePictureUrl);
                     ImageItem takePhoto = new ImageItem();
                     takePhoto.setBitmap(bitmap);
                     Bimp.tempSelectBitmap.add(takePhoto);
@@ -163,7 +163,7 @@ public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClick
                     Uri uri = intent.getData();
                     String[] pojo = {MediaStore.Images.Media.DATA};
 
-                    CursorLoader cursorLoader = new CursorLoader(EvpiPhotoActivity.this, uri, pojo, null,null, null);
+                    CursorLoader cursorLoader = new CursorLoader(EvpiPhotoActivity.this, uri, pojo, null, null, null);
                     Cursor cursor = cursorLoader.loadInBackground();
                     cursor.moveToFirst();
                     String photo_local_file_path = cursor.getString(cursor.getColumnIndex(pojo[0]));

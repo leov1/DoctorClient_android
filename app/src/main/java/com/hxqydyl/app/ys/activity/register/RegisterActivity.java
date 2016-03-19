@@ -15,9 +15,12 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+import com.hxqydyl.app.ys.bean.Query;
 import com.hxqydyl.app.ys.bean.register.CaptchaResult;
 import com.hxqydyl.app.ys.bean.register.DoctorResultNew;
 import com.hxqydyl.app.ys.http.OkHttpClientManager;
+import com.hxqydyl.app.ys.http.register.CaptchaNet;
+import com.hxqydyl.app.ys.http.register.RegisterFirstNet;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.ui.swipebacklayout.SwipeBackActivity;
 import com.hxqydyl.app.ys.utils.Constants;
@@ -37,7 +40,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 /**
  * 注册页面
  */
-public class RegisterActivity extends BaseTitleActivity implements View.OnClickListener{
+public class RegisterActivity extends BaseTitleActivity implements View.OnClickListener,CaptchaNet.OnCaptchaNetListener,RegisterFirstNet.OnRegisterFirstListener{
 
     private TextView registerOrderBtn;
     private Button nextBtn;//下一步
@@ -51,6 +54,9 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
     private String captchaRight = "";//系统返回的验证码
     private String mobile = "";//手机号
     private String password = "";//密码
+
+    private CaptchaNet captchaNet;
+    private RegisterFirstNet registerFirstNet;
 
     private SweetAlertDialog pDialog;
 
@@ -93,6 +99,12 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
 
     private void initViews() {
         initViewOnBaseTitle("注册");
+
+        captchaNet = new CaptchaNet();
+        captchaNet.setListener(this);
+        registerFirstNet = new RegisterFirstNet();
+        registerFirstNet.setListener(this);
+
         registerOrderBtn = (TextView) findViewById(R.id.textview_register_order);
         nextBtn = (Button) findViewById(R.id.next_btn);
         codeBtn = (Button) findViewById(R.id.btn_code);
@@ -107,6 +119,7 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
+        String isCan = "";
       switch (v.getId()){
           case R.id.textview_register_order:
               Intent orderIntent = new Intent(this,RegisterOrderActivity.class);
@@ -115,16 +128,22 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
           case R.id.next_btn://下一步
 //              String isPass = validateInfo();
 //              if (TextUtils.isEmpty(isPass)){
-                  Intent nextIntent = new Intent(this,EvpiUserActivity.class);
-                  startActivity(nextIntent);
+                 Intent nextIntent = new Intent(this,EvpiUserActivity.class);
+                 startActivity(nextIntent);
 //              }else{
 //                  UIHelper.ToastMessage(this,isPass);
 //              }
+//              isCan = validateInfo();
+//              if (TextUtils.isEmpty(isCan)){
+//                  registerOne();
+//              }else {
+//                  UIHelper.ToastMessage(this,isCan);
+//              }
               break;
           case R.id.btn_code://获取验证码
-              String isCan = validateMobile();
+              isCan = validateMobile();
               if (TextUtils.isEmpty(isCan)) {
-                  requestForVerification();
+                  obtainCaptcha();
               }else {
                   UIHelper.ToastMessage(this,isCan);
               }
@@ -136,30 +155,19 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
     }
 
     /**
-     * 获取验证码
+     * 获取验证码网络请求
      */
-    private void  requestForVerification(){
+    private void obtainCaptcha(){
         codeBtn.setEnabled(false);
         timeCount = 60;
         handler.sendEmptyMessage(GET_VERIFICATION);
 
-        Map<String,String> params = new HashMap<String,String>();
-        OkHttpClientManager.getAsyn(Constants.GET_VERIFICATION_CODE+"?mobile="+mobileEdit.getText().toString()+"&callback=hxq", new OkHttpClientManager.ResultCallback<String>() {
-            @Override
-            public void onError(Request request, Exception e) {
-                dismissDialog();
-            }
-
-            @Override
-            public void onResponse(String response) throws JSONException {
-                dismissDialog();
-                CaptchaResult doctorResultNew = new Gson().fromJson(StringUtils.cutoutBracketToString(response), CaptchaResult.class);
-                System.out.println("response----->"+doctorResultNew.toString());
-                captchaRight = doctorResultNew.getCaptcha();
-            }
-        });
+        captchaNet.obtainCaptcha(mobile);
     }
 
+    private void registerOne(){
+       registerFirstNet.registerFirst(mobile, password,captcha);
+    }
 
     /**
      * 验证输入内容
@@ -205,4 +213,29 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
         }
     }
 
+    @Override
+    public void requestCaptchaNetSuc(CaptchaResult captchaResult) {
+        dismissDialog();
+        System.out.println("captcha--->"+captchaResult.toString());
+        captchaRight = captchaResult.getCaptcha();
+    }
+
+    @Override
+    public void requestCaptchaNetFail() {
+
+    }
+
+    @Override
+    public void requestRegisterFirstNetSuccess(Query query) {
+        UIHelper.ToastMessage(RegisterActivity.this, query.getMessage());
+        if (query.getMessage().equals("注册成功")){
+            Intent nextIntent = new Intent(this,EvpiUserActivity.class);
+            startActivity(nextIntent);
+        }
+    }
+
+    @Override
+    public void requestRegisterFirstNetFail() {
+
+    }
 }

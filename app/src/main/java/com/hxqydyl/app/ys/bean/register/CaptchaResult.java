@@ -1,5 +1,7 @@
 package com.hxqydyl.app.ys.bean.register;
 
+import com.hxqydyl.app.ys.bean.Query;
+
 /**
  * 手机验证码
  * Created by hxq on 2016/3/15.

@@ -9,10 +9,10 @@
         android:layout_height="match_parent"
         android:background="@drawable/tags_bg_color_seletor"
         android:gravity="center"
-        android:paddingBottom="14dip"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="14dip"
+        android:paddingBottom="13dip"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="13dip"
         android:textColor="@drawable/tags_text_color_seletor"
         android:textSize="15sp" >
     </TextView>

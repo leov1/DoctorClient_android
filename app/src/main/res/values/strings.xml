@@ -40,6 +40,7 @@
     <string name="next">下一步</string>
     <string name="later">以后再说</string>
     <string name="upload_photo">上传照片</string>
+    <string name="uploading">正在上传...</string>
 
     <!--登陆页面-->
     <string name="login_forget">忘记密码?</string>

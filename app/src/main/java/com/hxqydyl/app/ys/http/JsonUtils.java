@@ -3,10 +3,13 @@ package com.hxqydyl.app.ys.http;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.hxqydyl.app.ys.bean.Query;
+import com.hxqydyl.app.ys.bean.register.CaptchaResult;
 import com.hxqydyl.app.ys.bean.register.DoctorInfo;
 import com.hxqydyl.app.ys.bean.register.DoctorInfoNew;
 import com.hxqydyl.app.ys.bean.register.DoctorResult;
 import com.hxqydyl.app.ys.bean.register.DoctorResultNew;
+import com.hxqydyl.app.ys.bean.register.HeadIconResult;
 import com.hxqydyl.app.ys.utils.StringUtils;
 
 import org.json.JSONException;
@@ -38,5 +41,38 @@ public class JsonUtils {
         if (TextUtils.isEmpty(string)) return null;
         DoctorResultNew doctorResultNew = new Gson().fromJson(StringUtils.cutoutBracketToString(string), DoctorResultNew.class);
         return doctorResultNew.getDoctorInfo();
+    }
+
+    /**
+     * 验证码
+     * @param string
+     * @return
+     */
+    public static CaptchaResult JsonCaptchaResult(String string){
+        if (TextUtils.isEmpty(string)) return null;
+        CaptchaResult captchaResult = new Gson().fromJson(StringUtils.cutoutBracketToString(string),CaptchaResult.class);
+        return captchaResult;
+    }
+
+    /**
+     * 注册第一步
+     * @param string
+     * @return
+     */
+    public static Query JsonQuery(String string){
+        if (TextUtils.isEmpty(string)) return null;
+        Query query = new Gson().fromJson(string,Query.class);
+        return query;
+    }
+
+    /**
+     * 上传头像返回
+     * @param string
+     * @return
+     */
+    public static HeadIconResult JsonHeadIconResult(String string){
+        if (TextUtils.isEmpty(string)) return null;
+        HeadIconResult headIconResult = new Gson().fromJson(string,HeadIconResult.class);
+        return headIconResult;
     }
 }

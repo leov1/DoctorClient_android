@@ -52,9 +52,12 @@ public class LoginNet {
 
     public void loginData(String mobile,String password){
         Map<String,String> params = new HashMap<>();
-        params.put("mobile", mobile);
-        params.put("password",password);
-        params.put("callback", Constants.CALLBACK);
+//        params.put("mobile", mobile);
+//        params.put("password",password);
+//        params.put("callback", Constants.CALLBACK);
+
+        params.put("","");
+
         OkHttpClientManager.postAsyn(Constants.LOGIN_URL, params, new OkHttpClientManager.ResultCallback<String>() {
             @Override
             public void onError(Request request, Exception e) {
@@ -63,9 +66,11 @@ public class LoginNet {
 
             @Override
             public void onResponse(String response){
-                mListener.requestLoginNetSuccess(JsonUtils.JsonLoginData(response));
+                System.out.println("request---->"+response);
+ //               mListener.requestLoginNetSuccess(JsonUtils.JsonLoginData(response));
             }
         });
+
     }
 
     /**
