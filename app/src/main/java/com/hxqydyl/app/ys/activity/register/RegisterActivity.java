@@ -18,6 +18,7 @@ import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.bean.Query;
 import com.hxqydyl.app.ys.bean.register.CaptchaResult;
 import com.hxqydyl.app.ys.bean.register.DoctorResultNew;
+import com.hxqydyl.app.ys.bean.register.RegisterFirst;
 import com.hxqydyl.app.ys.http.OkHttpClientManager;
 import com.hxqydyl.app.ys.http.register.CaptchaNet;
 import com.hxqydyl.app.ys.http.register.RegisterFirstNet;
@@ -58,6 +59,7 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
     private CaptchaNet captchaNet;
     private RegisterFirstNet registerFirstNet;
 
+    private Intent intent;
     private SweetAlertDialog pDialog;
 
     private int timeCount = 60;
@@ -122,23 +124,23 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
         String isCan = "";
       switch (v.getId()){
           case R.id.textview_register_order:
-              Intent orderIntent = new Intent(this,RegisterOrderActivity.class);
-              startActivity(orderIntent);
+              intent = new Intent(this,RegisterOrderActivity.class);
+              startActivity(intent);
               break;
           case R.id.next_btn://下一步
 //              String isPass = validateInfo();
 //              if (TextUtils.isEmpty(isPass)){
-                 Intent nextIntent = new Intent(this,EvpiUserActivity.class);
-                 startActivity(nextIntent);
+//                 intent = new Intent(this,EvpiUserActivity.class);
+//                 startActivity(intent);
 //              }else{
 //                  UIHelper.ToastMessage(this,isPass);
 //              }
-//              isCan = validateInfo();
-//              if (TextUtils.isEmpty(isCan)){
-//                  registerOne();
-//              }else {
-//                  UIHelper.ToastMessage(this,isCan);
-//              }
+              isCan = validateInfo();
+              if (TextUtils.isEmpty(isCan)){
+                  registerOne();
+              }else {
+                  UIHelper.ToastMessage(this,isCan);
+              }
               break;
           case R.id.btn_code://获取验证码
               isCan = validateMobile();
@@ -165,8 +167,11 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
         captchaNet.obtainCaptcha(mobile);
     }
 
+    /**
+     * 注册请求
+     */
     private void registerOne(){
-       registerFirstNet.registerFirst(mobile, password,captcha);
+       registerFirstNet.registerFirst(mobile, password,"123456");
     }
 
     /**
@@ -176,9 +181,9 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
         String isMobile = validateMobile();
         if(!TextUtils.isEmpty(isMobile)) return isMobile;
 
-        captcha = captchaEdit.getText().toString();
-        if (TextUtils.isEmpty(captcha)) return "验证码不能为空";
-        if (!captcha.equals(captchaRight)) return "验证码不正确";
+//        captcha = captchaEdit.getText().toString();
+//        if (TextUtils.isEmpty(captcha)) return "验证码不能为空";
+//        if (!captcha.equals(captchaRight)) return "验证码不正确";
 
         password = passwordEdit.getText().toString();
         if (TextUtils.isEmpty(password)) return "密码不能为空";
@@ -226,11 +231,12 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
     }
 
     @Override
-    public void requestRegisterFirstNetSuccess(Query query) {
-        UIHelper.ToastMessage(RegisterActivity.this, query.getMessage());
-        if (query.getMessage().equals("注册成功")){
-            Intent nextIntent = new Intent(this,EvpiUserActivity.class);
-            startActivity(nextIntent);
+    public void requestRegisterFirstNetSuccess(RegisterFirst registerFirst) {
+        UIHelper.ToastMessage(RegisterActivity.this, registerFirst.getQuery().getMessage());
+        if (registerFirst.getQuery().getMessage().equals("操作成功")){
+            intent = new Intent(this,EvpiUserActivity.class);
+            intent.putExtra("doctorUuid",registerFirst.getDoctorUuid());
+            startActivity(intent);
         }
     }
 

@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -63,9 +64,16 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
     File sdcardDir = Environment.getExternalStorageDirectory();
     private String photo_path = sdcardDir.getPath() + "/Gosu/cache/photoes/";
     private String photo_take_file_path = photo_path + "temp.png";
+    private String fileString;//base64位图片
 
     private HeadIconNet headIconNet;
     private RegisterSecNet registerSecNet;
+
+    private String doctorUUid;
+    private String mobile;
+    private String nick;
+    private String email;
+    private int sex = 1;//默认为男士
 
     Handler handler = new Handler() {
         @Override
@@ -128,6 +136,12 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
         headIconNet.setListener(this);
         registerSecNet = new RegisterSecNet();
         registerSecNet.setListener(this);
+
+        intent = getIntent();
+        if (intent != null){
+            doctorUUid = intent.getStringExtra("doctorUuid");
+        }
+
     }
 
     private void initViews() {
@@ -154,12 +168,38 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
 
     }
 
+    /**
+     * 下一步
+     */
+    private void loadNext(){
+       nick = text_nick.getText().toString();
+       email = text_email.getText().toString();
+
+        if (TextUtils.isEmpty(fileString)){
+            UIHelper.ToastMessage(EvpiUserActivity.this,"请上传头像");
+            return;
+        }
+
+       if(TextUtils.isEmpty(nick)) {
+           UIHelper.ToastMessage(EvpiUserActivity.this,"姓名不能为空");
+           return;
+       }
+        if (TextUtils.isEmpty(email)){
+           UIHelper.ToastMessage(EvpiUserActivity.this,"邮箱不能为空");
+        }
+
+        registerSecNet.registerSec(doctorUUid, email, sex + "", fileString, nick);
+    }
+
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.next_btn:
-                Intent nextIntent = new Intent(this,EvpiAddressActivity.class);
-                startActivity(nextIntent);
+
+                loadNext();
+
                 break;
             case R.id.take_picture:
                 edit_photo_fullscreen_layout.setVisibility(View.GONE);
@@ -208,7 +248,7 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
         //为什么另开一个线程呢?因为要把图片字节流转化为字符串上传，比较耗时，阻塞UI线程，会使应用卡卡卡，所以要另开一线程
         new Thread() {
             public void run() {
-                String fileString = UploadPhotoUtil.getInstance().getUploadBitmapZoomString(
+                fileString = UploadPhotoUtil.getInstance().getUploadBitmapZoomString(
                         filePath);
                 Map<String, Object> map = new HashMap<String, Object>();
                 map.put("icon", fileString);
@@ -269,7 +309,8 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
 
     @Override
     public void requestRegisterSecSuc() {
-
+        intent = new Intent(this,EvpiAddressActivity.class);
+        startActivity(intent);
     }
 
     @Override

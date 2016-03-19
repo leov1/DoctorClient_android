@@ -1,12 +1,14 @@
 package com.hxqydyl.app.ys.http.register;
 
 import com.hxqydyl.app.ys.bean.Query;
+import com.hxqydyl.app.ys.bean.register.RegisterFirst;
 import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.http.OkHttpClientManager;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.squareup.okhttp.Request;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +26,7 @@ public class RegisterFirstNet {
     }
 
     public interface OnRegisterFirstListener{
-        void requestRegisterFirstNetSuccess(Query query);
+        void requestRegisterFirstNetSuccess(RegisterFirst query);
         void requestRegisterFirstNetFail();
     }
 

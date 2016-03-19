@@ -10,9 +10,11 @@ import com.hxqydyl.app.ys.bean.register.DoctorInfoNew;
 import com.hxqydyl.app.ys.bean.register.DoctorResult;
 import com.hxqydyl.app.ys.bean.register.DoctorResultNew;
 import com.hxqydyl.app.ys.bean.register.HeadIconResult;
+import com.hxqydyl.app.ys.bean.register.RegisterFirst;
 import com.hxqydyl.app.ys.utils.StringUtils;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by hxq on 2016/3/3.
@@ -59,10 +61,18 @@ public class JsonUtils {
      * @param string
      * @return
      */
-    public static Query JsonQuery(String string){
+    public static RegisterFirst JsonQuery(String string) throws JSONException{
         if (TextUtils.isEmpty(string)) return null;
-        Query query = new Gson().fromJson(string,Query.class);
-        return query;
+        JSONObject jsonObject = new JSONObject(string);
+        RegisterFirst registerFirst = new RegisterFirst();
+        if (jsonObject.has("doctorUuid")) registerFirst.setDoctorUuid(jsonObject.getString("doctorUuid"));
+        if (jsonObject.has("mobile")) registerFirst.setMobile(jsonObject.getString("mobile"));
+        Query query = new Query();
+        JSONObject queryJs = jsonObject.getJSONObject("query");
+        query.setMessage(queryJs.getString("message"));
+        query.setSuccess(queryJs.getString("success"));
+        registerFirst.setQuery(query);
+        return registerFirst;
     }
 
     /**
