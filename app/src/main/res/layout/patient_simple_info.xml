@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:background="@color/white"
+    android:paddingRight="@dimen/space_23"
+    android:gravity="center_vertical"
+    android:paddingLeft="@dimen/space_23">
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/ivPatientPortrait"
+        android:background="@mipmap/portrait_man"/>
+    
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="50dp"
+        android:layout_marginLeft="@dimen/space_10"
+        android:layout_marginRight="@dimen/space_10"
+        android:orientation="vertical">
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvPatientName"
+                android:textStyle="bold"
+                android:text="王超马汉"
+                android:layout_centerVertical="true"
+                android:textSize="@dimen/text_size_16"
+                android:textColor="@color/black"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_follow_patient"
+                android:layout_marginLeft="@dimen/space_2"
+                android:layout_toRightOf="@id/tvPatientName"
+                android:layout_alignBottom="@id/tvPatientName"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvPatientAge"
+            android:text="年龄：16岁"
+            android:layout_centerHorizontal="true"
+            android:textSize="@dimen/text_size_11"
+            android:layout_alignBottom="@id/tvPatientName"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvPatientFollowTime"
+            android:text="2016-03-19 09:35"
+            android:textSize="@dimen/text_size_11"
+            android:layout_alignBottom="@id/tvPatientName"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/black"/>
+
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:lines="1"
+            android:ellipsize="end"
+            android:text="问题：多梦，睡眠不好，长期萎靡不振第三方示范点阿飞"/>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/icon_right_arrow"/>
+
+</LinearLayout>

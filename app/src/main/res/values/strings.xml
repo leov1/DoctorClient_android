@@ -103,5 +103,9 @@
     <string name="add_patient_group">添加分组</string>
     <string name="patient_group_manage">患者分组管理</string>
     <string name="save">保存</string>
+    <string name="delete_patient">删除患者</string>
+    <string name="communicate_with_patient">和患者沟通</string>
+    <string name="add_case_report">添加病历</string>
+    <string name="select_new_follow_up_for_patient">为患者选择新的随访方案</string>
 
 </resources>
