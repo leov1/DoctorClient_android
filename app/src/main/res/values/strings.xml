@@ -74,7 +74,7 @@
     <string name="evip_brief">个人简介</string>
 
     <!--随访-->
-    <string name="follow_apply">随访申请</string>
+    <string name="follow_apply">随访患者申请</string>
     <string name="follow_manager">随访方案管理</string>
     <string name="follow_user">随访患者</string>
     <string name="follow_notice">群发通知</string>
@@ -92,13 +92,13 @@
     <string name="user_vocation">职业</string>
     <string name="user_address">地址</string>
     <string name="user_time">病程</string>
-    <string name="user_begin_time">首次就诊时间</string>
+    <string name="user_first_see_doctor_time">首次就诊时间</string>
     <string name="user_relapse">是否复发</string>
-    <string name="user_times">复发次数</string>
+    <string name="user_relapse_times">复发次数</string>
     <string name="user_height">身高(m)</string>
     <string name="user_weight">体重(kg)</string>
     <string name="user_use_condition">近3月使用药物</string>
-    <string name="user_disease">病情描述</string>
+    <string name="user_description">病情描述</string>
 
     <!-- 患者分组管理 -->
     <string name="add_patient_group">添加分组</string>
@@ -108,5 +108,14 @@
     <string name="communicate_with_patient">和患者沟通</string>
     <string name="add_case_report">添加病历</string>
     <string name="select_new_follow_up_for_patient">为患者选择新的随访方案</string>
+    <string name="select_group">选择分组</string>
+    <string name="men_zhen_bing_li">门诊病历</string>
+    <string name="zhu_yuan_bing_li">住院病历</string>
+    <string name="sui_fang_biao_dan">随访表单</string>
+    <string name="unread">未读</string>
+    <string name="user_disease_process">病程</string>
+    <string name="patient_info">患者信息</string>
+    <string name="pending_follow_up">待处理随访任务</string>
+    <string name="member_num_format">[%d]</string>
 
 </resources>

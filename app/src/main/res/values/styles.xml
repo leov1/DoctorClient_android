@@ -133,11 +133,32 @@
 		<item name="android:textSize">@dimen/text_size_20</item>
 	</style>
 
-	<style name="patient_info_20">
-		<item name="android:layout_height">wrap_content</item>
-		<item name="android:layout_width">wrap_content</item>
-		<item name="android:textSize">@dimen/text_size_20</item>
-		<item name="android:layout_centerVertical">true</item>
+	<style name="patient_info_left">
+		<item name="android:textSize">@dimen/text_size_15</item>
+		<item name="android:paddingTop">@dimen/space_10</item>
+		<item name="android:paddingBottom">@dimen/space_10</item>
+		<item name="android:textColor">@color/black</item>
+		<item name="android:paddingRight">@dimen/space_11</item>
+		<item name="android:gravity">right</item>
+		<item name="android:paddingLeft">@dimen/space_10</item>
+		<item name="android:background">@color/color_dcf1f5</item>
+	</style>
+
+	<style name="patient_info_right">
+		<item name="android:textSize">@dimen/text_size_15</item>
+		<item name="android:paddingTop">@dimen/space_10</item>
+		<item name="android:paddingBottom">@dimen/space_10</item>
+		<item name="android:paddingLeft">@dimen/space_17</item>
+		<item name="android:paddingRight">@dimen/space_11</item>
+		<item name="android:textColor">@color/color_545454</item>
+		<item name="android:background">@color/white</item>
+		<item name="android:gravity">left</item>
+	</style>
+
+	<style name="divider_line">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">1dp</item>
+		<item name="android:background">@color/color_dfdfdf</item>
 	</style>
 
 	<style name="gray_line">
@@ -154,4 +175,7 @@
 		<item name="android:windowExitAnimation">@anim/timepicker_anim_exit_bottom</item>
 		<!-- 指定消失的动画xml -->
 	</style>
+
+	<color name="color_545454">#545454</color>
+	<color name="color_dcf1f5">#dcf1f5</color>
 </resources>

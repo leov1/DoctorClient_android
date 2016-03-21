@@ -2,574 +2,255 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <include layout="@layout/top_title"></include>
 
-   <ScrollView
-       android:layout_width="match_parent"
-       android:layout_height="match_parent">
-       <LinearLayout
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"
-           android:orientation="vertical">
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="50dip"
-               android:orientation="horizontal">
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="1"
-                   android:background="@color/short_blue"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="@string/user_phone"
-                       android:layout_alignParentRight="true"
-                       android:layout_marginRight="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"
-                       android:layout_marginLeft="@dimen/space_10"></View>
-               </RelativeLayout>
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="2"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="@string/user_phone"
-                       android:layout_marginLeft="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"></View>
-               </RelativeLayout>
-           </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="50dip"
-               android:orientation="horizontal">
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="1"
-                   android:background="@color/short_blue"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="@string/user_nick"
-                       android:layout_alignParentRight="true"
-                       android:layout_marginRight="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"
-                       android:layout_marginLeft="@dimen/space_10"></View>
-               </RelativeLayout>
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="2"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="@string/user_nick"
-                       android:layout_marginLeft="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"></View>
-               </RelativeLayout>
-           </LinearLayout>
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_add_patient_group_et"
+            android:orientation="vertical"
+            android:stretchColumns="1">
 
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="50dip"
-               android:orientation="horizontal">
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="1"
-                   android:background="@color/short_blue"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="@string/user_name"
-                       android:layout_alignParentRight="true"
-                       android:layout_marginRight="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"
-                       android:layout_marginLeft="@dimen/space_10"></View>
-               </RelativeLayout>
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="2"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="@string/user_name"
-                       android:layout_marginLeft="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"></View>
-               </RelativeLayout>
-           </LinearLayout>
+            <TableRow>
 
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="50dip"
-               android:orientation="horizontal">
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="1"
-                   android:background="@color/short_blue"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="@string/user_sex"
-                       android:layout_alignParentRight="true"
-                       android:layout_marginRight="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"
-                       android:layout_marginLeft="@dimen/space_10"></View>
-               </RelativeLayout>
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="2"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="nv"
-                       android:layout_marginLeft="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"></View>
-               </RelativeLayout>
-           </LinearLayout>
+                <TextView
+                    style="@style/patient_info_left"
+                    android:text="@string/user_phone" />
 
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="50dip"
-               android:orientation="horizontal">
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="1"
-                   android:background="@color/short_blue"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="@string/user_birthday"
-                       android:layout_alignParentRight="true"
-                       android:layout_marginRight="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"
-                       android:layout_marginLeft="@dimen/space_10"></View>
-               </RelativeLayout>
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="2"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="@string/phone"
-                       android:layout_marginLeft="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"></View>
-               </RelativeLayout>
-           </LinearLayout>
+                <TextView
+                    android:id="@+id/tvPhoneNumber"
+                    android:text="@string/user_phone"
+                    style="@style/patient_info_right" />
+            </TableRow>
 
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="50dip"
-               android:orientation="horizontal">
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="1"
-                   android:background="@color/short_blue"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="@string/user_card"
-                       android:layout_alignParentRight="true"
-                       android:layout_marginRight="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"
-                       android:layout_marginLeft="@dimen/space_10"></View>
-               </RelativeLayout>
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="2"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="445822458545578"
-                       android:layout_marginLeft="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"></View>
-               </RelativeLayout>
-           </LinearLayout>
+            <View style="@style/divider_line" />
 
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="50dip"
-               android:orientation="horizontal">
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="1"
-                   android:background="@color/short_blue"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="@string/user_email"
-                       android:layout_alignParentRight="true"
-                       android:layout_marginRight="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"
-                       android:layout_marginLeft="@dimen/space_10"></View>
-               </RelativeLayout>
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="2"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="252243862@qq.com"
-                       android:layout_marginLeft="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"></View>
-               </RelativeLayout>
-           </LinearLayout>
+            <TableRow>
 
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="50dip"
-               android:orientation="horizontal">
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="1"
-                   android:background="@color/short_blue"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="@string/user_marriage"
-                       android:layout_alignParentRight="true"
-                       android:layout_marginRight="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"
-                       android:layout_marginLeft="@dimen/space_10"></View>
-               </RelativeLayout>
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="2"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="未婚"
-                       android:layout_marginLeft="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"></View>
-               </RelativeLayout>
-           </LinearLayout>
+                <TextView
+                    style="@style/patient_info_left"
+                    android:text="@string/user_nick" />
 
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="50dip"
-               android:orientation="horizontal">
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="1"
-                   android:background="@color/short_blue"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="@string/user_vocation"
-                       android:layout_alignParentRight="true"
-                       android:layout_marginRight="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"
-                       android:layout_marginLeft="@dimen/space_10"></View>
-               </RelativeLayout>
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="2"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="教授"
-                       android:layout_marginLeft="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"></View>
-               </RelativeLayout>
-           </LinearLayout>
+                <TextView
+                    android:id="@+id/tvNick"
+                    style="@style/patient_info_right" />
+            </TableRow>
 
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="50dip"
-               android:orientation="horizontal">
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="1"
-                   android:background="@color/short_blue"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="@string/user_address"
-                       android:layout_alignParentRight="true"
-                       android:layout_marginRight="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"
-                       android:layout_marginLeft="@dimen/space_10"></View>
-               </RelativeLayout>
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="2"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="北京市"
-                       android:layout_marginLeft="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"></View>
-               </RelativeLayout>
-           </LinearLayout>
+            <View style="@style/divider_line" />
 
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="50dip"
-               android:orientation="horizontal">
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="1"
-                   android:background="@color/short_blue"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="@string/user_time"
-                       android:layout_alignParentRight="true"
-                       android:layout_marginRight="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"
-                       android:layout_marginLeft="@dimen/space_10"></View>
-               </RelativeLayout>
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="2"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="一年"
-                       android:layout_marginLeft="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"></View>
-               </RelativeLayout>
-           </LinearLayout>
+            <TableRow>
 
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="50dip"
-               android:orientation="horizontal">
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="1"
-                   android:background="@color/short_blue"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="@string/user_begin_time"
-                       android:layout_alignParentRight="true"
-                       android:layout_marginRight="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"
-                       android:layout_marginLeft="@dimen/space_10"></View>
-               </RelativeLayout>
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="2"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="2008-12-30"
-                       android:layout_marginLeft="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"></View>
-               </RelativeLayout>
-           </LinearLayout>
+                <TextView
+                    style="@style/patient_info_left"
+                    android:text="@string/user_name" />
 
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="50dip"
-               android:orientation="horizontal">
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="1"
-                   android:background="@color/short_blue"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="@string/user_relapse"
-                       android:layout_alignParentRight="true"
-                       android:layout_marginRight="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"
-                       android:layout_marginLeft="@dimen/space_10"></View>
-               </RelativeLayout>
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="2"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="是"
-                       android:layout_marginLeft="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"></View>
-               </RelativeLayout>
-           </LinearLayout>
+                <TextView
+                    android:id="@+id/tvName"
+                    style="@style/patient_info_right" />
+            </TableRow>
 
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="50dip"
-               android:orientation="horizontal">
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="1"
-                   android:background="@color/short_blue"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="@string/user_times"
-                       android:layout_alignParentRight="true"
-                       android:layout_marginRight="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"
-                       android:layout_marginLeft="@dimen/space_10"></View>
-               </RelativeLayout>
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="2"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="3次"
-                       android:layout_marginLeft="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"></View>
-               </RelativeLayout>
-           </LinearLayout>
+            <View style="@style/divider_line" />
 
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="50dip"
-               android:orientation="horizontal">
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="1"
-                   android:background="@color/short_blue"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="@string/user_height"
-                       android:layout_alignParentRight="true"
-                       android:layout_marginRight="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"
-                       android:layout_marginLeft="@dimen/space_10"></View>
-               </RelativeLayout>
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="2"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="172cm"
-                       android:layout_marginLeft="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"></View>
-               </RelativeLayout>
-           </LinearLayout>
+            <TableRow>
 
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="50dip"
-               android:orientation="horizontal">
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="1"
-                   android:background="@color/short_blue"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="@string/user_weight"
-                       android:layout_alignParentRight="true"
-                       android:layout_marginRight="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"
-                       android:layout_marginLeft="@dimen/space_10"></View>
-               </RelativeLayout>
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="2"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="66kg"
-                       android:layout_marginLeft="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"></View>
-               </RelativeLayout>
-           </LinearLayout>
+                <TextView
+                    style="@style/patient_info_left"
 
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="100dip"
-               android:orientation="horizontal">
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="1"
-                   android:background="@color/short_blue"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="@string/user_use_condition"
-                       android:layout_alignParentRight="true"
-                       android:layout_marginRight="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"
-                       android:layout_marginLeft="@dimen/space_10"></View>
-               </RelativeLayout>
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="2"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="@string/phone"
-                       android:layout_marginLeft="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"></View>
-               </RelativeLayout>
-           </LinearLayout>
+                    android:text="@string/user_sex" />
 
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="100dip"
-               android:orientation="horizontal">
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="1"
-                   android:background="@color/short_blue"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="@string/user_disease"
-                       android:layout_alignParentRight="true"
-                       android:layout_marginRight="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"
-                       android:layout_marginLeft="@dimen/space_10"></View>
-               </RelativeLayout>
-               <RelativeLayout
-                   android:layout_width="0dip"
-                   android:layout_weight="2"
-                   android:layout_height="match_parent">
-                   <TextView
-                       style="@style/patient_info_20"
-                       android:text="@string/phone"
-                       android:layout_marginLeft="@dimen/space_15"
-                       />
-                   <View style="@style/gray_line"></View>
-               </RelativeLayout>
-           </LinearLayout>
-       </LinearLayout>
-   </ScrollView>
+                <TextView
+                    android:id="@+id/tvSex"
+                    style="@style/patient_info_right" />
+            </TableRow>
+
+            <View style="@style/divider_line" />
+
+            <TableRow>
+
+                <TextView
+                    style="@style/patient_info_left"
+                    android:text="@string/user_birthday" />
+
+                <TextView
+                    android:id="@+id/tvBirthday"
+                    style="@style/patient_info_right" />
+            </TableRow>
+
+            <View style="@style/divider_line" />
+
+            <TableRow>
+
+                <TextView
+                    style="@style/patient_info_left"
+                    android:text="@string/user_card" />
+
+                <TextView
+                    android:id="@+id/tvCard"
+                    style="@style/patient_info_right" />
+            </TableRow>
+
+            <View style="@style/divider_line" />
+
+            <TableRow>
+
+                <TextView
+                    style="@style/patient_info_left"
+                    android:text="@string/user_email" />
+
+                <TextView
+                    android:id="@+id/tvEmail"
+                    style="@style/patient_info_right" />
+            </TableRow>
+
+            <View style="@style/divider_line" />
+
+            <TableRow>
+
+                <TextView
+                    style="@style/patient_info_left"
+                    android:text="@string/user_marriage" />
+
+                <TextView
+                    android:id="@+id/tvMarriage"
+                    style="@style/patient_info_right" />
+            </TableRow>
+
+            <View style="@style/divider_line" />
+
+            <TableRow>
+
+                <TextView
+                    style="@style/patient_info_left"
+                    android:text="@string/user_vocation" />
+
+                <TextView
+                    android:id="@+id/tvVocation"
+                    style="@style/patient_info_right" />
+            </TableRow>
+
+            <View style="@style/divider_line" />
+
+            <TableRow>
+
+                <TextView
+                    style="@style/patient_info_left"
+                    android:text="@string/user_address" />
+
+                <TextView
+                    android:id="@+id/tvAddress"
+                    style="@style/patient_info_right" />
+            </TableRow>
+
+            <View style="@style/divider_line" />
+
+            <TableRow>
+
+                <TextView
+                    style="@style/patient_info_left"
+                    android:text="@string/user_disease_process" />
+
+                <TextView
+                    android:id="@+id/tvDiseaseProcess"
+                    style="@style/patient_info_right" />
+            </TableRow>
+
+            <View style="@style/divider_line" />
+
+            <TableRow>
+
+                <TextView
+                    style="@style/patient_info_left"
+                    android:text="@string/user_first_see_doctor_time" />
+
+                <TextView
+                    android:id="@+id/tvFirstSeeDoctorTime"
+                    style="@style/patient_info_right" />
+            </TableRow>
+
+            <View style="@style/divider_line" />
+
+            <TableRow>
+
+                <TextView
+                    style="@style/patient_info_left"
+                    android:text="@string/user_relapse" />
+
+                <TextView
+                    android:id="@+id/tvRelapse"
+                    style="@style/patient_info_right" />
+            </TableRow>
+
+            <View style="@style/divider_line" />
+
+            <TableRow>
+
+                <TextView
+                    style="@style/patient_info_left"
+                    android:text="@string/user_relapse_times" />
+
+                <TextView
+                    android:id="@+id/tvRelapseTimes"
+                    style="@style/patient_info_right" />
+            </TableRow>
+
+            <View style="@style/divider_line" />
+
+            <TableRow>
+
+                <TextView
+                    style="@style/patient_info_left"
+                    android:text="@string/user_height" />
+
+                <TextView
+                    android:id="@+id/tvHeight"
+                    style="@style/patient_info_right" />
+            </TableRow>
+
+            <View style="@style/divider_line" />
+
+            <TableRow>
+
+                <TextView
+                    style="@style/patient_info_left"
+                    android:text="@string/user_weight" />
+
+                <TextView
+                    android:id="@+id/tvWeight"
+                    style="@style/patient_info_right"/>
+            </TableRow>
+
+            <View style="@style/divider_line" />
+
+            <TableRow>
+
+                <TextView
+                    style="@style/patient_info_left"
+                    android:text="@string/user_use_condition" />
+
+                <TextView
+                    android:id="@+id/tvUseCondition"
+                    style="@style/patient_info_right" />
+            </TableRow>
+
+            <View style="@style/divider_line" />
+
+            <TableRow>
+
+                <TextView
+                    style="@style/patient_info_left"
+                    android:text="@string/user_description" />
+
+                <TextView
+                    android:id="@+id/tvDescription"
+                    style="@style/patient_info_right" />
+            </TableRow>
+        </TableLayout>
+    </ScrollView>
 </LinearLayout>

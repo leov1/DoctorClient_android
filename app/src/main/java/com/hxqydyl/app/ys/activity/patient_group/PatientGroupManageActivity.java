@@ -19,6 +19,7 @@ import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.adapter.PatientGroupAdapter;
 import com.hxqydyl.app.ys.bean.PatientGroup;
 import com.hxqydyl.app.ys.utils.DensityUtils;
+import com.hxqydyl.app.ys.utils.DialogUtils;
 
 import java.util.ArrayList;
 
@@ -27,7 +28,7 @@ import ui.swipemenulistview.SwipeMenuCreator;
 import ui.swipemenulistview.SwipeMenuItem;
 import ui.swipemenulistview.SwipeMenuListView;
 
-public class PatientGroupManageActivity extends BaseTitleActivity implements View.OnClickListener {
+public class PatientGroupManageActivity extends BaseTitleActivity implements View.OnClickListener ,DialogUtils.SavePatientGroupListener{
     private RelativeLayout rlAddPatientGroup;
     private SwipeMenuListView lvPatientGroup;
     private PatientGroupAdapter patientGroupAdapter;
@@ -78,8 +79,6 @@ public class PatientGroupManageActivity extends BaseTitleActivity implements Vie
         switch (v.getId()) {
             case R.id.rlAddPatientGroup:
                 showInputDialog();
-
-                patientGroupAdapter.notifyDataSetChanged();
                 break;
             case R.id.back_img:
                 finish();
@@ -88,29 +87,13 @@ public class PatientGroupManageActivity extends BaseTitleActivity implements Vie
     }
 
     private void showInputDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View view = LayoutInflater.from(this).inflate(R.layout.dialog_add_patient_group, null);
-        builder.setView(view);
-        final Dialog dialog = builder.create();
-        final EditText et = (EditText) view.findViewById(R.id.etGroupName);
-        Button b = (Button) view.findViewById(R.id.bSaveGroup);
-        b.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String groupName = et.getText().toString();
-                dialog.dismiss();
-                if (!TextUtils.isEmpty(groupName)) {
-                    patientGroupArrayList.add(new PatientGroup("1", groupName));
-                } else {
-                    patientGroupArrayList.add(new PatientGroup("1", "妄想症"));
-                    patientGroupArrayList.add(new PatientGroup("1", "遗忘症"));
-                    patientGroupArrayList.add(new PatientGroup("1", "衰弱症"));
-                }
-                patientGroupAdapter.notifyDataSetChanged();
-            }
-        });
-        dialog.show();
+        DialogUtils.showAddPatientGroupDialog(this,this);
     }
 
 
+    @Override
+    public void onSaveGroup(String groupName) {
+        patientGroupArrayList.add(new PatientGroup(groupName));
+        patientGroupAdapter.notifyDataSetChanged();
+    }
 }
