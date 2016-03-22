@@ -27,9 +27,15 @@
                 android:textSize="@dimen/text_size_23" />
 
             <Button
-                android:id="@+id/btn_hosital"
+                android:id="@+id/btn_city"
                 style="@style/btn_address"
                 android:layout_marginTop="@dimen/space_20"
+                android:text="@string/evip_city" />
+
+            <Button
+                android:id="@+id/btn_hosital"
+                style="@style/btn_address"
+                android:layout_marginTop="@dimen/space_5"
                 android:text="@string/evip_hospital" />
 
             <Button

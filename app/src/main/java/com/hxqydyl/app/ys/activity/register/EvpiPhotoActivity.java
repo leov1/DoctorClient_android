@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -13,42 +11,60 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.adapter.EvpiPhotoAdapter;
-import com.hxqydyl.app.ys.bean.register.Bimp;
+import com.hxqydyl.app.ys.adapter.ImagePagerAdapter;
 import com.hxqydyl.app.ys.bean.register.ImageItem;
-import com.hxqydyl.app.ys.ui.UIHelper;
+import com.hxqydyl.app.ys.http.MyInterface.OnSingleTapDismissBigPhotoListener;
+import com.hxqydyl.app.ys.ui.MyViewPager;
 import com.hxqydyl.app.ys.ui.scrollviewandgridview.MyGridView;
 import com.hxqydyl.app.ys.ui.uploadimage.UploadPhotoUtil;
-import com.hxqydyl.app.ys.utils.Constants;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 完善注册z照片信息
  */
-public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClickListener {
+public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClickListener,OnSingleTapDismissBigPhotoListener {
+
+    private String takePictureUrl;
+    private int addTakePicCount = 1;
+    private Intent intent;
+    private int NONE = 0,TAKE_PICTURE = 1, LOCAL_PICTURE = 2;
+    private final int SHOW_TAKE_PICTURE = 9;
+    private final int SHOW_LOCAL_PICTURE = 10;
+    private List<String> uploadImgUrlList = new ArrayList<String>();
+    public ArrayList<ImageItem> tempSelectBitmap = new ArrayList<ImageItem>();//选择的图片临时列表
+    private int viewpagerPosition;
+    private ImagePagerAdapter imagePagerAdapter;
+    private boolean isBigImageShow = false;
 
     private MyGridView gridView;
     private EvpiPhotoAdapter adapter;
 
-    private Boolean isCutImg = true;
-
     private Animation get_photo_layout_out_from_up, get_photo_layout_in_from_down;
-    private RelativeLayout edit_photo_fullscreen_layout;
-    private RelativeLayout edit_photo_outer_layout;
+    private RelativeLayout edit_photo_fullscreen_layout,display_big_image_layout,edit_photo_outer_layout;
     private TextView take_picture;
     private TextView select_local_picture;
     private TextView cancel;
+
+    private MyViewPager image_viewpager;
+    private TextView position_in_total;
+    private ImageView delete_image;
 
     File sdcardDir = Environment.getExternalStorageDirectory();
     private String photo_path = sdcardDir.getPath() + "/Gosu/cache/photoes/";
@@ -71,8 +87,13 @@ public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClick
         select_local_picture = (TextView) findViewById(R.id.select_local_picture);
         cancel = (TextView) findViewById(R.id.cancel);
 
+        display_big_image_layout = (RelativeLayout) findViewById(R.id.display_big_image_layout);
+        image_viewpager = (MyViewPager) findViewById(R.id.image_viewpager);
+        position_in_total = (TextView) findViewById(R.id.position_in_total);
+        delete_image = (ImageView) findViewById(R.id.delete_image);
+
         gridView = (MyGridView) findViewById(R.id.gridview);
-        adapter = new EvpiPhotoAdapter(this);
+        adapter = new EvpiPhotoAdapter(this,tempSelectBitmap);
         gridView.setAdapter(adapter);
     }
 
@@ -80,27 +101,58 @@ public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClick
         setBackListener(this);
         take_picture.setOnClickListener(this);
         select_local_picture.setOnClickListener(this);
+        delete_image.setOnClickListener(this);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == Bimp.tempSelectBitmap.size()) {
+                if (position == tempSelectBitmap.size()) {
                     edit_photo_fullscreen_layout.setVisibility(View.VISIBLE);
                     get_photo_layout_in_from_down = AnimationUtils.loadAnimation(EvpiPhotoActivity.this, R.anim.search_layout_in_from_down);
                     edit_photo_outer_layout.startAnimation(get_photo_layout_in_from_down);
                 } else {
-                    UIHelper.ToastMessage(EvpiPhotoActivity.this, "--" + position);
+                    //点击图片查看大图
+                    showImageViewPager(position, uploadImgUrlList);
+                    viewpagerPosition = position;
                 }
             }
         });
     }
 
-    private String takePictureUrl;
-    private int addTakePicCount = 1;
-    private Intent intent;
-    private int TAKE_PICTURE = 1, LOCAL_PICTURE = 2;
-    private final int SHOW_TAKE_PICTURE = 9;
-    private final int SHOW_LOCAL_PICTURE = 10;
+    public void showImageViewPager(int position, final List<String> localUrlList) {
+        List<String> urlList;
+            urlList = localUrlList;
+        Log.d("gaolei", "urlList.toString()------------------" + urlList.toString());
+        display_big_image_layout.setVisibility(View.VISIBLE);
+        imagePagerAdapter = new ImagePagerAdapter(getSupportFragmentManager(), urlList);
+        image_viewpager.setAdapter(imagePagerAdapter);
+        imagePagerAdapter.notifyDataSetChanged();
+        image_viewpager.setOffscreenPageLimit(imagePagerAdapter.getCount());
+        image_viewpager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                // TODO Auto-generated method stub
+                viewpagerPosition = position;
+                position_in_total.setText((position + 1) + "/" + localUrlList.size());
+            }
+
+            @Override
+            public void onPageScrolled(int arg0, float arg1, int arg2) {
+                // TODO Auto-generated method stub
+            }
+        });
+            image_viewpager.setCurrentItem(position);
+            delete_image.setVisibility(View.VISIBLE);
+            position_in_total.setText((position+1) + "/" + urlList.size());
+            isBigImageShow = true;
+
+        com.hxqydyl.app.ys.ui.imageDisplayFragment.PhotoViewAttacher.setOnSingleTapToPhotoViewListener(this);
+    }
 
     @Override
     public void onClick(View v) {
@@ -131,11 +183,29 @@ public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClick
                         "image/*");
                 startActivityForResult(intent, LOCAL_PICTURE);
                 break;
+            case R.id.delete_image:
+                if (uploadImgUrlList.size() == 0) {
+                    return;
+                }
+                uploadImgUrlList.remove(viewpagerPosition);
+                tempSelectBitmap.remove(viewpagerPosition);
+                imagePagerAdapter.changeList(uploadImgUrlList);
+                adapter.update(tempSelectBitmap);
+                position_in_total.setText((viewpagerPosition + 1) + "/" + uploadImgUrlList.size());
+                if (uploadImgUrlList.size() == 0) {
+                    display_big_image_layout.setVisibility(View.GONE);
+                    isBigImageShow = false;
+                }
+
+                break;
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == NONE)
+            return;
+
         if (requestCode == TAKE_PICTURE) {
             handler.sendEmptyMessage(SHOW_TAKE_PICTURE);
             return;
@@ -155,8 +225,9 @@ public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClick
                     Bitmap bitmap = UploadPhotoUtil.getInstance().trasformToZoomBitmapAndLessMemory(takePictureUrl);
                     ImageItem takePhoto = new ImageItem();
                     takePhoto.setBitmap(bitmap);
-                    Bimp.tempSelectBitmap.add(takePhoto);
-                    adapter.update();
+                    tempSelectBitmap.add(takePhoto);
+                    adapter.update(tempSelectBitmap);
+                    uploadImgUrlList.add(takePictureUrl);
                     break;
 
                 case SHOW_LOCAL_PICTURE:
@@ -171,9 +242,9 @@ public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClick
                             .trasformToZoomBitmapAndLessMemory(photo_local_file_path);
                     ImageItem takePhoto1 = new ImageItem();
                     takePhoto1.setBitmap(bitmap2);
-                    Bimp.tempSelectBitmap.add(takePhoto1);
-                    adapter.update();
-
+                    tempSelectBitmap.add(takePhoto1);
+                    uploadImgUrlList.add(photo_local_file_path);
+                    adapter.update(tempSelectBitmap);
                     break;
             }
         }
@@ -201,5 +272,28 @@ public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClick
                         // TODO Auto-generated method stub
                     }
                 });
+    }
+
+    @Override
+    public void onDismissBigPhoto() {
+        hideDisplayBigImageLayout();
+    }
+
+    private void hideDisplayBigImageLayout() {
+        display_big_image_layout.setVisibility(View.GONE);
+        isBigImageShow = false;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        super.onKeyDown(keyCode, event);
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0){
+           if(isBigImageShow){
+                hideDisplayBigImageLayout();
+                return false;
+            }
+        }
+        finish();
+        return false;
     }
 }

@@ -13,7 +13,8 @@ public class Constants {
     //请求网络失败
     public static int REQUEST_FAIL = 1101;
 
-    private static String url = /*"http://172.168.1.57";*/"http://172.168.1.30";
+
+    private static String url = /*"http://172.168.1.57";*/"http://172.168.1.30";/*"http://172.168.1.41";*/
 //  private static String url = "http://119.254.32.92:4097";
     public static String phone = "10000000000";
     public static String password = "000000";
@@ -31,8 +32,20 @@ public class Constants {
 
     //获取医生基本信息（新添加）
     public static  String GET_DOCTOR_INFO = url+"/app/service/doctor/getDoctorInfo";
+
+    //获取省
+    public static String GET_PROVINCE = url+"/app/service/doctor/getProvince";
+    //获取市
+    public static String GET_CITY = url+"/app/service/doctor/getCity";
+    //获取区县
+    public static String GET_REGION = url+"/app/service/doctor/getRegion";
     //获取医院
     public static String GET_HOSPITAL = url+"/app/service/doctor/getHospital";
+    //获取科室
+    public static String GET_DEPARTMENT = url+"/app/service/doctor/getDepartment";
+    //获取标签
+    public static String GET_TAGS = url+"/app/service/doctor/getTags";
+
     //上传图片
     public static String UPLOAD_IMAGE = url+"/app/pub/doctor/uploadIcon";
 

@@ -9,6 +9,11 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
+import com.hxqydyl.app.ys.activity.register.GoodChoiceActivity;
+import com.hxqydyl.app.ys.bean.register.TagsBean;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by hxq on 2016/2/26.
@@ -17,18 +22,18 @@ public class TagsAdapter extends BaseAdapter {
 
     private Context context;
     private int clickTemp = -1;
-    private String[] tagList = new String[]{"抑郁症","抑郁症","抑郁症","抑郁症","抑郁症","抑郁症","抑郁症",
-            "抑郁症","抑郁症","抑郁症","抑郁症","抑郁症","抑郁症","抑郁症","抑郁症"};
+    private List<TagsBean> tagList;
     OnItemClickClass onItemClickClass;
 
-    public TagsAdapter( Context context, OnItemClickClass onItemClickClass) {
+    public TagsAdapter( Context context, OnItemClickClass onItemClickClass,List<TagsBean> tagList) {
+        this.tagList = tagList;
         this.context = context;
         this.onItemClickClass = onItemClickClass;
     }
 
     @Override
     public int getCount() {
-        return tagList.length;
+        return tagList.size();
     }
 
     @Override
@@ -48,7 +53,7 @@ public class TagsAdapter extends BaseAdapter {
         }
         TextView textView = BaseViewHolder.get(convertView,R.id.tv_tags_item);
         CheckBox checkBox = BaseViewHolder.get(convertView,R.id.tags_checkbox);
-        textView.setText(tagList[position]);
+        textView.setText(tagList.get(position).getTagName());
         checkBox.setVisibility(View.GONE);
 
         //设置被选中和取消选中条目的状态
@@ -63,7 +68,7 @@ public class TagsAdapter extends BaseAdapter {
 
     /**点击多选的接口*/
     public interface OnItemClickClass{
-        public void OnItemClick(View v, int position, CheckBox checkBox, TextView textView);
+        void OnItemClick(View v, int position, CheckBox checkBox, TextView textView);
     }
 
     /** 多选的接口实现类 */

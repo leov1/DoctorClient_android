@@ -11,6 +11,9 @@ import android.widget.TextView;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.adapter.TagsAdapter;
+import com.hxqydyl.app.ys.bean.register.TagsBean;
+import com.hxqydyl.app.ys.bean.register.TagsResultBean;
+import com.hxqydyl.app.ys.http.register.TagsNet;
 import com.hxqydyl.app.ys.ui.swipebacklayout.SwipeBackActivity;
 
 import java.util.ArrayList;
@@ -19,32 +22,41 @@ import java.util.List;
 /**
  * 选择擅长页
  */
-public class GoodChoiceActivity extends BaseTitleActivity implements View.OnClickListener {
+public class GoodChoiceActivity extends BaseTitleActivity implements View.OnClickListener,TagsNet.OnTagsListener {
 
     private Button nextBtn;
     private Button laterBtn;
 
     private GridView gvTags;
     private TagsAdapter mAdapter;
-    List<String> tvSelectedList = new ArrayList<String>();
+    List<TagsBean> tvSelectedList = new ArrayList<TagsBean>();
+    List<TagsBean> tagList = new ArrayList<TagsBean>();
+
+    private TagsNet tagsNet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_good_choice);
 
+
         initViews();
         initListeners();
+   //     loadData();
     }
 
 
     private void initViews() {
         initViewOnBaseTitle("完善信息");
+
+        tagsNet = new TagsNet();
+        tagsNet.setListener(this);
+
         nextBtn = (Button) findViewById(R.id.next_btn);
         laterBtn = (Button) findViewById(R.id.later_btn);
 
         gvTags = (GridView) findViewById(R.id.gridview);
-        mAdapter = new TagsAdapter(this, onItemClickClass);
+        mAdapter = new TagsAdapter(this, onItemClickClass,tagList);
         gvTags.setAdapter(mAdapter);
     }
 
@@ -52,6 +64,13 @@ public class GoodChoiceActivity extends BaseTitleActivity implements View.OnClic
         setBackListener(this);
         nextBtn.setOnClickListener(this);
         laterBtn.setOnClickListener(this);
+    }
+
+    /**
+     * 获取gridview数据
+     */
+    private void loadData(){
+        tagsNet.obtainTags();
     }
 
     /**
@@ -65,7 +84,7 @@ public class GoodChoiceActivity extends BaseTitleActivity implements View.OnClic
                 textView.setBackgroundDrawable(getResources().getDrawable(R.drawable.radio_not_select_shape));
                 textView.setTextColor(getResources().getColor(R.color.black));
                 for (int i = 0; i < tvSelectedList.size(); i++) {
-                    if (textView.getText().toString().equals(tvSelectedList.get(i))) {
+                    if (textView.getText().toString().equals(tvSelectedList.get(i).getTagName())) {
                         tvSelectedList.remove(i);
                     }
                 }
@@ -73,7 +92,11 @@ public class GoodChoiceActivity extends BaseTitleActivity implements View.OnClic
                 checkBox.setChecked(true);
                 textView.setBackgroundDrawable(getResources().getDrawable(R.drawable.radio_select_shape));
                 textView.setTextColor(getResources().getColor(R.color.white));
-                tvSelectedList.add(textView.getText().toString());
+                for (int i = 0; i < tagList.size(); i++) {
+                    if (textView.getText().toString().equals(tagList.get(i).getTagName())) {
+                        tvSelectedList.add(tagList.get(i));
+                    }
+                }
             }
 
         }
@@ -94,5 +117,17 @@ public class GoodChoiceActivity extends BaseTitleActivity implements View.OnClic
                 finish();
                 break;
         }
+    }
+
+    @Override
+    public void requestTagsSuc(TagsResultBean tagsResultBean) {
+        System.out.println("tagsResultBean--->"+tagsResultBean.toString());
+        tagList = tagsResultBean.getTagsBeans();
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void requestTagsFail() {
+
     }
 }

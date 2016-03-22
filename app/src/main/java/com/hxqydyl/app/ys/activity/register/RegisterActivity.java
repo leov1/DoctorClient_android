@@ -130,17 +130,17 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
           case R.id.next_btn://下一步
 //              String isPass = validateInfo();
 //              if (TextUtils.isEmpty(isPass)){
-//                 intent = new Intent(this,EvpiUserActivity.class);
-//                 startActivity(intent);
+                 intent = new Intent(this,EvpiUserActivity.class);
+                 startActivity(intent);
 //              }else{
 //                  UIHelper.ToastMessage(this,isPass);
 //              }
-              isCan = validateInfo();
-              if (TextUtils.isEmpty(isCan)){
-                  registerOne();
-              }else {
-                  UIHelper.ToastMessage(this,isCan);
-              }
+//              isCan = validateInfo();
+//              if (TextUtils.isEmpty(isCan)){
+//                  registerOne();
+//              }else {
+//                  UIHelper.ToastMessage(this,isCan);
+//              }
               break;
           case R.id.btn_code://获取验证码
               isCan = validateMobile();
