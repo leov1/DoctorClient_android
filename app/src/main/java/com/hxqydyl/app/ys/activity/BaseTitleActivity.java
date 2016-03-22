@@ -36,4 +36,13 @@ public class BaseTitleActivity extends SwipeBackActivity {
     public void setBackListener(View.OnClickListener l){
         backImg.setOnClickListener(l);
     }
+
+    public void setBackListener() {
+        backImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+    }
 }

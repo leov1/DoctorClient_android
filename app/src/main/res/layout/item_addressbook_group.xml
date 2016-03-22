@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_f7f7f7"
+    android:paddingTop="20dp">
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="40dip"
+        android:singleLine="true"
+        android:text="name"
+        android:textColor="#000000"
+        android:paddingLeft="20dp"
+        android:background="#d7ecf0"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/text_size_20" />
+</LinearLayout>

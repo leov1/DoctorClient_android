@@ -1,11 +1,11 @@
 package com.hxqydyl.app.ys.activity.follow;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
@@ -14,31 +14,28 @@ import com.hxqydyl.app.ys.adapter.FollowApplyAdapter;
 /**
  * 随访申请
  */
-public class FollowApplyActivity extends BaseTitleActivity
-        implements View.OnClickListener, AdapterView.OnItemClickListener{
+public class FollowApplyDetailActivity extends BaseTitleActivity
+        implements View.OnClickListener {
 
-    private ListView listView;
-    private FollowApplyAdapter adapter;
+    private RelativeLayout rlPatient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_follow_apply);
+        setContentView(R.layout.activity_follow_apply_detail);
 
         initViews();
         initListeners();
     }
 
     private void initViews() {
-        initViewOnBaseTitle("随访申请");
-        listView = (ListView) findViewById(R.id.list_view);
-        adapter = new FollowApplyAdapter(this);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(this);
+        initViewOnBaseTitle("随访申请详情");
+        rlPatient = (RelativeLayout) findViewById(R.id.rl_patient);
     }
 
     private void initListeners() {
         setBackListener(this);
+        rlPatient.setOnClickListener(this);
     }
 
     @Override
@@ -47,13 +44,13 @@ public class FollowApplyActivity extends BaseTitleActivity
             case R.id.back_img:
                 finish();
                 break;
+            case R.id.rl_patient:
+                Intent intent = new Intent(this, PatientInfoActivity.class);
+                intent.putExtra("patientId", 1);
+                startActivity(intent);
+                break;
+
         }
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(this, FollowApplyDetailActivity.class);
-        intent.putExtra("patientId", 1);
-        startActivity(intent);
-    }
 }

@@ -94,4 +94,7 @@
     <color name="color_2080ba">#2080ba</color>
     <color name="color_b2b2b2">#b2b2b2</color>
     <color name="color_3595cf">#3595cf</color>
+
+    <!--添加患者-->
+    <color name="color_btn_bg">#3496ce</color>
 </resources>

@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+import com.hxqydyl.app.ys.activity.patient.PatientAddActivity;
 import com.hxqydyl.app.ys.activity.patient_group.PatientGroupManageActivity;
 
 /**
@@ -36,6 +37,7 @@ public class FollowMainActivity extends BaseTitleActivity implements View.OnClic
         initViewOnBaseTitle("随访");
         addBtn = (ImageView) findViewById(R.id.right_img);
         addBtn.setVisibility(View.VISIBLE);
+        addBtn.setImageDrawable(getResources().getDrawable(R.mipmap.btn_add_white));
 
         applyBtn = (RelativeLayout) findViewById(R.id.rl_apply);
         mgrBtn = (RelativeLayout) findViewById(R.id.rl_mgr);
@@ -47,6 +49,7 @@ public class FollowMainActivity extends BaseTitleActivity implements View.OnClic
 
     private void initListeners() {
         setBackListener(this);
+        addBtn.setOnClickListener(this);
         applyBtn.setOnClickListener(this);
         mgrBtn.setOnClickListener(this);
         noticeBtn.setOnClickListener(this);
@@ -59,6 +62,10 @@ public class FollowMainActivity extends BaseTitleActivity implements View.OnClic
         switch (v.getId()){
             case R.id.back_img:
                 finish();
+                break;
+            case R.id.right_img:    //添加患者
+                Intent patientAddIntent = new Intent(FollowMainActivity.this, PatientAddActivity.class);
+                startActivity(patientAddIntent);
                 break;
             case R.id.rl_apply://随访申请
                 Intent applyIntent = new Intent(FollowMainActivity.this,FollowApplyActivity.class);
