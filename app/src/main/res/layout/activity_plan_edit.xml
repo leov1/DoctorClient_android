@@ -16,7 +16,7 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:background="@color/white"
+                android:background="@drawable/bg_plan_item"
                 android:layout_width="match_parent"
                 android:layout_height="60dp">
                 <TextView
@@ -34,22 +34,16 @@
                     android:layout_height="match_parent" />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/llMedicine"
-                android:layout_marginTop="20dp"
+            <com.hxqydyl.app.ys.ui.scrollviewandgridview.MyScrollListView
+                android:id="@+id/lvMedicine"
+                android:background="@color/white"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.hxqydyl.app.ys.ui.plan.MedicineEdit
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
-
-            </LinearLayout>
+                android:layout_height="wrap_content" />
 
             <TextView
+                android:id="@+id/tvAddMedicine"
                 android:text="添加其他药物信息"
-                android:background="@color/white"
+                android:background="@drawable/bg_plan_item"
                 android:gravity="center"
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
@@ -60,18 +54,18 @@
                 android:paddingLeft="@dimen/space_10"
                 android:paddingRight="@dimen/space_10"
                 android:layout_marginTop="20dp"
-                android:background="@color/white"
+                android:background="@drawable/bg_plan_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
                     android:text="药物不良反应处理"
                     android:gravity="center_vertical|left"
                     android:textSize="@dimen/text_size_20"
-                    android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="45dp" />
                 <EditText
                     android:hint="请输入药物不良反应处理方案"
+                    android:gravity="top|left"
                     android:background="@color/transparent"
                     android:layout_marginTop="@dimen/space_10"
                     android:layout_width="match_parent"
@@ -82,7 +76,7 @@
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:background="@color/white"
+                android:background="@drawable/bg_plan_item"
                 android:layout_height="50dp">
                 <TextView
                     android:text="随访周期"
@@ -97,7 +91,7 @@
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:background="@color/white"
+                android:background="@drawable/bg_plan_item"
                 android:layout_height="50dp">
                 <TextView
                     android:text="体重测量周期"
@@ -112,7 +106,7 @@
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:background="@color/white"
+                android:background="@drawable/bg_plan_item"
                 android:layout_height="50dp">
                 <TextView
                     android:text="心电图检查周期"
@@ -127,7 +121,7 @@
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:background="@color/white"
+                android:background="@drawable/bg_plan_item"
                 android:layout_height="50dp">
                 <TextView
                     android:text="血常规"
@@ -142,7 +136,7 @@
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:background="@color/white"
+                android:background="@drawable/bg_plan_item"
                 android:layout_height="50dp">
                 <TextView
                     android:text="肝功能"
@@ -156,7 +150,7 @@
             <LinearLayout
                 android:layout_marginTop="10dp"
                 android:orientation="vertical"
-                android:background="@color/white"
+                android:background="@drawable/bg_plan_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
@@ -176,7 +170,7 @@
             <LinearLayout
                 android:layout_marginTop="10dp"
                 android:orientation="vertical"
-                android:background="@color/white"
+                android:background="@drawable/bg_plan_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
@@ -205,15 +199,17 @@
                 android:id="@+id/llAddTips"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="15dp"
+                android:background="@drawable/bg_plan_item"
                 android:layout_width="match_parent"
                 android:layout_height="80dp">
                 <ImageView
                     android:layout_marginLeft="20dp"
-                    android:src="@mipmap/btn_icon_add"
+                    android:src="@mipmap/tianjiayongliang"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent" />
                 <TextView
                     android:text="添加其他健康小贴士"
+                    android:textSize="@dimen/text_size_20"
                     android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />

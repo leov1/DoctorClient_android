@@ -1,11 +1,8 @@
 package com.hxqydyl.app.ys.activity.follow;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -33,6 +30,7 @@ public class FollowMainActivity extends BaseTitleActivity implements View.OnClic
     private RelativeLayout patientBtn;
     private RelativeLayout noticeBtn;
     private RelativeLayout articeBtn;
+    private RelativeLayout followTaskBtn;
     private FullShowExpandableListView elvPatientList;
     private int lastExpandGroupPosition = -1;
     private ArrayList<PatientGroup> patientGroups = new ArrayList<PatientGroup>();
@@ -91,6 +89,7 @@ public class FollowMainActivity extends BaseTitleActivity implements View.OnClic
         patientBtn = (RelativeLayout) findViewById(R.id.rl_patient);
         noticeBtn = (RelativeLayout) findViewById(R.id.rl_notice);
         articeBtn = (RelativeLayout) findViewById(R.id.rl_articl);
+        followTaskBtn = (RelativeLayout) findViewById(R.id.rl_follow_task);
         elvPatientList = (FullShowExpandableListView) findViewById(R.id.elvPatientList);
 
     }
@@ -103,6 +102,7 @@ public class FollowMainActivity extends BaseTitleActivity implements View.OnClic
         noticeBtn.setOnClickListener(this);
         articeBtn.setOnClickListener(this);
         patientBtn.setOnClickListener(this);
+        followTaskBtn.setOnClickListener(this);
         elvPatientList.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {
@@ -144,6 +144,10 @@ public class FollowMainActivity extends BaseTitleActivity implements View.OnClic
             case R.id.rl_patient:
                 Intent groupManageIntent = new Intent(FollowMainActivity.this,PatientGroupManageActivity.class);
                 startActivity(groupManageIntent);
+                break;
+            case R.id.rl_follow_task:
+                Intent taskIntent = new Intent(this, FollowTaskActivity.class);
+                startActivity(taskIntent);
                 break;
         }
     }

@@ -81,7 +81,9 @@
         <activity android:name=".activity.follow.ChoiceSelfActivity" />
         <activity android:name=".activity.follow.FollowMainActivity" />
         <activity android:name=".activity.follow.FollowApplyActivity" />
+        <activity android:name=".activity.follow.FollowTaskActivity" />
         <activity android:name=".activity.follow.FollowApplyDetailActivity" />
+        <activity android:name=".activity.follow.FollowApplyOkActivity" />
         <activity android:name=".activity.follow.PlanMgrActivity" />
         <activity android:name=".activity.patient_group.PatientGroupManageActivity"></activity>
 

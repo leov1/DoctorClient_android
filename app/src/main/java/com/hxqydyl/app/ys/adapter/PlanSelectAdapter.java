@@ -5,37 +5,36 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.bean.PatientGroup;
+import com.hxqydyl.app.ys.bean.plan.Plan;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by white_ash on 2016/3/20.
  */
-public class PatientGroupSelectAdapter extends BaseAdapter {
+public class PlanSelectAdapter extends BaseAdapter {
     private Context context;
-    private List<PatientGroup> patientGroupArrayList;
+    private List<Plan> planList;
     private int select = -1;
 
-    public PatientGroupSelectAdapter(Context context, List<PatientGroup> patientGroupArrayList) {
+    public PlanSelectAdapter(Context context, List<Plan> planList) {
         this.context = context;
-        this.patientGroupArrayList = patientGroupArrayList;
+        this.planList = planList;
     }
 
     @Override
     public int getCount() {
-        return patientGroupArrayList.size();
+        return planList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return patientGroupArrayList.get(position);
+        return planList.get(position);
     }
 
     @Override

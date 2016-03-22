@@ -3,7 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="color_home_topbar">#1F80B8</color>
+    <color name="color_home_topbar">#1f80b8</color>
     <color name="color_home_info_background">#3496CE</color>
     <color name="grid_line">#ffd3dde6</color>
     <color name="edit_photo_bg_color">#f1f4f2</color>

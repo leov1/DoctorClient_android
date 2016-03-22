@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:text="阴郁量表"
+        android:textColor="#767676"
         android:clickable="false"
         android:focusable="false"
         android:focusableInTouchMode="false"

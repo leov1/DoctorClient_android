@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
@@ -18,6 +19,7 @@ public class FollowApplyDetailActivity extends BaseTitleActivity
         implements View.OnClickListener {
 
     private RelativeLayout rlPatient;
+    private Button btnApply;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +33,13 @@ public class FollowApplyDetailActivity extends BaseTitleActivity
     private void initViews() {
         initViewOnBaseTitle("随访申请详情");
         rlPatient = (RelativeLayout) findViewById(R.id.rl_patient);
+        btnApply = (Button) findViewById(R.id.btnApply);
     }
 
     private void initListeners() {
         setBackListener(this);
         rlPatient.setOnClickListener(this);
+        btnApply.setOnClickListener(this);
     }
 
     @Override
@@ -49,6 +53,11 @@ public class FollowApplyDetailActivity extends BaseTitleActivity
                 intent.putExtra("patientId", 1);
                 startActivity(intent);
                 break;
+            case R.id.btnApply:
+                Intent okIntent = new Intent(this, FollowApplyOkActivity.class);
+                startActivity(okIntent);
+                break;
+
 
         }
     }

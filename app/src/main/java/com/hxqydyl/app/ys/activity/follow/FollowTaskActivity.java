@@ -9,29 +9,30 @@ import android.widget.ListView;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.adapter.FollowApplyAdapter;
+import com.hxqydyl.app.ys.adapter.FollowTaskAdapter;
 
 /**
- * 随访申请
+ * 随访任务
  */
-public class FollowApplyActivity extends BaseTitleActivity
+public class FollowTaskActivity extends BaseTitleActivity
         implements View.OnClickListener, AdapterView.OnItemClickListener{
 
     private ListView listView;
-    private FollowApplyAdapter adapter;
+    private FollowTaskAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_follow_apply);
-
+        setContentView(R.layout.activity_task_apply);
         initViews();
         initListeners();
     }
 
     private void initViews() {
-        initViewOnBaseTitle("随访申请");
+        initViewOnBaseTitle("待处理随访任务");
+        setBackListener();
         listView = (ListView) findViewById(R.id.list_view);
-        adapter = new FollowApplyAdapter(this);
+        adapter = new FollowTaskAdapter(this);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
     }
@@ -42,11 +43,7 @@ public class FollowApplyActivity extends BaseTitleActivity
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.back_img:
-                finish();
-                break;
-        }
+
     }
 
     @Override

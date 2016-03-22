@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="50dp">
+
+    <TextView
+        android:text="第"
+        android:gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+    <EditText
+        android:id="@+id/etDay"
+        android:text="1"
+        android:inputType="number"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/bg_edittext"
+        android:gravity="center"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:text="天"
+        android:gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+    <EditText
+        android:id="@+id/etSize"
+        android:text="40"
+        android:inputType="number"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/bg_edittext"
+        android:gravity="center"
+        android:layout_marginLeft="30dp"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tvUnit"
+        android:text="mg"
+        android:gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+    <ImageButton
+        android:id="@+id/ibBtn"
+        android:layout_marginLeft="@dimen/space_10"
+        android:src="@mipmap/tianjiayongliang"
+        android:background="@color/transparent"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

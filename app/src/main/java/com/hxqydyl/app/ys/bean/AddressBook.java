@@ -1,12 +1,13 @@
 package com.hxqydyl.app.ys.bean;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
  * Created by wangchao36 on 16/3/21.
  * 通讯录信息
  */
-public class AddressBook {
+public class AddressBook implements Serializable {
 
     private long contactId;
     private String name;

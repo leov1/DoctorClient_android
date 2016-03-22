@@ -1,6 +1,7 @@
 package com.hxqydyl.app.ys.activity.patient;
 
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -9,7 +10,9 @@ import android.os.Message;
 import android.provider.ContactsContract;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.hxqydyl.app.ys.R;
@@ -17,6 +20,7 @@ import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.adapter.AddressBookSelectAdapter;
 import com.hxqydyl.app.ys.bean.AddressBook;
 import com.hxqydyl.app.ys.ui.AssortView;
+import com.hxqydyl.app.ys.utils.PinyinUtils;
 import com.hxqydyl.app.ys.utils.StringUtils;
 
 import java.util.ArrayList;
@@ -28,7 +32,8 @@ import static android.Manifest.permission.READ_CONTACTS;
  * Created by wangchao36 on 16/3/21.
  * 通过通讯录选择患者
  */
-public class AddressBookSelectActivity extends BaseTitleActivity {
+public class AddressBookSelectActivity extends BaseTitleActivity
+    implements View.OnClickListener {
 
     private int WHAT_INIT_DATA = 1;
 
@@ -37,6 +42,7 @@ public class AddressBookSelectActivity extends BaseTitleActivity {
 
     private List<AddressBook> addressBookList;
     private AddressBookSelectAdapter adapter;
+    private ImageView ivSave;
 
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
@@ -62,6 +68,10 @@ public class AddressBookSelectActivity extends BaseTitleActivity {
         initViewOnBaseTitle("添加患者");
         setBackListener();
 
+        ivSave = (ImageView) findViewById(R.id.right_img);
+        ivSave.setVisibility(View.VISIBLE);
+        ivSave.setImageDrawable(getResources().getDrawable(R.mipmap.btn_add_white));
+        ivSave.setOnClickListener(this);
         exList = (ExpandableListView) this.findViewById(R.id.exList);
         assortView = (AssortView) this.findViewById(R.id.assortView);
         addressBookList = new ArrayList<>();
@@ -87,7 +97,7 @@ public class AddressBookSelectActivity extends BaseTitleActivity {
                     String contactName = phoneCursor.getString(1);
                     String sortkey = contactName;
                     if (StringUtils.isNotEmpty(contactName)) {
-//                        sortkey = PinyinUtils.toPinYin(contactName.charAt(0));
+                        sortkey = PinyinUtils.toPinYin(contactName.charAt(0));
                         if (sortkey == null) {
                             sortkey = contactName;
                         }
@@ -101,6 +111,17 @@ public class AddressBookSelectActivity extends BaseTitleActivity {
                 for (int i = 0, length = adapter.getGroupCount(); i < length; i++) {
                     exList.expandGroup(i);
                 }
+                exList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+                    @Override
+                    public boolean onChildClick(ExpandableListView parent, View v,
+                                                int groupPosition, int childPosition, long id) {
+                        AddressBook ab = adapter.getChild(groupPosition, childPosition);
+                        adapter.setSelectAB(ab);
+
+                        adapter.notifyDataSetChanged();
+                        return false;
+                    }
+                });
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -121,4 +142,20 @@ public class AddressBookSelectActivity extends BaseTitleActivity {
         });
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.right_img:
+                AddressBook ab = adapter.getSelectAB();
+                if (ab == null) {
+                    Toast.makeText(this, "请选择", Toast.LENGTH_SHORT);
+                    return;
+                }
+                Intent intent = new Intent();
+                intent.putExtra("ab", ab);
+                setResult(0, intent);
+                finish();
+                break;
+        }
+    }
 }

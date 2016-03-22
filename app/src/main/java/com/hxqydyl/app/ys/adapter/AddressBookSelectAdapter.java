@@ -28,8 +28,7 @@ public class AddressBookSelectAdapter extends BaseExpandableListAdapter {
     private AssortPinyinList assort = new AssortPinyinList();
     private LanguageComparatorEN comparatorEN = new LanguageComparatorEN();
     private AddressBook.AddressBookComparator addressBookComparator = new AddressBook.AddressBookComparator();
-
-    private String selectPhone = null;
+    private AddressBook selectAB = null;
 
     public AddressBookSelectAdapter(Context context, List<AddressBook> AddressBookList) {
         super();
@@ -69,7 +68,7 @@ public class AddressBookSelectAdapter extends BaseExpandableListAdapter {
         TextView textView = (TextView) contentView.findViewById(R.id.name);
         RadioButton rb = (RadioButton) contentView.findViewById(R.id.rbPhone);
         textView.setText(addressBook.getName());
-        if (selectPhone != null && selectPhone.equals(addressBook.getPhone())) {
+        if (selectAB != null && selectAB.getContactId() == addressBook.getContactId()) {
             rb.setChecked(true);
         } else {
             rb.setChecked(false);
@@ -149,10 +148,16 @@ public class AddressBookSelectAdapter extends BaseExpandableListAdapter {
     }
 
     public class LanguageComparatorEN implements Comparator<String> {
-
         public int compare(String ostr1, String ostr2) {
             return ostr1.compareToIgnoreCase(ostr2);
         }
+    }
 
+    public AddressBook getSelectAB() {
+        return selectAB;
+    }
+
+    public void setSelectAB(AddressBook selectAB) {
+        this.selectAB = selectAB;
     }
 }
