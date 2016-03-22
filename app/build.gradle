@@ -35,4 +35,6 @@ dependencies {
     compile 'cn.pedant.sweetalert:library:1.3'
     compile 'com.belerweb:pinyin4j:2.5.1'
     compile 'com.daimajia.swipelayout:library:1.2.0@aar'
+    compile 'com.flyco.dialog:FlycoDialog_Lib:1.2.6@aar'
+    compile 'com.nineoldandroids:library:2.4.0'
 }

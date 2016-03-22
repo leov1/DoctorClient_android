@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#d3d3d3"/>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <TextView
+            android:text="药品名称"
+            style="@style/medicine_left_title"
+            android:layout_height="match_parent" />
+        <EditText
+            android:id="@+id/etName"
+            android:text="名称啊"
+            android:background="@color/transparent"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+        <ImageButton
+            android:src="@mipmap/ic_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <TextView
+            android:text="用法"
+            style="@style/medicine_left_title"
+            android:layout_height="match_parent" />
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|center_horizontal">
+            <TextView
+                android:id="@+id/tvTimeMorning"
+                android:text="早"
+                android:background="@drawable/btn_medicine_time"
+                android:textSize="@dimen/text_size_22"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_width="70dp"
+                android:layout_height="35dp" />
+            <TextView
+                android:id="@+id/tvTimeNoon"
+                android:text="中"
+                android:layout_marginLeft="@dimen/space_10"
+                android:background="@drawable/btn_medicine_time"
+                android:textSize="@dimen/text_size_22"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_width="70dp"
+                android:layout_height="35dp" />
+            <TextView
+                android:id="@+id/tvTimeNight"
+                android:text="晚"
+                android:layout_marginLeft="@dimen/space_10"
+                android:background="@drawable/btn_medicine_time"
+                android:textSize="@dimen/text_size_22"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_width="70dp"
+                android:layout_height="35dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <TextView
+            android:text="与食物关系"
+            style="@style/medicine_left_title"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/tvFoodRelation"
+            android:text="饭前"
+            android:gravity="center_vertical|left"
+            android:textSize="@dimen/text_size_18"
+            android:paddingLeft="5dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="用量"
+            style="@style/medicine_left_title"
+            android:layout_height="match_parent" />
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

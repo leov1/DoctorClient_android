@@ -91,6 +91,8 @@
             android:screenOrientation="portrait" />
         <activity android:name=".activity.patient.PatientDetailsActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".activity.follow.PlanEditActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

@@ -15,11 +15,38 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <include
-                layout="@layout/item_article"
+            <RelativeLayout
+                android:id="@+id/rl_add_plan"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_marginTop="6dp" />
+                android:layout_marginTop="6dp"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/name_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dip"
+                    android:textColor="@color/black"
+                    android:gravity="center_vertical"
+                    android:textSize="@dimen/text_size_20"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/space_20"
+                    android:text="新增方案"/>
+
+                <TextView
+                    android:id="@+id/tag_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/blue_light"
+                    android:textSize="@dimen/text_size_16"
+                    android:layout_marginRight="20dp"
+                    android:layout_centerVertical="true"
+                    android:drawablePadding="10dp"
+                    android:drawableRight="@mipmap/xmxq_button_right_high"/>
+
+            </RelativeLayout>
 
             <TextView
                 android:layout_width="wrap_content"

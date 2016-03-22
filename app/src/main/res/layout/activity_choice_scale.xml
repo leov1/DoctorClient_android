@@ -22,6 +22,7 @@
                 android:layout_marginTop="@dimen/space_12"></com.hxqydyl.app.ys.ui.scrollviewandgridview.MyScrollListView>
 
             <Button
+                android:id="@+id/btnOk"
                 style="@style/btn_blue"
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"

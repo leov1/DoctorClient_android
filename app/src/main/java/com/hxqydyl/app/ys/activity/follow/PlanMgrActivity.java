@@ -1,11 +1,13 @@
 package com.hxqydyl.app.ys.activity.follow;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
@@ -24,6 +26,7 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
 
     private SwipeMenuListView swipeMenuListView;
     private PlanMgrAdapter adapter;
+    private RelativeLayout reLayoutAddPlan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +71,8 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
 
     private void initViews() {
         initViewOnBaseTitle("随访方案管理");
-
+        reLayoutAddPlan = (RelativeLayout) findViewById(R.id.rl_add_plan);
+        reLayoutAddPlan.setOnClickListener(this);
         swipeMenuListView = (SwipeMenuListView) findViewById(R.id.swipe_menu_lv);
         adapter = new PlanMgrAdapter(this);
         swipeMenuListView.setAdapter(adapter);
@@ -80,6 +84,10 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
         switch (v.getId()){
             case R.id.back_img:
                 finish();
+                break;
+            case R.id.rl_add_plan:
+                Intent intent = new Intent(this, PlanEditActivity.class);
+                startActivity(intent);
                 break;
 
         }

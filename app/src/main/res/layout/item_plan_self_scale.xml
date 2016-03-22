@@ -4,14 +4,13 @@
     android:background="@color/white"
     android:layout_height="match_parent">
 
-    <CheckBox
-        android:id="@+id/checkbox"
+    <TextView
+        android:id="@+id/tvName"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/text_size_18"
         android:text="阴郁量表"
-        android:clickable="false"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
         android:paddingLeft="@dimen/space_10"
         android:layout_marginLeft="@dimen/space_20"
         />
