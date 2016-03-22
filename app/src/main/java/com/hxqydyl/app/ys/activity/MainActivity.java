@@ -16,10 +16,13 @@ import com.hxqydyl.app.ys.fragment.PersonalFrg;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.LoginManager;
 
+import common.AppManager;
 import framework.BaseFragmentActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends BaseFragmentActivity {
 
@@ -32,6 +35,9 @@ public class MainActivity extends BaseFragmentActivity {
 
     private ArrayList<String> fragmentTags;
     private FragmentManager fragmentManager;
+
+    private static boolean isQuit = false;
+    private Timer timer = new Timer();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,11 +83,20 @@ public class MainActivity extends BaseFragmentActivity {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
-                    case R.id.foot_bar_home: currIndex = 0; break;
-                    case R.id.foot_bar_im: currIndex = 1; break;
-                    case R.id.foot_bar_interest: currIndex = 2; break;
-                    case R.id.main_footbar_user: currIndex = 3; break;
-                    default: break;
+                    case R.id.foot_bar_home:
+                        currIndex = 0;
+                        break;
+                    case R.id.foot_bar_im:
+                        currIndex = 1;
+                        break;
+                    case R.id.foot_bar_interest:
+                        currIndex = 2;
+                        break;
+                    case R.id.main_footbar_user:
+                        currIndex = 3;
+                        break;
+                    default:
+                        break;
                 }
                 showFragment();
             }
@@ -124,12 +139,26 @@ public class MainActivity extends BaseFragmentActivity {
         }
     }
 
-    @Override
+  @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            moveTaskToBack(true);
-            return true;
+            if (isQuit == false) {
+                isQuit = true;
+                UIHelper.ToastMessage(this, R.string.press_back);
+                TimerTask task = null;
+                task = new TimerTask() {
+                    @Override
+                    public void run() {
+                        isQuit = false;
+                    }
+                };
+                timer.schedule(task, 2000);
+            }else{
+                moveTaskToBack(true);
+                AppManager.getAppManager().AppExit(this);
+            }
+
         }
-        return super.onKeyDown(keyCode, event);
+      return true;
     }
 }

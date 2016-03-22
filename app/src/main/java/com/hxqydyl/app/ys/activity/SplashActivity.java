@@ -27,7 +27,7 @@ import framework.BaseFragmentActivity;
 /**
  * 引导页
  */
-public class SplashActivity extends FragmentActivity {
+public class SplashActivity extends BaseFragmentActivity {
 
     private Button btnHome;
     private CirclePageIndicator indicator;
@@ -135,25 +135,4 @@ public class SplashActivity extends FragmentActivity {
         }
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (isQuit == false) {
-                isQuit = true;
-                UIHelper.ToastMessage(this,R.string.press_back);
-                TimerTask task = null;
-                task = new TimerTask() {
-                    @Override
-                    public void run() {
-                        isQuit = false;
-                    }
-                };
-                timer.schedule(task, 2000);
-            } else {
-                finish();
-                System.exit(0);
-            }
-        }
-        return true;
-    }
 }
