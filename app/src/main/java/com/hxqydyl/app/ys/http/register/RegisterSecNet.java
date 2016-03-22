@@ -34,15 +34,17 @@ public class RegisterSecNet {
         params.put("icon",icon);
         params.put("doctorName",doctorName);
         params.put("callback","hxq");
+        System.out.println("params--->"+params.toString());
         OkHttpClientManager.postAsyn(Constants.REGISTER_TWO, params, new OkHttpClientManager.ResultCallback<String>() {
             @Override
             public void onError(Request request, Exception e) {
-
+              listener.requestRegisterSecFail();
             }
 
             @Override
             public void onResponse(String response) throws JSONException {
                 System.out.println("response---->"+response);
+                listener.requestRegisterSecSuc();
             }
         });
     }

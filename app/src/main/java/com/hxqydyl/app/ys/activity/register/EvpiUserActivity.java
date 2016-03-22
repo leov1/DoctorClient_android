@@ -198,8 +198,9 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
         switch (v.getId()){
             case R.id.next_btn:
 
-                loadNext();
-
+             //   loadNext();
+                intent = new Intent(this,EvpiAddressActivity.class);
+                startActivity(intent);
                 break;
             case R.id.take_picture:
                 edit_photo_fullscreen_layout.setVisibility(View.GONE);

@@ -5,6 +5,8 @@ import java.io.Serializable;
 
 import android.graphics.Bitmap;
 
+import com.hxqydyl.app.ys.ui.uploadimage.UploadPhotoUtil;
+
 
 public class ImageItem implements Serializable {
     public String imageId;
@@ -48,8 +50,8 @@ public class ImageItem implements Serializable {
     public Bitmap getBitmap() {
         if (bitmap == null) {
             try {
-                bitmap = Bimp.revitionImageSize(imagePath);
-            } catch (IOException e) {
+                bitmap = UploadPhotoUtil.getInstance().trasformToZoomPhotoAndLessMemory(imagePath);
+            } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }

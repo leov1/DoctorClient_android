@@ -17,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.hxqydyl.app.ys.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
@@ -245,5 +246,18 @@ public class CommonUtils {
 		DisplayMetrics outMetrics = new DisplayMetrics();
 		wm.getDefaultDisplay().getMetrics(outMetrics);
 		return outMetrics.heightPixels;
+	}
+
+	public void displayLowQualityInImage(String url, ImageView view) {
+		if (view == null) {
+			return;
+		}
+		DisplayImageOptions options = new DisplayImageOptions.Builder()
+				.cacheInMemory(true)
+				.cacheOnDisk(true).imageScaleType(ImageScaleType.IN_SAMPLE_INT)
+				.bitmapConfig(Bitmap.Config.RGB_565)
+				.showImageOnLoading(R.drawable.image_show_default)
+				.build();
+		mImageLoader.displayImage(url, view, options);
 	}
 }
