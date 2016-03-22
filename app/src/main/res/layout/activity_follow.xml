@@ -28,7 +28,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/space_20"
-                    android:src="@mipmap/ic_launcher" />
+                    android:src="@mipmap/icon_follow_up_patient_apply" />
 
                 <TextView
                     style="@style/follow_text_20"
@@ -43,7 +43,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/space_23"
-                    android:src="@mipmap/xmxq_button_right_high" />
+                    android:src="@mipmap/icon_right_arrow" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -59,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/space_20"
-                    android:src="@mipmap/ic_launcher" />
+                    android:src="@mipmap/icon_follow_up_plan_manage" />
 
                 <TextView
                     style="@style/follow_text_20"
@@ -74,11 +74,11 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/space_23"
-                    android:src="@mipmap/xmxq_button_right_high" />
+                    android:src="@mipmap/icon_right_arrow" />
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/rl_patient"
+                android:id="@+id/rl_pending_follow_up"
                 android:layout_width="match_parent"
                 android:layout_height="60dip"
                 android:layout_marginTop="@dimen/space_10"
@@ -90,14 +90,14 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/space_20"
-                    android:src="@mipmap/ic_launcher" />
+                    android:src="@mipmap/icon_pending_follow_up" />
 
                 <TextView
                     style="@style/follow_text_20"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/space_10"
                     android:layout_toRightOf="@id/imge3"
-                    android:text="@string/follow_user" />
+                    android:text="@string/pending_follow_up" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -105,11 +105,11 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/space_23"
-                    android:src="@mipmap/xmxq_button_right_high" />
+                    android:src="@mipmap/icon_right_arrow" />
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/rl_notice"
+                android:id="@+id/rl_patient"
                 android:layout_width="match_parent"
                 android:layout_height="60dip"
                 android:layout_marginTop="@dimen/space_10"
@@ -121,14 +121,14 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/space_20"
-                    android:src="@mipmap/ic_launcher" />
+                    android:src="@mipmap/icon_follow_up_patient" />
 
                 <TextView
                     style="@style/follow_text_20"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/space_10"
                     android:layout_toRightOf="@id/imge4"
-                    android:text="@string/follow_notice" />
+                    android:text="@string/follow_user" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -136,11 +136,24 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/space_23"
-                    android:src="@mipmap/xmxq_button_right_high" />
+                    android:src="@mipmap/icon_right_arrow" />
             </RelativeLayout>
 
+            <View style="@style/divider_line" />
+
+            <com.hxqydyl.app.ys.ui.fullshowexpandablelistview.FullShowExpandableListView
+                android:id="@+id/elvPatientList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@color/color_dfdfdf"
+                android:dividerHeight="1dp">
+
+            </com.hxqydyl.app.ys.ui.fullshowexpandablelistview.FullShowExpandableListView>
+
+            <View style="@style/divider_line" />
+
             <RelativeLayout
-                android:id="@+id/rl_articl"
+                android:id="@+id/rl_notice"
                 android:layout_width="match_parent"
                 android:layout_height="60dip"
                 android:layout_marginTop="@dimen/space_10"
@@ -152,13 +165,44 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/space_20"
-                    android:src="@mipmap/ic_launcher" />
+                    android:src="@mipmap/icon_group_message" />
 
                 <TextView
                     style="@style/follow_text_20"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/space_10"
                     android:layout_toRightOf="@id/imge5"
+                    android:text="@string/follow_notice" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/space_23"
+                    android:src="@mipmap/icon_right_arrow" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_articl"
+                android:layout_width="match_parent"
+                android:layout_height="60dip"
+                android:layout_marginTop="@dimen/space_10"
+                android:background="@color/white">
+
+                <ImageView
+                    android:id="@+id/imge6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/space_20"
+                    android:src="@mipmap/icon_patient_education" />
+
+                <TextView
+                    style="@style/follow_text_20"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/space_10"
+                    android:layout_toRightOf="@id/imge6"
                     android:text="@string/follow_article" />
 
                 <ImageView
@@ -167,7 +211,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/space_23"
-                    android:src="@mipmap/xmxq_button_right_high" />
+                    android:src="@mipmap/icon_right_arrow" />
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>

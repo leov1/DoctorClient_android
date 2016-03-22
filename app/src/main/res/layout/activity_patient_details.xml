@@ -1,86 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_f7f7f7">
+    android:background="@color/color_f7f7f7"
+    android:orientation="vertical">
 
-    <include layout="@layout/top_title"/>
+    <include layout="@layout/top_title" />
+
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <include layout="@layout/patient_simple_info"/>
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <include android:id="@+id/llPatientSimpleInfo" layout="@layout/patient_simple_info" />
+
         <TextView
             android:id="@+id/tvDeletePatient"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/shape_add_patient_group_et"
             android:layout_gravity="right|top"
+            android:layout_marginRight="@dimen/space_23"
+            android:background="@drawable/shape_add_patient_group_et"
+            android:paddingBottom="@dimen/space_5"
             android:paddingLeft="@dimen/space_5"
             android:paddingRight="@dimen/space_5"
             android:paddingTop="@dimen/space_5"
-            android:paddingBottom="@dimen/space_5"
-            android:layout_marginRight="@dimen/space_23"
-            android:text="@string/delete_patient"/>
+            android:text="@string/delete_patient" />
     </FrameLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/color_efefef"/>
+        android:background="@color/color_efefef" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ListView
-            android:id="@+id/lvPatientCaseReport"
+            android:id="@+id/lvPatientTreatInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_10"
             android:layout_marginLeft="@dimen/space_8"
             android:layout_marginRight="@dimen/space_8"
-            android:background="@drawable/shape_add_patient_group_et">
-        </ListView>
+            android:layout_marginTop="@dimen/space_10"
+            android:background="@drawable/shape_add_patient_group_et"></ListView>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="bottom">
+            android:layout_gravity="bottom"
+            android:orientation="vertical">
+
             <Button
                 android:id="@+id/bCommunicateWithPatient"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_margin="@dimen/space_10"
+                android:background="@color/color_3595cf"
                 android:text="@string/communicate_with_patient"
-                android:textColor="@color/white"
-                android:background="@color/color_3595cf"/>
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/bAddCaseReport"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:layout_marginBottom="@dimen/space_10"
                 android:layout_marginLeft="@dimen/space_10"
                 android:layout_marginRight="@dimen/space_10"
-                android:layout_marginBottom="@dimen/space_10"
+                android:background="@color/color_3595cf"
                 android:text="@string/add_case_report"
-                android:textColor="@color/white"
-                android:background="@color/color_3595cf"/>
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/bSelectNewFollowUpForPatient"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:layout_marginBottom="@dimen/space_10"
                 android:layout_marginLeft="@dimen/space_10"
                 android:layout_marginRight="@dimen/space_10"
-                android:layout_marginBottom="@dimen/space_10"
+                android:background="@color/color_3595cf"
                 android:text="@string/select_new_follow_up_for_patient"
-                android:textColor="@color/white"
-                android:background="@color/color_3595cf"/>
+                android:textColor="@color/white" />
         </LinearLayout>
-
-
     </FrameLayout>
-
-
-
-
 </LinearLayout>

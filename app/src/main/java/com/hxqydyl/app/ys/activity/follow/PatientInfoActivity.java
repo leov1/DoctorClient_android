@@ -1,6 +1,5 @@
 package com.hxqydyl.app.ys.activity.follow;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import com.hxqydyl.app.ys.R;

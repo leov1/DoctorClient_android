@@ -97,4 +97,10 @@
 
     <!--添加患者-->
     <color name="color_btn_bg">#3496ce</color>
+
+    <color name="color_1f80b7">#1f80b7</color>
+    <color name="color_696969">#696969</color>
+    <color name="color_fff26c4f">#fff26c4f</color>
+    <color name="color_80f26c4f">#80f26c4f</color>
+
 </resources>

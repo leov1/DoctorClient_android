@@ -72,7 +72,7 @@
             android:name=".activity.reading.ReadingActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".activity.video.VideoActivity" />
-        <activity android:name=".activity.follow.PatientInfoActivity" />
+        <activity android:name=".activity.patient.PatientInfoActivity" />
         <activity android:name=".activity.follow.ArticleActivity" />
         <activity android:name=".activity.follow.FollowGroupsMgrActivity" />
         <activity android:name=".activity.follow.ChoiceUserActivity" />
@@ -89,6 +89,8 @@
             android:screenOrientation="portrait" />
         <activity android:name=".activity.patient.AddressBookSelectActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".activity.patient.PatientDetailsActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

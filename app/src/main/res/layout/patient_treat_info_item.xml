@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingLeft="15dp">
+
+        <TextView
+            android:id="@+id/tvTreatTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="2016/03/20"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_14" />
+
+        <TextView
+            android:id="@+id/tvTreatName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:text="随访表单"
+            android:textColor="@color/color_1f80b7"
+            android:textSize="@dimen/text_size_14" />
+
+        <ImageView
+            android:id="@+id/ivTreatIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/space_10"
+            android:layout_toLeftOf="@id/tvTreatName"
+            android:src="@mipmap/menzhenbingli" />
+
+        <TextView
+            android:id="@+id/tvUnreadIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/tvTreatName"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="7dp"
+            android:background="@drawable/shape_unread_bg"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:text="@string/unread"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>
