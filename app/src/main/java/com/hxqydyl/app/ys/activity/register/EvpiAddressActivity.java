@@ -7,17 +7,24 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+import com.hxqydyl.app.ys.bean.register.CityBean;
+import com.hxqydyl.app.ys.bean.register.CityResultBean;
 import com.hxqydyl.app.ys.bean.register.HospitalResultBean;
 import com.hxqydyl.app.ys.bean.register.HospitalsBean;
+import com.hxqydyl.app.ys.bean.register.OfficeBean;
+import com.hxqydyl.app.ys.bean.register.OfficeResultBean;
 import com.hxqydyl.app.ys.bean.register.ProvinceInfo;
 import com.hxqydyl.app.ys.bean.register.ProvinceInfoResult;
 import com.hxqydyl.app.ys.bean.register.RegionBean;
 import com.hxqydyl.app.ys.bean.register.RegionResultBean;
 import com.hxqydyl.app.ys.http.OkHttpClientManager;
+import com.hxqydyl.app.ys.http.register.CityNet;
 import com.hxqydyl.app.ys.http.register.HospitalNet;
+import com.hxqydyl.app.ys.http.register.OfficeNet;
 import com.hxqydyl.app.ys.http.register.ProvinceNet;
 import com.hxqydyl.app.ys.http.register.RegionNet;
 import com.hxqydyl.app.ys.ui.pickerview.lib.OptionsPopupWindow;
@@ -30,7 +37,9 @@ import java.util.List;
 /**
  * 完善单位信息页面
  */
-public class EvpiAddressActivity extends BaseTitleActivity implements View.OnClickListener,OptionsPopupWindow.OnOptionsSelectListener,ProvinceNet.OnProvinceListener,HospitalNet.OnHospitalListener,RegionNet.OnRegionListener{
+public class EvpiAddressActivity extends BaseTitleActivity implements View.OnClickListener,OptionsPopupWindow.OnOptionsSelectListener,
+        ProvinceNet.OnProvinceListener,HospitalNet.OnHospitalListener,RegionNet.OnRegionListener,CityNet.OnCityListener,
+        OfficeNet.OnOfficeListener{
 
     private Button nextBtn;
     private ArrayList<String> optionsItems = new ArrayList<>();
@@ -39,16 +48,20 @@ public class EvpiAddressActivity extends BaseTitleActivity implements View.OnCli
     private Button btnCity;
     private Button btnHosital;
     private Button btnOffice;
-    private Button btnPhone;
+    private EditText editPhone;
     private Button btnRanks;
 
-    private ProvinceNet provinceNet;
-    private HospitalNet hospitalNet;
-    private RegionNet regionNet;
+    private ProvinceNet provinceNet;//获取省
+    private CityNet cityNet;//获取市
+    private RegionNet regionNet;//获取区县
+    private HospitalNet hospitalNet;//获取医院
+    private OfficeNet officeNet;//获取科室
 
     private ArrayList<String> provinces;
+    private ArrayList<String> cities;
     private ArrayList<String> hospitals;
     private ArrayList<String> regions;
+    private ArrayList<String> offices;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,13 +76,18 @@ public class EvpiAddressActivity extends BaseTitleActivity implements View.OnCli
         initViewOnBaseTitle("完善信息");
 
         provinceNet = new ProvinceNet();
+        cityNet = new CityNet();
         hospitalNet = new HospitalNet();
         regionNet = new RegionNet();
+        officeNet = new OfficeNet();
 
         provinceNet.setListener(this);
+        cityNet.setListener(this);
         hospitalNet.setListener(this);
         regionNet.setListener(this);
+        officeNet.setListener(this);
         provinceNet.obtainProvince();
+
 
         optionsPopupWindow = new OptionsPopupWindow(this);
 
@@ -78,7 +96,7 @@ public class EvpiAddressActivity extends BaseTitleActivity implements View.OnCli
         btnCity = (Button) findViewById(R.id.btn_city);
         btnHosital = (Button) findViewById(R.id.btn_hosital);
         btnOffice = (Button) findViewById(R.id.btn_office);
-        btnPhone = (Button) findViewById(R.id.btn_phone);
+        editPhone = (EditText) findViewById(R.id.edit_mobile);
         btnRanks = (Button) findViewById(R.id.btn_ranks);
 
     }
@@ -90,7 +108,6 @@ public class EvpiAddressActivity extends BaseTitleActivity implements View.OnCli
         btnCity.setOnClickListener(this);
         btnHosital.setOnClickListener(this);
         btnOffice.setOnClickListener(this);
-        btnPhone.setOnClickListener(this);
         btnRanks.setOnClickListener(this);
 
         optionsPopupWindow.setOnoptionsSelectListener(this);
@@ -104,26 +121,23 @@ public class EvpiAddressActivity extends BaseTitleActivity implements View.OnCli
             case R.id.back_img:
                 finish();
                 break;
-            case R.id.next_btn:
+            case R.id.next_btn: //下一步
                 Intent nextIntent = new Intent(this,GoodChoiceActivity.class);
                 startActivity(nextIntent);
                 break;
-            case R.id.btn_city:
+            case R.id.btn_city: //县市区
                 optionsPopupWindow.setPicker(provinces);
                 optionsPopupWindow.showAtLocation(btnHosital, Gravity.BOTTOM, 0, 0);
                 break;
-            case R.id.btn_hosital:
+            case R.id.btn_hosital://执业医院
                 optionsPopupWindow.setPicker(hospitals);
                 optionsPopupWindow.showAtLocation(btnHosital, Gravity.BOTTOM,0,0);
                 break;
-            case R.id.btn_office:
+            case R.id.btn_office://科室
                 optionsPopupWindow.setPicker(regions);
                 optionsPopupWindow.showAtLocation(btnOffice, Gravity.BOTTOM,0,0);
                 break;
-            case R.id.btn_phone:
-                optionsPopupWindow.showAtLocation(btnPhone, Gravity.BOTTOM,0,0);
-                break;
-            case R.id.btn_ranks:
+            case R.id.btn_ranks://职称
                 optionsPopupWindow.showAtLocation(btnRanks, Gravity.BOTTOM,0,0);
                 break;
         }
@@ -141,11 +155,38 @@ public class EvpiAddressActivity extends BaseTitleActivity implements View.OnCli
         for (int i = 0;i<provinceInfos.size();i++){
             provinces.add(provinceInfos.get(i).getProvinceName());
         }
-
     }
 
     @Override
     public void RequestProvinceFail() {
+
+    }
+
+    @Override
+    public void requestCitySuc(CityResultBean cityResultBean) {
+        List<CityBean> cityBeans = cityResultBean.getCityBeans();
+        cities = new ArrayList<>();
+        for (int i = 0;i<cityBeans.size();i++){
+            cities.add(cityBeans.get(i).getCityName());
+        }
+    }
+
+    @Override
+    public void RequestCityFail() {
+
+    }
+
+    @Override
+    public void requestRegionSuc(RegionResultBean regionResultBean) {
+        List<RegionBean> regionBeans = regionResultBean.getRegionBeans();
+        regions = new ArrayList<>();
+        for (int i =0;i<regionBeans.size();i++){
+            regions.add(regionBeans.get(i).getRegionName());
+        }
+    }
+
+    @Override
+    public void requestRegionFail() {
 
     }
 
@@ -164,17 +205,18 @@ public class EvpiAddressActivity extends BaseTitleActivity implements View.OnCli
 
     }
 
+
     @Override
-    public void requestRegionSuc(RegionResultBean regionResultBean) {
-        List<RegionBean> regionBeans = regionResultBean.getRegionBeans();
-        regions = new ArrayList<>();
-        for (int i =0;i<regionBeans.size();i++){
-            regions.add(regionBeans.get(i).getRegionName());
+    public void requestOfficeSuc(OfficeResultBean officeResultBean) {
+        List<OfficeBean> officeBeans = officeResultBean.getOfficeBeans();
+        offices = new ArrayList<>();
+        for (int i = 0;i<officeBeans.size();i++){
+            hospitals.add(officeBeans.get(i).getDepartmentName());
         }
     }
 
     @Override
-    public void requestRegionFail() {
+    public void requestOfficeFail() {
 
     }
 }

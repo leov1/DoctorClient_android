@@ -63,12 +63,14 @@
                 android:paddingLeft="@dimen/space_15" />
 
             <RadioGroup
+                android:id="@+id/genderGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/text_size_26"
                 android:orientation="horizontal">
 
                 <RadioButton
+                    android:id="@+id/maleButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/radio_btn"
@@ -84,6 +86,7 @@
                     android:textSize="15sp" />
 
                 <RadioButton
+                    android:id="@+id/femaleButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/radio_btn"

@@ -44,6 +44,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 public class RegisterActivity extends BaseTitleActivity implements View.OnClickListener,CaptchaNet.OnCaptchaNetListener,RegisterFirstNet.OnRegisterFirstListener{
 
     private TextView registerOrderBtn;
+    private TextView loginBtn;
     private Button nextBtn;//下一步
     private Button codeBtn;//获取验证码
     private EditText captchaEdit;//验证码
@@ -97,6 +98,7 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
         registerOrderBtn.setOnClickListener(this);
         nextBtn.setOnClickListener(this);
         codeBtn.setOnClickListener(this);
+        loginBtn.setOnClickListener(this);
     }
 
     private void initViews() {
@@ -108,6 +110,7 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
         registerFirstNet.setListener(this);
 
         registerOrderBtn = (TextView) findViewById(R.id.textview_register_order);
+        loginBtn = (TextView) findViewById(R.id.login_btn);
         nextBtn = (Button) findViewById(R.id.next_btn);
         codeBtn = (Button) findViewById(R.id.btn_code);
 
@@ -149,6 +152,10 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
               }else {
                   UIHelper.ToastMessage(this,isCan);
               }
+              break;
+          case R.id.login_btn:
+              UIHelper.showLogin(RegisterActivity.this);
+              finish();
               break;
           case R.id.back_img:
               finish();

@@ -5,6 +5,8 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.hxqydyl.app.ys.bean.Query;
 import com.hxqydyl.app.ys.bean.register.CaptchaResult;
+import com.hxqydyl.app.ys.bean.register.CityBean;
+import com.hxqydyl.app.ys.bean.register.CityResultBean;
 import com.hxqydyl.app.ys.bean.register.DoctorInfo;
 import com.hxqydyl.app.ys.bean.register.DoctorInfoNew;
 import com.hxqydyl.app.ys.bean.register.DoctorResult;
@@ -12,6 +14,8 @@ import com.hxqydyl.app.ys.bean.register.DoctorResultNew;
 import com.hxqydyl.app.ys.bean.register.HeadIconResult;
 import com.hxqydyl.app.ys.bean.register.HospitalResultBean;
 import com.hxqydyl.app.ys.bean.register.HospitalsBean;
+import com.hxqydyl.app.ys.bean.register.OfficeBean;
+import com.hxqydyl.app.ys.bean.register.OfficeResultBean;
 import com.hxqydyl.app.ys.bean.register.ProvinceInfo;
 import com.hxqydyl.app.ys.bean.register.ProvinceInfoResult;
 import com.hxqydyl.app.ys.bean.register.RegionBean;
@@ -100,7 +104,7 @@ public class JsonUtils {
     }
 
     /**
-     * 省市
+     * 省
      * @param string
      * @return
      * @throws JSONException
@@ -128,6 +132,37 @@ public class JsonUtils {
             provinceInfoResult.setProvinceInfos(list);
         }
         return  provinceInfoResult;
+    }
+
+    /**
+     * 市
+     * @param string
+     * @return
+     * @throws JSONException
+     */
+    public static CityResultBean JsonCityResult(String string) throws JSONException{
+        if (TextUtils.isEmpty(string)) return  null;
+        JSONObject jsonObject = new JSONObject(string);
+        CityResultBean cityResultBean = new CityResultBean();
+        Query query = new Query();
+        JSONObject queryJs = jsonObject.getJSONObject("query");
+        query.setSuccess(queryJs.getString("success"));
+        query.setMessage(queryJs.getString("message"));
+        cityResultBean.setQuery(query);
+
+        if (jsonObject.has("relist")){
+            JSONArray jsonArray = jsonObject.getJSONArray("relist");
+            List<CityBean> list = new ArrayList<>();
+            for (int i = 0;i<jsonArray.length();i++){
+                JSONObject object = jsonArray.getJSONObject(i);
+                CityBean cityBean = new CityBean();
+                cityBean.setCode(object.getString("code"));
+                cityBean.setCityName(object.getString("cityName"));
+                list.add(cityBean);
+            }
+            cityResultBean.setCityBeans(list);
+        }
+        return  cityResultBean;
     }
 
     /**
@@ -193,6 +228,37 @@ public class JsonUtils {
     }
 
     /**
+     * 科室
+     * @param string
+     * @return
+     * @throws JSONException
+     */
+    public static OfficeResultBean JsonOfficeResult(String string) throws JSONException{
+        if (TextUtils.isEmpty(string)) return null;
+        JSONObject jsonObject = new JSONObject(string);
+        OfficeResultBean officeResultBean = new OfficeResultBean();
+        Query query = new Query();
+        JSONObject queryJs = jsonObject.getJSONObject("query");
+        query.setSuccess(queryJs.getString("success"));
+        query.setMessage(queryJs.getString("message"));
+        officeResultBean.setQuery(query);
+
+        if (jsonObject.has("relist")){
+            JSONArray jsonArray = jsonObject.getJSONArray("relist");
+            List<OfficeBean> list = new ArrayList<>();
+            for (int i = 0;i<jsonArray.length();i++){
+                JSONObject object = jsonArray.getJSONObject(i);
+                OfficeBean officeBean = new OfficeBean();
+                officeBean.setId(object.getString("id"));
+                officeBean.setDepartmentName(object.getString("departmentName"));
+                list.add(officeBean);
+            }
+            officeResultBean.setOfficeBeans(list);
+        }
+        return officeResultBean;
+    }
+
+    /**
      * 标签
      * @param string
      * @return
@@ -208,8 +274,8 @@ public class JsonUtils {
         query.setMessage(queryJs.getString("message"));
         tagsResultBean.setQuery(query);
 
-        if (jsonObject.has("relist")){
-            JSONArray jsonArray = jsonObject.getJSONArray("relist");
+        if (jsonObject.has("reList")){
+            JSONArray jsonArray = jsonObject.getJSONArray("reList");
             List<TagsBean> list = new ArrayList<>();
             for (int i = 0;i<jsonArray.length();i++){
                 JSONObject object = jsonArray.getJSONObject(i);

@@ -18,6 +18,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -44,7 +46,7 @@ import java.util.Map;
 /**
  * 完善姓名邮箱信息页面
  */
-public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickListener,HeadIconNet.OnHeadIconNetListener,RegisterSecNet.OnRegisterSecListener{
+public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickListener,RadioGroup.OnCheckedChangeListener,HeadIconNet.OnHeadIconNetListener,RegisterSecNet.OnRegisterSecListener{
 
     private Button nextBtn;
     private ImageView image_upload;
@@ -52,6 +54,8 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
     private EditText text_email;
     private TextView take_picture;
     private TextView select_local_picture;
+    private RadioGroup genderGroup;
+    private RadioButton femaleRadioButton,maleRadioButton;
 
     private RelativeLayout edit_photo_fullscreen_layout,edit_photo_outer_layout,uploading_photo_progress;
     private Animation get_photo_layout_out_from_up, get_photo_layout_in_from_down;
@@ -155,6 +159,10 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
         take_picture = (TextView) findViewById(R.id.take_picture);
         select_local_picture = (TextView) findViewById(R.id.select_local_picture);
 
+        genderGroup = (RadioGroup) findViewById(R.id.genderGroup);
+        maleRadioButton = (RadioButton) findViewById(R.id.maleButton);
+        femaleRadioButton = (RadioButton) findViewById(R.id.femaleButton);
+
         edit_photo_fullscreen_layout = (RelativeLayout) findViewById(R.id.edit_photo_fullscreen_layout);
         edit_photo_outer_layout = (RelativeLayout) findViewById(R.id.edit_photo_outer_layout);
         uploading_photo_progress = (RelativeLayout) findViewById(R.id.uploading_photo_progress);
@@ -165,7 +173,16 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
         nextBtn.setOnClickListener(this);
         take_picture.setOnClickListener(this);
         select_local_picture.setOnClickListener(this);
+        genderGroup.setOnCheckedChangeListener(this);
+    }
 
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+         if (checkedId == maleRadioButton.getId()){
+             sex = 1;
+         }else if(checkedId == femaleRadioButton.getId()){
+             sex = 2;
+         }
     }
 
     /**
@@ -305,7 +322,7 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
     @Override
     public void requestHeadIconNetFail() {
         uploading_photo_progress.setVisibility(View.GONE);
-        UIHelper.ToastMessage(EvpiUserActivity.this,"上传失败");
+        UIHelper.ToastMessage(EvpiUserActivity.this, "上传失败");
     }
 
     @Override
@@ -318,4 +335,5 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
     public void requestRegisterSecFail() {
 
     }
+
 }

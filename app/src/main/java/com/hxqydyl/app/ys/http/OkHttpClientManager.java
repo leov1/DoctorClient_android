@@ -175,10 +175,6 @@ public class OkHttpClientManager
     /**
      * ============POST方便的访问方式===============
      */
-    public static void postAsyn(String url, Param[] params, final ResultCallback callback)
-    {
-        getInstance().getPostDelegate().postAsyn(url, params, callback, null);
-    }
 
     public static void postAsyn(String url, Map<String, String> params, final ResultCallback callback)
     {

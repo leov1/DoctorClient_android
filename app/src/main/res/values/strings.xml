@@ -69,7 +69,7 @@
     <string name="evip_city">选择省市县/地区</string>
     <string name="evip_hospital">选择执业医院</string>
     <string name="evip_office">选择科室</string>
-    <string name="evip_phone">选择科室电话</string>
+    <string name="evip_phone">科室电话</string>
     <string name="evip_ranks">职称</string>
     <string name="evip_brief">个人简介</string>
 

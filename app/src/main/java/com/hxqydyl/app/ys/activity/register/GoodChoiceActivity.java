@@ -42,7 +42,7 @@ public class GoodChoiceActivity extends BaseTitleActivity implements View.OnClic
 
         initViews();
         initListeners();
-   //     loadData();
+        loadData();
     }
 
 
@@ -123,7 +123,7 @@ public class GoodChoiceActivity extends BaseTitleActivity implements View.OnClic
     public void requestTagsSuc(TagsResultBean tagsResultBean) {
         System.out.println("tagsResultBean--->"+tagsResultBean.toString());
         tagList = tagsResultBean.getTagsBeans();
-        mAdapter.notifyDataSetChanged();
+        mAdapter.changeData(tagList);
     }
 
     @Override

@@ -44,11 +44,17 @@
                 android:layout_marginTop="@dimen/space_5"
                 android:text="@string/evip_office" />
 
-            <Button
-                android:id="@+id/btn_phone"
-                style="@style/btn_address"
+            <EditText
+                android:id="@+id/edit_mobile"
+                style="@style/edit_blue"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
                 android:layout_marginTop="@dimen/space_5"
-                android:text="@string/evip_phone" />
+                android:hint="@string/evip_phone"
+                android:singleLine="true"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/space_10"
+                />
 
             <Button
                 android:id="@+id/btn_ranks"
@@ -68,7 +74,7 @@
             <Button
                 android:id="@+id/next_btn"
                 style="@style/btn_blue"
-                android:layout_marginTop="83dp"
+                android:layout_marginTop="80dp"
                 android:text="@string/next" />
         </LinearLayout>
     </ScrollView>

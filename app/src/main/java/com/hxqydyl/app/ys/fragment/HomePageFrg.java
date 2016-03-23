@@ -81,6 +81,8 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
     private void initListeners() {
         gainDoctorInfoNet.setOnGainDoctorInfoListener(this);
         lineGridView.setOnItemClickListener(this);
+        loginBtn.setOnClickListener(this);
+        registerBtn.setOnClickListener(this);
     }
 
     private void initViews() {
@@ -144,7 +146,6 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
     private void updateDoctorInfo(DoctorInfoNew doctorInfo) {
         updateLinear(LoginManager.isHasLogin());
         ImageLoader.getInstance().displayImage(doctorInfo.getDoctorIcon(),headImg);
- //     OkHttpClientManager.getDisplayImageDelegate().displayImage(headImg, doctorInfo.getDoctorIcon());
         headName.setText(doctorInfo.getDoctorName());
         suffererNum.setText(doctorInfo.getCustomerNum()+"");
         followNum.setText(doctorInfo.getVisitNum() + "");

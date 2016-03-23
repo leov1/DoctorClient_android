@@ -31,6 +31,11 @@ public class TagsAdapter extends BaseAdapter {
         this.onItemClickClass = onItemClickClass;
     }
 
+    public void changeData(List<TagsBean> tagList){
+        this.tagList = tagList;
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         return tagList.size();
