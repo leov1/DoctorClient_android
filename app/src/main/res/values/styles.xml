@@ -178,7 +178,7 @@
 
 	<color name="color_545454">#545454</color>
 	<color name="color_dcf1f5">#dcf1f5</color>
-	
+
 	<!--药品-->
 	<style name="medicine_left_title">
 		<item name="android:paddingRight">10dp</item>
@@ -204,5 +204,25 @@
 		<item name="android:layout_width">match_parent</item>
 		<item name="android:layout_weight">1</item>
 		<item name="android:layout_height">match_parent</item>
+	</style>
+
+	<style name="case_report_left">
+		<item name="android:paddingLeft">@dimen/space_15</item>
+		<item name="android:paddingTop">@dimen/space_10</item>
+		<item name="android:paddingBottom">@dimen/space_10</item>
+		<item name="android:textSize">@dimen/text_size_14</item>
+		<item name="android:textColor">@color/color_040407</item>
+		<item name="android:shadowDy">-3</item>
+		<item name="android:shadowColor">@color/color_61666c</item>
+		<item name="android:background">@drawable/shape_case_report_left_bg</item>
+		<item name="android:paddingRight">@dimen/space_15</item>
+	</style>
+
+	<style name="case_report_right" parent="case_report_left">
+		<item name="android:paddingLeft">@dimen/space_30</item>
+		<item name="android:textColor">@color/color_686868</item>
+		<item name="android:shadowDy">3</item>
+		<item name="android:shadowColor">@color/color_61666c</item>
+		<item name="android:background">@drawable/shape_case_report_right_bg</item>
 	</style>
 </resources>

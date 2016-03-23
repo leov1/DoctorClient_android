@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:background="@color/white">
 
-        <include android:id="@+id/llPatientSimpleInfo" layout="@layout/patient_simple_info" />
+        <include layout="@layout/patient_simple_info" />
 
         <TextView
             android:id="@+id/tvDeletePatient"

@@ -28,18 +28,18 @@ public class TagsNet {
     public void obtainTags(){
         System.out.println("tagsResultBean--->" + Constants.GET_TAGS);
 
-        OkHttpClientManager.postAsyn(Constants.GET_TAGS, (OkHttpClientManager.Param[]) null, new OkHttpClientManager.ResultCallback<String>() {
-            @Override
-            public void onError(Request request, Exception e) {
-
-            }
-
-            @Override
-            public void onResponse(String response) throws JSONException {
-                System.out.println("tagsResultBean--->"+response);
-                TagsResultBean tagsResultBean = JsonUtils.JsonTagsResult(response);
-                listener.requestTagsSuc(tagsResultBean);
-            }
-        });
+//        OkHttpClientManager.postAsyn(Constants.GET_TAGS, (OkHttpClientManager.Param[]) null, new OkHttpClientManager.ResultCallback<String>() {
+//            @Override
+//            public void onError(Request request, Exception e) {
+//
+//            }
+//
+//            @Override
+//            public void onResponse(String response) throws JSONException {
+//                System.out.println("tagsResultBean--->"+response);
+//                TagsResultBean tagsResultBean = JsonUtils.JsonTagsResult(response);
+//                listener.requestTagsSuc(tagsResultBean);
+//            }
+//        });
     }
 }

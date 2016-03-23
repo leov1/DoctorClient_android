@@ -1,6 +1,9 @@
 package com.hxqydyl.app.ys.common;
 
 import com.hxqydyl.app.ys.http.OkHttpClientManager;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
 import common.BaseApplication;
 
 import java.io.IOException;
@@ -40,6 +43,13 @@ public class AppContext extends BaseApplication {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        //创建默认的ImageLoader配置参数
+        ImageLoaderConfiguration configuration = ImageLoaderConfiguration
+                .createDefault(this);
+
+        //Initialize ImageLoader with configuration.
+        ImageLoader.getInstance().init(configuration);
     }
 
 

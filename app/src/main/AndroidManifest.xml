@@ -85,7 +85,7 @@
         <activity android:name=".activity.follow.FollowApplyDetailActivity" />
         <activity android:name=".activity.follow.FollowApplyOkActivity" />
         <activity android:name=".activity.follow.PlanMgrActivity" />
-        <activity android:name=".activity.patient_group.PatientGroupManageActivity"></activity>
+        <activity android:name=".activity.patient_group.PatientGroupManageActivity"/>
 
         <activity android:name=".activity.patient.PatientAddActivity"
             android:screenOrientation="portrait" />
@@ -94,6 +94,14 @@
         <activity android:name=".activity.patient.PatientDetailsActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".activity.follow.PlanEditActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.case_report.InPatientCaseReportActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.case_report.OutPatientCaseReportActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.case_report.AddCaseReportActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.case_report.FollowUpFormActivity"
             android:screenOrientation="portrait"/>
     </application>
 

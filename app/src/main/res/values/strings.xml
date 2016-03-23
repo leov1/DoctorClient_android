@@ -120,4 +120,12 @@
 
     <!--添加患者-->
     <string name="patient_add_title">添加患者</string>
+    <string name="treatment_type">就诊类型</string>
+    <string name="be_in_hospital_time">住院时间</string>
+    <string name="out_hospital_time">出院时间</string>
+    <string name="doctor">医&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;生</string>
+    <string name="treatment_hospital">就诊医院</string>
+    <string name="patient_details">患者详情</string>
+    <string name="case_history">病历记录</string>
+    <string name="treatment_time">就诊时间</string>
 </resources>

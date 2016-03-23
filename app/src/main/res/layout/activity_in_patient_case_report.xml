@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_f7f7f7"
+    android:orientation="vertical">
+
+    <include layout="@layout/top_title" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <include layout="@layout/patient_simple_info" />
+
+            <View style="@style/divider_line" />
+        </LinearLayout>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/space_8"
+            android:layout_marginRight="@dimen/space_8"
+            android:layout_marginTop="@dimen/space_13"
+            android:stretchColumns="1">
+
+            <TableRow>
+
+                <TextView
+                    style="@style/case_report_left"
+                    android:text="@string/treatment_type" />
+
+                <TextView
+                    android:id="@+id/tvTreatMentType"
+                    style="@style/case_report_right"
+                    android:text="住院" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    style="@style/case_report_left"
+                    android:text="@string/be_in_hospital_time" />
+
+                <TextView
+                    android:id="@+id/tvBeInHospitalTime"
+                    style="@style/case_report_right" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    style="@style/case_report_left"
+                    android:text="@string/out_hospital_time" />
+
+                <TextView
+                    android:id="@+id/tvOutHospitalTime"
+                    style="@style/case_report_right" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    style="@style/case_report_left"
+                    android:text="@string/treatment_hospital" />
+
+                <TextView
+                    android:id="@+id/tvHospital"
+                    style="@style/case_report_right" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    style="@style/case_report_left"
+                    android:text="@string/doctor" />
+
+                <TextView
+                    android:id="@+id/tvDoctor"
+                    style="@style/case_report_right" />
+            </TableRow>
+        </TableLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/space_20"
+            android:layout_marginTop="@dimen/space_20"
+            android:layout_marginBottom="@dimen/space_8"
+            android:text="@string/case_history"
+            android:textColor="@color/color_686868"
+            android:textSize="@dimen/text_size_14" />
+
+        <GridView
+            android:id="@+id/gvPatientCaseHistory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:numColumns="5"
+            android:paddingLeft="@dimen/space_15"
+            android:paddingRight="@dimen/space_15"
+            android:paddingTop="@dimen/space_5">
+
+        </GridView>
+    </LinearLayout>
+
+</LinearLayout>

@@ -19,21 +19,21 @@ public class BaseTitleActivity extends SwipeBackActivity {
         super.onCreate(savedInstanceState);
     }
 
-    public void initViewOnBaseTitle(String title){
-        try{
+    public void initViewOnBaseTitle(String title) {
+        try {
             backImg = (ImageView) findViewById(R.id.back_img);
             topTv = (TextView) findViewById(R.id.title_name);
-            if (!TextUtils.isEmpty(title)){
+            if (!TextUtils.isEmpty(title)) {
                 topTv.setText(title);
-            }else{
+            } else {
                 topTv.setVisibility(View.GONE);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void setBackListener(View.OnClickListener l){
+    public void setBackListener(View.OnClickListener l) {
         backImg.setOnClickListener(l);
     }
 
