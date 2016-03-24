@@ -25,6 +25,7 @@ import com.hxqydyl.app.ys.http.register.RegisterFirstNet;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.ui.swipebacklayout.SwipeBackActivity;
 import com.hxqydyl.app.ys.utils.Constants;
+import com.hxqydyl.app.ys.utils.LoginManager;
 import com.hxqydyl.app.ys.utils.StringUtils;
 import com.hxqydyl.app.ys.utils.Utils;
 import com.hxqydyl.app.ys.utils.Validator;
@@ -241,8 +242,8 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
     public void requestRegisterFirstNetSuccess(RegisterFirst registerFirst) {
         UIHelper.ToastMessage(RegisterActivity.this, registerFirst.getQuery().getMessage());
         if (registerFirst.getQuery().getMessage().equals("操作成功")){
+            LoginManager.setDoctorUuid(registerFirst.getDoctorUuid());
             intent = new Intent(this,EvpiUserActivity.class);
-            intent.putExtra("doctorUuid",registerFirst.getDoctorUuid());
             startActivity(intent);
         }
     }

@@ -24,9 +24,9 @@ public class HospitalNet {
         void requestHospitalFail();
     }
 
-    private void obtainHospitals(String cityUuid,String provinceUuid,String regionUuid){
-
-        OkHttpClientManager.getAsyn(Constants.GET_HOSPITAL+"?cityUuid="+cityUuid+"&provinceUuid="+provinceUuid+"&regionUuid="+regionUuid, new OkHttpClientManager.ResultCallback<String>() {
+    public void obtainHospitals(String provinceUuid,String cityUuid,String regionUuid){
+        System.out.println("Hospitalresponse---->"+provinceUuid+"---"+cityUuid+"---"+regionUuid);
+        OkHttpClientManager.getAsyn(Constants.GET_HOSPITAL+"?cityUuid="+cityUuid+"&provinceUuid="+provinceUuid+"&regionUuid="+regionUuid+"&callback=hxq", new OkHttpClientManager.ResultCallback<String>() {
             @Override
             public void onError(Request request, Exception e) {
              listener.requestHospitalFail();
@@ -34,6 +34,7 @@ public class HospitalNet {
 
             @Override
             public void onResponse(String response) throws JSONException {
+                System.out.println("Hospitalresponse---->" + response);
              HospitalResultBean hospitalResultBean = JsonUtils.JsonHospitalResult(response);
              listener.requestHospitalSuc(hospitalResultBean);
             }

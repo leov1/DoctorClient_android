@@ -26,7 +26,8 @@ public class RegionNet {
     }
 
     public void obtainRegions(String cityUuid){
-        OkHttpClientManager.getAsyn(Constants.GET_REGION+"?cityUuid="+cityUuid, new OkHttpClientManager.ResultCallback<String>() {
+        System.out.println("provinceUuid-->"+cityUuid);
+        OkHttpClientManager.getAsyn(Constants.GET_REGION+"?cityUuid="+cityUuid+"&callback=hxq", new OkHttpClientManager.ResultCallback<String>() {
             @Override
             public void onError(Request request, Exception e) {
                listener.requestRegionFail();
@@ -34,6 +35,7 @@ public class RegionNet {
 
             @Override
             public void onResponse(String response) throws JSONException {
+                System.out.println("response-->"+response);
                 RegionResultBean regionResultBean = JsonUtils.JsonRegionResult(response);
                 listener.requestRegionSuc(regionResultBean);
             }

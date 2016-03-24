@@ -67,7 +67,8 @@ public class TagsAdapter extends BaseAdapter {
         } else {
             textView.setSelected(false);
         }
-        convertView.setOnClickListener(new OnTextClick(position, checkBox, textView));
+
+         convertView.setOnClickListener(new OnTextClick(position, checkBox, textView));
         return convertView;
     }
 

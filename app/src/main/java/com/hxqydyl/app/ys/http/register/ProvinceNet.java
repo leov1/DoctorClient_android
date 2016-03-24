@@ -25,6 +25,7 @@ public class ProvinceNet {
     }
 
     public void obtainProvince(){
+        System.out.println("response---->");
         //获取医院
         OkHttpClientManager.getAsyn(Constants.GET_PROVINCE, new OkHttpClientManager.ResultCallback<String>() {
             @Override

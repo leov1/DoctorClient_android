@@ -28,4 +28,12 @@ public class LoginManager {
     public static String getDoctorUuid(){
         return SharedPreferences.getInstance().getString("doctorUuid", "");
     }
+
+    /**
+     * 存储医生uuid
+     * @param doctorUuid
+     */
+    public static void setDoctorUuid(String doctorUuid){
+        SharedPreferences.getInstance().putString("doctorUuid", doctorUuid);
+    }
 }

@@ -36,6 +36,7 @@ public class RegisterFirstNet {
         params.put("password",password);
         params.put("captcha",captcha);
         params.put("callback","hxq");
+        System.out.println("response--->");
         OkHttpClientManager.postAsyn(Constants.REGISTER_ONE, params, new OkHttpClientManager.ResultCallback<String>() {
             @Override
             public void onError(Request request, Exception e) {

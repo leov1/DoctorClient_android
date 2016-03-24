@@ -38,6 +38,19 @@
                 android:layout_marginTop="@dimen/space_5"
                 android:text="@string/evip_hospital" />
 
+            <EditText
+                android:id="@+id/edit_other"
+                style="@style/edit_blue"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="@dimen/space_5"
+                android:hint="@string/evip_other_hospital"
+                android:singleLine="true"
+                android:visibility="gone"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/space_10"
+                />
+
             <Button
                 android:id="@+id/btn_office"
                 style="@style/btn_address"
@@ -63,10 +76,11 @@
                 android:text="@string/evip_ranks" />
 
             <EditText
+                android:id="@+id/brief_edit"
                 style="@style/edit_blue"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_marginTop="@dimen/space_17"
+                android:layout_marginTop="@dimen/space_12"
                 android:gravity="top"
                 android:hint="@string/evip_brief"
                 android:padding="@dimen/space_10" />
@@ -74,7 +88,7 @@
             <Button
                 android:id="@+id/next_btn"
                 style="@style/btn_blue"
-                android:layout_marginTop="80dp"
+                android:layout_marginTop="40dp"
                 android:text="@string/next" />
         </LinearLayout>
     </ScrollView>

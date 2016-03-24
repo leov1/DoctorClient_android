@@ -33,6 +33,7 @@ import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.ui.uploadimage.UploadPhotoUtil;
 import com.hxqydyl.app.ys.utils.CommonUtils;
 import com.hxqydyl.app.ys.utils.Constants;
+import com.hxqydyl.app.ys.utils.LoginManager;
 import com.hxqydyl.app.ys.utils.StringUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.squareup.okhttp.Request;
@@ -141,10 +142,7 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
         registerSecNet = new RegisterSecNet();
         registerSecNet.setListener(this);
 
-        intent = getIntent();
-        if (intent != null){
-            doctorUUid = intent.getStringExtra("doctorUuid");
-        }
+        doctorUUid = LoginManager.getDoctorUuid();
 
     }
 

@@ -204,7 +204,7 @@ public class JsonUtils {
      */
     public static RegionResultBean JsonRegionResult(String string) throws JSONException{
         if (TextUtils.isEmpty(string)) return null;
-        JSONObject jsonObject = new JSONObject(string);
+        JSONObject jsonObject = new JSONObject(StringUtils.cutoutBracketToString(string));
         RegionResultBean regionResultBean = new RegionResultBean();
         Query query = new Query();
         JSONObject queryJs = jsonObject.getJSONObject("query");
@@ -235,7 +235,7 @@ public class JsonUtils {
      */
     public static OfficeResultBean JsonOfficeResult(String string) throws JSONException{
         if (TextUtils.isEmpty(string)) return null;
-        JSONObject jsonObject = new JSONObject(string);
+        JSONObject jsonObject = new JSONObject(StringUtils.cutoutBracketToString(string));
         OfficeResultBean officeResultBean = new OfficeResultBean();
         Query query = new Query();
         JSONObject queryJs = jsonObject.getJSONObject("query");

@@ -26,8 +26,9 @@ public class CityNet {
         void RequestCityFail();
     }
 
-    public void obtainCity(){
-        OkHttpClientManager.getAsyn(Constants.GET_CITY, new OkHttpClientManager.ResultCallback<String>() {
+    public void obtainCity( String code){
+        System.out.println("provinceUuid-->"+code);
+        OkHttpClientManager.getAsyn(Constants.GET_CITY+"?provinceUuid="+code, new OkHttpClientManager.ResultCallback<String>() {
             @Override
             public void onError(Request request, Exception e) {
                 listener.RequestCityFail();

@@ -28,7 +28,7 @@ public class OfficeNet {
 
     public void obtainOffice(){
         //获取科室
-        OkHttpClientManager.getAsyn(Constants.GET_DEPARTMENT, new OkHttpClientManager.ResultCallback<String>() {
+        OkHttpClientManager.getAsyn(Constants.GET_DEPARTMENT+"?callback=hxq", new OkHttpClientManager.ResultCallback<String>() {
             @Override
             public void onError(Request request, Exception e) {
                 listener.requestOfficeFail();
