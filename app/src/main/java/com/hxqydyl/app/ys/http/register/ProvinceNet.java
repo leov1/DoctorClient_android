@@ -3,6 +3,7 @@ package com.hxqydyl.app.ys.http.register;
 import com.hxqydyl.app.ys.bean.register.ProvinceInfoResult;
 import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.http.OkHttpClientManager;
+import com.hxqydyl.app.ys.http.ResultCallback;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.squareup.okhttp.Request;
 
@@ -27,7 +28,7 @@ public class ProvinceNet {
     public void obtainProvince(){
         System.out.println("response---->");
         //获取医院
-        OkHttpClientManager.getAsyn(Constants.GET_PROVINCE, new OkHttpClientManager.ResultCallback<String>() {
+        OkHttpClientManager.getAsyn(Constants.GET_PROVINCE, new ResultCallback<String>() {
             @Override
             public void onError(Request request, Exception e) {
               listener.RequestProvinceFail();

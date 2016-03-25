@@ -13,11 +13,11 @@ public class Constants {
     //请求网络失败
     public static int REQUEST_FAIL = 1101;
 
-    private static String url = /*"http://172.168.1.57";*//*"http://172.168.1.30";*/"http://172.168.1.233";
+    private static String url = /*"http://172.168.1.57";*//*"http://172.168.1.30";*/"http://172.168.1.233";/*"http://172.168.1.63";*/
 //  private static String url = "http://119.254.32.92:4097";
     public static String phone = "10000000000";
     public static String password = "000000";
-    public static String LOGIN_URL = url+"/app/pub/doctor/gotoLogin";
+    public static String LOGIN_URL = "http://172.168.1.63/app/pub/doctor/gotoLogin";
 
 
     //手机获取验证码
@@ -28,6 +28,8 @@ public class Constants {
     public static String REGISTER_TWO = url+"/app/pub/doctor/registerTwo";
    //第三步
     public static String REGISTER_THREE = url+"/app/pub/doctor/registerThree";
+    //修改密码
+    public static String UPDATE_PASSWORD = url+"/app/pub/doctor/updatePassword";
 
     //获取医生基本信息（新添加）
     public static  String GET_DOCTOR_INFO = url+"/app/service/doctor/getDoctorInfo";

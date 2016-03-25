@@ -4,6 +4,7 @@ import com.hxqydyl.app.ys.bean.Query;
 import com.hxqydyl.app.ys.bean.register.RegisterFirst;
 import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.http.OkHttpClientManager;
+import com.hxqydyl.app.ys.http.ResultCallback;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.squareup.okhttp.Request;
 
@@ -37,7 +38,7 @@ public class RegisterFirstNet {
         params.put("captcha",captcha);
         params.put("callback","hxq");
         System.out.println("response--->");
-        OkHttpClientManager.postAsyn(Constants.REGISTER_ONE, params, new OkHttpClientManager.ResultCallback<String>() {
+        OkHttpClientManager.postAsyn(Constants.REGISTER_ONE, params, new ResultCallback<String>() {
             @Override
             public void onError(Request request, Exception e) {
                 listener.requestRegisterFirstNetFail();

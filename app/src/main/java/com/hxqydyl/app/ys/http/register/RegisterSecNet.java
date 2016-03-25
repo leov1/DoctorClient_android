@@ -1,6 +1,7 @@
 package com.hxqydyl.app.ys.http.register;
 
 import com.hxqydyl.app.ys.http.OkHttpClientManager;
+import com.hxqydyl.app.ys.http.ResultCallback;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.squareup.okhttp.Request;
 
@@ -35,7 +36,7 @@ public class RegisterSecNet {
         params.put("doctorName",doctorName);
         params.put("callback","hxq");
         System.out.println("params--->"+params.toString());
-        OkHttpClientManager.postAsyn(Constants.REGISTER_TWO, params, new OkHttpClientManager.ResultCallback<String>() {
+        OkHttpClientManager.postAsyn(Constants.REGISTER_TWO, params, new ResultCallback<String>() {
             @Override
             public void onError(Request request, Exception e) {
               listener.requestRegisterSecFail();

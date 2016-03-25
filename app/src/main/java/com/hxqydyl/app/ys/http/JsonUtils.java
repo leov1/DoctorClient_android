@@ -63,14 +63,18 @@ public class JsonUtils {
     }
 
     /**
-     * 验证码
+     * 修改密码返回
      * @param string
      * @return
+     * @throws JSONException
      */
-    public static CaptchaResult JsonCaptchaResult(String string){
+    public static Query JsonUpdatePw(String string) throws JSONException{
         if (TextUtils.isEmpty(string)) return null;
-        CaptchaResult captchaResult = new Gson().fromJson(StringUtils.cutoutBracketToString(string),CaptchaResult.class);
-        return captchaResult;
+        JSONObject jsonObject = new JSONObject(StringUtils.cutoutBracketToString(string));
+        Query query = new Query();
+        query.setMessage(jsonObject.getString("message"));
+        query.setSuccess(jsonObject.getString("success"));
+        return query;
     }
 
     /**

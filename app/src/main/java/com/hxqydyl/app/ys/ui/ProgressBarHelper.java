@@ -7,7 +7,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
-import com.hxqydyl.app.ys.http.HttpClient;
 
 public class ProgressBarHelper {
     public interface ProgressBarClickListener {

@@ -4,6 +4,7 @@ import com.hxqydyl.app.ys.bean.register.AddressParamBean;
 import com.hxqydyl.app.ys.bean.register.TagsResultBean;
 import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.http.OkHttpClientManager;
+import com.hxqydyl.app.ys.http.ResultCallback;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.squareup.okhttp.Request;
 
@@ -31,7 +32,7 @@ public class TagsNet {
     public void obtainTags(){
         System.out.println("tagsResultBean--->" + Constants.GET_TAGS);
 
-        OkHttpClientManager.postAsyn(Constants.GET_TAGS, (Map)null, new OkHttpClientManager.ResultCallback<String>() {
+        OkHttpClientManager.postAsyn(Constants.GET_TAGS, (Map)null, new ResultCallback<String>() {
             @Override
             public void onError(Request request, Exception e) {
                 System.out.println("onError--->");

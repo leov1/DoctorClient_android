@@ -4,6 +4,7 @@ import com.hxqydyl.app.ys.bean.register.OfficeResultBean;
 import com.hxqydyl.app.ys.bean.register.ProvinceInfoResult;
 import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.http.OkHttpClientManager;
+import com.hxqydyl.app.ys.http.ResultCallback;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.squareup.okhttp.Request;
 
@@ -28,7 +29,7 @@ public class OfficeNet {
 
     public void obtainOffice(){
         //获取科室
-        OkHttpClientManager.getAsyn(Constants.GET_DEPARTMENT+"?callback=hxq", new OkHttpClientManager.ResultCallback<String>() {
+        OkHttpClientManager.getAsyn(Constants.GET_DEPARTMENT+"?callback=hxq", new ResultCallback<String>() {
             @Override
             public void onError(Request request, Exception e) {
                 listener.requestOfficeFail();

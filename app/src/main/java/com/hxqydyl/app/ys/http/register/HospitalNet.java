@@ -3,6 +3,7 @@ package com.hxqydyl.app.ys.http.register;
 import com.hxqydyl.app.ys.bean.register.HospitalResultBean;
 import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.http.OkHttpClientManager;
+import com.hxqydyl.app.ys.http.ResultCallback;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.squareup.okhttp.Request;
 
@@ -26,7 +27,8 @@ public class HospitalNet {
 
     public void obtainHospitals(String provinceUuid,String cityUuid,String regionUuid){
         System.out.println("Hospitalresponse---->"+provinceUuid+"---"+cityUuid+"---"+regionUuid);
-        OkHttpClientManager.getAsyn(Constants.GET_HOSPITAL+"?cityUuid="+cityUuid+"&provinceUuid="+provinceUuid+"&regionUuid="+regionUuid+"&callback=hxq", new OkHttpClientManager.ResultCallback<String>() {
+        OkHttpClientManager.getAsyn(Constants.GET_HOSPITAL+"?cityUuid="+cityUuid+"&provinceUuid="+provinceUuid+"&regionUuid="+regionUuid+"&callback=hxq", new
+                ResultCallback<String>() {
             @Override
             public void onError(Request request, Exception e) {
              listener.requestHospitalFail();

@@ -1,6 +1,7 @@
 package common;
 
 import android.app.Application;
+import android.preference.PreferenceActivity;
 
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -10,7 +11,8 @@ import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.squareup.leakcanary.LeakCanary;
 
 import java.io.File;
-
+import java.util.ArrayList;
+import java.util.List;
 
 public class BaseApplication extends Application {
 
@@ -34,6 +36,8 @@ public class BaseApplication extends Application {
         registerUncaughtExceptionHandler();
         configurationImageLoader();
     }
+
+
 
     // 注册App异常崩溃处理器
     private void registerUncaughtExceptionHandler() {

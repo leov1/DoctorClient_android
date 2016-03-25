@@ -94,23 +94,5 @@ public class LoginActivity extends BaseTitleActivity implements View.OnClickList
         UIHelper.ToastMessage(LoginActivity.this,"登陆失败");
     }
 
-    @Override
-    public void registerOneSuccess(DoctorInfo doctorInfo) {
 
-    }
-
-    @Override
-    public void registerTwoSuccess(String uuid) {
-
-    }
-
-    @Override
-    public void registerThreeSuccess(DoctorInfo doctorInfo) {
-
-    }
-
-    @Override
-    public void requestFail(int statusCode) {
-
-    }
 }

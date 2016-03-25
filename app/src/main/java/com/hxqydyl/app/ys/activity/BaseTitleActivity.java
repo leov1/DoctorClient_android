@@ -1,5 +1,6 @@
 package com.hxqydyl.app.ys.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -10,6 +11,8 @@ import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.ui.swipebacklayout.SwipeBackActivity;
 
 public class BaseTitleActivity extends SwipeBackActivity {
+
+    protected final String HTTP_TASK_KEY = "HttpTaskKey_" + hashCode();
 
     private ImageView backImg;
     private TextView topTv;
@@ -45,4 +48,5 @@ public class BaseTitleActivity extends SwipeBackActivity {
             }
         });
     }
+
 }

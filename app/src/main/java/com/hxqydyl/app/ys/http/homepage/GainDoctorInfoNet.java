@@ -3,6 +3,7 @@ package com.hxqydyl.app.ys.http.homepage;
 import com.hxqydyl.app.ys.bean.register.DoctorInfoNew;
 import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.http.OkHttpClientManager;
+import com.hxqydyl.app.ys.http.ResultCallback;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.squareup.okhttp.Request;
 
@@ -24,7 +25,7 @@ public class GainDoctorInfoNet {
      }
 
      public void gainDoctorInfo(String doctorUuid){
-          OkHttpClientManager.getAsyn(Constants.GET_DOCTOR_INFO + "?doctorUuid=" + doctorUuid + "&callback="+Constants.CALLBACK, new OkHttpClientManager.ResultCallback<String>() {
+          OkHttpClientManager.getAsyn(Constants.GET_DOCTOR_INFO + "?doctorUuid=" + doctorUuid + "&callback="+Constants.CALLBACK, new ResultCallback<String>() {
                @Override
                public void onError(Request request, Exception e) {
                     System.out.println("response--->" + request);

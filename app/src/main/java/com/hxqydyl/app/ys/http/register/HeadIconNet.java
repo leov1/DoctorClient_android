@@ -3,6 +3,7 @@ package com.hxqydyl.app.ys.http.register;
 import com.hxqydyl.app.ys.bean.register.HeadIconResult;
 import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.http.OkHttpClientManager;
+import com.hxqydyl.app.ys.http.ResultCallback;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.squareup.okhttp.Request;
 
@@ -27,7 +28,7 @@ public class HeadIconNet {
     }
 
     public void uploadHeadImg(Map<String,String> map){
-        OkHttpClientManager.postAsyn(Constants.UPLOAD_IMAGE, map, new OkHttpClientManager.ResultCallback<String>() {
+        OkHttpClientManager.postAsyn(Constants.UPLOAD_IMAGE, map, new ResultCallback<String>() {
             @Override
             public void onError(Request request, Exception e) {
                 listener.requestHeadIconNetFail();
