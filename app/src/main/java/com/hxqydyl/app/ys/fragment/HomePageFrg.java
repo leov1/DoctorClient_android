@@ -9,9 +9,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
+import com.hxqydyl.app.ys.activity.clinic.ClinicActivity;
 import com.hxqydyl.app.ys.activity.follow.FollowMainActivity;
 import com.hxqydyl.app.ys.activity.reading.ReadingActivity;
 import com.hxqydyl.app.ys.activity.video.VideoActivity;
@@ -56,6 +58,10 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
 
     private GainDoctorInfoNet gainDoctorInfoNet;
 
+    private View mHeader;
+    private ListView listView;
+    private Intent intent;
+
     public HomePageFrg() {
     }
 
@@ -67,7 +73,7 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_home_page_frg, container, false);
+        view = inflater.inflate(R.layout.fragment_home_frg, container, false);
         return view;
     }
 
@@ -76,6 +82,7 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
         super.onActivityCreated(savedInstanceState);
         initViews();
         initListeners();
+        initHeadView();
     }
 
     private void initListeners() {
@@ -85,34 +92,44 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
         registerBtn.setOnClickListener(this);
     }
 
-    private void initViews() {
-        gainDoctorInfoNet = new GainDoctorInfoNet();
+    private void initHeadView(){
+        listView.addHeaderView(mHeader);
+        listView.setAdapter(null);
+    }
 
-        noLoginLinear = (LinearLayout) view.findViewById(R.id.not_login_linear);
-        loginLiear = (LinearLayout) view.findViewById(R.id.login_linear);
+    private void initViews() {
+        initViewOnBaseTitle("首页",view);
+        gainDoctorInfoNet = new GainDoctorInfoNet();
+        mHeader = View.inflate(this.getActivity(),R.layout.home_header,null);
+
+        listView = (ListView) view.findViewById(R.id.list_view);
+
+        noLoginLinear = (LinearLayout) mHeader.findViewById(R.id.not_login_linear);
+        loginLiear = (LinearLayout) mHeader.findViewById(R.id.login_linear);
         //已经登陆
 
-        headImg = (ImageView) view.findViewById(R.id.head_img);
-        headName = (TextView) view.findViewById(R.id.head_name);
-        suffererNum = (TextView) view.findViewById(R.id.sufferer_num);
-        followNum = (TextView) view.findViewById(R.id.follow_num);
-        income = (TextView) view.findViewById(R.id.income);
+        headImg = (ImageView) mHeader.findViewById(R.id.head_img);
+        headName = (TextView) mHeader.findViewById(R.id.head_name);
+        suffererNum = (TextView) mHeader.findViewById(R.id.sufferer_num);
+        followNum = (TextView) mHeader.findViewById(R.id.follow_num);
+        income = (TextView) mHeader.findViewById(R.id.income);
 
-        loginBtn = (TextView) view.findViewById(R.id.login_btn);
-        registerBtn = (TextView) view.findViewById(R.id.register_btn);
+        loginBtn = (TextView) mHeader.findViewById(R.id.login_btn);
+        registerBtn = (TextView) mHeader.findViewById(R.id.register_btn);
 
-        updateLinear(LoginManager.isHasLogin());
+//        updateLinear(LoginManager.isHasLogin());
 
-        lineGridView = (LineGridView) view.findViewById(R.id.home_gridview);
+        lineGridView = (LineGridView) mHeader.findViewById(R.id.home_gridview);
         lineGridViewAdapter = new LineGridViewAdapter(this.getContext());
         lineGridView.setAdapter(lineGridViewAdapter);
 
-        pager = (AutoLoopViewPager) view.findViewById(R.id.pager);
-        indicator = (CirclePageIndicator) view.findViewById(R.id.indicator);
+        pager = (AutoLoopViewPager) mHeader.findViewById(R.id.pager);
+        indicator = (CirclePageIndicator) mHeader.findViewById(R.id.indicator);
         galleryAdapter = new GalleryPagerAdapter(this.getContext());
         pager.setAdapter(galleryAdapter);
         indicator.setViewPager(pager);
         indicator.setPadding(5, 5, 10, 5);
+
     }
 
     @Override
@@ -213,19 +230,20 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
 
         switch (position){
             case 0://阅读
-                Intent readIntent = new Intent(getActivity(), ReadingActivity.class);
-                startActivity(readIntent);
+                intent = new Intent(getActivity(), ReadingActivity.class);
+                startActivity(intent);
                 break;
             case 1://讲堂
-                Intent videoIntent = new Intent(getActivity(), VideoActivity.class);
-                startActivity(videoIntent);
+                intent = new Intent(getActivity(), VideoActivity.class);
+                startActivity(intent);
                 break;
             case 2://随访
-                Intent followIntent = new Intent(getActivity(), FollowMainActivity.class);
-                startActivity(followIntent);
+                intent = new Intent(getActivity(), FollowMainActivity.class);
+                startActivity(intent);
                 break;
             case 3://诊所
-
+                intent = new Intent(getActivity(), ClinicActivity.class);
+                startActivity(intent);
                 break;
         }
     }

@@ -2,7 +2,12 @@ package com.hxqydyl.app.ys.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.utils.SharedPreferences;
 
 /**
@@ -10,6 +15,8 @@ import com.hxqydyl.app.ys.utils.SharedPreferences;
  */
 public class BaseFragment extends Fragment{
 
+    private ImageView backImg;
+    private TextView topTv;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -17,5 +24,19 @@ public class BaseFragment extends Fragment{
 
     }
 
+    public void initViewOnBaseTitle(String title,View v) {
+        try {
+            backImg = (ImageView) v.findViewById(R.id.back_img);
+            topTv = (TextView) v.findViewById(R.id.title_name);
+            backImg.setVisibility(View.GONE);
+            if (!TextUtils.isEmpty(title)) {
+                topTv.setText(title);
+            } else {
+                topTv.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

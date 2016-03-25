@@ -1,41 +1,33 @@
 package com.hxqydyl.app.ys.activity.reading;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
 import com.hxqydyl.app.ys.R;
-import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+import com.hxqydyl.app.ys.activity.BaseWebActivity;
 import com.hxqydyl.app.ys.utils.Constants;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-public class ReadingActivity extends BaseTitleActivity implements View.OnClickListener{
-
-    private WebView webView;
+public class ReadingActivity extends BaseWebActivity implements View.OnClickListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reading);
         initViews();
         initListeners();
-        Random random=new Random();
-      //  loadDataAndURL(Constants.GET_READING);
-        loadDataAndURL("file:///android_asset/demo.html");
+ //     Random random=new Random();
+        loadDataAndURL(Constants.GET_READING);
+//      loadDataAndURL("file:///android_asset/demo.html");
     }
 
     private void loadDataAndURL(String url) {
@@ -44,8 +36,8 @@ public class ReadingActivity extends BaseTitleActivity implements View.OnClickLi
 
     private void initViews(){
         initViewOnBaseTitle("阅读");
-        webView = (WebView) findViewById(R.id.webview);
-        init();
+ //       webView = (WebView) findViewById(R.id.webview);
+ //       init();
     }
 
     private void initListeners() {
@@ -61,37 +53,6 @@ public class ReadingActivity extends BaseTitleActivity implements View.OnClickLi
                 break;
         }
     }
-
-    WebViewClient webViewClient = new WebViewClient(){
-        @Override
-        public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            super.onPageStarted(view, url, favicon);
-        }
-
-        @Override
-        public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
-        }
-
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if (url.contains("goodm://")){//自定义js协议
-                Pattern pl = Pattern.compile("goodm://([a-zA-Z0-9]+)(/[\\w\\W]*)?");
-                Matcher ml = pl.matcher(url);
-                String functionname = "",paramater = "";
-                if (ml.find()){
-                    functionname = ml.group(1);
-                    paramater = ml.group(2);
-                }
-                if (!TextUtils.isEmpty(paramater)){
-                    paramater = paramater.substring(1);
-                }
-                SetJsBridge(functionname,paramater);
-                return true;
-            }
-            return super.shouldOverrideUrlLoading(view, url);
-        }
-    };
 
     private static final String CLIENT_INTERFACE_NAME = "local_obj";
     private void init() {

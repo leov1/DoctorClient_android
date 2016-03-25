@@ -13,8 +13,8 @@
 
         <ImageView
             android:id="@+id/ic_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dip"
+            android:layout_height="50dip"
             android:layout_centerInParent="true"
             android:src="@drawable/ic_logo" />
 
@@ -28,7 +28,7 @@
             android:padding="@dimen/space_8"
             android:text="@string/login"
             android:textColor="@color/text_color_white"
-            android:textSize="@dimen/space_25" />
+            android:textSize="@dimen/space_20" />
 
         <TextView
             android:id="@+id/register_btn"
@@ -40,7 +40,7 @@
             android:padding="@dimen/space_8"
             android:text="@string/register"
             android:textColor="@color/text_color_white"
-            android:textSize="@dimen/space_25" />
+            android:textSize="@dimen/space_20" />
     </RelativeLayout>
 
 

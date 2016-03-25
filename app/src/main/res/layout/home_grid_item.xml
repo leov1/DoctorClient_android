@@ -3,14 +3,15 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_margin="0.0dip"
-    android:background="@color/white" >
+    android:background="@color/white">
 
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_centerInParent="true"
         android:background="@color/white"
-        android:padding="12.0dip" >
+        android:paddingBottom="@dimen/space_30"
+        android:paddingTop="@dimen/space_30">
 
         <ImageView
             android:id="@+id/iv_item"
