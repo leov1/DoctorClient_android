@@ -59,7 +59,7 @@ public class PatientGroupManageActivity extends BaseTitleActivity implements Vie
                 } else {
                     menuItem.setBackground(new ColorDrawable(getResources().getColor(R.color.color_2080ba)));
                 }
-                menuItem.setIcon(R.mipmap.ic_delete_patient_group);
+                menuItem.setIcon(R.drawable.ic_delete_patient_group);
                 menuItem.setWidth(DensityUtils.dp2px(PatientGroupManageActivity.this, 50));
                 menu.addMenuItem(menuItem);
             }

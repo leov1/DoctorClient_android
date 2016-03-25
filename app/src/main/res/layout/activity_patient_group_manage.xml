@@ -28,7 +28,7 @@
             android:layout_height="15dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/space_30"
-            android:src="@mipmap/ic_add_patient_group" />
+            android:src="@drawable/ic_add_patient_group" />
 
         <TextView
             android:layout_width="wrap_content"

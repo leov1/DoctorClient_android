@@ -53,15 +53,15 @@ public class PatientTreatInfoAdapter extends BaseAdapter{
         switch(treatInfo.getTreatType()){
             case PatientTreatInfo.TREAT_TYPE_MEN_ZHEN:
                 tvTreatName.setText(context.getString(R.string.men_zhen_bing_li));
-                ivTreatIcon.setImageResource(R.mipmap.menzhenbingli);
+                ivTreatIcon.setImageResource(R.drawable.menzhenbingli);
                 break;
             case PatientTreatInfo.TREAT_TYPE_ZHU_YUAN:
                 tvTreatName.setText(context.getString(R.string.zhu_yuan_bing_li));
-                ivTreatIcon.setImageResource(R.mipmap.zhuyuanbingli);
+                ivTreatIcon.setImageResource(R.drawable.zhuyuanbingli);
                 break;
             case PatientTreatInfo.TREAT_TYPE_BIAO_DAN:
                 tvTreatName.setText(context.getString(R.string.sui_fang_biao_dan));
-                ivTreatIcon.setImageResource(R.mipmap.suifangbiaodan);
+                ivTreatIcon.setImageResource(R.drawable.suifangbiaodan);
                 break;
         }
         if(treatInfo.isUnread()){

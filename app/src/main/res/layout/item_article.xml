@@ -26,5 +26,5 @@
         android:layout_marginRight="20dp"
         android:layout_centerVertical="true"
         android:drawablePadding="10dp"
-        android:drawableRight="@mipmap/xmxq_button_right_high"/>
+        android:drawableRight="@drawable/xmxq_button_right_high"/>
 </RelativeLayout>

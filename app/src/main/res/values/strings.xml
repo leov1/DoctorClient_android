@@ -24,10 +24,10 @@
 
     <!-- guide-vp -->
     <integer-array name="guide_vp">
-        <item>@mipmap/newer1</item>
-        <item>@mipmap/newer2</item>
-        <item>@mipmap/newer3</item>
-        <item>@mipmap/newer4</item>
+        <item>@drawable/newer1</item>
+        <item>@drawable/newer2</item>
+        <item>@drawable/newer3</item>
+        <item>@drawable/newer4</item>
     </integer-array>
 
     <!--公用文字-->

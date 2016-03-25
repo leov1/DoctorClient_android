@@ -90,9 +90,9 @@ public class PatientListAdapter extends BaseExpandableListAdapter {
         }
         ImageView ivExpandFlag = BaseViewHolder.get(convertView, R.id.ivExpandFlag);
         if (isExpanded) {
-            ivExpandFlag.setImageResource(R.mipmap.icon_right_arrow);
+            ivExpandFlag.setImageResource(R.drawable.icon_right_arrow);
         } else {
-            ivExpandFlag.setImageResource(R.mipmap.icon_right_arrow);
+            ivExpandFlag.setImageResource(R.drawable.icon_right_arrow);
         }
         final PatientGroup patientGroup = (PatientGroup) getGroup(groupPosition);
         TextView tvGroupName = BaseViewHolder.get(convertView, R.id.tvGroupName);
@@ -113,9 +113,9 @@ public class PatientListAdapter extends BaseExpandableListAdapter {
         tvPatientName.setText(patient.getName());
         ImageView ivSexFlag = BaseViewHolder.get(convertView, R.id.ivSexFlag);
         if ("女".equals(patient.getSex())) {
-            ivSexFlag.setImageResource(R.mipmap.icon_woman_flag);
+            ivSexFlag.setImageResource(R.drawable.icon_woman_flag);
         } else {
-            ivSexFlag.setImageResource(R.mipmap.icon_man_flag);
+            ivSexFlag.setImageResource(R.drawable.icon_man_flag);
         }
         TextView tvPatientAge = BaseViewHolder.get(convertView, R.id.tvPatientAge);
         tvPatientAge.setText(patient.getAge());

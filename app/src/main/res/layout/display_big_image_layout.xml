@@ -36,7 +36,7 @@
                 android:layout_height="40dp"
                 android:paddingBottom="20dp"
                 android:paddingLeft="20dp"
-                android:src="@mipmap/setting_clear_cache" />
+                android:src="@drawable/setting_clear_cache" />
         </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>

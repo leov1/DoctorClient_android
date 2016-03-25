@@ -82,7 +82,7 @@ public class FollowMainActivity extends BaseTitleActivity implements View.OnClic
         initViewOnBaseTitle("随访");
         addBtn = (ImageView) findViewById(R.id.right_img);
         addBtn.setVisibility(View.VISIBLE);
-        addBtn.setImageDrawable(getResources().getDrawable(R.mipmap.btn_add_white));
+        addBtn.setImageDrawable(getResources().getDrawable(R.drawable.btn_add_white));
 
         applyBtn = (RelativeLayout) findViewById(R.id.rl_apply);
         mgrBtn = (RelativeLayout) findViewById(R.id.rl_mgr);

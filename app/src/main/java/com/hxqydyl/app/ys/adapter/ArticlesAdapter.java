@@ -49,7 +49,7 @@ public class ArticlesAdapter extends BaseAdapter {
         if (position == 3){
             tag.setText("未选用");
             tag.setTextColor(context.getResources().getColor(R.color.gray_light));
-            tag.setCompoundDrawablesWithIntrinsicBounds(0,0,R.mipmap.xmxq_button_right_high,0);
+            tag.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.xmxq_button_right_high,0);
         }
         return convertView;
     }

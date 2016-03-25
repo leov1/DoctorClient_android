@@ -21,14 +21,14 @@
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:background="@color/color_80f26c4f"
-                android:src="@mipmap/icon_move_to_other_group" />
+                android:src="@drawable/icon_move_to_other_group" />
 
             <ImageView
                 android:id="@+id/ivDeletePatient"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:background="@color/color_fff26c4f"
-                android:src="@mipmap/icon_delete_patient" />
+                android:src="@drawable/icon_delete_patient" />
         </LinearLayout>
 
         <LinearLayout

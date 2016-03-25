@@ -14,7 +14,7 @@ import com.hxqydyl.app.ys.R;
  * 首页viewpager适配器
  */
 public class GalleryPagerAdapter extends PagerAdapter {
-    private int[] imageViewIds = new int[]{R.mipmap.house_background,R.mipmap.house_background,R.mipmap.house_background,R.mipmap.house_background};
+    private int[] imageViewIds = new int[]{R.drawable.house_background,R.drawable.house_background,R.drawable.house_background,R.drawable.house_background};
     private Context mContext;
 
     public GalleryPagerAdapter(Context context){

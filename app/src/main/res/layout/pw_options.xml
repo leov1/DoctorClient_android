@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/optionspicker"
             android:layout_alignTop="@id/optionspicker"
-            android:background="@mipmap/bg_above_timepicker" />
+            android:background="@drawable/bg_above_timepicker" />
     </RelativeLayout>
 
 </LinearLayout>
