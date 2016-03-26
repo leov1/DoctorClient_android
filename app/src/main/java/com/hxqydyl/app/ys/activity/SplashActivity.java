@@ -34,10 +34,10 @@ public class SplashActivity extends BaseFragmentActivity {
     private ViewPager pager;
     private GalleryPagerAdapter adapter;
     private int[] images = {
-            R.drawable.newer1,
-            R.drawable.newer2,
-            R.drawable.newer3,
-            R.drawable.newer4
+            R.mipmap.newer1,
+            R.mipmap.newer2,
+            R.mipmap.newer3,
+            R.mipmap.newer4
     };
 
     private static boolean isQuit = false;

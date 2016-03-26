@@ -70,7 +70,7 @@ public class AddressBookSelectActivity extends BaseTitleActivity
 
         ivSave = (ImageView) findViewById(R.id.right_img);
         ivSave.setVisibility(View.VISIBLE);
-        ivSave.setImageDrawable(getResources().getDrawable(R.drawable.btn_add_white));
+        ivSave.setImageDrawable(getResources().getDrawable(R.mipmap.btn_add_white));
         ivSave.setOnClickListener(this);
         exList = (ExpandableListView) this.findViewById(R.id.exList);
         assortView = (AssortView) this.findViewById(R.id.assortView);

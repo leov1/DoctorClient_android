@@ -17,7 +17,7 @@
         android:drawablePadding="@dimen/space_8"
         android:paddingLeft="@dimen/space_15"
         android:textSize="@dimen/text_size_18"
-        android:drawableLeft="@drawable/xmxq_plus"/>
+        android:drawableLeft="@mipmap/xmxq_plus"/>
 
     <ui.swipemenulistview.SwipeMenuListView
         android:id="@+id/swipe_menu_lv"

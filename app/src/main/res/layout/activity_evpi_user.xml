@@ -31,7 +31,7 @@
                     android:layout_height="150dp"
                     android:onClick="showEditPhotoLayout"
                     android:layout_centerHorizontal="true"
-                    android:src="@drawable/upload_photo" />
+                    android:src="@mipmap/upload_photo" />
 
                 <TextView
                     android:layout_width="wrap_content"

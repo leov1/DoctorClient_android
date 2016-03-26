@@ -18,7 +18,7 @@ public class LineGridViewAdapter extends  BaseAdapter{
     private Context mContext;
 
     public String[] img_text = { "阅读", "讲堂", "随访", "诊所" };
-    public int[] imgs = { R.drawable.app_read, R.drawable.app_media,R.drawable.app_follow, R.drawable.app_clinic};
+    public int[] imgs = { R.mipmap.app_read, R.mipmap.app_media,R.mipmap.app_follow, R.mipmap.app_clinic};
 
     public LineGridViewAdapter(Context mContext) {
         super();

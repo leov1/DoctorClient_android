@@ -61,7 +61,7 @@ public class EvpiPhotoAdapter extends BaseAdapter{
         }
         ImageView img = BaseViewHolder.get(convertView,R.id.imge);
         if (position==list.size()){
-            img.setImageBitmap(BitmapFactory.decodeResource(context.getResources(),R.drawable.photo_rect_add));
+            img.setImageBitmap(BitmapFactory.decodeResource(context.getResources(),R.mipmap.photo_rect_add));
             if (position == 6){
                 img.setVisibility(View.GONE);
             }

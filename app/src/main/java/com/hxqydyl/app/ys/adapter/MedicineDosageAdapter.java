@@ -64,7 +64,7 @@ public class MedicineDosageAdapter extends BaseAdapter{
         holder.etSize.setText(String.valueOf(md.getSize()));
         holder.tvUnit.setText(md.getUnit());
         if (position == list.size() -1) {
-            holder.ibBtn.setImageDrawable(convertView.getResources().getDrawable(R.drawable.tianjiayongliang));
+            holder.ibBtn.setImageDrawable(convertView.getResources().getDrawable(R.mipmap.tianjiayongliang));
             holder.ibBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -73,7 +73,7 @@ public class MedicineDosageAdapter extends BaseAdapter{
                 }
             });
         } else {
-            holder.ibBtn.setImageDrawable(convertView.getResources().getDrawable(R.drawable.shanchuyongliang));
+            holder.ibBtn.setImageDrawable(convertView.getResources().getDrawable(R.mipmap.shanchuyongliang));
             holder.ibBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

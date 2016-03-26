@@ -49,7 +49,7 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
                 // set item width
                 deleteItem.setWidth(dp2px(90));
                 // set a icon
-                deleteItem.setIcon(R.drawable.ic_delete);
+                deleteItem.setIcon(R.mipmap.ic_delete);
                 // add to menu
                 menu.addMenuItem(deleteItem);
             }

@@ -37,7 +37,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/space_10"
             android:layout_toLeftOf="@id/tvTreatName"
-            android:src="@drawable/menzhenbingli" />
+            android:src="@mipmap/menzhenbingli" />
 
         <TextView
             android:id="@+id/tvUnreadIcon"

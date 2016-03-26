@@ -35,9 +35,7 @@ public class UpdatePasswordNet {
         params.put("captcha", captcha);
         params.put("callback", "hxq");
         System.out.println("response--->" + params.toString());
-//        params.put("mobile","13671050634");
-//        params.put("password", "111111");
-        OkHttpClientManager.postAsyn(Constants.LOGIN_URL, params, new ResultCallback<QueryResultBean>() {
+        OkHttpClientManager.postAsyn(Constants.UPDATE_PASSWORD, params, new ResultCallback<QueryResultBean>() {
             @Override
             public void onError(Request request, Exception e) {
                 listener.requestUpdatePwFail();

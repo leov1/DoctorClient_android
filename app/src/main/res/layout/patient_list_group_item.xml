@@ -11,7 +11,7 @@
         android:id="@+id/ivExpandFlag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/icon_right_arrow"/>
+        android:src="@mipmap/icon_right_arrow"/>
 
     <TextView
         android:id="@+id/tvGroupName"
