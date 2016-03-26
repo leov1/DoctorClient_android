@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+import com.hxqydyl.app.ys.activity.patient.PatientInfoActivity;
 import com.hxqydyl.app.ys.adapter.FollowApplyAdapter;
 
 /**

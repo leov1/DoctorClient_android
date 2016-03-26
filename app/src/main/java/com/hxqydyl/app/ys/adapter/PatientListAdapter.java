@@ -90,9 +90,9 @@ public class PatientListAdapter extends BaseExpandableListAdapter {
         }
         ImageView ivExpandFlag = BaseViewHolder.get(convertView, R.id.ivExpandFlag);
         if (isExpanded) {
-            ivExpandFlag.setImageResource(R.mipmap.icon_right_arrow);
+            ivExpandFlag.setImageResource(R.mipmap.icon_list_group_expand);
         } else {
-            ivExpandFlag.setImageResource(R.mipmap.icon_right_arrow);
+            ivExpandFlag.setImageResource(R.mipmap.icon_list_group_collapse);
         }
         final PatientGroup patientGroup = (PatientGroup) getGroup(groupPosition);
         TextView tvGroupName = BaseViewHolder.get(convertView, R.id.tvGroupName);

@@ -103,10 +103,13 @@
     <color name="color_1f80b7">#1f80b7</color>
     <color name="color_696969">#696969</color>
     <color name="color_fff26c4f">#fff26c4f</color>
-    <color name="color_80f26c4f">#80f26c4f</color>
+    <color name="color_cdf26c4f">#cdf26c4f</color>
     <color name="color_ddf0f6">#ddf0f6</color>
     <color name="color_61666c">#61666c</color>
     <color name="color_686868">#686868</color>
     <color name="color_040407">#040407</color>
+    <color name="color_4b4b4b">#4b4b4b</color>
+    <color name="color_f2f2f2">#f2f2f2</color>
+    <color name="color_c3c3c3">#c3c3c3</color>
 
 </resources>

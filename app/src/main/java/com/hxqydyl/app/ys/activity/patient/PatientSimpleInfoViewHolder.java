@@ -13,6 +13,7 @@ import com.hxqydyl.app.ys.utils.InjectUtils;
  * Created by white_ash on 2016/3/24.
  */
 public class PatientSimpleInfoViewHolder {
+    public View wholeView;
     @InjectId(id = R.id.ivPatientPortrait)
     public ImageView ivPatientPortrait;
     @InjectId(id = R.id.tvPatientName)
@@ -27,8 +28,8 @@ public class PatientSimpleInfoViewHolder {
     public TextView tvDescription;
 
     public PatientSimpleInfoViewHolder(Activity activity){
-        View view = activity.findViewById(R.id.llPatientSimpleInfo);
-        InjectUtils.injectView(this,view);
+        wholeView = activity.findViewById(R.id.llPatientSimpleInfo);
+        InjectUtils.injectView(this,wholeView);
     }
 
 }

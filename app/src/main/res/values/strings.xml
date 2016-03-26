@@ -129,4 +129,15 @@
     <string name="patient_details">患者详情</string>
     <string name="case_history">病历记录</string>
     <string name="treatment_time">就诊时间</string>
+    <string name="patient">患者</string>
+    <string name="treatment_info">就诊信息</string>
+    <string name="outpatient">门诊</string>
+    <string name="inpatient">住院</string>
+    <string name="add_case_report_title">创建病历</string>
+    <string name="upload_photo_in_add_case">上传照片（最多上传5张照片）</string>
+    <string name="save_case_report">保存</string>
+    <string name="sdcard_not_exist">sd卡异常</string>
+    <string name="select_pic_source">选择图片来源</string>
+    <string name="camera">相机</string>
+    <string name="photo_album">相册</string>
 </resources>

@@ -1,6 +1,317 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_f7f7f7"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
 
+    <include layout="@layout/top_title" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="60dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View
+                    style="@style/divider_line"
+                    android:layout_marginTop="@dimen/space_3" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/space_10"
+                    android:paddingRight="@dimen/space_10">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="22dp"
+                        android:text="@string/patient"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_17" />
+
+                    <TextView
+                        android:id="@+id/tvPatientName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="70dp"
+                        android:text="张鲁"
+                        android:textColor="@color/color_4b4b4b"
+                        android:textSize="@dimen/text_size_14" />
+                </LinearLayout>
+
+                <View style="@style/divider_line" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_10"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="@dimen/space_13"
+                    android:paddingLeft="27dp"
+                    android:paddingTop="@dimen/space_13"
+                    android:text="@string/treatment_info"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_16" />
+
+                <View
+                    style="@style/divider_line"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="@dimen/space_10"
+                    android:background="@color/color_f2f2f2" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/space_10">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/color_ddf0f6"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="@dimen/space_13"
+                        android:paddingLeft="@dimen/space_27"
+                        android:paddingRight="@dimen/space_20"
+                        android:paddingTop="@dimen/space_13"
+                        android:text="@string/treatment_type"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_15" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="@dimen/space_10"
+                        android:background="@color/white"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvOutPatient"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="40dp"
+                            android:background="@drawable/shape_treatment_type_bg_selected"
+                            android:gravity="center"
+                            android:paddingBottom="@dimen/space_5"
+                            android:paddingLeft="@dimen/space_25"
+                            android:paddingRight="@dimen/space_25"
+                            android:paddingTop="@dimen/space_5"
+                            android:text="@string/outpatient"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_15" />
+
+                        <TextView
+                            android:id="@+id/tvInPatient"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/shape_treatment_type_bg_normal"
+                            android:gravity="center"
+                            android:paddingBottom="@dimen/space_5"
+                            android:paddingLeft="@dimen/space_25"
+                            android:paddingRight="@dimen/space_25"
+                            android:paddingTop="@dimen/space_5"
+                            android:text="@string/inpatient"
+                            android:textColor="@color/color_4b4b4b"
+                            android:textSize="@dimen/text_size_15" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TableLayout
+                    android:id="@+id/tlOutPatient"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_10"
+                    android:layout_marginRight="@dimen/space_10"
+                    android:stretchColumns="1">
+
+                    <TableRow>
+
+                        <View
+                            android:layout_height="@dimen/space_1"
+                            android:background="@color/white" />
+
+                        <View
+                            android:layout_height="@dimen/space_1"
+                            android:background="@color/color_ececec" />
+                    </TableRow>
+
+                    <TableRow android:id="@+id/treatmentTimeRow">
+
+                        <TextView
+                            style="@style/add_case_report_left"
+                            android:text="@string/treatment_time" />
+
+                        <EditText
+                            android:id="@+id/etTreatmentTime"
+                            style="@style/add_case_report_right"
+                            android:text="2016-03-25" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/beInHospitalTimeRow"
+                        android:visibility="gone">
+
+                        <TextView
+                            style="@style/add_case_report_left"
+                            android:text="@string/be_in_hospital_time" />
+
+                        <EditText
+                            android:id="@+id/etBeInHospitalTime"
+                            style="@style/add_case_report_right"
+                            android:text="2016-03-25" />
+                    </TableRow>
+
+                    <TableRow>
+
+                        <View
+                            android:layout_height="@dimen/space_1"
+                            android:background="@color/white" />
+
+                        <View
+                            android:layout_height="@dimen/space_1"
+                            android:background="@color/color_ececec" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/outHospitalTimeRow"
+                        android:visibility="gone">
+
+                        <TextView
+                            style="@style/add_case_report_left"
+                            android:text="@string/out_hospital_time" />
+
+                        <EditText
+                            android:id="@+id/etOutHospitalTime"
+                            style="@style/add_case_report_right"
+                            android:text="2016-03-25" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/outHospitalTimeDividerRow"
+                        android:visibility="gone">
+
+                        <View
+                            android:layout_height="@dimen/space_1"
+                            android:background="@color/white" />
+
+                        <View
+                            android:layout_height="@dimen/space_1"
+                            android:background="@color/color_ececec" />
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            style="@style/add_case_report_left"
+                            android:text="@string/treatment_hospital" />
+
+                        <EditText
+                            android:id="@+id/etTreatmentHospital"
+                            style="@style/add_case_report_right"
+                            android:text="北京301医院" />
+                    </TableRow>
+
+                    <TableRow>
+
+                        <View
+                            android:layout_height="@dimen/space_1"
+                            android:background="@color/white" />
+
+                        <View
+                            android:layout_height="@dimen/space_1"
+                            android:background="@color/color_ececec" />
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            style="@style/add_case_report_left"
+                            android:text="@string/treatment_time" />
+
+                        <EditText
+                            android:id="@+id/etDoctor"
+                            style="@style/add_case_report_right"
+                            android:text="金子正" />
+                    </TableRow>
+
+                    <TableRow>
+
+                        <View
+                            android:layout_height="@dimen/space_1"
+                            android:background="@color/white" />
+
+                        <View
+                            android:layout_height="@dimen/space_1"
+                            android:background="@color/color_ececec" />
+                    </TableRow>
+                </TableLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_10"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="@dimen/space_13"
+                    android:paddingLeft="27dp"
+                    android:paddingTop="@dimen/space_13"
+                    android:text="@string/case_history"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_16" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_10"
+                    android:layout_marginRight="@dimen/space_10"
+                    android:background="@drawable/shape_add_patient_group_et"
+                    android:orientation="vertical"
+                    android:padding="@dimen/space_13">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="27dp"
+                        android:text="@string/upload_photo_in_add_case"
+                        android:textColor="@color/color_4b4b4b"
+                        android:textSize="@dimen/text_size_14" />
+
+                    <com.hxqydyl.app.ys.ui.fullshowgridview.FullShowGridView
+                        android:id="@+id/gvPatientCaseHistory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_13"
+                        android:numColumns="4"></com.hxqydyl.app.ys.ui.fullshowgridview.FullShowGridView>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <Button
+            android:id="@+id/bSaveCaseReport"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="@dimen/space_20"
+            android:layout_marginRight="@dimen/space_20"
+            android:background="@color/color_3595cf"
+            android:text="@string/save_case_report"
+            android:textColor="@color/white" />
+    </FrameLayout>
 </LinearLayout>

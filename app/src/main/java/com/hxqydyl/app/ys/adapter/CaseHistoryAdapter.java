@@ -56,7 +56,7 @@ public class CaseHistoryAdapter extends BaseAdapter {
         }
         final Pic pic = (Pic) getItem(position);
         ImageView iv = BaseViewHolder.get(convertView, R.id.iv);
-        ImageLoader.getInstance().displayImage(/*pic.getThumbUrl()*/"http://pic29.nipic.com/20130512/10691992_110636323153_2.jpg",iv,options);
+        ImageLoader.getInstance().displayImage(pic.getDisplayThumbUri(),iv,options);
         return convertView;
     }
 }
