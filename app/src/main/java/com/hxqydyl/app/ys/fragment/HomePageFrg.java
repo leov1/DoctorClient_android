@@ -20,7 +20,6 @@ import com.hxqydyl.app.ys.activity.video.VideoActivity;
 import com.hxqydyl.app.ys.adapter.GalleryPagerAdapter;
 import com.hxqydyl.app.ys.adapter.LineGridViewAdapter;
 import com.hxqydyl.app.ys.bean.register.DoctorInfoNew;
-import com.hxqydyl.app.ys.http.OkHttpClientManager;
 import com.hxqydyl.app.ys.http.homepage.GainDoctorInfoNet;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.ui.linegridview.LineGridView;

@@ -1,12 +1,11 @@
 package com.hxqydyl.app.ys.http.register;
 
 import com.hxqydyl.app.ys.bean.register.CaptchaResult;
-import com.hxqydyl.app.ys.http.OkHttpClientManager;
-import com.hxqydyl.app.ys.http.ResultCallback;
 import com.hxqydyl.app.ys.utils.Constants;
-import com.squareup.okhttp.Request;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
-import org.json.JSONException;
+import okhttp3.Call;
 
 /**
  * Created by hxq on 2016/3/18.
@@ -25,17 +24,24 @@ public class CaptchaNet {
     }
 
     public void obtainCaptcha(String mobile){
-        OkHttpClientManager.getAsyn(Constants.GET_VERIFICATION_CODE + "?mobile=" + mobile+"&callback=hxq", new ResultCallback<CaptchaResult>() {
-            @Override
-            public void onError(Request request, Exception e) {
-               listener.requestCaptchaNetFail();
-            }
 
-            @Override
-            public void onResponse(CaptchaResult response) throws JSONException {
-                System.out.println("response--->" + response.toString());
-                listener.requestCaptchaNetSuc(response);
-            }
-        });
+        OkHttpUtils
+                .get()
+                .url(Constants.GET_VERIFICATION_CODE)
+                .addParams("mobile", mobile)
+                .addParams("callback", "hxq")
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e) {
+                        listener.requestCaptchaNetFail();
+                    }
+
+                    @Override
+                    public void onResponse(String response) {
+//                   listener.requestCaptchaNetSuc(response);
+                    }
+                });
+
     }
 }

@@ -1,14 +1,14 @@
 package com.hxqydyl.app.ys.http.register;
 
 import com.hxqydyl.app.ys.bean.register.CityResultBean;
-import com.hxqydyl.app.ys.bean.register.ProvinceInfoResult;
 import com.hxqydyl.app.ys.http.JsonUtils;
-import com.hxqydyl.app.ys.http.OkHttpClientManager;
-import com.hxqydyl.app.ys.http.ResultCallback;
 import com.hxqydyl.app.ys.utils.Constants;
-import com.squareup.okhttp.Request;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONException;
+
+import okhttp3.Call;
 
 /**
  * 注册时获取市
@@ -28,18 +28,28 @@ public class CityNet {
     }
 
     public void obtainCity( String code){
-        System.out.println("provinceUuid-->"+code);
-        OkHttpClientManager.getAsyn(Constants.GET_CITY+"?provinceUuid="+code, new ResultCallback<String>() {
-            @Override
-            public void onError(Request request, Exception e) {
-                listener.RequestCityFail();
-            }
+        OkHttpUtils
+                .get()
+                .url(Constants.GET_CITY)
+                .addParams("provinceUuid", code)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e) {
+                        listener.RequestCityFail();
+                    }
 
-            @Override
-            public void onResponse(String response) throws JSONException {
-                CityResultBean cityResultBean = JsonUtils.JsonCityResult(response);
-                listener.requestCitySuc(cityResultBean);
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        CityResultBean cityResultBean = null;
+                        try {
+                            cityResultBean = JsonUtils.JsonCityResult(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        listener.requestCitySuc(cityResultBean);
+                    }
+                });
+
     }
 }

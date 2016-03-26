@@ -1,14 +1,10 @@
 package com.hxqydyl.app.ys.http.register;
 
-import com.hxqydyl.app.ys.http.OkHttpClientManager;
-import com.hxqydyl.app.ys.http.ResultCallback;
 import com.hxqydyl.app.ys.utils.Constants;
-import com.squareup.okhttp.Request;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
-import org.json.JSONException;
-
-import java.util.HashMap;
-import java.util.Map;
+import okhttp3.Call;
 
 /**
  * 注册第二步
@@ -28,7 +24,30 @@ public class RegisterSecNet {
     }
 
     public void registerSec(String uuid,String email,String sex,String icon,String doctorName){
-        Map<String,String> params = new HashMap<>();
+
+        OkHttpUtils
+                .post()
+                .url(Constants.REGISTER_TWO)
+                .addParams("uuid", uuid)
+                .addParams("email", email)
+                .addParams("sex", sex)
+                .addParams("icon", icon)
+                .addParams("doctorName", doctorName)
+                .addParams("callback", "hxq")
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e) {
+         //               mListener.requestLoginNetFail(Constants.REQUEST_FAIL);
+                    }
+
+                    @Override
+                    public void onResponse(String response) {
+//               mListener.requestLoginNetSuccess(JsonUtils.JsonLoginData(response));
+                    }
+                });
+
+      /*  Map<String,String> params = new HashMap<>();
         params.put("uuid",uuid);
         params.put("email",email);
         params.put("sex",sex);
@@ -47,6 +66,6 @@ public class RegisterSecNet {
                 System.out.println("response---->"+response);
                 listener.requestRegisterSecSuc();
             }
-        });
+        });*/
     }
 }

@@ -12,30 +12,15 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
-import com.hxqydyl.app.ys.bean.Query;
 import com.hxqydyl.app.ys.bean.register.CaptchaResult;
-import com.hxqydyl.app.ys.bean.register.DoctorResultNew;
 import com.hxqydyl.app.ys.bean.register.RegisterFirst;
-import com.hxqydyl.app.ys.http.OkHttpClientManager;
 import com.hxqydyl.app.ys.http.register.CaptchaNet;
 import com.hxqydyl.app.ys.http.register.RegisterFirstNet;
 import com.hxqydyl.app.ys.ui.UIHelper;
-import com.hxqydyl.app.ys.ui.swipebacklayout.SwipeBackActivity;
-import com.hxqydyl.app.ys.utils.Constants;
 import com.hxqydyl.app.ys.utils.LoginManager;
-import com.hxqydyl.app.ys.utils.StringUtils;
-import com.hxqydyl.app.ys.utils.Utils;
 import com.hxqydyl.app.ys.utils.Validator;
-import com.squareup.okhttp.Request;
-
-import org.json.JSONException;
-import org.w3c.dom.Text;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 

@@ -58,5 +58,7 @@ public class Constants {
     public static String GET_VIDEOS = "http://101.201.150.23:8080/html/lecture/all_course.shtml";
     //获取诊所
     public static String GET_CLINIC = "http://101.201.150.23:8080/html/clinic/index.shtml";
+    //我的患者
+    public static String MY_PATIENT = "http://101.201.150.23:8080/html/mypatient/index.shtml";
     public static final String GET_PATIENT_GROUP = url + "/app/service/customer/%s/getCaseGroupByDoctorId";
 }

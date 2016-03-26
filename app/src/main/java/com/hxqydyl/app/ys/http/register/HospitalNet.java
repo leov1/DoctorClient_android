@@ -1,13 +1,11 @@
 package com.hxqydyl.app.ys.http.register;
 
 import com.hxqydyl.app.ys.bean.register.HospitalResultBean;
-import com.hxqydyl.app.ys.http.JsonUtils;
-import com.hxqydyl.app.ys.http.OkHttpClientManager;
-import com.hxqydyl.app.ys.http.ResultCallback;
 import com.hxqydyl.app.ys.utils.Constants;
-import com.squareup.okhttp.Request;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
-import org.json.JSONException;
+import okhttp3.Call;
 
 /**
  * Created by hxq on 2016/3/21.
@@ -26,20 +24,41 @@ public class HospitalNet {
     }
 
     public void obtainHospitals(String provinceUuid,String cityUuid,String regionUuid){
-        System.out.println("Hospitalresponse---->"+provinceUuid+"---"+cityUuid+"---"+regionUuid);
-        OkHttpClientManager.getAsyn(Constants.GET_HOSPITAL+"?cityUuid="+cityUuid+"&provinceUuid="+provinceUuid+"&regionUuid="+regionUuid+"&callback=hxq", new
-                ResultCallback<String>() {
-            @Override
-            public void onError(Request request, Exception e) {
-             listener.requestHospitalFail();
-            }
 
-            @Override
-            public void onResponse(String response) throws JSONException {
-                System.out.println("Hospitalresponse---->" + response);
-             HospitalResultBean hospitalResultBean = JsonUtils.JsonHospitalResult(response);
-             listener.requestHospitalSuc(hospitalResultBean);
-            }
-        });
+        OkHttpUtils
+                .get()
+                .url(Constants.GET_HOSPITAL)
+                .addParams("cityUuid", cityUuid)
+                .addParams("provinceUuid", provinceUuid)
+                .addParams("regionUuid", regionUuid)
+                .addParams("callback", "hxq")
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e) {
+ //                       mListener.requestLoginNetFail(Constants.REQUEST_FAIL);
+                    }
+
+                    @Override
+                    public void onResponse(String response) {
+//               mListener.requestLoginNetSuccess(JsonUtils.JsonLoginData(response));
+                    }
+                });
+
+//        System.out.println("Hospitalresponse---->"+provinceUuid+"---"+cityUuid+"---"+regionUuid);
+//        OkHttpClientManager.getAsyn(Constants.GET_HOSPITAL+"?cityUuid="+cityUuid+"&provinceUuid="+provinceUuid+"&regionUuid="+regionUuid+"&callback=hxq", new
+//                ResultCallback<String>() {
+//            @Override
+//            public void onError(Request request, Exception e) {
+//             listener.requestHospitalFail();
+//            }
+//
+//            @Override
+//            public void onResponse(String response) throws JSONException {
+//                System.out.println("Hospitalresponse---->" + response);
+//             HospitalResultBean hospitalResultBean = JsonUtils.JsonHospitalResult(response);
+//             listener.requestHospitalSuc(hospitalResultBean);
+//            }
+//        });
     }
 }

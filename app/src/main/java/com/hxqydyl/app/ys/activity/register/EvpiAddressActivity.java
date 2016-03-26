@@ -23,7 +23,6 @@ import com.hxqydyl.app.ys.bean.register.ProvinceInfo;
 import com.hxqydyl.app.ys.bean.register.ProvinceInfoResult;
 import com.hxqydyl.app.ys.bean.register.RegionBean;
 import com.hxqydyl.app.ys.bean.register.RegionResultBean;
-import com.hxqydyl.app.ys.http.OkHttpClientManager;
 import com.hxqydyl.app.ys.http.register.CityNet;
 import com.hxqydyl.app.ys.http.register.HospitalNet;
 import com.hxqydyl.app.ys.http.register.OfficeNet;
@@ -31,13 +30,9 @@ import com.hxqydyl.app.ys.http.register.ProvinceNet;
 import com.hxqydyl.app.ys.http.register.RegionNet;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.ui.pickerview.lib.OptionsPopupWindow;
-import com.hxqydyl.app.ys.utils.Constants;
-import com.squareup.okhttp.Request;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 完善单位信息页面

@@ -1,17 +1,12 @@
 package com.hxqydyl.app.ys.http.register;
 
 import com.hxqydyl.app.ys.bean.register.AddressParamBean;
-import com.hxqydyl.app.ys.bean.register.GoodTagBean;
 import com.hxqydyl.app.ys.bean.register.GoodTagResultBean;
-import com.hxqydyl.app.ys.http.OkHttpClientManager;
-import com.hxqydyl.app.ys.http.ResultCallback;
 import com.hxqydyl.app.ys.utils.Constants;
-import com.squareup.okhttp.Request;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
-import org.json.JSONException;
-
-import java.util.HashMap;
-import java.util.Map;
+import okhttp3.Call;
 
 /**
  * Created by hxq on 2016/3/24.
@@ -20,30 +15,48 @@ public class GoodTagNet {
 
     private OnGoodTagListener listener;
 
-    public void setListener(OnGoodTagListener listener){
+    public void setListener(OnGoodTagListener listener) {
         this.listener = listener;
     }
 
-    public interface OnGoodTagListener{
+    public interface OnGoodTagListener {
         void requestGoodTagSuc(GoodTagResultBean goodTagResultBean);
+
         void requestGoodTagFail();
     }
 
-    public void obtainTagResult(AddressParamBean addressParamBean){
-        Map<String,String> params = new HashMap<>();
-        params.put("doctorUuid",addressParamBean.getDoctorUuid());
-        params.put("province",addressParamBean.getProvinceCode());
-        params.put("city",addressParamBean.getCityCode());
-        params.put("area",addressParamBean.getAreaCode());
-        params.put("infirmary",addressParamBean.getInfirmaryCode());
-        params.put("departments",addressParamBean.getDepartments());
-        params.put("speciality",addressParamBean.getSpeciality());
-        params.put("professional",addressParamBean.getProfessional());
-        params.put("synopsis",addressParamBean.getSynopsis());
-        params.put("telephone",addressParamBean.getTelephone());
-        params.put("otherhospital",addressParamBean.getOtherhospital());
-        System.out.println("map---->"+params.toString());
-        OkHttpClientManager.postAsyn(Constants.REGISTER_THREE, params, new ResultCallback<GoodTagResultBean>() {
+    public void obtainTagResult(AddressParamBean addressParamBean) {
+
+        OkHttpUtils
+                .post()
+                .url(Constants.REGISTER_THREE)
+                .addParams("doctorUuid", addressParamBean.getDoctorUuid())
+                .addParams("province", addressParamBean.getProvinceCode())
+                .addParams("city", addressParamBean.getCityCode())
+                .addParams("area", addressParamBean.getAreaCode())
+                .addParams("infirmary", addressParamBean.getInfirmaryCode())
+                .addParams("departments", addressParamBean.getDepartments())
+                .addParams("speciality", addressParamBean.getSpeciality())
+                .addParams("professional", addressParamBean.getProfessional())
+                .addParams("synopsis", addressParamBean.getSynopsis())
+                .addParams("telephone", addressParamBean.getTelephone())
+                .addParams("otherhospital", addressParamBean.getOtherhospital())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e) {
+                        listener.requestGoodTagFail();
+                    }
+
+                    @Override
+                    public void onResponse(String response) {
+//               mListener.requestLoginNetSuccess(JsonUtils.JsonLoginData(response));
+                    }
+                });
+
+
+
+       /* OkHttpClientManager.postAsyn(Constants.REGISTER_THREE, params, new ResultCallback<GoodTagResultBean>() {
             @Override
             public void onError(Request request, Exception e) {
                 listener.requestGoodTagFail();
@@ -54,6 +67,6 @@ public class GoodTagNet {
                 System.out.println("response--->"+response.toString());
                listener.requestGoodTagSuc(response);
             }
-        });
+        });*/
     }
 }

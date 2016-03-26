@@ -26,20 +26,12 @@ import android.widget.TextView;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.bean.register.HeadIconResult;
-import com.hxqydyl.app.ys.http.OkHttpClientManager;
 import com.hxqydyl.app.ys.http.register.HeadIconNet;
 import com.hxqydyl.app.ys.http.register.RegisterSecNet;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.ui.uploadimage.UploadPhotoUtil;
-import com.hxqydyl.app.ys.utils.CommonUtils;
-import com.hxqydyl.app.ys.utils.Constants;
 import com.hxqydyl.app.ys.utils.LoginManager;
-import com.hxqydyl.app.ys.utils.StringUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.squareup.okhttp.Request;
-
-import org.json.JSONException;
-
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;

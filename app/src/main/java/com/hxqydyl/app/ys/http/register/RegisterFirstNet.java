@@ -1,18 +1,11 @@
 package com.hxqydyl.app.ys.http.register;
 
-import com.hxqydyl.app.ys.bean.Query;
 import com.hxqydyl.app.ys.bean.register.RegisterFirst;
-import com.hxqydyl.app.ys.http.JsonUtils;
-import com.hxqydyl.app.ys.http.OkHttpClientManager;
-import com.hxqydyl.app.ys.http.ResultCallback;
 import com.hxqydyl.app.ys.utils.Constants;
-import com.squareup.okhttp.Request;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
+import okhttp3.Call;
 
 /**
  * 注册第一步
@@ -32,7 +25,28 @@ public class RegisterFirstNet {
     }
 
     public void registerFirst(String mobile,String password,String captcha){
-        Map<String,String> params = new HashMap<String,String>();
+
+        OkHttpUtils
+                .post()
+                .url(Constants.REGISTER_ONE)
+                .addParams("mobile", mobile)
+                .addParams("password", password)
+                .addParams("captcha", captcha)
+                .addParams("callback","hxq")
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e) {
+       //                 mListener.requestLoginNetFail(Constants.REQUEST_FAIL);
+                    }
+
+                    @Override
+                    public void onResponse(String response) {
+//               mListener.requestLoginNetSuccess(JsonUtils.JsonLoginData(response));
+                    }
+                });
+
+       /* Map<String,String> params = new HashMap<String,String>();
         params.put("mobile",mobile);
         params.put("password",password);
         params.put("captcha",captcha);
@@ -49,7 +63,7 @@ public class RegisterFirstNet {
                 System.out.println("response--->"+response);
                 listener.requestRegisterFirstNetSuccess(JsonUtils.JsonQuery(response));
             }
-        });
+        });*/
     }
 
 }

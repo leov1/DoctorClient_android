@@ -1,16 +1,11 @@
 package com.hxqydyl.app.ys.http.register;
 
-import com.hxqydyl.app.ys.bean.register.AddressParamBean;
 import com.hxqydyl.app.ys.bean.register.TagsResultBean;
-import com.hxqydyl.app.ys.http.JsonUtils;
-import com.hxqydyl.app.ys.http.OkHttpClientManager;
-import com.hxqydyl.app.ys.http.ResultCallback;
 import com.hxqydyl.app.ys.utils.Constants;
-import com.squareup.okhttp.Request;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
-import org.json.JSONException;
-
-import java.util.Map;
+import okhttp3.Call;
 
 /**
  * 标签
@@ -32,18 +27,34 @@ public class TagsNet {
     public void obtainTags(){
         System.out.println("tagsResultBean--->" + Constants.GET_TAGS);
 
-        OkHttpClientManager.postAsyn(Constants.GET_TAGS, (Map)null, new ResultCallback<String>() {
-            @Override
-            public void onError(Request request, Exception e) {
-                System.out.println("onError--->");
-            }
+        OkHttpUtils
+                .post()
+                .url(Constants.GET_TAGS)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e) {
+     //                   mListener.requestLoginNetFail(Constants.REQUEST_FAIL);
+                    }
 
-            @Override
-            public void onResponse(String response) throws JSONException {
-                System.out.println("tagsResultBean--->" + response);
-                TagsResultBean tagsResultBean = JsonUtils.JsonTagsResult(response);
-                listener.requestTagsSuc(tagsResultBean);
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+//               mListener.requestLoginNetSuccess(JsonUtils.JsonLoginData(response));
+                    }
+                });
+
+//        OkHttpClientManager.postAsyn(Constants.GET_TAGS, (Map)null, new ResultCallback<String>() {
+//            @Override
+//            public void onError(Request request, Exception e) {
+//                System.out.println("onError--->");
+//            }
+//
+//            @Override
+//            public void onResponse(String response) throws JSONException {
+//                System.out.println("tagsResultBean--->" + response);
+//                TagsResultBean tagsResultBean = JsonUtils.JsonTagsResult(response);
+//                listener.requestTagsSuc(tagsResultBean);
+//            }
+//        });
     }
 }

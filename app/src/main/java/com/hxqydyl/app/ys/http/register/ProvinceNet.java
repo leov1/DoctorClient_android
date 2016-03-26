@@ -1,13 +1,11 @@
 package com.hxqydyl.app.ys.http.register;
 
 import com.hxqydyl.app.ys.bean.register.ProvinceInfoResult;
-import com.hxqydyl.app.ys.http.JsonUtils;
-import com.hxqydyl.app.ys.http.OkHttpClientManager;
-import com.hxqydyl.app.ys.http.ResultCallback;
 import com.hxqydyl.app.ys.utils.Constants;
-import com.squareup.okhttp.Request;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
-import org.json.JSONException;
+import okhttp3.Call;
 
 /**
  * Created by hxq on 2016/3/21.
@@ -28,7 +26,25 @@ public class ProvinceNet {
     public void obtainProvince(){
         System.out.println("response---->");
         //获取医院
-        OkHttpClientManager.getAsyn(Constants.GET_PROVINCE, new ResultCallback<String>() {
+
+        OkHttpUtils
+                .get()
+                .url(Constants.GET_PROVINCE)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e) {
+           //             mListener.requestLoginNetFail(Constants.REQUEST_FAIL);
+                    }
+
+                    @Override
+                    public void onResponse(String response) {
+//               mListener.requestLoginNetSuccess(JsonUtils.JsonLoginData(response));
+                    }
+                });
+
+
+       /* OkHttpClientManager.getAsyn(Constants.GET_PROVINCE, new ResultCallback<String>() {
             @Override
             public void onError(Request request, Exception e) {
               listener.RequestProvinceFail();
@@ -40,6 +56,6 @@ public class ProvinceNet {
                 ProvinceInfoResult provinceInfoResult = JsonUtils.JsonProvinceInfoResult(response);
                 listener.requestProvinceSuc(provinceInfoResult);
             }
-        });
+        });*/
     }
 }

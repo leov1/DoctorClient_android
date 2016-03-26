@@ -1,16 +1,11 @@
 package com.hxqydyl.app.ys.http.login;
 
 import com.hxqydyl.app.ys.bean.Query;
-import com.hxqydyl.app.ys.bean.QueryResultBean;
-import com.hxqydyl.app.ys.http.OkHttpClientManager;
-import com.hxqydyl.app.ys.http.ResultCallback;
 import com.hxqydyl.app.ys.utils.Constants;
-import com.squareup.okhttp.Request;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
-import org.json.JSONException;
-
-import java.util.HashMap;
-import java.util.Map;
+import okhttp3.Call;
 
 /**
  * 修改密码
@@ -19,34 +14,38 @@ import java.util.Map;
 public class UpdatePasswordNet {
 
     private OnUpdatePasswordListener listener;
-    public void setListener(OnUpdatePasswordListener listener){
+
+    public void setListener(OnUpdatePasswordListener listener) {
         this.listener = listener;
     }
 
-    public interface OnUpdatePasswordListener{
+    public interface OnUpdatePasswordListener {
         void requestUpdatePwSuc(Query query);
+
         void requestUpdatePwFail();
     }
 
-    public void updatePassword(String mobile,String password,String captcha){
-        Map<String,String> params = new HashMap<>();
-        params.put("mobile", mobile);
-        params.put("password", password);
-        params.put("captcha", captcha);
-        params.put("callback", "hxq");
-        System.out.println("response--->" + params.toString());
-        OkHttpClientManager.postAsyn(Constants.UPDATE_PASSWORD, params, new ResultCallback<QueryResultBean>() {
-            @Override
-            public void onError(Request request, Exception e) {
-                listener.requestUpdatePwFail();
-                System.out.println("response--->");
-            }
+    public void updatePassword(String mobile, String password, String captcha) {
+        OkHttpUtils
+                .post()
+                .url(Constants.UPDATE_PASSWORD)
+                .addParams("mobile", mobile)
+                .addParams("password", password)
+                .addParams("captcha", captcha)
+                .addParams("callback", "hxq")
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e) {
+                        listener.requestUpdatePwFail();
+                    }
 
-            @Override
-            public void onResponse(QueryResultBean response) throws JSONException {
-                listener.requestUpdatePwSuc(response.getQuery());
-                System.out.println("response--->" + response.toString());
-            }
-        });
+                    @Override
+                    public void onResponse(String response) {
+                        //                      listener.requestUpdatePwSuc(response.getQuery());
+                        System.out.println("response--->" + response.toString());
+                    }
+                });
+
     }
 }
