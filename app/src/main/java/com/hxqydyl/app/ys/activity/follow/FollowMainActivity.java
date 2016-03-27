@@ -15,7 +15,7 @@ import com.hxqydyl.app.ys.activity.patient_group.PatientGroupManageActivity;
 import com.hxqydyl.app.ys.adapter.PatientListAdapter;
 import com.hxqydyl.app.ys.bean.Patient;
 import com.hxqydyl.app.ys.bean.PatientGroup;
-import com.hxqydyl.app.ys.ui.fullshowexpandablelistview.FullShowExpandableListView;
+import com.hxqydyl.app.ys.ui.fullshowview.FullShowExpandableListView;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.hxqydyl.app.ys.ui.fullshowexpandablelistview;
+package com.hxqydyl.app.ys.ui.fullshowview;
 
 import android.content.Context;
 import android.util.AttributeSet;

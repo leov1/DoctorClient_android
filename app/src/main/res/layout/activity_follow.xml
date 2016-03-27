@@ -141,14 +141,14 @@
 
             <View style="@style/divider_line" />
 
-            <com.hxqydyl.app.ys.ui.fullshowexpandablelistview.FullShowExpandableListView
+            <com.hxqydyl.app.ys.ui.fullshowview.FullShowExpandableListView
                 android:id="@+id/elvPatientList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:divider="@color/color_dfdfdf"
                 android:dividerHeight="1dp">
 
-            </com.hxqydyl.app.ys.ui.fullshowexpandablelistview.FullShowExpandableListView>
+            </com.hxqydyl.app.ys.ui.fullshowview.FullShowExpandableListView>
 
             <View style="@style/divider_line" />
 

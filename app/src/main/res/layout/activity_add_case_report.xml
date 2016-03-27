@@ -292,12 +292,12 @@
                         android:textColor="@color/color_4b4b4b"
                         android:textSize="@dimen/text_size_14" />
 
-                    <com.hxqydyl.app.ys.ui.fullshowgridview.FullShowGridView
+                    <com.hxqydyl.app.ys.ui.fullshowview.FullShowGridView
                         android:id="@+id/gvPatientCaseHistory"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/space_13"
-                        android:numColumns="4"></com.hxqydyl.app.ys.ui.fullshowgridview.FullShowGridView>
+                        android:numColumns="4"></com.hxqydyl.app.ys.ui.fullshowview.FullShowGridView>
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

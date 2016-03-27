@@ -1,22 +1,22 @@
-package com.hxqydyl.app.ys.ui.fullshowgridview;
+package com.hxqydyl.app.ys.ui.fullshowview;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.GridView;
+import android.widget.ListView;
 
 /**
- * Created by Administrator on 2016/3/25.
+ * Created by white_ash on 2016/3/28.
  */
-public class FullShowGridView extends GridView {
-    public FullShowGridView(Context context) {
+public class FullShowListView extends ListView {
+    public FullShowListView(Context context) {
         super(context);
     }
 
-    public FullShowGridView(Context context, AttributeSet attrs) {
+    public FullShowListView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public FullShowGridView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public FullShowListView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 

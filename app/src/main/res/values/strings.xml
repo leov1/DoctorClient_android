@@ -140,4 +140,11 @@
     <string name="select_pic_source">选择图片来源</string>
     <string name="camera">相机</string>
     <string name="photo_album">相册</string>
+    <string name="follow_up_form_title">%s的随访表单</string>
+    <string name="illness_change">病情变化</string>
+    <string name="weight_record">体重记录</string>
+    <string name="other_check_and_result">其他检查及结果</string>
+    <string name="eat_med_record">服药记录</string>
+    <string name="form_self_measure">自评量表</string>
+    <string name="form_doctor_measure">医评量表</string>
 </resources>
