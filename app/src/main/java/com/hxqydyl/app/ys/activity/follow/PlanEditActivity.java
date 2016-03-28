@@ -120,6 +120,7 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
         lvDoctorScale.setAdapter(doctorScaleAdapter);
 
         elvHealthTips = (ExpandableListView) findViewById(R.id.elvHealthTips);
+        elvHealthTips.setGroupIndicator(null);
         healthTipsList = new ArrayList<>();
         healthTipsList.add(new HealthTips());
         healthTipsAdapter = new HealthTipsAdapter(this, healthTipsList);

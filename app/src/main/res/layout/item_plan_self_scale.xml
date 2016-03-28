@@ -9,8 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center_vertical"
-        android:textSize="@dimen/text_size_18"
+        android:textSize="@dimen/text_size_16"
         android:text="阴郁量表"
+        android:textColor="#767676"
         android:paddingLeft="@dimen/space_10"
         android:layout_marginLeft="@dimen/space_20"
         />

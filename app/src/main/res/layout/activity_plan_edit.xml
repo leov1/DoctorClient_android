@@ -69,15 +69,16 @@
                 android:layout_height="wrap_content">
                 <TextView
                     android:text="药物不良反应处理"
+                    android:textColor="#696969"
                     android:gravity="center_vertical|left"
-                    android:textSize="@dimen/text_size_18"
+                    android:textSize="@dimen/text_size_16"
                     android:layout_width="match_parent"
                     android:layout_height="45dp" />
                 <EditText
                     android:hint="请输入药物不良反应处理方案"
                     android:gravity="top|left"
                     android:textSize="@dimen/text_size_16"
-                    android:textColor="#747474"
+                    android:textColor="#696969"
                     android:background="@color/transparent"
                     android:layout_marginTop="@dimen/space_10"
                     android:layout_width="match_parent"
@@ -194,7 +195,9 @@
                     android:id="@+id/tvSelfScale"
                     android:text="为患者选择自评量表"
                     android:textSize="@dimen/text_size_18"
+                    android:drawableRight="@mipmap/icon_right_arrow"
                     android:gravity="center_vertical"
+                    android:paddingRight="@dimen/space_20"
                     android:layout_marginLeft="@dimen/space_25"
                     android:layout_width="match_parent"
                     android:layout_height="50dp" />
@@ -223,6 +226,8 @@
                 <TextView
                     android:id="@+id/tvDoctorScale"
                     android:text="为患者选择医评量表"
+                    android:paddingRight="@dimen/space_20"
+                    android:drawableRight="@mipmap/icon_right_arrow"
                     android:layout_marginLeft="@dimen/space_25"
                     android:textSize="@dimen/text_size_18"
                     android:gravity="center_vertical"
@@ -255,8 +260,7 @@
 
             <com.hxqydyl.app.ys.ui.scrollviewandgridview.MyScrollExpandableListView
                 android:id="@+id/elvHealthTips"
-                android:layout_marginTop="10dp"
-                android:dividerHeight="@dimen/space_15"
+                android:dividerHeight="@dimen/space_10"
                 android:background="@color/color_f7f7f7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
