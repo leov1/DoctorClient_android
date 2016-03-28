@@ -6,10 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.bean.followupform.FollowUpFormGroup;
+import com.hxqydyl.app.ys.utils.InjectUtils;
 
 import java.util.ArrayList;
 
@@ -104,10 +106,58 @@ public class FollowUpFormAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+        Holder holder = null;
         if(convertView == null){
             convertView = LayoutInflater.from(context).inflate(R.layout.follow_up_form_child_item,null);
+            holder = new Holder();
+            InjectUtils.injectView(holder,convertView);
+            convertView.setTag(holder);
+        }else{
+            holder = (Holder) convertView.getTag();
         }
+        setAllViewsGone(holder);
+        switch(((FollowUpFormGroup)getGroup(groupPosition)).getFormGroupType()){
+            case FollowUpFormGroup.Type.ILLNESS_CHANGE:
+                holder.llIllnessChangeDetails.setVisibility(View.VISIBLE);
+
+                break;
+            case FollowUpFormGroup.Type.WEIGHT_RECORD:
+                holder.llWeightRecord.setVisibility(View.VISIBLE);
+                break;
+            case FollowUpFormGroup.Type.OTHER_CHECK_RECORD:
+                holder.llOtherCheckAndResult.setVisibility(View.VISIBLE);
+                break;
+            case FollowUpFormGroup.Type.EAT_MED_RECORD:
+                holder.llEatMedRecord.setVisibility(View.VISIBLE);
+                break;
+            case FollowUpFormGroup.Type.MEASURE_SELF_RECORD:
+                holder.llFormSelfMeasure.setVisibility(View.VISIBLE);
+                break;
+            case FollowUpFormGroup.Type.DOC_MEASURE_RECORD:
+                holder.llFormDoctorMeasure.setVisibility(View.VISIBLE);
+                break;
+        }
+
         return convertView;
+    }
+
+    private void setAllViewsGone(Holder holder){
+        holder.llIllnessChangeDetails.setVisibility(View.GONE);
+        holder.llWeightRecord.setVisibility(View.GONE);
+        holder.llOtherCheckAndResult.setVisibility(View.GONE);
+        holder.llEatMedRecord.setVisibility(View.GONE);
+        holder.llFormSelfMeasure.setVisibility(View.GONE);
+        holder.llFormDoctorMeasure.setVisibility(View.GONE);
+    }
+
+
+    class Holder{
+        LinearLayout llIllnessChangeDetails;
+        LinearLayout llWeightRecord;
+        LinearLayout llOtherCheckAndResult;
+        LinearLayout llEatMedRecord;
+        LinearLayout llFormSelfMeasure;
+        LinearLayout llFormDoctorMeasure;
     }
 
     @Override

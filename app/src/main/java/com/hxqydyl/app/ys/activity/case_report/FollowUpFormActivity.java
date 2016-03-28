@@ -61,27 +61,24 @@ public class FollowUpFormActivity extends BaseTitleActivity implements View.OnCl
             FollowUpFormOneRecord record = null;
             switch(group.getFormGroupType()){
                 case FollowUpFormGroup.Type.ILLNESS_CHANGE:
-                    record = new IllnessChangeRecord();
-                    IllnessChange change = null;
-                    change = new IllnessChange();
-                    change.setType(IllnessChange.Type.ILL);
-                    change.setStatus(IllnessChange.Status.INVALID);
-                    change.setDescription("病情变化描述详情");
-                    ((IllnessChangeRecord)record).addIllnessChange(change);
-                    change = new IllnessChange();
-                    change.setType(IllnessChange.Type.SLEEP);
-                    change.setStatus(IllnessChange.Status.BETTER);
-                    change.setDescription("病情变化描述详情");
-                    ((IllnessChangeRecord)record).addIllnessChange(change);
-                    change = new IllnessChange();
-                    change.setType(IllnessChange.Type.FOOD);
-                    change.setStatus(IllnessChange.Status.BEST);
-                    change.setDescription("病情变化描述详情");
-                    ((IllnessChangeRecord)record).addIllnessChange(change);
-                    change = new IllnessChange();
-                    change.setType(IllnessChange.Type.OTHER);
-                    change.setDescription("病情变化描述详情");
-                    ((IllnessChangeRecord)record).addIllnessChange(change);
+                    record = new IllnessChange();
+                    ((IllnessChange)record).setType(IllnessChange.Type.ILL);
+                    ((IllnessChange)record).setStatus(IllnessChange.Status.INVALID);
+                    ((IllnessChange)record).setDescription("病情变化描述详情");
+                    group.addRecord(record);
+                    record = new IllnessChange();
+                    ((IllnessChange)record).setType(IllnessChange.Type.SLEEP);
+                    ((IllnessChange)record).setStatus(IllnessChange.Status.BETTER);
+                    ((IllnessChange)record).setDescription("病情变化描述详情");
+                    group.addRecord(record);
+                    record = new IllnessChange();
+                    ((IllnessChange)record).setType(IllnessChange.Type.FOOD);
+                    ((IllnessChange)record).setStatus(IllnessChange.Status.BEST);
+                    ((IllnessChange)record).setDescription("病情变化描述详情");
+                    group.addRecord(record);
+                    record = new IllnessChange();
+                    ((IllnessChange)record).setType(IllnessChange.Type.OTHER);
+                    ((IllnessChange)record).setDescription("病情变化描述详情");
                     group.addRecord(record);
                     break;
                 case FollowUpFormGroup.Type.WEIGHT_RECORD:

@@ -3,7 +3,7 @@ package com.hxqydyl.app.ys.bean.followupform;
 /**
  * Created by white_ash on 2016/3/27.
  */
-public class IllnessChange {
+public class IllnessChange extends FollowUpFormOneRecord{
     private int type;
     private int status;
     private String description;

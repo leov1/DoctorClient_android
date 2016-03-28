@@ -7,8 +7,7 @@ import java.util.ArrayList;
 /**
  * Created by white_ash on 2016/3/27.
  */
-public class IllnessChangeRecord extends FollowUpFormOneRecord {
-    private ArrayList<IllnessChange> changes = new ArrayList<IllnessChange>();
+public class IllnessChangeRecord extends BaseBean {
     private String description;
     private String status;
     private String time;
@@ -35,13 +34,5 @@ public class IllnessChangeRecord extends FollowUpFormOneRecord {
 
     public void setTime(String time) {
         this.time = time;
-    }
-
-    public ArrayList<IllnessChange> getChanges() {
-        return changes;
-    }
-
-    public void addIllnessChange(IllnessChange change){
-        changes.add(change);
     }
 }
