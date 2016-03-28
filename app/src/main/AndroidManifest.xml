@@ -76,7 +76,6 @@
         <activity android:name=".activity.video.VideoActivity" />
         <activity android:name=".activity.patient.PatientInfoActivity" />
         <activity android:name=".activity.follow.ArticleActivity" />
-        <activity android:name=".activity.follow.FollowGroupsMgrActivity" />
         <activity android:name=".activity.follow.ChoiceUserActivity" />
         <activity android:name=".activity.follow.MassActivity" />
         <activity android:name=".activity.follow.ChoiceScaleActivity" />
