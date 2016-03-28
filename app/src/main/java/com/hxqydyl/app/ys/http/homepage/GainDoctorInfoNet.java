@@ -26,7 +26,6 @@ public class GainDoctorInfoNet {
      }
 
      public void gainDoctorInfo(String doctorUuid){
-
           OkHttpUtils
                   .get()
                   .url(Constants.GET_DOCTOR_INFO)

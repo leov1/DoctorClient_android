@@ -2,11 +2,13 @@ package com.hxqydyl.app.ys.http.register;
 
 import com.hxqydyl.app.ys.bean.register.AddressParamBean;
 import com.hxqydyl.app.ys.bean.register.GoodTagResultBean;
+import com.hxqydyl.app.ys.http.register.callback.GoodTagResultCallBack;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * Created by hxq on 2016/3/24.
@@ -42,31 +44,18 @@ public class GoodTagNet {
                 .addParams("telephone", addressParamBean.getTelephone())
                 .addParams("otherhospital", addressParamBean.getOtherhospital())
                 .build()
-                .execute(new StringCallback() {
+                .execute(new GoodTagResultCallBack() {
+
                     @Override
                     public void onError(Call call, Exception e) {
                         listener.requestGoodTagFail();
                     }
 
                     @Override
-                    public void onResponse(String response) {
-//               mListener.requestLoginNetSuccess(JsonUtils.JsonLoginData(response));
+                    public void onResponse(GoodTagResultBean response) {
+                        listener.requestGoodTagSuc(response);
                     }
                 });
 
-
-
-       /* OkHttpClientManager.postAsyn(Constants.REGISTER_THREE, params, new ResultCallback<GoodTagResultBean>() {
-            @Override
-            public void onError(Request request, Exception e) {
-                listener.requestGoodTagFail();
-            }
-
-            @Override
-            public void onResponse(GoodTagResultBean response) throws JSONException {
-                System.out.println("response--->"+response.toString());
-               listener.requestGoodTagSuc(response);
-            }
-        });*/
     }
 }

@@ -1,6 +1,7 @@
 package com.hxqydyl.app.ys.http.register;
 
 import com.hxqydyl.app.ys.bean.register.HeadIconResult;
+import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -26,12 +27,11 @@ public class HeadIconNet {
     }
 
     public void uploadHeadImg(Map<String,String> map){
-
         OkHttpUtils
                 .post()
                 .url(Constants.UPLOAD_IMAGE)
-                .addParams("username", "hyman")
-                .addParams("password", "123")
+                .addParams("icon", map.get("icon"))
+                .addParams("callback", Constants.CALLBACK)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -41,21 +41,9 @@ public class HeadIconNet {
 
                     @Override
                     public void onResponse(String response) {
-//               mListener.requestLoginNetSuccess(JsonUtils.JsonLoginData(response));
+                        listener.requestHeadIconNetSuc(JsonUtils.JsonHeadIconResult(response));
                     }
                 });
 
-
-       /* OkHttpClientManager.postAsyn(Constants.UPLOAD_IMAGE, map, new ResultCallback<String>() {
-            @Override
-            public void onError(Request request, Exception e) {
-                listener.requestHeadIconNetFail();
-            }
-
-            @Override
-            public void onResponse(String response) throws JSONException {
-               listener.requestHeadIconNetSuc(JsonUtils.JsonHeadIconResult(response));
-            }
-        });*/
     }
 }

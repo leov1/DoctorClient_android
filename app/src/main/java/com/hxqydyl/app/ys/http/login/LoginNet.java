@@ -1,6 +1,7 @@
 package com.hxqydyl.app.ys.http.login;
 
 import com.hxqydyl.app.ys.bean.register.DoctorInfo;
+import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -28,18 +29,12 @@ public class LoginNet {
     }
 
     public void loginData(String mobile,String password){
-        Map<String,String> params = new HashMap<>();
-//        params.put("mobile", mobile);
-//        params.put("password",password);
-//        params.put("callback", Constants.CALLBACK);
-
-        params.put("","");
-
         OkHttpUtils
                 .post()
                 .url(Constants.LOGIN_URL)
-                .addParams("username", "hyman")
-                .addParams("password", "123")
+                .addParams("mobile", mobile)
+                .addParams("password", password)
+                .addParams("callback",Constants.CALLBACK)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -49,7 +44,7 @@ public class LoginNet {
 
                     @Override
                     public void onResponse(String response) {
-//               mListener.requestLoginNetSuccess(JsonUtils.JsonLoginData(response));
+                     mListener.requestLoginNetSuccess(JsonUtils.JsonLoginData(response));
                     }
                 });
 

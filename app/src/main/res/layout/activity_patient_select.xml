@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.hxqydyl.app.ys.activity.follow.PatientSelectActivity">
+
+    <include layout="@layout/top_title"></include>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:scrollbars="none"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.hxqydyl.app.ys.ui.fullshowview.FullShowExpandableListView
+                android:id="@+id/expand_lv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></com.hxqydyl.app.ys.ui.fullshowview.FullShowExpandableListView>
+
+            <include
+                layout="@layout/foot_patient_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_20"
+                android:layout_alignParentBottom="true"></include>
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

@@ -1,9 +1,12 @@
 package com.hxqydyl.app.ys.http.register;
 
 import com.hxqydyl.app.ys.bean.register.ProvinceInfoResult;
+import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
 
 import okhttp3.Call;
 
@@ -34,28 +37,20 @@ public class ProvinceNet {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e) {
-           //             mListener.requestLoginNetFail(Constants.REQUEST_FAIL);
+                        listener.RequestProvinceFail();
                     }
 
                     @Override
                     public void onResponse(String response) {
-//               mListener.requestLoginNetSuccess(JsonUtils.JsonLoginData(response));
+                        System.out.println("response---->" + response);
+                        ProvinceInfoResult provinceInfoResult = null;
+                        try {
+                            provinceInfoResult = JsonUtils.JsonProvinceInfoResult(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        listener.requestProvinceSuc(provinceInfoResult);
                     }
                 });
-
-
-       /* OkHttpClientManager.getAsyn(Constants.GET_PROVINCE, new ResultCallback<String>() {
-            @Override
-            public void onError(Request request, Exception e) {
-              listener.RequestProvinceFail();
-            }
-
-            @Override
-            public void onResponse(String response) throws JSONException {
-                System.out.println("response---->" + response);
-                ProvinceInfoResult provinceInfoResult = JsonUtils.JsonProvinceInfoResult(response);
-                listener.requestProvinceSuc(provinceInfoResult);
-            }
-        });*/
     }
 }

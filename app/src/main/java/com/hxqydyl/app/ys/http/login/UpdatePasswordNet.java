@@ -42,7 +42,7 @@ public class UpdatePasswordNet {
 
                     @Override
                     public void onResponse(String response) {
-                        //                      listener.requestUpdatePwSuc(response.getQuery());
+                       // listener.requestUpdatePwSuc(response.getQuery());
                         System.out.println("response--->" + response.toString());
                     }
                 });

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:background="@color/gray_light"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/space_30"
+    android:paddingLeft="@dimen/space_10"
+    android:paddingRight="@dimen/space_10"
+    android:paddingTop="@dimen/space_20">
+
+    <CheckBox
+        android:id="@+id/checkbox_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/space_20"
+        android:focusable="false"
+        android:paddingStart="@dimen/space_12"
+        android:text="全选"
+        android:textSize="@dimen/text_size_18" />
+
+    <Button
+        android:id="@+id/btn_send_patient"
+        style="@style/btn_blue"
+        android:layout_marginTop="@dimen/space_20"
+        android:text="群发" />
+</LinearLayout>

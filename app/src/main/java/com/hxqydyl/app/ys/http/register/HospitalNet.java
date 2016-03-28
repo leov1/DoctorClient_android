@@ -1,9 +1,12 @@
 package com.hxqydyl.app.ys.http.register;
 
 import com.hxqydyl.app.ys.bean.register.HospitalResultBean;
+import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
 
 import okhttp3.Call;
 
@@ -36,29 +39,21 @@ public class HospitalNet {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e) {
- //                       mListener.requestLoginNetFail(Constants.REQUEST_FAIL);
+                        listener.requestHospitalFail();
                     }
 
                     @Override
                     public void onResponse(String response) {
-//               mListener.requestLoginNetSuccess(JsonUtils.JsonLoginData(response));
+                        System.out.println("Hospitalresponse---->" + response);
+                        HospitalResultBean hospitalResultBean = null;
+                        try {
+                            hospitalResultBean = JsonUtils.JsonHospitalResult(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        listener.requestHospitalSuc(hospitalResultBean);
                     }
                 });
 
-//        System.out.println("Hospitalresponse---->"+provinceUuid+"---"+cityUuid+"---"+regionUuid);
-//        OkHttpClientManager.getAsyn(Constants.GET_HOSPITAL+"?cityUuid="+cityUuid+"&provinceUuid="+provinceUuid+"&regionUuid="+regionUuid+"&callback=hxq", new
-//                ResultCallback<String>() {
-//            @Override
-//            public void onError(Request request, Exception e) {
-//             listener.requestHospitalFail();
-//            }
-//
-//            @Override
-//            public void onResponse(String response) throws JSONException {
-//                System.out.println("Hospitalresponse---->" + response);
-//             HospitalResultBean hospitalResultBean = JsonUtils.JsonHospitalResult(response);
-//             listener.requestHospitalSuc(hospitalResultBean);
-//            }
-//        });
     }
 }

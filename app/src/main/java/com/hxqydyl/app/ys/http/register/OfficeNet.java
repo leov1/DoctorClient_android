@@ -1,9 +1,12 @@
 package com.hxqydyl.app.ys.http.register;
 
 import com.hxqydyl.app.ys.bean.register.OfficeResultBean;
+import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
 
 import okhttp3.Call;
 
@@ -29,33 +32,25 @@ public class OfficeNet {
         OkHttpUtils
                 .get()
                 .url(Constants.GET_DEPARTMENT)
-                .addParams("callback", "hxq")
+                .addParams("callback", Constants.CALLBACK)
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e) {
-          //              mListener.requestLoginNetFail(Constants.REQUEST_FAIL);
+                        listener.requestOfficeFail();
                     }
 
                     @Override
                     public void onResponse(String response) {
-//               mListener.requestLoginNetSuccess(JsonUtils.JsonLoginData(response));
+                        System.out.println("response---->" + response);
+                        OfficeResultBean officeResultBean = null;
+                        try {
+                            officeResultBean = JsonUtils.JsonOfficeResult(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        listener.requestOfficeSuc(officeResultBean);
                     }
                 });
-
-
-//        OkHttpClientManager.getAsyn(Constants.GET_DEPARTMENT+"?callback=hxq", new ResultCallback<String>() {
-//            @Override
-//            public void onError(Request request, Exception e) {
-//                listener.requestOfficeFail();
-//            }
-//
-//            @Override
-//            public void onResponse(String response) throws JSONException {
-//                System.out.println("response---->" + response);
-//                OfficeResultBean officeResultBean = JsonUtils.JsonOfficeResult(response);
-//                listener.requestOfficeSuc(officeResultBean);
-//            }
-//        });
     }
 }

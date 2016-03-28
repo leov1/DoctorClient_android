@@ -6,9 +6,24 @@
 
     <include layout="@layout/top_title"></include>
 
-    <WebView
-        android:id="@+id/webview"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></WebView>
+        android:layout_height="match_parent">
+        <WebView
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></WebView>
+
+        <Button
+            android:id="@+id/btn_send_patient"
+            android:visibility="gone"
+            style="@style/btn_blue"
+            android:text="发送给我的患者"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/space_30"
+            android:onClick="shareToPatient"
+            />
+
+    </RelativeLayout>
 
 </LinearLayout>

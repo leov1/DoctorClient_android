@@ -1,9 +1,12 @@
 package com.hxqydyl.app.ys.http.register;
 
 import com.hxqydyl.app.ys.bean.register.TagsResultBean;
+import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
 
 import okhttp3.Call;
 
@@ -34,27 +37,19 @@ public class TagsNet {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e) {
-     //                   mListener.requestLoginNetFail(Constants.REQUEST_FAIL);
+                         listener.requestTagsFail();
                     }
 
                     @Override
                     public void onResponse(String response) {
-//               mListener.requestLoginNetSuccess(JsonUtils.JsonLoginData(response));
+                        TagsResultBean tagsResultBean = null;
+                        try {
+                            tagsResultBean = JsonUtils.JsonTagsResult(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        listener.requestTagsSuc(tagsResultBean);
                     }
                 });
-
-//        OkHttpClientManager.postAsyn(Constants.GET_TAGS, (Map)null, new ResultCallback<String>() {
-//            @Override
-//            public void onError(Request request, Exception e) {
-//                System.out.println("onError--->");
-//            }
-//
-//            @Override
-//            public void onResponse(String response) throws JSONException {
-//                System.out.println("tagsResultBean--->" + response);
-//                TagsResultBean tagsResultBean = JsonUtils.JsonTagsResult(response);
-//                listener.requestTagsSuc(tagsResultBean);
-//            }
-//        });
     }
 }

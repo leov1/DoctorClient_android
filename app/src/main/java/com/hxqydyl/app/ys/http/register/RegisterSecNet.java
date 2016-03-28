@@ -33,39 +33,20 @@ public class RegisterSecNet {
                 .addParams("sex", sex)
                 .addParams("icon", icon)
                 .addParams("doctorName", doctorName)
-                .addParams("callback", "hxq")
+                .addParams("callback", Constants.CALLBACK)
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e) {
-         //               mListener.requestLoginNetFail(Constants.REQUEST_FAIL);
+                        listener.requestRegisterSecFail();
                     }
 
                     @Override
                     public void onResponse(String response) {
-//               mListener.requestLoginNetSuccess(JsonUtils.JsonLoginData(response));
+                        System.out.println("response---->"+response);
+                        listener.requestRegisterSecSuc();
                     }
                 });
-
-      /*  Map<String,String> params = new HashMap<>();
-        params.put("uuid",uuid);
-        params.put("email",email);
-        params.put("sex",sex);
-        params.put("icon",icon);
-        params.put("doctorName",doctorName);
-        params.put("callback","hxq");
-        System.out.println("params--->"+params.toString());
-        OkHttpClientManager.postAsyn(Constants.REGISTER_TWO, params, new ResultCallback<String>() {
-            @Override
-            public void onError(Request request, Exception e) {
-              listener.requestRegisterSecFail();
-            }
-
-            @Override
-            public void onResponse(String response) throws JSONException {
-                System.out.println("response---->"+response);
-                listener.requestRegisterSecSuc();
-            }
-        });*/
     }
+
 }

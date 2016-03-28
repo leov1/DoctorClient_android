@@ -111,7 +111,6 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
                 case SAVE_PHOTO_IMAGE:
                     Log.d("gaolei", " case SAVE_PHOTO_IMAGE:------------------");
                     Map<String, String> map = (Map<String, String>) msg.obj;
-                    map.put("callback","hxq");
                    headIconNet.uploadHeadImg(map);
                    break;
             }

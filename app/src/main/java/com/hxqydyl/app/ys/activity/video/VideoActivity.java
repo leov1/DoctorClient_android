@@ -14,10 +14,7 @@ public class VideoActivity extends BaseWebActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        loadDataAndURL(Constants.GET_VIDEOS);
+        loadUrl(Constants.GET_VIDEOS);
     }
 
-    private void loadDataAndURL(String url) {
-        webView.loadUrl(url);
-    }
 }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/text_head"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/space_26"
+    android:background="@color/gray_light"
+    android:gravity="bottom"
+    android:paddingBottom="@dimen/space_6"
+    android:paddingLeft="@dimen/space_30"
+    android:text="选择随访患者"
+    android:textColor="@color/text_color_black"
+    android:textSize="@dimen/text_size_16"></TextView>

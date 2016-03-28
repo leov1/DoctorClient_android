@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 
 import com.hxqydyl.app.ys.R;
 
@@ -18,6 +19,7 @@ import java.util.regex.Pattern;
  */
 public class BaseWebActivity extends BaseTitleActivity {
     public WebView webView;
+    public Button btn_send_patient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +32,12 @@ public class BaseWebActivity extends BaseTitleActivity {
     private void initViews() {
         initViewOnBaseTitle("阅读");
         webView = (WebView) findViewById(R.id.webview);
+        btn_send_patient = (Button) findViewById(R.id.btn_send_patient);
         initWebSetting();
+    }
+
+    public void loadUrl(String url){
+        webView.loadUrl(url);
     }
 
     private void initWebSetting() {

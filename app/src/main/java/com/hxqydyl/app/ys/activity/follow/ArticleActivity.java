@@ -1,8 +1,10 @@
 package com.hxqydyl.app.ys.activity.follow;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.hxqydyl.app.ys.R;
@@ -12,7 +14,7 @@ import com.hxqydyl.app.ys.adapter.ArticlesAdapter;
 /**
  * 患教库列表
  */
-public class ArticleActivity extends BaseTitleActivity implements View.OnClickListener{
+public class ArticleActivity extends BaseTitleActivity implements View.OnClickListener,AdapterView.OnItemClickListener{
 
     private ListView listView;
     private ArticlesAdapter adapter;
@@ -27,6 +29,7 @@ public class ArticleActivity extends BaseTitleActivity implements View.OnClickLi
 
     private void initListeners() {
         setBackListener(this);
+        listView.setOnItemClickListener(this);
     }
 
     private void initViews() {
@@ -44,5 +47,10 @@ public class ArticleActivity extends BaseTitleActivity implements View.OnClickLi
                 finish();
                 break;
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        startActivity(new Intent(ArticleActivity.this,ArticleDetailActivity.class));
     }
 }
