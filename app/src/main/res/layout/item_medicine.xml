@@ -9,7 +9,7 @@
         android:layout_marginTop="10dp"
         android:layout_height="1dp"
         android:background="#d3d3d3"/>
-    
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp">
@@ -21,15 +21,23 @@
             android:id="@+id/etName"
             android:text="名称啊"
             android:background="@color/transparent"
-            android:paddingLeft="@dimen/space_5"
+            android:layout_marginLeft="@dimen/space_20"
+            android:textSize="@dimen/text_size_16"
             android:layout_width="match_parent"
             android:layout_weight="1"
             android:layout_height="match_parent" />
         <ImageButton
-            android:src="@mipmap/ic_delete"
+            android:src="@mipmap/btn_delete"
+            android:layout_marginRight="@dimen/space_15"
+            android:background="@color/transparent"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#e5e5e5"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,17 +48,18 @@
             android:layout_height="match_parent" />
         <LinearLayout
             android:layout_weight="1"
+            android:layout_marginLeft="@dimen/space_20"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_vertical|center_horizontal">
+            android:gravity="center_vertical">
             <TextView
                 android:id="@+id/tvTimeMorning"
                 android:text="早"
                 android:background="@drawable/btn_medicine_time"
                 android:textSize="@dimen/text_size_16"
                 android:gravity="center_vertical|center_horizontal"
-                android:layout_width="70dp"
-                android:layout_height="35dp" />
+                android:layout_width="50dp"
+                android:layout_height="30dp" />
             <TextView
                 android:id="@+id/tvTimeNoon"
                 android:text="中"
@@ -58,8 +67,8 @@
                 android:background="@drawable/btn_medicine_time"
                 android:textSize="@dimen/text_size_16"
                 android:gravity="center_vertical|center_horizontal"
-                android:layout_width="70dp"
-                android:layout_height="35dp" />
+                android:layout_width="50dp"
+                android:layout_height="30dp" />
             <TextView
                 android:id="@+id/tvTimeNight"
                 android:text="晚"
@@ -67,10 +76,15 @@
                 android:background="@drawable/btn_medicine_time"
                 android:textSize="@dimen/text_size_16"
                 android:gravity="center_vertical|center_horizontal"
-                android:layout_width="70dp"
-                android:layout_height="35dp" />
+                android:layout_width="50dp"
+                android:layout_height="30dp" />
         </LinearLayout>
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#e5e5e5"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -82,29 +96,41 @@
         <TextView
             android:id="@+id/tvFoodRelation"
             android:text="饭前"
+            android:layout_marginLeft="@dimen/space_20"
             android:gravity="center_vertical|left"
-            android:textSize="@dimen/text_size_18"
+            android:textSize="@dimen/text_size_16"
             android:paddingLeft="5dp"
             android:layout_width="match_parent"
             android:layout_weight="1"
             android:layout_height="match_parent" />
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#e5e5e5"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TextView
             android:text="用量"
             style="@style/medicine_left_title"
             android:layout_height="match_parent" />
+
         <com.hxqydyl.app.ys.ui.scrollviewandgridview.MyScrollListView
             android:id="@+id/lvDosage"
-            android:paddingLeft="@dimen/space_5"
+            android:paddingLeft="@dimen/space_20"
             android:layout_width="match_parent"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             />
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#e5e5e5"/>
 
 </LinearLayout>

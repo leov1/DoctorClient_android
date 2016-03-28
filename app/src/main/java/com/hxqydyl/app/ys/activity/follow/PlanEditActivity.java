@@ -1,7 +1,10 @@
 package com.hxqydyl.app.ys.activity.follow;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
@@ -15,12 +18,22 @@ import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.adapter.HealthTipsAdapter;
 import com.hxqydyl.app.ys.adapter.MedicineAdapter;
+import com.hxqydyl.app.ys.adapter.PlanCheckSycleAdapter;
 import com.hxqydyl.app.ys.adapter.PlanSelfScaleAdapter;
+import com.hxqydyl.app.ys.bean.plan.CheckSycle;
 import com.hxqydyl.app.ys.bean.plan.HealthTips;
 import com.hxqydyl.app.ys.bean.plan.Medicine;
+import com.hxqydyl.app.ys.ui.UIHelper;
+import com.hxqydyl.app.ys.utils.DialogUtils;
+import com.hxqydyl.app.ys.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import ui.swipemenulistview.SwipeMenu;
+import ui.swipemenulistview.SwipeMenuCreator;
+import ui.swipemenulistview.SwipeMenuItem;
+import ui.swipemenulistview.SwipeMenuListView;
 
 /**
  * Created by wangchao36 on 16/3/22.
@@ -34,13 +47,20 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
     private TextView tvBloodCycle;  //血
     private TextView tvLiverCycle;  //肝
 
-    private TextView tvAddMedicine;  //   添加其他药品
+    private LinearLayout llAddMedicine;  //   添加其他药品
+    private LinearLayout llAddOtherSycle;      // 添加其他检查周期
     private TextView tvSelfScale;  //   添加自评量表
     private TextView tvDoctorScale;  // 添加医评量表
+    private View tvDoctorScaleLine;
+    private View tvSelfScaleLine;
 
     private ListView lvMedicine;
     private MedicineAdapter medicineAdapter;
     private List<Medicine> medicineList;
+
+    private SwipeMenuListView lvOtherSycle;
+    private PlanCheckSycleAdapter planCheckSycleAdapter;
+    private List<CheckSycle> checkSycleList;
 
     private ListView lvSelfScale;
     private ListView lvDoctorScale;
@@ -54,9 +74,6 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
     private HealthTipsAdapter healthTipsAdapter;
     private List<HealthTips> healthTipsList;
     private LinearLayout llAddTips;
-
-    final String[] cycleItem1 = {"1周", "2周", "3周", "4周"};
-    final String[] cycleItem2 = {"1周", "2周", "4周", "8周"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,13 +91,21 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
         tvBloodCycle = (TextView) findViewById(R.id.tvBloodCycle);
         tvLiverCycle = (TextView) findViewById(R.id.tvLiverCycle);
 
-        tvAddMedicine = (TextView) findViewById(R.id.tvAddMedicine);
+        llAddMedicine = (LinearLayout) findViewById(R.id.llAddMedicine);
+        llAddOtherSycle = (LinearLayout) findViewById(R.id.llAddOtherSycle);
         tvSelfScale = (TextView) findViewById(R.id.tvSelfScale);
         tvDoctorScale = (TextView) findViewById(R.id.tvDoctorScale);
+        tvDoctorScaleLine = findViewById(R.id.tvDoctorScaleLine);
+        tvSelfScaleLine = findViewById(R.id.tvSelfScaleLine);
 
         lvMedicine = (ListView) findViewById(R.id.lvMedicine);
         lvSelfScale = (ListView) findViewById(R.id.lvSelfScale);
         lvDoctorScale = (ListView) findViewById(R.id.lvDoctorScale);
+
+        lvOtherSycle = (SwipeMenuListView) findViewById(R.id.lvOtherSycle);
+        checkSycleList = new ArrayList<>();
+        planCheckSycleAdapter = new PlanCheckSycleAdapter(this, checkSycleList);
+        lvOtherSycle.setAdapter(planCheckSycleAdapter);
 
         medicineList = new ArrayList<>();
         medicineList.add(new Medicine());
@@ -88,10 +113,10 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
         lvMedicine.setAdapter(medicineAdapter);
 
         selfScaleList = new ArrayList<>();
-        selfScaleAdapter = new PlanSelfScaleAdapter(this, selfScaleList);
+        selfScaleAdapter = new PlanSelfScaleAdapter(this, selfScaleList, tvSelfScaleLine);
         lvSelfScale.setAdapter(selfScaleAdapter);
         doctorScaleList = new ArrayList<>();
-        doctorScaleAdapter = new PlanSelfScaleAdapter(this, doctorScaleList);
+        doctorScaleAdapter = new PlanSelfScaleAdapter(this, doctorScaleList, tvDoctorScaleLine);
         lvDoctorScale.setAdapter(doctorScaleAdapter);
 
         elvHealthTips = (ExpandableListView) findViewById(R.id.elvHealthTips);
@@ -100,6 +125,9 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
         healthTipsAdapter = new HealthTipsAdapter(this, healthTipsList);
         elvHealthTips.setAdapter(healthTipsAdapter);
         llAddTips = (LinearLayout) findViewById(R.id.llAddTips);
+        for(int i = 0; i < healthTipsAdapter.getGroupCount(); i++){
+            elvHealthTips.expandGroup(i);
+        }
     }
 
     private void bindEvent() {
@@ -108,29 +136,54 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
         tvEcgCycle.setOnClickListener(this);
         tvBloodCycle.setOnClickListener(this);
         tvLiverCycle.setOnClickListener(this);
-        tvAddMedicine.setOnClickListener(this);
+        llAddMedicine.setOnClickListener(this);
+        llAddOtherSycle.setOnClickListener(this);
         tvSelfScale.setOnClickListener(this);
         tvDoctorScale.setOnClickListener(this);
         llAddTips.setOnClickListener(this);
+
+        lvOtherSycle.setMenuCreator(new SwipeMenuCreator() {
+            @Override
+            public void create(SwipeMenu menu) {
+                SwipeMenuItem deleteItem = new SwipeMenuItem(getApplicationContext());
+                deleteItem.setBackground(new ColorDrawable(Color.rgb(31, 128, 183)));
+                deleteItem.setWidth(dp2px(90));
+                deleteItem.setIcon(R.mipmap.ic_delete);
+                menu.addMenuItem(deleteItem);
+            }
+        });
+
+        lvOtherSycle.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                switch (index) {
+                    case 0:
+                        checkSycleList.remove(position);
+                        planCheckSycleAdapter.notifyDataSetChanged();
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tvFollowCycle:
-                cycleDialog((TextView) v, cycleItem1);
+                DialogUtils.cycleDialog(this, (TextView) v, CheckSycle.cycleItem1);
                 break;
             case R.id.tvWeightCycle:
-                cycleDialog((TextView) v, cycleItem1);
+                DialogUtils.cycleDialog(this, (TextView) v, CheckSycle.cycleItem1);
                 break;
             case R.id.tvEcgCycle:
-                cycleDialog((TextView) v, cycleItem2);
+                DialogUtils.cycleDialog(this, (TextView) v, CheckSycle.cycleItem2);
                 break;
             case R.id.tvBloodCycle:
-                cycleDialog((TextView) v, cycleItem2);
+                DialogUtils.cycleDialog(this, (TextView) v, CheckSycle.cycleItem2);
                 break;
             case R.id.tvLiverCycle:
-                cycleDialog((TextView) v, cycleItem2);
+                DialogUtils.cycleDialog(this, (TextView) v, CheckSycle.cycleItem2);
                 break;
             case R.id.tvSelfScale:
                 Intent choiceSelfIntent = new Intent(this, ChoiceSelfActivity.class);
@@ -143,10 +196,26 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
             case R.id.llAddTips:
                 healthTipsList.add(new HealthTips());
                 healthTipsAdapter.notifyDataSetChanged();
+                for(int i = 0; i < healthTipsAdapter.getGroupCount(); i++){
+                    elvHealthTips.expandGroup(i);
+                }
                 break;
-            case R.id.tvAddMedicine:
+            case R.id.llAddMedicine:
                 medicineList.add(new Medicine());
                 medicineAdapter.notifyDataSetChanged();
+                break;
+            case R.id.llAddOtherSycle:
+                DialogUtils.showAddCheckSycleDialog(this, new DialogUtils.SaveCheckSycleListener() {
+                    @Override
+                    public boolean save(String name, String sycle) {
+                        if (StringUtils.isEmpty(name) || StringUtils.isEmpty(sycle)) {
+                            return false;
+                        }
+                        checkSycleList.add(new CheckSycle(name, sycle));
+                        planCheckSycleAdapter.notifyDataSetChanged();
+                        return true;
+                    }
+                });
                 break;
         }
     }
@@ -169,23 +238,10 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
         }
     }
 
-    /**
-     * 弹窗，选择周期
-     * @param tv
-     * @param items
-     */
-    private void cycleDialog(final TextView tv, final String[] items) {
-        final NormalListDialog dialog = new NormalListDialog(this, items);
-        dialog.title("请选择周期")
-                .titleBgColor(getResources().getColor(R.color.color_home_topbar))
-                .layoutAnimation(null)
-                .show();
-        dialog.setOnOperItemClickL(new OnOperItemClickL() {
-            @Override
-            public void onOperItemClick(AdapterView<?> parent, View view, int position, long id) {
-                tv.setText(items[position]);
-                dialog.dismiss();
-            }
-        });
+
+
+    private int dp2px(int dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+                getResources().getDisplayMetrics());
     }
 }

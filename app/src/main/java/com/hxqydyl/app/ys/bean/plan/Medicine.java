@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class Medicine {
 
-    public static final String[] items = {"饭前服用", "饭后服用", "不与餐同服"};
+    public static final String[] items = {"饭前服用", "饭后服用", "不与餐同服", "随餐服用"};
 
     private String name = "";
     private boolean timeMorning = false;

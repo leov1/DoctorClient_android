@@ -18,10 +18,12 @@ public class PlanSelfScaleAdapter extends BaseAdapter {
 
     private Context context;
     private List<String> list;
+    private View topLine;
 
-    public PlanSelfScaleAdapter(Context context, List<String> dataList) {
+    public PlanSelfScaleAdapter(Context context, List<String> dataList, View topLine) {
         this.context = context;
         this.list = dataList;
+        this.topLine = topLine;
     }
 
     @Override
@@ -47,5 +49,15 @@ public class PlanSelfScaleAdapter extends BaseAdapter {
         TextView tvName = BaseViewHolder.get(convertView,R.id.tvName);
         tvName.setText(list.get(position));
         return convertView;
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        if (getCount() > 0) {
+            topLine.setVisibility(View.VISIBLE);
+        } else {
+            topLine.setVisibility(View.GONE);
+        }
+        super.notifyDataSetChanged();
     }
 }
