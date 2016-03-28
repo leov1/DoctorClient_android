@@ -117,6 +117,7 @@
                         android:id="@+id/tvGroupName"
                         android:background="@color/transparent"
                         android:layout_weight="1"
+                        android:gravity="center_vertical"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                 </LinearLayout>

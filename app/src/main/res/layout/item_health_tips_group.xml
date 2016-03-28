@@ -8,9 +8,12 @@
     <TextView
         android:id="@+id/tvTitle"
         android:paddingLeft="30dp"
-        android:textSize="@dimen/text_size_22"
+        android:drawableRight="@mipmap/icon_right_arrow"
+        android:textSize="@dimen/text_size_18"
+        android:singleLine="true"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="50dp"
+        android:layout_marginRight="@dimen/space_25" />
 
 </LinearLayout>

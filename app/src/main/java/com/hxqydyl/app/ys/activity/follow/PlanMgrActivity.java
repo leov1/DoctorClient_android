@@ -6,12 +6,18 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.adapter.PlanMgrAdapter;
+import com.hxqydyl.app.ys.bean.plan.Plan;
 import com.hxqydyl.app.ys.ui.UIHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import ui.swipemenulistview.SwipeMenu;
 import ui.swipemenulistview.SwipeMenuCreator;
@@ -26,6 +32,11 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
     private SwipeMenuListView swipeMenuListView;
     private PlanMgrAdapter adapter;
     private RelativeLayout reLayoutAddPlan;
+    private List<Plan> myPlanList;
+
+    private ListView lvSuggestPlan;
+    private PlanMgrAdapter suggestPlanAdapter;
+    private List<Plan> suggestPlanList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,15 +53,10 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
         swipeMenuListView.setMenuCreator(new SwipeMenuCreator() {
             @Override
             public void create(SwipeMenu menu) {
-                // create "delete" item
                 SwipeMenuItem deleteItem = new SwipeMenuItem(getApplicationContext());
-                // set item background
-                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9, 0x3F, 0x25)));
-                // set item width
+                deleteItem.setBackground(new ColorDrawable(Color.rgb(31, 128, 183)));
                 deleteItem.setWidth(dp2px(90));
-                // set a icon
                 deleteItem.setIcon(R.mipmap.ic_delete);
-                // add to menu
                 menu.addMenuItem(deleteItem);
             }
         });
@@ -66,6 +72,22 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
                 return false;
             }
         });
+
+        swipeMenuListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(PlanMgrActivity.this, PlanEditActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        lvSuggestPlan.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(PlanMgrActivity.this, PlanEditActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initViews() {
@@ -73,8 +95,22 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
         reLayoutAddPlan = (RelativeLayout) findViewById(R.id.rl_add_plan);
         reLayoutAddPlan.setOnClickListener(this);
         swipeMenuListView = (SwipeMenuListView) findViewById(R.id.swipe_menu_lv);
-        adapter = new PlanMgrAdapter(this);
+        myPlanList = new ArrayList<>();
+        myPlanList.add(new Plan("我的方案111"));
+        myPlanList.add(new Plan("我的方案222"));
+        myPlanList.add(new Plan("我的方案333"));
+        myPlanList.add(new Plan("我的方案444"));
+        adapter = new PlanMgrAdapter(this, myPlanList);
         swipeMenuListView.setAdapter(adapter);
+
+        lvSuggestPlan = (ListView) findViewById(R.id.lvSuggestPlan);
+        suggestPlanList = new ArrayList<>();
+        suggestPlanList.add(new Plan("建议方案111"));
+        suggestPlanList.add(new Plan("建议方案222"));
+        suggestPlanList.add(new Plan("建议方案333"));
+        suggestPlanList.add(new Plan("建议方案444"));
+        suggestPlanAdapter = new PlanMgrAdapter(this, suggestPlanList, false);
+        lvSuggestPlan.setAdapter(suggestPlanAdapter);
 
     }
 

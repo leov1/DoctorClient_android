@@ -13,8 +13,10 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hp.hpl.sparta.Text;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.adapter.AddressBookSelectAdapter;
@@ -42,7 +44,7 @@ public class AddressBookSelectActivity extends BaseTitleActivity
 
     private List<AddressBook> addressBookList;
     private AddressBookSelectAdapter adapter;
-    private ImageView ivSave;
+    private TextView tvSave;
 
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
@@ -68,10 +70,10 @@ public class AddressBookSelectActivity extends BaseTitleActivity
         initViewOnBaseTitle("添加患者");
         setBackListener();
 
-        ivSave = (ImageView) findViewById(R.id.right_img);
-        ivSave.setVisibility(View.VISIBLE);
-        ivSave.setImageDrawable(getResources().getDrawable(R.mipmap.btn_add_white));
-        ivSave.setOnClickListener(this);
+        tvSave = (TextView) findViewById(R.id.right_txt_btn);
+        tvSave.setText("确定");
+        tvSave.setVisibility(View.VISIBLE);
+        tvSave.setOnClickListener(this);
         exList = (ExpandableListView) this.findViewById(R.id.exList);
         assortView = (AssortView) this.findViewById(R.id.assortView);
         addressBookList = new ArrayList<>();
@@ -145,10 +147,10 @@ public class AddressBookSelectActivity extends BaseTitleActivity
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.right_img:
+            case R.id.right_txt_btn:
                 AddressBook ab = adapter.getSelectAB();
                 if (ab == null) {
-                    Toast.makeText(this, "请选择", Toast.LENGTH_SHORT);
+                    Toast.makeText(this, "请选择", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 Intent intent = new Intent();

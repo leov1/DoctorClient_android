@@ -8,6 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
+import com.hxqydyl.app.ys.bean.plan.Plan;
+
+import java.util.List;
 
 /**
  * Created by hxq on 2016/3/10.
@@ -15,13 +18,24 @@ import com.hxqydyl.app.ys.R;
 public class PlanMgrAdapter extends BaseAdapter{
 
     private Context context;
+    private List<Plan> planList;
+    private boolean isShowTag;
 
-    public PlanMgrAdapter(Context context){
+    public PlanMgrAdapter(Context context, List<Plan> planList){
         this.context = context;
+        this.planList = planList;
+        this.isShowTag = true;
     }
+
+    public PlanMgrAdapter(Context context, List<Plan> planList, boolean isShowTag) {
+        this.context = context;
+        this.planList = planList;
+        this.isShowTag = isShowTag;
+    }
+
     @Override
     public int getCount() {
-        return 3;
+        return planList.size();
     }
 
     @Override
@@ -44,7 +58,12 @@ public class PlanMgrAdapter extends BaseAdapter{
         TextView tag_tv = BaseViewHolder.get(convertView,R.id.tag_tv);
 
         name_tv.setText("妄想症初期随访方案");
-        tag_tv.setText("已关联1人");
+        if (isShowTag) {
+            tag_tv.setText("已关联1人");
+        } else {
+            tag_tv.setText("");
+        }
+
         return convertView;
     }
 }
