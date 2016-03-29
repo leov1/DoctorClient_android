@@ -46,6 +46,7 @@ public class ArticlesAdapter extends BaseAdapter {
         TextView title = BaseViewHolder.get(convertView,R.id.name_tv);
         TextView tag = BaseViewHolder.get(convertView,R.id.tag_tv);
 
+        tag.setTextColor(context.getResources().getColor(R.color.blue_text));
         if (position == 3){
             tag.setText("未选用");
             tag.setTextColor(context.getResources().getColor(R.color.gray_light));
