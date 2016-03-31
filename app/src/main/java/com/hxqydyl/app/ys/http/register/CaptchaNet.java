@@ -27,7 +27,7 @@ public class CaptchaNet {
     }
 
     public void obtainCaptcha(String mobile){
-
+        System.out.println("request--->");
         OkHttpUtils
                 .get()
                 .url(Constants.GET_VERIFICATION_CODE)
@@ -37,11 +37,13 @@ public class CaptchaNet {
 
                     @Override
                     public void onError(Call call, Exception e) {
+                        System.out.println("onError--->");
                         listener.requestCaptchaNetFail();
                     }
 
                     @Override
                     public void onResponse(String response) {
+                        System.out.println("request--->"+response);
                         try {
                             listener.requestCaptchaNetSuc(JsonUtils.JsonCaptchResult(response));
                         } catch (JSONException e) {

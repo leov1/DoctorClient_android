@@ -1,6 +1,5 @@
 package com.hxqydyl.app.ys.activity.register;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -12,6 +11,7 @@ import android.widget.EditText;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+import com.hxqydyl.app.ys.activity.register.listener.RegisterSucListener;
 import com.hxqydyl.app.ys.bean.register.AddressParamBean;
 import com.hxqydyl.app.ys.bean.register.CityBean;
 import com.hxqydyl.app.ys.bean.register.CityResultBean;
@@ -39,7 +39,7 @@ import java.util.List;
  */
 public class EvpiAddressActivity extends BaseTitleActivity implements View.OnClickListener,OptionsPopupWindow.OnOptionsSelectListener,
         ProvinceNet.OnProvinceListener,HospitalNet.OnHospitalListener,RegionNet.OnRegionListener,CityNet.OnCityListener,
-        OfficeNet.OnOfficeListener{
+        OfficeNet.OnOfficeListener,RegisterSucListener{
 
     private Button nextBtn;
     private ArrayList<String> optionsItems = new ArrayList<>();
@@ -86,6 +86,12 @@ public class EvpiAddressActivity extends BaseTitleActivity implements View.OnCli
     private String[] ranks = new String[]{"主任医师","副主任医师","主治医师","住院医师","助理医师","实习医师"};
 
     private Type type;
+
+    @Override
+    public void onRegisterSuc() {
+        finish();
+    }
+
     private enum Type{
         province ,city ,region,hospital,office,rank
     }
@@ -101,6 +107,8 @@ public class EvpiAddressActivity extends BaseTitleActivity implements View.OnCli
 
     private void initViews(){
         initViewOnBaseTitle("完善信息");
+
+        addRegisterListener(this);
 
         for (int i = 0;i<ranks.length;i++){
             rankList.add(ranks[i]);
@@ -217,7 +225,7 @@ public class EvpiAddressActivity extends BaseTitleActivity implements View.OnCli
                 officeNet.obtainOffice();
                 break;
             case rank:
-                collectPopupWindow(rankList);
+                showPopupWindow(rankList);
                 break;
         }
     }
@@ -260,7 +268,7 @@ public class EvpiAddressActivity extends BaseTitleActivity implements View.OnCli
      * 显示轮滑
      * @param list
      */
-    private void collectPopupWindow(ArrayList<String> list){
+    private void showPopupWindow(ArrayList<String> list){
         if (list == null) return;
         optionsPopupWindow.setPicker(list);
         optionsPopupWindow.showAtLocation(btnHosital, Gravity.BOTTOM, 0, 0);
@@ -275,7 +283,7 @@ public class EvpiAddressActivity extends BaseTitleActivity implements View.OnCli
             provinces.add(provinceInfos.get(i).getProvinceName());
             codes.add(provinceInfos.get(i).getCode());
         }
-        collectPopupWindow(provinces);
+        showPopupWindow(provinces);
     }
 
     @Override
@@ -292,7 +300,7 @@ public class EvpiAddressActivity extends BaseTitleActivity implements View.OnCli
             cities.add(cityBeans.get(i).getCityName());
             codes.add(cityBeans.get(i).getCode());
         }
-        collectPopupWindow(cities);
+        showPopupWindow(cities);
     }
 
     @Override
@@ -309,7 +317,7 @@ public class EvpiAddressActivity extends BaseTitleActivity implements View.OnCli
             regions.add(regionBeans.get(i).getRegionName());
             codes.add(regionBeans.get(i).getCode());
         }
-        collectPopupWindow(regions);
+        showPopupWindow(regions);
     }
 
     @Override
@@ -326,7 +334,7 @@ public class EvpiAddressActivity extends BaseTitleActivity implements View.OnCli
             hospitals.add(hospitalsBeans.get(i).getHospitalName());
             codes.add(hospitalsBeans.get(i).getId());
         }
-        collectPopupWindow(hospitals);
+        showPopupWindow(hospitals);
     }
 
     @Override
@@ -344,11 +352,17 @@ public class EvpiAddressActivity extends BaseTitleActivity implements View.OnCli
             offices.add(officeBeans.get(i).getDepartmentName());
             codes.add(officeBeans.get(i).getId());
         }
-        collectPopupWindow(offices);
+        showPopupWindow(offices);
     }
 
     @Override
     public void requestOfficeFail() {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        removeRegisterListener(this);
+        super.onDestroy();
     }
 }

@@ -14,6 +14,7 @@ import com.hxqydyl.app.ys.bean.register.DoctorResultNew;
 import com.hxqydyl.app.ys.bean.register.HeadIconResult;
 import com.hxqydyl.app.ys.bean.register.HospitalResultBean;
 import com.hxqydyl.app.ys.bean.register.HospitalsBean;
+import com.hxqydyl.app.ys.bean.register.IconBean;
 import com.hxqydyl.app.ys.bean.register.OfficeBean;
 import com.hxqydyl.app.ys.bean.register.OfficeResultBean;
 import com.hxqydyl.app.ys.bean.register.ProvinceInfo;
@@ -286,6 +287,29 @@ public class JsonUtils {
         return tagsResultBean;
     }
 
+    /**
+     * 上传多张图片返回
+     * @param string
+     * @return
+     * @throws JSONException
+     */
+    public static ArrayList<IconBean> JsonIcons(String string) throws  JSONException{
+        if (TextUtils.isEmpty(string)) return  null;
+        JSONArray jsonArray = new JSONArray(string);
+        ArrayList<IconBean> iconBeans = new ArrayList<>();
+        for (int i = 0;i<jsonArray.length();i++){
+            JSONObject js = jsonArray.getJSONObject(i);
+            IconBean iconBean = new IconBean();
+            iconBean.setId(js.getString("id"));
+            iconBean.setName(js.getString("name"));
+            iconBean.setSize(js.getInt("size"));
+            iconBean.setUrl(js.getString("url"));
+            iconBean.setThumbnail(js.getString("thumbnail"));
+            iconBean.setError(js.getString("error"));
+            iconBeans.add(iconBean);
+        }
+        return iconBeans;
+    }
     /**
      * 注册第三步
      * @param string

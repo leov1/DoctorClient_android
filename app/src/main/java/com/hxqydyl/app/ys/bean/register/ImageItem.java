@@ -1,14 +1,9 @@
 package com.hxqydyl.app.ys.bean.register;
 
-import java.io.IOException;
-import java.io.Serializable;
-
 import android.graphics.Bitmap;
-
 import com.hxqydyl.app.ys.ui.uploadimage.UploadPhotoUtil;
 
-
-public class ImageItem implements Serializable {
+public class ImageItem {
     public String imageId;
     public String thumbnailPath;
     public String imagePath;
@@ -62,6 +57,5 @@ public class ImageItem implements Serializable {
     public void setBitmap(Bitmap bitmap) {
         this.bitmap = bitmap;
     }
-
 
 }

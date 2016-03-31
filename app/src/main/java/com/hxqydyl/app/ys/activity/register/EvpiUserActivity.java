@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+import com.hxqydyl.app.ys.activity.register.listener.RegisterSucListener;
 import com.hxqydyl.app.ys.bean.register.HeadIconResult;
 import com.hxqydyl.app.ys.bean.register.RegisterFirst;
 import com.hxqydyl.app.ys.http.register.HeadIconNet;
@@ -40,7 +41,8 @@ import java.util.Map;
 /**
  * 完善姓名邮箱信息页面
  */
-public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickListener,RadioGroup.OnCheckedChangeListener,HeadIconNet.OnHeadIconNetListener,RegisterSecNet.OnRegisterSecListener{
+public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickListener,RadioGroup.OnCheckedChangeListener,HeadIconNet.OnHeadIconNetListener
+        ,RegisterSecNet.OnRegisterSecListener,RegisterSucListener{
 
     private Button nextBtn;
     private CircleImageView image_upload;
@@ -142,6 +144,7 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
     private void initViews() {
         initViewOnBaseTitle("完善信息");
 
+        addRegisterListener(this);
         nextBtn = (Button) findViewById(R.id.next_btn);
         image_upload = (CircleImageView) findViewById(R.id.image_upload);
         text_nick = (EditText) findViewById(R.id.text_nick);
@@ -342,4 +345,14 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
         UIHelper.ToastMessage(EvpiUserActivity.this, "请求失败");
     }
 
+    @Override
+    public void onRegisterSuc() {
+        finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        removeRegisterListener(this);
+        super.onDestroy();
+    }
 }

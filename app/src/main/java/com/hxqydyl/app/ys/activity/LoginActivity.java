@@ -8,6 +8,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
+import com.hxqydyl.app.ys.activity.register.listener.RegisterSucListener;
+import com.hxqydyl.app.ys.activity.register.listener.RegisterSucMag;
 import com.hxqydyl.app.ys.bean.register.DoctorInfo;
 import com.hxqydyl.app.ys.bean.register.DoctorResult;
 import com.hxqydyl.app.ys.http.login.LoginNet;
@@ -20,7 +22,7 @@ import com.hxqydyl.app.ys.utils.SharedPreferences;
  * Created by hxq on 2016/2/25.
  * 登陆页面
  */
-public class LoginActivity extends BaseTitleActivity implements View.OnClickListener,LoginNet.OnLoginNetListener{
+public class LoginActivity extends BaseTitleActivity implements View.OnClickListener,LoginNet.OnLoginNetListener,RegisterSucListener{
 
     private TextView forgetBtn;
     private TextView registerBtn;
@@ -43,6 +45,9 @@ public class LoginActivity extends BaseTitleActivity implements View.OnClickList
 
     private void initViews() {
         initViewOnBaseTitle(getResources().getString(R.string.login));
+
+       addRegisterListener(this);
+
         forgetBtn = (TextView) findViewById(R.id.forget_btn);
         registerBtn = (TextView) findViewById(R.id.register_btn);
         mobileEdit = (EditText) findViewById(R.id.mobile_edit);
@@ -102,4 +107,14 @@ public class LoginActivity extends BaseTitleActivity implements View.OnClickList
     }
 
 
+    @Override
+    public void onRegisterSuc() {
+        finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        removeRegisterListener(this);
+        super.onDestroy();
+    }
 }

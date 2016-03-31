@@ -8,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
+import com.hxqydyl.app.ys.activity.register.listener.RegisterSucListener;
+import com.hxqydyl.app.ys.activity.register.listener.RegisterSucMag;
 import com.hxqydyl.app.ys.ui.swipebacklayout.SwipeBackActivity;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -51,6 +53,16 @@ public class BaseTitleActivity extends SwipeBackActivity {
                 finish();
             }
         });
+    }
+
+    public void addRegisterListener(RegisterSucListener listener){
+        if (listener != null)
+        RegisterSucMag.getInstance().addRegisterSucListeners(listener);
+    }
+
+    public void removeRegisterListener(RegisterSucListener listener){
+        if (listener != null)
+        RegisterSucMag.getInstance().removeRegisterSucListeners(listener);
     }
 
     public void showDialog(String text){

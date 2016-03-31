@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+import com.hxqydyl.app.ys.activity.register.listener.RegisterSucListener;
 import com.hxqydyl.app.ys.bean.register.CaptchaResult;
 import com.hxqydyl.app.ys.bean.register.RegisterFirst;
 import com.hxqydyl.app.ys.http.register.CaptchaNet;
@@ -27,7 +28,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 /**
  * 注册页面
  */
-public class RegisterActivity extends BaseTitleActivity implements View.OnClickListener,CaptchaNet.OnCaptchaNetListener,RegisterFirstNet.OnRegisterFirstListener{
+public class RegisterActivity extends BaseTitleActivity implements View.OnClickListener,CaptchaNet.OnCaptchaNetListener,RegisterFirstNet.OnRegisterFirstListener,RegisterSucListener{
 
     private TextView registerOrderBtn;
     private TextView loginBtn;
@@ -39,7 +40,6 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
     private CheckBox agreeCheckBox;
 
     private String captcha = "";//验证码
-    private String captchaRight = "";//系统返回的验证码
     private String mobile = "";//手机号
     private String password = "";//密码
 
@@ -88,6 +88,8 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
 
     private void initViews() {
         initViewOnBaseTitle("注册");
+
+        addRegisterListener(this);
 
         captchaNet = new CaptchaNet();
         captchaNet.setListener(this);
@@ -152,10 +154,13 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
      * 获取验证码网络请求
      */
     private void obtainCaptcha(){
+        if (!TextUtils.isEmpty(validateMobile())){
+            UIHelper.ToastMessage(RegisterActivity.this,validateMobile());
+            return;
+        }
         codeBtn.setEnabled(false);
         timeCount = 60;
         handler.sendEmptyMessage(GET_VERIFICATION);
-
         captchaNet.obtainCaptcha(mobile);
     }
 
@@ -163,8 +168,8 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
      * 注册请求
      */
     private void registerOne(){
-        showDialog("请稍等...");
-       registerFirstNet.registerFirst(mobile, password,"123456");
+       showDialog("请稍等...");
+       registerFirstNet.registerFirst(mobile, password, "123456");
     }
 
     /**
@@ -174,9 +179,8 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
         String isMobile = validateMobile();
         if(!TextUtils.isEmpty(isMobile)) return isMobile;
 
-//        captcha = captchaEdit.getText().toString();
-//        if (TextUtils.isEmpty(captcha)) return "验证码不能为空";
-//        if (!captcha.equals(captchaRight)) return "验证码不正确";
+        captcha = captchaEdit.getText().toString();
+        if (TextUtils.isEmpty(captcha)) return "验证码不能为空";
 
         password = passwordEdit.getText().toString();
         if (TextUtils.isEmpty(password)) return "密码不能为空";
@@ -201,13 +205,12 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
     public void requestCaptchaNetSuc(CaptchaResult captchaResult) {
         dismissDialog();
         System.out.println("captcha--->"+captchaResult.toString());
-        captchaRight = captchaResult.getCaptcha();
     }
 
     @Override
     public void requestCaptchaNetFail() {
 
-        UIHelper.ToastMessage(RegisterActivity.this,"请求出错");
+        UIHelper.ToastMessage(RegisterActivity.this, "请求出错");
     }
 
     @Override
@@ -225,5 +228,16 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
     public void requestRegisterFirstNetFail() {
         dismissDialog();
         UIHelper.ToastMessage(RegisterActivity.this, "请求出错");
+    }
+
+    @Override
+    public void onRegisterSuc() {
+        finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        removeRegisterListener(this);
+        super.onDestroy();
     }
 }

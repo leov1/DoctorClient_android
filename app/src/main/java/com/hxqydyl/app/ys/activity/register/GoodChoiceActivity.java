@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+import com.hxqydyl.app.ys.activity.register.listener.RegisterSucListener;
 import com.hxqydyl.app.ys.adapter.TagsAdapter;
 import com.hxqydyl.app.ys.bean.register.AddressParamBean;
 import com.hxqydyl.app.ys.bean.register.RegisterFirst;
@@ -26,7 +27,7 @@ import java.util.List;
 /**
  * 选择擅长页
  */
-public class GoodChoiceActivity extends BaseTitleActivity implements View.OnClickListener, TagsNet.OnTagsListener, GoodTagNet.OnGoodTagListener {
+public class GoodChoiceActivity extends BaseTitleActivity implements View.OnClickListener, TagsNet.OnTagsListener, GoodTagNet.OnGoodTagListener,RegisterSucListener {
 
     private AddressParamBean addressParamBean;
 
@@ -63,6 +64,7 @@ public class GoodChoiceActivity extends BaseTitleActivity implements View.OnClic
     private void initViews() {
         initViewOnBaseTitle("完善信息");
 
+        addRegisterListener(this);
         tagsNet = new TagsNet();
         goodTagNet = new GoodTagNet();
         goodTagNet.setListener(this);
@@ -131,10 +133,8 @@ public class GoodChoiceActivity extends BaseTitleActivity implements View.OnClic
                     return;
                 }
 
-                String selectStr = "";
-                for (TagsBean tag : tvSelectedList) {
-                    selectStr += tag.getTagName() + ",";
-                }
+                String selectStr = listToString(tvSelectedList,',');
+
                 addressParamBean.setDoctorUuid(LoginManager.getDoctorUuid());
                 addressParamBean.setSpeciality(selectStr);
                 goodTagNet.obtainTagResult(addressParamBean);
@@ -147,6 +147,20 @@ public class GoodChoiceActivity extends BaseTitleActivity implements View.OnClic
                 finish();
                 break;
         }
+    }
+
+    /**
+     * 将list转换成string
+     * @param list
+     * @param separator
+     * @return
+     */
+    public String listToString(List<TagsBean> list, char separator) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < list.size(); i++) {
+            sb.append(list.get(i).getTagName()).append(separator);
+        }
+        return sb.toString().substring(0,sb.toString().length()-1);
     }
 
     @Override
@@ -179,5 +193,16 @@ public class GoodChoiceActivity extends BaseTitleActivity implements View.OnClic
     @Override
     public void requestGoodTagFail() {
         UIHelper.ToastMessage(GoodChoiceActivity.this, "请求出错");
+    }
+
+    @Override
+    public void onRegisterSuc() {
+        finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        removeRegisterListener(this);
+        super.onDestroy();
     }
 }

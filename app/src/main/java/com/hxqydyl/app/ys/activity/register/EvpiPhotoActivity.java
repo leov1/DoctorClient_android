@@ -25,10 +25,14 @@ import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+import com.hxqydyl.app.ys.activity.register.listener.RegisterSucListener;
+import com.hxqydyl.app.ys.activity.register.listener.RegisterSucMag;
 import com.hxqydyl.app.ys.adapter.EvpiPhotoAdapter;
 import com.hxqydyl.app.ys.adapter.ImagePagerAdapter;
 import com.hxqydyl.app.ys.bean.Query;
+import com.hxqydyl.app.ys.bean.register.IconBean;
 import com.hxqydyl.app.ys.bean.register.ImageItem;
+import com.hxqydyl.app.ys.bean.register.TagsBean;
 import com.hxqydyl.app.ys.http.MyInterface.OnSingleTapDismissBigPhotoListener;
 import com.hxqydyl.app.ys.http.register.SaveUserIconNet;
 import com.hxqydyl.app.ys.http.register.UploadIconsNet;
@@ -316,39 +320,77 @@ public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClick
         return false;
     }
 
+    /**
+     * 上传图片，然后在注册
+     */
     private void uploadIcoms(){
+        if (uploadImgUrlList.size() == 0) {
+            UIHelper.ToastMessage(EvpiPhotoActivity.this,"请上传图片");
+            return;
+        }
+        showDialog("请稍等...");
         uploadIconsNet.saveIcons(uploadImgUrlList);
         System.out.println("list --->" + uploadImgUrlList.toString());
-
     }
 
+
+    /**
+     * 将list转换成string
+     * @param list
+     * @param separator
+     * @return
+     */
+    public String listToString(List<String> list, char separator) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < list.size(); i++) {
+            sb.append(list.get(i)).append(separator);
+        }
+        return sb.toString().substring(0,sb.toString().length()-1);
+    }
     @Override
-    public void requestUploadIconsSuc(Query query) {
-        saveUserIconNet.saveUserIcon(LoginManager.getDoctorUuid(), uploadImgUrlList.toString());
-        UIHelper.ToastMessage(EvpiPhotoActivity.this,query.getMessage());
+    public void requestUploadIconsSuc(ArrayList<IconBean> iconBeans) {
+        if (iconBeans == null) return;
+
+        saveUserIconNet.saveUserIcon(LoginManager.getDoctorUuid(), listToString(uploadImgUrlList,','));
+ //       UIHelper.ToastMessage(EvpiPhotoActivity.this,query.getMessage());
     }
 
     @Override
     public void requestUploadIconsFail() {
-
+            dismissDialog();
     }
 
     @Override
     public void requestSaveIconSuc(Query query) {
+        dismissDialog();
         if(query == null){
             UIHelper.ToastMessage(EvpiPhotoActivity.this,"请求出错");
             return;
         }
         if (query.getSuccess().equals("1")){
             UIHelper.ToastMessage(EvpiPhotoActivity.this,"注册成功");
+            removeBeforViews();
+            finish();
         }else{
             UIHelper.ToastMessage(EvpiPhotoActivity.this,query.getMessage());
         }
 
     }
 
+    /**
+     * 观察者移除之前页面
+     */
+    private void removeBeforViews(){
+        ArrayList<RegisterSucListener> registerSucListeners = RegisterSucMag.getInstance().downloadListeners;
+        if (registerSucListeners == null || registerSucListeners.size() == 0)return;
+        for (int i = 0;i<registerSucListeners.size();i++){
+            registerSucListeners.get(i).onRegisterSuc();
+        }
+    }
+
     @Override
     public void requestSaveIconFail() {
-
+      dismissDialog();
     }
+
 }

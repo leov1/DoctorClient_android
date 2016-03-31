@@ -27,6 +27,7 @@ public class SaveUserIconNet {
     }
 
     public void saveUserIcon(String doctorUuid,String userIconList){
+        System.out.println("response---->"+userIconList);
         OkHttpUtils.get()
                 .url(Constants.SAVE_USER_ICON_LIST)
                 .addParams("doctorUuid",doctorUuid)
