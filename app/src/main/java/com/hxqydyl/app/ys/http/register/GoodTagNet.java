@@ -1,14 +1,15 @@
 package com.hxqydyl.app.ys.http.register;
 
 import com.hxqydyl.app.ys.bean.register.AddressParamBean;
-import com.hxqydyl.app.ys.bean.register.GoodTagResultBean;
-import com.hxqydyl.app.ys.http.register.callback.GoodTagResultCallBack;
+import com.hxqydyl.app.ys.bean.register.RegisterFirst;
+import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.json.JSONException;
+
 import okhttp3.Call;
-import okhttp3.Response;
 
 /**
  * Created by hxq on 2016/3/24.
@@ -22,13 +23,13 @@ public class GoodTagNet {
     }
 
     public interface OnGoodTagListener {
-        void requestGoodTagSuc(GoodTagResultBean goodTagResultBean);
+        void requestGoodTagSuc(RegisterFirst registerFirst);
 
         void requestGoodTagFail();
     }
 
     public void obtainTagResult(AddressParamBean addressParamBean) {
-
+        System.out.println("request--->"+addressParamBean.toString());
         OkHttpUtils
                 .post()
                 .url(Constants.REGISTER_THREE)
@@ -44,16 +45,23 @@ public class GoodTagNet {
                 .addParams("telephone", addressParamBean.getTelephone())
                 .addParams("otherhospital", addressParamBean.getOtherhospital())
                 .build()
-                .execute(new GoodTagResultCallBack() {
+                .execute(new StringCallback() {
 
                     @Override
                     public void onError(Call call, Exception e) {
+                        System.out.println("onError--->");
                         listener.requestGoodTagFail();
                     }
 
                     @Override
-                    public void onResponse(GoodTagResultBean response) {
-                        listener.requestGoodTagSuc(response);
+                    public void onResponse(String response) {
+                        System.out.println("request--->"+response);
+
+                        try {
+                            listener.requestGoodTagSuc(JsonUtils.JsonRegisterThree(response));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
 

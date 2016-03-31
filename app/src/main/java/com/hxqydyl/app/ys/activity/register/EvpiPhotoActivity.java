@@ -30,6 +30,7 @@ import com.hxqydyl.app.ys.adapter.ImagePagerAdapter;
 import com.hxqydyl.app.ys.bean.Query;
 import com.hxqydyl.app.ys.bean.register.ImageItem;
 import com.hxqydyl.app.ys.http.MyInterface.OnSingleTapDismissBigPhotoListener;
+import com.hxqydyl.app.ys.http.register.SaveUserIconNet;
 import com.hxqydyl.app.ys.http.register.UploadIconsNet;
 import com.hxqydyl.app.ys.ui.MyViewPager;
 import com.hxqydyl.app.ys.ui.UIHelper;
@@ -44,7 +45,7 @@ import java.util.List;
 /**
  * 完善注册z照片信息
  */
-public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClickListener,OnSingleTapDismissBigPhotoListener,UploadIconsNet.OnUploadIconsListener {
+public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClickListener,OnSingleTapDismissBigPhotoListener,UploadIconsNet.OnUploadIconsListener ,SaveUserIconNet.OnSaveUserIconListener{
 
     private String takePictureUrl;
     private int addTakePicCount = 1;
@@ -73,9 +74,10 @@ public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClick
     private ImageView delete_image;
 
     private UploadIconsNet uploadIconsNet;
+    private SaveUserIconNet saveUserIconNet;
 
     File sdcardDir = Environment.getExternalStorageDirectory();
-    private String photo_path = sdcardDir.getPath() + "/Gosu/cache/photoes/";
+    private String photo_path = sdcardDir.getPath() + "/hxq/cache/photoes/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +93,8 @@ public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClick
 
         uploadIconsNet = new UploadIconsNet();
         uploadIconsNet.setListener(this);
+        saveUserIconNet = new SaveUserIconNet();
+        saveUserIconNet.setListener(this);
 
         edit_photo_fullscreen_layout = (RelativeLayout) findViewById(R.id.edit_photo_fullscreen_layout);
         edit_photo_outer_layout = (RelativeLayout) findViewById(R.id.edit_photo_outer_layout);
@@ -313,16 +317,38 @@ public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClick
     }
 
     private void uploadIcoms(){
-        uploadIconsNet.saveIcons(LoginManager.getDoctorUuid(),uploadImgUrlList);
+        uploadIconsNet.saveIcons(uploadImgUrlList);
+        System.out.println("list --->" + uploadImgUrlList.toString());
+
     }
 
     @Override
     public void requestUploadIconsSuc(Query query) {
+        saveUserIconNet.saveUserIcon(LoginManager.getDoctorUuid(), uploadImgUrlList.toString());
         UIHelper.ToastMessage(EvpiPhotoActivity.this,query.getMessage());
     }
 
     @Override
     public void requestUploadIconsFail() {
+
+    }
+
+    @Override
+    public void requestSaveIconSuc(Query query) {
+        if(query == null){
+            UIHelper.ToastMessage(EvpiPhotoActivity.this,"请求出错");
+            return;
+        }
+        if (query.getSuccess().equals("1")){
+            UIHelper.ToastMessage(EvpiPhotoActivity.this,"注册成功");
+        }else{
+            UIHelper.ToastMessage(EvpiPhotoActivity.this,query.getMessage());
+        }
+
+    }
+
+    @Override
+    public void requestSaveIconFail() {
 
     }
 }

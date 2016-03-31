@@ -2,7 +2,6 @@ package com.hxqydyl.app.ys.activity.register;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Telephony;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -13,13 +12,12 @@ import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.adapter.TagsAdapter;
 import com.hxqydyl.app.ys.bean.register.AddressParamBean;
-import com.hxqydyl.app.ys.bean.register.GoodTagResultBean;
+import com.hxqydyl.app.ys.bean.register.RegisterFirst;
 import com.hxqydyl.app.ys.bean.register.TagsBean;
 import com.hxqydyl.app.ys.bean.register.TagsResultBean;
 import com.hxqydyl.app.ys.http.register.GoodTagNet;
 import com.hxqydyl.app.ys.http.register.TagsNet;
 import com.hxqydyl.app.ys.ui.UIHelper;
-import com.hxqydyl.app.ys.ui.swipebacklayout.SwipeBackActivity;
 import com.hxqydyl.app.ys.utils.LoginManager;
 
 import java.util.ArrayList;
@@ -28,7 +26,7 @@ import java.util.List;
 /**
  * 选择擅长页
  */
-public class GoodChoiceActivity extends BaseTitleActivity implements View.OnClickListener,TagsNet.OnTagsListener,GoodTagNet.OnGoodTagListener {
+public class GoodChoiceActivity extends BaseTitleActivity implements View.OnClickListener, TagsNet.OnTagsListener, GoodTagNet.OnGoodTagListener {
 
     private AddressParamBean addressParamBean;
 
@@ -57,8 +55,8 @@ public class GoodChoiceActivity extends BaseTitleActivity implements View.OnClic
 
     private void getIntentData() {
         intent = getIntent();
-        if (intent != null){
-             addressParamBean = (AddressParamBean) intent.getSerializableExtra("bean");
+        if (intent != null) {
+            addressParamBean = (AddressParamBean) intent.getSerializableExtra("bean");
         }
     }
 
@@ -74,7 +72,7 @@ public class GoodChoiceActivity extends BaseTitleActivity implements View.OnClic
         laterBtn = (Button) findViewById(R.id.later_btn);
 
         gvTags = (GridView) findViewById(R.id.gridview);
-        mAdapter = new TagsAdapter(this, onItemClickClass,tagList);
+        mAdapter = new TagsAdapter(this, onItemClickClass, tagList);
         gvTags.setAdapter(mAdapter);
     }
 
@@ -87,7 +85,7 @@ public class GoodChoiceActivity extends BaseTitleActivity implements View.OnClic
     /**
      * 获取gridview数据
      */
-    private void loadData(){
+    private void loadData() {
         tagsNet.obtainTags();
     }
 
@@ -109,7 +107,7 @@ public class GoodChoiceActivity extends BaseTitleActivity implements View.OnClic
                 }
             } else {
                 if (tvSelectedList.size() == 5) {
-                    UIHelper.ToastMessage(GoodChoiceActivity.this,"最多选5个");
+                    UIHelper.ToastMessage(GoodChoiceActivity.this, "最多选5个");
                     return;
                 }
                 checkBox.setChecked(true);
@@ -128,23 +126,22 @@ public class GoodChoiceActivity extends BaseTitleActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.next_btn:
-                if (tvSelectedList.size() == 0){
-                    UIHelper.ToastMessage(GoodChoiceActivity.this,"请选择擅长项");
+                if (tvSelectedList.size() == 0) {
+                    UIHelper.ToastMessage(GoodChoiceActivity.this, "请选择擅长项");
                     return;
                 }
 
                 String selectStr = "";
-                for(TagsBean tag:tvSelectedList){
-                    selectStr += tag.getTagName()+",";
-                 }
+                for (TagsBean tag : tvSelectedList) {
+                    selectStr += tag.getTagName() + ",";
+                }
                 addressParamBean.setDoctorUuid(LoginManager.getDoctorUuid());
                 addressParamBean.setSpeciality(selectStr);
                 goodTagNet.obtainTagResult(addressParamBean);
 
                 break;
             case R.id.later_btn:
-                Intent laterIntent = new Intent(this, EvpiPhotoActivity.class);
-                startActivity(laterIntent);
+                startActivity(new Intent(this, EvpiPhotoActivity.class));
                 break;
             case R.id.back_img:
                 finish();
@@ -154,24 +151,33 @@ public class GoodChoiceActivity extends BaseTitleActivity implements View.OnClic
 
     @Override
     public void requestTagsSuc(TagsResultBean tagsResultBean) {
-        System.out.println("tagsResultBean--->"+tagsResultBean.toString());
+        System.out.println("tagsResultBean--->" + tagsResultBean.toString());
         tagList = tagsResultBean.getTagsBeans();
         mAdapter.changeData(tagList);
     }
 
     @Override
     public void requestTagsFail() {
-
+        UIHelper.ToastMessage(GoodChoiceActivity.this, "请求出错");
     }
 
 
     @Override
-    public void requestGoodTagSuc(GoodTagResultBean goodTagResultBean) {
+    public void requestGoodTagSuc(RegisterFirst registerFirst) {
+        if (registerFirst == null) {
+            UIHelper.ToastMessage(GoodChoiceActivity.this, "请求出错");
+            return;
+        }
+        if (registerFirst.getQuery().getSuccess().equals("1")) {
+            startActivity(new Intent(GoodChoiceActivity.this, EvpiPhotoActivity.class));
+        } else {
+            UIHelper.ToastMessage(GoodChoiceActivity.this, registerFirst.getQuery().getMessage());
+        }
 
     }
 
     @Override
     public void requestGoodTagFail() {
-
+        UIHelper.ToastMessage(GoodChoiceActivity.this, "请求出错");
     }
 }

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical" >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/text_color_gray"
+        android:background="@color/white"
         android:gravity="center_vertical" >
 
         <Button
@@ -17,7 +17,7 @@
             android:background="@android:color/transparent"
             android:gravity="center"
             android:text="@string/cancel"
-            android:textColor="@drawable/wheel_timebtn" />
+            android:textColor="@color/text_color_hint" />
 
         <Button
             android:id="@+id/btnSubmit"
@@ -32,8 +32,8 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#D8D3D3" />
+        android:layout_height="1dp"
+        android:background="@color/text_color_blue" />
 
     <RelativeLayout
         android:layout_width="match_parent"

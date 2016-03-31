@@ -3,6 +3,7 @@ package com.hxqydyl.app.ys.http.homepage;
 import com.hxqydyl.app.ys.bean.register.DoctorInfoNew;
 import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.utils.Constants;
+import com.hxqydyl.app.ys.utils.StringUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -40,7 +41,7 @@ public class GainDoctorInfoNet {
 
                        @Override
                        public void onResponse(String response) {
-                            onGainDoctorInfoListener.requestGainDoctorInfoSuccess(JsonUtils.JsonDoctorInfoNew(response));
+                            onGainDoctorInfoListener.requestGainDoctorInfoSuccess(JsonUtils.JsonDoctorInfoNew(StringUtils.cutoutBracketToString(response)));
                        }
                   });
      }

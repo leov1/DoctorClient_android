@@ -3,6 +3,7 @@ package com.hxqydyl.app.ys.http.register;
 import com.hxqydyl.app.ys.bean.register.RegionResultBean;
 import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.utils.Constants;
+import com.hxqydyl.app.ys.utils.StringUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -45,13 +46,12 @@ public class RegionNet {
                     @Override
                     public void onResponse(String response) {
                         System.out.println("response-->"+response);
-                        RegionResultBean regionResultBean = null;
                         try {
-                            regionResultBean = JsonUtils.JsonRegionResult(response);
+                            listener.requestRegionSuc(JsonUtils.JsonRegionResult(StringUtils.cutoutBracketToString(response)));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        listener.requestRegionSuc(regionResultBean);
+
                     }
                 });
     }

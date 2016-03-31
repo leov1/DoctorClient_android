@@ -47,7 +47,6 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
     private RegisterFirstNet registerFirstNet;
 
     private Intent intent;
-    private SweetAlertDialog pDialog;
 
     private int timeCount = 60;
     public static final int GET_VERIFICATION = 0x23;
@@ -119,17 +118,17 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
           case R.id.next_btn://下一步
 //              String isPass = validateInfo();
 //              if (TextUtils.isEmpty(isPass)){
-                 intent = new Intent(this,EvpiUserActivity.class);
-                 startActivity(intent);
+//                 intent = new Intent(this,EvpiUserActivity.class);
+//                 startActivity(intent);
 //              }else{
 //                  UIHelper.ToastMessage(this,isPass);
 //              }
-//              isCan = validateInfo();
-//              if (TextUtils.isEmpty(isCan)){
-//                  registerOne();
-//              }else {
-//                  UIHelper.ToastMessage(this,isCan);
-//              }
+              isCan = validateInfo();
+              if (TextUtils.isEmpty(isCan)){
+                  registerOne();
+              }else {
+                  UIHelper.ToastMessage(this,isCan);
+              }
               break;
           case R.id.btn_code://获取验证码
               isCan = validateMobile();
@@ -164,6 +163,7 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
      * 注册请求
      */
     private void registerOne(){
+        showDialog("请稍等...");
        registerFirstNet.registerFirst(mobile, password,"123456");
     }
 
@@ -197,20 +197,6 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
         return "";
     }
 
-    private void showDialog(String text){
-        pDialog = new SweetAlertDialog(this,SweetAlertDialog.PROGRESS_TYPE);
-        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-        pDialog.setTitleText(text);
-        pDialog.setCancelable(true);
-        pDialog.show();
-    }
-
-    private void dismissDialog(){
-        if (pDialog != null && pDialog.isShowing()){
-            pDialog.dismissWithAnimation();
-        }
-    }
-
     @Override
     public void requestCaptchaNetSuc(CaptchaResult captchaResult) {
         dismissDialog();
@@ -221,12 +207,14 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
     @Override
     public void requestCaptchaNetFail() {
 
+        UIHelper.ToastMessage(RegisterActivity.this,"请求出错");
     }
 
     @Override
     public void requestRegisterFirstNetSuccess(RegisterFirst registerFirst) {
+        dismissDialog();
         UIHelper.ToastMessage(RegisterActivity.this, registerFirst.getQuery().getMessage());
-        if (registerFirst.getQuery().getMessage().equals("操作成功")){
+        if (registerFirst.getQuery().getSuccess().equals("1")){
             LoginManager.setDoctorUuid(registerFirst.getDoctorUuid());
             intent = new Intent(this,EvpiUserActivity.class);
             startActivity(intent);
@@ -235,6 +223,7 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
 
     @Override
     public void requestRegisterFirstNetFail() {
-
+        dismissDialog();
+        UIHelper.ToastMessage(RegisterActivity.this, "请求出错");
     }
 }

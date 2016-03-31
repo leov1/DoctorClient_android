@@ -15,12 +15,6 @@ public class RegisterFirst {
     public RegisterFirst() {
     }
 
-    public RegisterFirst(Query query, String doctorUuid, String mobile) {
-        this.query = query;
-        this.doctorUuid = doctorUuid;
-        this.mobile = mobile;
-    }
-
     public Query getQuery() {
         return query;
     }

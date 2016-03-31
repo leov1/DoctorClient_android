@@ -1,9 +1,14 @@
 package com.hxqydyl.app.ys.http.login;
 
 import com.hxqydyl.app.ys.bean.Query;
+import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.utils.Constants;
+import com.hxqydyl.app.ys.utils.StringUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import okhttp3.Call;
 
@@ -42,8 +47,12 @@ public class UpdatePasswordNet {
 
                     @Override
                     public void onResponse(String response) {
-                       // listener.requestUpdatePwSuc(response.getQuery());
-                        System.out.println("response--->" + response.toString());
+                        try {
+                            listener.requestUpdatePwSuc(JsonUtils.JsonUpdatePw(StringUtils.cutoutBracketToString(response)));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                     }
                 });
 

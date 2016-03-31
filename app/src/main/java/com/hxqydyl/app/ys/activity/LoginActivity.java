@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.bean.register.DoctorInfo;
+import com.hxqydyl.app.ys.bean.register.DoctorResult;
 import com.hxqydyl.app.ys.http.login.LoginNet;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.Constants;
@@ -81,12 +82,18 @@ public class LoginActivity extends BaseTitleActivity implements View.OnClickList
     }
 
     @Override
-    public void requestLoginNetSuccess(DoctorInfo doctorInfo) {
-        System.out.println("doctorinfo--->"+doctorInfo);
-        SharedPreferences.getInstance().putString("doctorUuid", doctorInfo.getDoctorUuid());
-        LoginManager.setLoginStatus(true);
-        UIHelper.ToastMessage(LoginActivity.this, "登陆成功");
-        finish();
+    public void requestLoginNetSuccess(DoctorResult doctorResult) {
+        System.out.println("doctorinfo--->"+doctorResult);
+        if (doctorResult == null) return;
+        if (doctorResult.getQuery().getSuccess().equals("1")){
+            SharedPreferences.getInstance().putString("doctorUuid", doctorResult.getServiceStaff().getDoctorUuid());
+            LoginManager.setLoginStatus(true);
+            UIHelper.ToastMessage(LoginActivity.this, "登陆成功");
+            finish();
+        }else {
+            UIHelper.ToastMessage(LoginActivity.this,doctorResult.getQuery().getMessage());
+        }
+
     }
 
     @Override

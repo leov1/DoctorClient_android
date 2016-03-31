@@ -1,9 +1,12 @@
 package com.hxqydyl.app.ys.http.register;
 
 import com.hxqydyl.app.ys.bean.register.CaptchaResult;
+import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
 
 import okhttp3.Call;
 
@@ -29,9 +32,9 @@ public class CaptchaNet {
                 .get()
                 .url(Constants.GET_VERIFICATION_CODE)
                 .addParams("mobile", mobile)
-                .addParams("callback", "hxq")
                 .build()
                 .execute(new StringCallback() {
+
                     @Override
                     public void onError(Call call, Exception e) {
                         listener.requestCaptchaNetFail();
@@ -39,8 +42,13 @@ public class CaptchaNet {
 
                     @Override
                     public void onResponse(String response) {
-//                   listener.requestCaptchaNetSuc(response);
+                        try {
+                            listener.requestCaptchaNetSuc(JsonUtils.JsonCaptchResult(response));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
+
                 });
 
     }

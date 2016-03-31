@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/img_margin_top">
 
-                <ImageView
+                <com.hxqydyl.app.ys.ui.CircleImageView
                     android:id="@+id/image_upload"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
@@ -110,12 +110,12 @@
 
         <include layout="@layout/photo_fullscreen_layout"></include>
 
-        <include
+      <!--  <include
             android:id="@+id/uploading_photo_progress"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             layout="@layout/progress_layout"
             android:clickable="true"
-            android:visibility="gone" />
+            android:visibility="gone" />-->
     </RelativeLayout>
 </LinearLayout>

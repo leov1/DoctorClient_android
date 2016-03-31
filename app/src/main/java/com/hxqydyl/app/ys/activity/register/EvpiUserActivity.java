@@ -17,7 +17,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -26,8 +25,10 @@ import android.widget.TextView;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.bean.register.HeadIconResult;
+import com.hxqydyl.app.ys.bean.register.RegisterFirst;
 import com.hxqydyl.app.ys.http.register.HeadIconNet;
 import com.hxqydyl.app.ys.http.register.RegisterSecNet;
+import com.hxqydyl.app.ys.ui.CircleImageView;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.ui.uploadimage.UploadPhotoUtil;
 import com.hxqydyl.app.ys.utils.LoginManager;
@@ -42,7 +43,7 @@ import java.util.Map;
 public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickListener,RadioGroup.OnCheckedChangeListener,HeadIconNet.OnHeadIconNetListener,RegisterSecNet.OnRegisterSecListener{
 
     private Button nextBtn;
-    private ImageView image_upload;
+    private CircleImageView image_upload;
     private EditText text_nick;
     private EditText text_email;
     private TextView take_picture;
@@ -50,7 +51,7 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
     private RadioGroup genderGroup;
     private RadioButton femaleRadioButton,maleRadioButton;
 
-    private RelativeLayout edit_photo_fullscreen_layout,edit_photo_outer_layout,uploading_photo_progress;
+    private RelativeLayout edit_photo_fullscreen_layout,edit_photo_outer_layout;
     private Animation get_photo_layout_out_from_up, get_photo_layout_in_from_down;
     private Intent intent;
     private final int NONE = 0, TAKE_PICTURE = 1, LOCAL_PICTURE = 2;
@@ -66,6 +67,7 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
     private HeadIconNet headIconNet;
     private RegisterSecNet registerSecNet;
 
+    private String smallImage;
     private String doctorUUid;
     private String mobile;
     private String nick;
@@ -79,7 +81,7 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
 
                 case SHOW_UPDATE_PHOTO:
                     ImageLoader.getInstance().displayImage((String) msg.obj, image_upload);
-                    uploading_photo_progress.setVisibility(View.GONE);
+                    dismissDialog();
                     UIHelper.ToastMessage(EvpiUserActivity.this, "上传成功");
                     break;
                 case UPLOAD_LOCAL_PICTURE:
@@ -141,7 +143,7 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
         initViewOnBaseTitle("完善信息");
 
         nextBtn = (Button) findViewById(R.id.next_btn);
-        image_upload = (ImageView) findViewById(R.id.image_upload);
+        image_upload = (CircleImageView) findViewById(R.id.image_upload);
         text_nick = (EditText) findViewById(R.id.text_nick);
         text_email = (EditText) findViewById(R.id.text_email);
 
@@ -154,7 +156,6 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
 
         edit_photo_fullscreen_layout = (RelativeLayout) findViewById(R.id.edit_photo_fullscreen_layout);
         edit_photo_outer_layout = (RelativeLayout) findViewById(R.id.edit_photo_outer_layout);
-        uploading_photo_progress = (RelativeLayout) findViewById(R.id.uploading_photo_progress);
     }
 
     private void initListeners() {
@@ -181,7 +182,7 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
        nick = text_nick.getText().toString();
        email = text_email.getText().toString();
 
-        if (TextUtils.isEmpty(fileString)){
+        if (TextUtils.isEmpty(smallImage)){
             UIHelper.ToastMessage(EvpiUserActivity.this,"请上传头像");
             return;
         }
@@ -194,7 +195,7 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
            UIHelper.ToastMessage(EvpiUserActivity.this,"邮箱不能为空");
         }
 
-        registerSecNet.registerSec(doctorUUid, email, sex + "", fileString, nick);
+        registerSecNet.registerSec(doctorUUid, email, sex + "", smallImage, nick);
     }
 
 
@@ -204,9 +205,7 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
         switch (v.getId()){
             case R.id.next_btn:
 
-             //   loadNext();
-                intent = new Intent(this,EvpiAddressActivity.class);
-                startActivity(intent);
+                loadNext();
                 break;
             case R.id.take_picture:
                 edit_photo_fullscreen_layout.setVisibility(View.GONE);
@@ -251,7 +250,7 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
     }
 
     public void uploadUserPhotoNew(final String filePath) {
-        uploading_photo_progress.setVisibility(View.VISIBLE);
+        showDialog("正在上传...");
         //为什么另开一个线程呢?因为要把图片字节流转化为字符串上传，比较耗时，阻塞UI线程，会使应用卡卡卡，所以要另开一线程
         new Thread() {
             public void run() {
@@ -301,28 +300,46 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
 
     @Override
     public void requestHeadIconNetSuc(HeadIconResult headIconResult) {
-        String photoUrl = headIconResult.getSmallUrl();
-        Message msg = handler.obtainMessage();
-        msg.obj = photoUrl;
-        msg.what = SHOW_UPDATE_PHOTO;
-        handler.sendMessage(msg);
+        if (headIconResult == null){
+            UIHelper.ToastMessage(EvpiUserActivity.this,"请求出错");
+            return;
+        }
+        if (headIconResult.getQuery().getSuccess().equals("1")){
+            String photoUrl = headIconResult.getSmallUrl();
+            smallImage = headIconResult.getIcon();
+            System.out.println("smallImage--->"+headIconResult.toString());
+            Message msg = handler.obtainMessage();
+            msg.obj = photoUrl;
+            msg.what = SHOW_UPDATE_PHOTO;
+            handler.sendMessage(msg);
+        }else{
+            UIHelper.ToastMessage(EvpiUserActivity.this,headIconResult.getQuery().getMessage());
+        }
     }
 
     @Override
     public void requestHeadIconNetFail() {
-        uploading_photo_progress.setVisibility(View.GONE);
+        dismissDialog();
         UIHelper.ToastMessage(EvpiUserActivity.this, "上传失败");
     }
 
     @Override
-    public void requestRegisterSecSuc() {
-        intent = new Intent(this,EvpiAddressActivity.class);
-        startActivity(intent);
+    public void requestRegisterSecSuc(RegisterFirst registerFirst) {
+        if (registerFirst == null) {
+            UIHelper.ToastMessage(EvpiUserActivity.this,"请求出错");
+            return;
+        }
+        if (registerFirst.getQuery().getSuccess().equals("1")){
+            startActivity(new Intent(this,EvpiAddressActivity.class));
+        }else {
+            UIHelper.ToastMessage(EvpiUserActivity.this,registerFirst.getQuery().getMessage());
+        }
+
     }
 
     @Override
     public void requestRegisterSecFail() {
-
+        UIHelper.ToastMessage(EvpiUserActivity.this, "请求失败");
     }
 
 }

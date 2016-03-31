@@ -45,10 +45,18 @@ public class JsonUtils {
      * @return
      * @throws JSONException
      */
-    public static DoctorInfo JsonLoginData(String string){
+    public static DoctorResult JsonLoginData(String string) throws JSONException {
         if (TextUtils.isEmpty(string)) return  null;
-        DoctorResult doctorResult = new Gson().fromJson(StringUtils.cutoutBracketToString(string), DoctorResult.class);
-        return doctorResult.getServiceStaff();
+        DoctorResult doctorResult = new DoctorResult();
+        JSONObject jsonObject = new JSONObject(string);
+        doctorResult.setQuery(JsonQuery(string));
+
+        if (jsonObject.has("serviceStaff")){
+            JSONObject serviceStaff = jsonObject.getJSONObject("serviceStaff");
+            DoctorInfo doctorInfo = new Gson().fromJson(serviceStaff.toString(),DoctorInfo.class);
+            doctorResult.setServiceStaff(doctorInfo);
+        }
+        return doctorResult;
     }
 
     /**
@@ -58,7 +66,7 @@ public class JsonUtils {
      */
     public static DoctorInfoNew JsonDoctorInfoNew(String string){
         if (TextUtils.isEmpty(string)) return null;
-        DoctorResultNew doctorResultNew = new Gson().fromJson(StringUtils.cutoutBracketToString(string), DoctorResultNew.class);
+        DoctorResultNew doctorResultNew = new Gson().fromJson(string, DoctorResultNew.class);
         return doctorResultNew.getDoctorInfo();
     }
 
@@ -70,11 +78,7 @@ public class JsonUtils {
      */
     public static Query JsonUpdatePw(String string) throws JSONException{
         if (TextUtils.isEmpty(string)) return null;
-        JSONObject jsonObject = new JSONObject(StringUtils.cutoutBracketToString(string));
-        Query query = new Query();
-        query.setMessage(jsonObject.getString("message"));
-        query.setSuccess(jsonObject.getString("success"));
-        return query;
+        return JsonQuery(string);
     }
 
     /**
@@ -82,17 +86,13 @@ public class JsonUtils {
      * @param string
      * @return
      */
-    public static RegisterFirst JsonQuery(String string) throws JSONException{
+    public static RegisterFirst JsonRegisterFirst(String string) throws JSONException{
         if (TextUtils.isEmpty(string)) return null;
         JSONObject jsonObject = new JSONObject(string);
         RegisterFirst registerFirst = new RegisterFirst();
         if (jsonObject.has("doctorUuid")) registerFirst.setDoctorUuid(jsonObject.getString("doctorUuid"));
         if (jsonObject.has("mobile")) registerFirst.setMobile(jsonObject.getString("mobile"));
-        Query query = new Query();
-        JSONObject queryJs = jsonObject.getJSONObject("query");
-        query.setMessage(queryJs.getString("message"));
-        query.setSuccess(queryJs.getString("success"));
-        registerFirst.setQuery(query);
+        registerFirst.setQuery(JsonQuery(string));
         return registerFirst;
     }
 
@@ -108,6 +108,23 @@ public class JsonUtils {
     }
 
     /**
+     * 注册第二步
+     * @param string
+     * @return
+     * @throws JSONException
+     */
+    public static RegisterFirst JsonRegisterSec(String string) throws JSONException {
+        if (TextUtils.isEmpty(string)) return null;
+        JSONObject js = new JSONObject(string);
+        RegisterFirst registerFirst = new RegisterFirst();
+        registerFirst.setQuery(JsonQuery(string));
+        if (js.has("doctorUuid")){
+            registerFirst.setDoctorUuid(js.getString("doctorUuid"));
+        }
+        return registerFirst;
+    }
+
+    /**
      * 省
      * @param string
      * @return
@@ -117,11 +134,7 @@ public class JsonUtils {
         if (TextUtils.isEmpty(string)) return  null;
         JSONObject jsonObject = new JSONObject(string);
         ProvinceInfoResult provinceInfoResult = new ProvinceInfoResult();
-        Query query = new Query();
-        JSONObject queryJs = jsonObject.getJSONObject("query");
-        query.setSuccess(queryJs.getString("success"));
-        query.setMessage(queryJs.getString("message"));
-        provinceInfoResult.setQuery(query);
+        provinceInfoResult.setQuery(JsonQuery(string));
 
         if (jsonObject.has("relist")){
             JSONArray jsonArray = jsonObject.getJSONArray("relist");
@@ -148,11 +161,7 @@ public class JsonUtils {
         if (TextUtils.isEmpty(string)) return  null;
         JSONObject jsonObject = new JSONObject(string);
         CityResultBean cityResultBean = new CityResultBean();
-        Query query = new Query();
-        JSONObject queryJs = jsonObject.getJSONObject("query");
-        query.setSuccess(queryJs.getString("success"));
-        query.setMessage(queryJs.getString("message"));
-        cityResultBean.setQuery(query);
+        cityResultBean.setQuery(JsonQuery(string));
 
         if (jsonObject.has("relist")){
             JSONArray jsonArray = jsonObject.getJSONArray("relist");
@@ -179,11 +188,7 @@ public class JsonUtils {
         if (TextUtils.isEmpty(string)) return null;
         JSONObject jsonObject = new JSONObject(string);
         HospitalResultBean hospitalResultBean = new HospitalResultBean();
-        Query query = new Query();
-        JSONObject queryJs = jsonObject.getJSONObject("query");
-        query.setSuccess(queryJs.getString("success"));
-        query.setMessage(queryJs.getString("message"));
-        hospitalResultBean.setQuery(query);
+        hospitalResultBean.setQuery(JsonQuery(string));
 
         if (jsonObject.has("relist")){
             JSONArray jsonArray = jsonObject.getJSONArray("relist");
@@ -208,13 +213,9 @@ public class JsonUtils {
      */
     public static RegionResultBean JsonRegionResult(String string) throws JSONException{
         if (TextUtils.isEmpty(string)) return null;
-        JSONObject jsonObject = new JSONObject(StringUtils.cutoutBracketToString(string));
+        JSONObject jsonObject = new JSONObject(string);
         RegionResultBean regionResultBean = new RegionResultBean();
-        Query query = new Query();
-        JSONObject queryJs = jsonObject.getJSONObject("query");
-        query.setSuccess(queryJs.getString("success"));
-        query.setMessage(queryJs.getString("message"));
-        regionResultBean.setQuery(query);
+        regionResultBean.setQuery(JsonQuery(string));
 
         if (jsonObject.has("relist")){
             JSONArray jsonArray = jsonObject.getJSONArray("relist");
@@ -241,11 +242,7 @@ public class JsonUtils {
         if (TextUtils.isEmpty(string)) return null;
         JSONObject jsonObject = new JSONObject(StringUtils.cutoutBracketToString(string));
         OfficeResultBean officeResultBean = new OfficeResultBean();
-        Query query = new Query();
-        JSONObject queryJs = jsonObject.getJSONObject("query");
-        query.setSuccess(queryJs.getString("success"));
-        query.setMessage(queryJs.getString("message"));
-        officeResultBean.setQuery(query);
+        officeResultBean.setQuery(JsonQuery(StringUtils.cutoutBracketToString(string)));
 
         if (jsonObject.has("relist")){
             JSONArray jsonArray = jsonObject.getJSONArray("relist");
@@ -272,11 +269,7 @@ public class JsonUtils {
         if (TextUtils.isEmpty(string)) return null;
         JSONObject jsonObject = new JSONObject(string);
         TagsResultBean tagsResultBean = new TagsResultBean();
-        Query query = new Query();
-        JSONObject queryJs = jsonObject.getJSONObject("query");
-        query.setSuccess(queryJs.getString("success"));
-        query.setMessage(queryJs.getString("message"));
-        tagsResultBean.setQuery(query);
+        tagsResultBean.setQuery(JsonQuery(string));
 
         if (jsonObject.has("reList")){
             JSONArray jsonArray = jsonObject.getJSONArray("reList");
@@ -291,5 +284,59 @@ public class JsonUtils {
             tagsResultBean.setTagsBeans(list);
         }
         return tagsResultBean;
+    }
+
+    /**
+     * 注册第三步
+     * @param string
+     * @return
+     * @throws JSONException
+     */
+    public static RegisterFirst JsonRegisterThree(String string) throws JSONException {
+        if (TextUtils.isEmpty(string)) return  null;
+        JSONObject js = new JSONObject(string);
+        RegisterFirst registerFirst = new RegisterFirst();
+        registerFirst.setQuery(JsonQuery(string));
+        if (js.has("mobile")){
+            registerFirst.setMobile(js.getString("mobile"));
+        }
+        if (js.has("uuid")){
+            registerFirst.setDoctorUuid(js.getString("uuid"));
+        }
+        return registerFirst;
+    }
+
+    /**
+     * 解析验证码
+     * @param string
+     * @return
+     * @throws JSONException
+     */
+    public static CaptchaResult JsonCaptchResult(String string) throws JSONException{
+        if (TextUtils.isEmpty(string)) return  null;
+        CaptchaResult captchaResult = new CaptchaResult();
+        JSONObject jsonObject = new JSONObject(string);
+        captchaResult.setQuery(JsonQuery(string));
+
+        if (jsonObject.has("captcha")){
+            captchaResult.setCaptcha(jsonObject.getString("captcha"));
+        }
+        return captchaResult;
+    }
+
+    /**
+     * 解析query
+     * @param string
+     * @return
+     * @throws JSONException
+     */
+    public static Query JsonQuery(String string) throws JSONException{
+        if (TextUtils.isEmpty(string)) return null;
+        JSONObject js = new JSONObject(string);
+        JSONObject queryJs = js.getJSONObject("query");
+        Query query = new Query();
+        query.setSuccess(queryJs.getString("success"));
+        query.setMessage(queryJs.getString("message"));
+        return query;
     }
 }

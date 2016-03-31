@@ -41,13 +41,12 @@ public class CityNet {
 
                     @Override
                     public void onResponse(String response) {
-                        CityResultBean cityResultBean = null;
                         try {
-                            cityResultBean = JsonUtils.JsonCityResult(response);
+                            listener.requestCitySuc(JsonUtils.JsonCityResult(response));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        listener.requestCitySuc(cityResultBean);
+
                     }
                 });
 

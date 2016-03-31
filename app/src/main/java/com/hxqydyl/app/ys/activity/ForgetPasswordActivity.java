@@ -21,7 +21,7 @@ import com.hxqydyl.app.ys.utils.Validator;
 /**
  * 忘记密码
  */
-public class ForgetPasswordActivity extends BaseTitleActivity implements View.OnClickListener,UpdatePasswordNet.OnUpdatePasswordListener,CaptchaNet.OnCaptchaNetListener{
+public class ForgetPasswordActivity extends BaseTitleActivity implements View.OnClickListener, UpdatePasswordNet.OnUpdatePasswordListener, CaptchaNet.OnCaptchaNetListener {
 
     private TextView loginBtn;
     private Button next_btn;
@@ -58,7 +58,9 @@ public class ForgetPasswordActivity extends BaseTitleActivity implements View.On
                 default:
                     break;
             }
-        };
+        }
+
+        ;
     };
 
     @Override
@@ -96,7 +98,7 @@ public class ForgetPasswordActivity extends BaseTitleActivity implements View.On
     @Override
     public void onClick(View v) {
         String isCan = "";
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.login_btn:
                 UIHelper.showLogin(ForgetPasswordActivity.this);
                 break;
@@ -104,8 +106,8 @@ public class ForgetPasswordActivity extends BaseTitleActivity implements View.On
                 isCan = validateMobile();
                 if (TextUtils.isEmpty(isCan)) {
                     obtainCaptcha();
-                }else {
-                    UIHelper.ToastMessage(this,isCan);
+                } else {
+                    UIHelper.ToastMessage(this, isCan);
                 }
                 break;
             case R.id.back_img:
@@ -113,11 +115,11 @@ public class ForgetPasswordActivity extends BaseTitleActivity implements View.On
                 break;
             case R.id.next_btn:
                 isCan = validateInfo();
-              if (TextUtils.isEmpty(isCan)){
-                  updatePassword();
-              }else {
-                  UIHelper.ToastMessage(this,isCan);
-              }
+                if (TextUtils.isEmpty(isCan)) {
+                    updatePassword();
+                } else {
+                    UIHelper.ToastMessage(this, isCan);
+                }
                 break;
         }
     }
@@ -125,14 +127,14 @@ public class ForgetPasswordActivity extends BaseTitleActivity implements View.On
     /**
      * 修改网络请求
      */
-    private void updatePassword(){
-        updatePasswordNet.updatePassword(mobile,password,captcha);
+    private void updatePassword() {
+        updatePasswordNet.updatePassword(mobile, password, captcha);
     }
 
     /**
      * 获取验证码网络请求
      */
-    private void obtainCaptcha(){
+    private void obtainCaptcha() {
         btn_code.setEnabled(false);
         timeCount = 60;
         handler.sendEmptyMessage(GET_VERIFICATION);
@@ -143,13 +145,13 @@ public class ForgetPasswordActivity extends BaseTitleActivity implements View.On
     /**
      * 验证输入内容
      */
-    private String validateInfo(){
+    private String validateInfo() {
         String isMobile = validateMobile();
-        if(!TextUtils.isEmpty(isMobile)) return isMobile;
+        if (!TextUtils.isEmpty(isMobile)) return isMobile;
 
         captcha = captcha_edit.getText().toString();
         if (TextUtils.isEmpty(captcha)) return "验证码不能为空";
-//        if (!captcha.equals(captchaRight)) return "验证码不正确";
+        if (!captcha.equals(captchaRight)) return "验证码不正确";
 
         password = password_edit.getText().toString();
         if (TextUtils.isEmpty(password)) return "密码不能为空";
@@ -160,9 +162,10 @@ public class ForgetPasswordActivity extends BaseTitleActivity implements View.On
 
     /**
      * 验证输入的手机号码
+     *
      * @return
      */
-    private String validateMobile(){
+    private String validateMobile() {
         mobile = mobile_edit.getText().toString();
         if (TextUtils.isEmpty(mobile)) return "手机号码不能为空";
         if (!Validator.isMobile(mobile)) return "手机号码格式不正确";
@@ -171,7 +174,17 @@ public class ForgetPasswordActivity extends BaseTitleActivity implements View.On
 
     @Override
     public void requestUpdatePwSuc(Query query) {
-
+        System.out.println("query--->" + query.toString());
+        if (query == null) {
+            UIHelper.ToastMessage(ForgetPasswordActivity.this, "请求出错");
+            return;
+        }
+        if (query.getSuccess().equals("1")) {
+            UIHelper.ToastMessage(ForgetPasswordActivity.this, "修改成功");
+            finish();
+        } else {
+            UIHelper.ToastMessage(ForgetPasswordActivity.this, query.getMessage());
+        }
     }
 
     @Override
@@ -181,7 +194,8 @@ public class ForgetPasswordActivity extends BaseTitleActivity implements View.On
 
     @Override
     public void requestCaptchaNetSuc(CaptchaResult captchaResult) {
-
+        System.out.println("capche--->"+captchaResult.getCaptcha());
+        captchaRight = captchaResult.getCaptcha();
     }
 
     @Override

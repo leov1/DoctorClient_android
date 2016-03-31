@@ -1,6 +1,6 @@
 package com.hxqydyl.app.ys.activity;
 
-import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -10,12 +10,16 @@ import android.widget.TextView;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.ui.swipebacklayout.SwipeBackActivity;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class BaseTitleActivity extends SwipeBackActivity {
 
     protected final String HTTP_TASK_KEY = "HttpTaskKey_" + hashCode();
 
     private ImageView backImg;
     private TextView topTv;
+
+    private SweetAlertDialog pDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +51,20 @@ public class BaseTitleActivity extends SwipeBackActivity {
                 finish();
             }
         });
+    }
+
+    public void showDialog(String text){
+        pDialog = new SweetAlertDialog(this,SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText(text);
+        pDialog.setCancelable(true);
+        pDialog.show();
+    }
+
+    public void dismissDialog(){
+        if (pDialog != null && pDialog.isShowing()){
+            pDialog.dismissWithAnimation();
+        }
     }
 
 }

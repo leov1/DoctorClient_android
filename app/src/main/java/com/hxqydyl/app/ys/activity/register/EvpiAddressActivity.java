@@ -153,6 +153,10 @@ public class EvpiAddressActivity extends BaseTitleActivity implements View.OnCli
                 finish();
                 break;
             case R.id.next_btn: //下一步
+                if (TextUtils.isEmpty(rankName)){
+                    UIHelper.ToastMessage(EvpiAddressActivity.this,"请先完善信息");
+                    return;
+                }
                 intent = new Intent(this,GoodChoiceActivity.class);
                 AddressParamBean addressParamBean = new AddressParamBean();
                 addressParamBean.setProvinceCode(provinceCode);

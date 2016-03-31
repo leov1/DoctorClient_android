@@ -3,6 +3,7 @@ package com.hxqydyl.app.ys.http.register;
 import com.hxqydyl.app.ys.bean.register.RegisterFirst;
 import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.utils.Constants;
+import com.hxqydyl.app.ys.utils.StringUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -47,7 +48,7 @@ public class RegisterFirstNet {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            listener.requestRegisterFirstNetSuccess(JsonUtils.JsonQuery(response));
+                            listener.requestRegisterFirstNetSuccess(JsonUtils.JsonRegisterFirst(StringUtils.cutoutBracketToString(response)));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

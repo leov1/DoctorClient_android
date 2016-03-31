@@ -22,6 +22,9 @@ public class DoctorInfo {
     private String department;
     private String territory;
 
+    public DoctorInfo() {
+    }
+
     public DoctorInfo(int income, String address, String doctorUuid, String sex, int visitNum, int customerNum, String sate, String synopsis, String doctorIcon, String professional, String doctorName, String departmentLine, String territory, String department, String hospital) {
         this.income = income;
         this.address = address;

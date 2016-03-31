@@ -1,9 +1,14 @@
 package com.hxqydyl.app.ys.http.register;
 
 import com.hxqydyl.app.ys.bean.Query;
+import com.hxqydyl.app.ys.utils.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
+import java.io.File;
 import java.util.List;
+
+import okhttp3.Call;
 
 /**
  * 上传图片集
@@ -22,23 +27,26 @@ public class UploadIconsNet {
         void requestUploadIconsFail();
     }
 
-    public void saveIcons(String doctorUuid,List<String> imgUris){
-//        OkHttpClientManager.Param[] params = new OkHttpClientManager.Param[2];
-//        params[0] =  new OkHttpClientManager.Param("doctorUuid",doctorUuid);
-//        params[1] = new OkHttpClientManager.Param("userIconList",imgUris);
-//
-//        OkHttpClientManager.postAsyn(Constants.SAVE_USER_ICON_LIST, params, new OkHttpClientManager.ResultCallback<Query>() {
-//            @Override
-//            public void onError(Request request, Exception e) {
-//                System.out.println("fail---->"+request);
-//                listener.requestUploadIconsFail();
-//            }
-//
-//            @Override
-//            public void onResponse(Query response) throws JSONException {
-//               System.out.println("fail---->"+response.toString());
-//               listener.requestUploadIconsSuc(response);
-//            }
-//        });
+    public void saveIcons(List<String> imgUris){
+        System.out.println("response--->"+imgUris.get(0));
+        OkHttpUtils.post()
+                .url(Constants.UPLOAD_IMGS)
+                .addParams("thumbnail", "false")
+                .addFile("files", "deefeee.png", new File(imgUris.get(0)))
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e) {
+                        listener.requestUploadIconsFail();
+                        System.out.println("onError--->");
+                    }
+
+                    @Override
+                    public void onResponse(String response) {
+                        listener.requestUploadIconsSuc(null);
+                       System.out.println("response--->"+response);
+                    }
+                });
+
     }
 }
