@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View style="@style/divider_line" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/color_f7f7f7"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="@dimen/follow_up_form_space_base_left"
+        android:text="@string/medicine_bad_reaction"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_15" />
+
+    <View style="@style/divider_line" />
+
+    <View
+        style="@style/divider_line"
+        android:layout_marginTop="@dimen/space_5" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:shrinkColumns="1"
+        android:stretchColumns="1">
+
+        <TableRow>
+
+            <TextView
+                style="@style/follow_up_form_left"
+                android:layout_height="40dp"
+                android:text="@string/occurrence_time" />
+
+            <TextView
+                android:id="@+id/tvOccurrTime"
+                style="@style/follow_up_form_right"
+                android:layout_height="@dimen/space_40"
+                android:text="2016/03/26" />
+        </TableRow>
+
+
+        <View style="@style/divider_line" />
+
+        <TableRow>
+
+            <TextView
+                style="@style/follow_up_form_left"
+                android:layout_height="40dp"
+                android:text="@string/duration_time" />
+
+            <TextView
+                android:id="@+id/tvDurationTime"
+                style="@style/follow_up_form_right"
+                android:layout_height="@dimen/space_40"
+                android:text="12个月零1天" />
+        </TableRow>
+
+        <View style="@style/divider_line" />
+
+        <TableRow>
+
+            <TextView
+                style="@style/follow_up_form_left"
+                android:layout_height="match_parent"
+                android:gravity="top"
+                android:paddingTop="@dimen/space_10"
+                android:text="@string/symptoms_des" />
+
+            <TextView
+                android:id="@+id/tvSymptomsDes"
+                style="@style/follow_up_form_right"
+                android:minHeight="@dimen/space_40"
+                android:paddingTop="@dimen/space_10"
+                android:paddingBottom="@dimen/space_10"
+                android:text="症状描述症状描述症状描述症状描述症状描述症状描述症状描述症状描述症状描述症状描述症状描述症状描述症状描述症状描述症状描述" />
+        </TableRow>
+
+
+        <View style="@style/divider_line" />
+
+        <TableRow>
+
+            <TextView
+                style="@style/follow_up_form_left"
+                android:layout_height="match_parent"
+                android:gravity="top"
+                android:paddingBottom="@dimen/space_10"
+                android:paddingTop="@dimen/space_10"
+                android:text="@string/impact" />
+
+            <TextView
+                android:id="@+id/tvEffect"
+                style="@style/follow_up_form_right"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/space_40"
+                android:paddingTop="@dimen/space_10"
+                android:paddingBottom="@dimen/space_10"
+                android:text="变的很严重严重变的很严重严重变的很严重严重变的很严重严重变的很严重严重变的很严重严重变的很严重严重变的很严重严重变的很严重严重变的很严重严重变的很严重严重" />
+        </TableRow>
+
+
+        <View style="@style/divider_line" />
+
+    </TableLayout>
+</LinearLayout>

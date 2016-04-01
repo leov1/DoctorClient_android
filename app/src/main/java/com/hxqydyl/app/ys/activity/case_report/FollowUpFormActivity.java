@@ -32,6 +32,7 @@ public class FollowUpFormActivity extends BaseTitleActivity implements View.OnCl
     @InjectId(id = R.id.lvForm)
     private ExpandableListView lvForm;
     private ArrayList<FollowUpFormGroup> formList = new ArrayList<FollowUpFormGroup>();
+    private int curExpandGroup = -1;
 
     @InjectId(id = R.id.bDoctorAdvice)
     private Button bDoctorAdvice;
@@ -50,7 +51,18 @@ public class FollowUpFormActivity extends BaseTitleActivity implements View.OnCl
         InjectUtils.injectView(this);
         initTestData();
         FollowUpFormAdapter adapter = new FollowUpFormAdapter(this,formList);
-//        lvForm.setAdapter(adapter);
+        lvForm.setAdapter(adapter);
+        lvForm.setGroupIndicator(null);
+
+        lvForm.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if(curExpandGroup >=0 && curExpandGroup!=groupPosition){
+                    lvForm.collapseGroup(curExpandGroup);
+                }
+                curExpandGroup = groupPosition;
+            }
+        });
 
         bDoctorAdvice.setOnClickListener(this);
     }
@@ -103,6 +115,13 @@ public class FollowUpFormActivity extends BaseTitleActivity implements View.OnCl
                     pic.setThumbUrl("http://b.hiphotos.baidu.com/image/h%3D200/sign=fd93c2465cb5c9ea7df304e3e539b622/9c16fdfaaf51f3de7d874d2993eef01f3a297942.jpg");
                     ((OtherCheckRecord)record).getResult().addPic(pic);
                     group.addRecord(record);
+                    record = new OtherCheckRecord();
+                    ((OtherCheckRecord)record).setName("xx检查");
+                    group.addRecord(record);
+                    record = new OtherCheckRecord();
+                    ((OtherCheckRecord)record).setName("xx检查");
+                    ((OtherCheckRecord)record).getResult().setText("一切都好");
+                    group.addRecord(record);
                     break;
                 case FollowUpFormGroup.Type.EAT_MED_RECORD:
                     record = new EatMedRecord();
@@ -115,8 +134,8 @@ public class FollowUpFormActivity extends BaseTitleActivity implements View.OnCl
                     group.addRecord(record);
                     record = new EatMedRecord();
                     ((EatMedRecord)record).setMedName("阿司匹林速溶片");
-                    ((EatMedRecord)record).setStartTime("2016-03-20");
-                    ((EatMedRecord)record).setEndTime("2013-03-21");
+                    ((EatMedRecord)record).setStartTime("2013-03-24");
+                    ((EatMedRecord)record).setEndTime("2016-03-21");
                     ((EatMedRecord)record).setSmpleAmount("0.3mg");
                     ((EatMedRecord)record).setRate("1天2次");
                     ((EatMedRecord)record).setEatMethod("口服");
@@ -125,7 +144,7 @@ public class FollowUpFormActivity extends BaseTitleActivity implements View.OnCl
                     ((BadReactionRecord)record).setFirstTime("2016-03-20");
                     ((BadReactionRecord)record).setDurationTime("2小时");
                     ((BadReactionRecord)record).setSymptomsDecription("肚子痛");
-                    ((BadReactionRecord)record).setEffect("不想吃饭");
+                    ((BadReactionRecord)record).setEffect("不想吃饭。不想上街。不想睡觉。什么都不想干。只想死。");
                     group.addRecord(record);
                     break;
                 case FollowUpFormGroup.Type.MEASURE_SELF_RECORD:
@@ -133,13 +152,13 @@ public class FollowUpFormActivity extends BaseTitleActivity implements View.OnCl
                     ((MeasureFormRecord)record).setName("SDS(抑郁自评量表)");
                     ((MeasureFormRecord)record).setScore("3分");
                     ((MeasureFormRecord)record).setResult("正常");
-                    ((MeasureFormRecord)record).setRetDescription("自评描述自评描述");
+                    ((MeasureFormRecord)record).setRetDescription("自评描述自评描述自评描述自评描述自评描述自评描述自评描述自评描述自评描述自评描述");
                     group.addRecord(record);
                     record = new MeasureFormRecord();
                     ((MeasureFormRecord)record).setName("LSR(生活满意度自评量表)");
-                    ((MeasureFormRecord)record).setScore("3分");
-                    ((MeasureFormRecord)record).setResult("正常");
-                    ((MeasureFormRecord)record).setRetDescription("自评描述自评描述");
+                    ((MeasureFormRecord)record).setScore("5分");
+                    ((MeasureFormRecord)record).setResult("不正常");
+                    ((MeasureFormRecord)record).setRetDescription("生活满意度生活满意度生活满意度生活满意度生活满意度评描述");
                     group.addRecord(record);
                     break;
                 case FollowUpFormGroup.Type.DOC_MEASURE_RECORD:
@@ -153,7 +172,7 @@ public class FollowUpFormActivity extends BaseTitleActivity implements View.OnCl
                     ((MeasureFormRecord)record).setName("LSR(生活满意度医评量表)");
                     ((MeasureFormRecord)record).setScore("3分");
                     ((MeasureFormRecord)record).setResult("正常");
-                    ((MeasureFormRecord)record).setRetDescription("医评描述自评描述");
+                    ((MeasureFormRecord)record).setRetDescription("医评描述自评描述医评描述自评描述医评描述自评描述医评描述自评描述医评描述自评描述医评描述自评描述");
                     group.addRecord(record);
                     break;
             }

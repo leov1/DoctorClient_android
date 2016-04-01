@@ -4,4 +4,87 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="1">
+
+        <View style="@style/divider_line" />
+
+        <TableRow>
+
+            <TextView
+                style="@style/follow_up_form_left"
+                android:background="@color/color_ddf0f6"
+                android:text="@string/medicine_name" />
+
+            <TextView
+                android:id="@+id/tvMedName"
+                style="@style/follow_up_form_right"
+                android:background="@color/color_f5fafd"
+                android:text="阿司匹林" />
+        </TableRow>
+
+        <View style="@style/divider_line" />
+
+        <TableRow>
+
+            <TextView
+                style="@style/follow_up_form_left"
+                android:text="@string/eat_med_time" />
+
+            <TextView
+                android:id="@+id/tvEatTime"
+                style="@style/follow_up_form_right"
+                android:background="@color/white"
+                android:text="2016/03/20 至 2016/03/21" />
+        </TableRow>
+
+        <View style="@style/divider_line" />
+
+        <TableRow>
+
+            <TextView
+                style="@style/follow_up_form_left"
+                android:text="@string/single_amount" />
+
+            <TextView
+                android:id="@+id/tvSingleAmount"
+                style="@style/follow_up_form_right"
+                android:background="@color/white"
+                android:text="0.5mg" />
+        </TableRow>
+
+        <View style="@style/divider_line" />
+
+        <TableRow>
+
+            <TextView
+                style="@style/follow_up_form_left"
+                android:text="@string/rate" />
+
+            <TextView
+                android:id="@+id/tvRate"
+                style="@style/follow_up_form_right"
+                android:background="@color/white"
+                android:text="0.5mg" />
+        </TableRow>
+
+        <View style="@style/divider_line" />
+
+        <TableRow>
+
+            <TextView
+                style="@style/follow_up_form_left"
+                android:text="@string/eat_method" />
+
+            <TextView
+                android:id="@+id/tvEatMethod"
+                style="@style/follow_up_form_right"
+                android:background="@color/white"
+                android:text="口服" />
+        </TableRow>
+
+        <View style="@style/divider_line" />
+    </TableLayout>
 </LinearLayout>

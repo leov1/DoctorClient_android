@@ -4,46 +4,50 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginLeft="@dimen/space_10"
-        android:layout_marginRight="@dimen/space_10"
-        android:background="@drawable/shape_illness_change_bg"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:stretchColumns="1">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:gravity="left|center_vertical"
-            android:minWidth="80dp"
-            android:paddingLeft="@dimen/space_10"
-            android:text="@string/weight_record"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_15" />
+        <View style="@style/divider_line" />
 
-        <TextView
-            android:id="@+id/tvWeight"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/white"
-            android:gravity="center"
-            android:text="60"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_15" />
+        <TableRow>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/white"
-            android:gravity="left|center_vertical"
-            android:text="kg"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_15" />
-    </LinearLayout>
+            <TextView
+                style="@style/follow_up_form_left"
+                android:text="@string/weight_record" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:paddingRight="@dimen/space_25">
 
+                <TextView
+                    android:id="@+id/tvWeight"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:minHeight="@dimen/space_40"
+                    android:text="60"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_15" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="left|center_vertical"
+                    android:minHeight="@dimen/space_40"
+                    android:text="kg"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_15" />
+            </LinearLayout>
+        </TableRow>
+
+        <View style="@style/divider_line" />
+
+    </TableLayout>
 </LinearLayout>

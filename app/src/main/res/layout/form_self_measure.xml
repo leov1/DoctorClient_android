@@ -4,4 +4,47 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <View style="@style/divider_line" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/space_25">
+
+        <TextView
+            android:id="@+id/tvName"
+            style="@style/measure_result"
+            android:minHeight="@dimen/space_40"
+            android:text="SDS(抑郁自评量表)"
+            android:textSize="@dimen/text_size_16" />
+
+        <View
+            style="@style/divider_line"
+            android:layout_marginLeft="@dimen/space_10" />
+
+        <TextView
+            android:id="@+id/tvScore"
+            style="@style/measure_result"
+            android:minHeight="@dimen/space_25"
+            android:text="分数：1分"
+            android:textSize="@dimen/text_size_14" />
+
+        <TextView
+            android:id="@+id/tvResult"
+            style="@style/measure_result"
+            android:minHeight="@dimen/space_25"
+            android:text="测试结果：正常"
+            android:textSize="@dimen/text_size_14" />
+
+        <TextView
+            android:id="@+id/tvResultDescription"
+            style="@style/measure_result"
+            android:minHeight="@dimen/space_25"
+            android:paddingBottom="@dimen/space_5"
+            android:text="结果说明：测试人没有按照规定项目进行完整测试"
+            android:textSize="@dimen/text_size_14" />
+    </LinearLayout>
+
+    <View style="@style/divider_line" />
 </LinearLayout>

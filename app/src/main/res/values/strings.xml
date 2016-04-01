@@ -147,4 +147,24 @@
     <string name="eat_med_record">服药记录</string>
     <string name="form_self_measure">自评量表</string>
     <string name="form_doctor_measure">医评量表</string>
+    <string name="check_name">检查名称</string>
+    <string name="check_result">结&#160;&#160;&#160;&#160;&#160;&#160;果</string>
+    <string name="medicine_name">药品名称</string>
+    <string name="eat_med_time">用药时间</string>
+    <string name="single_amount">单量</string>
+    <string name="rate">频率</string>
+    <string name="eat_method">用法</string>
+    <string name="sleep_change">睡眠情况</string>
+    <string name="food_change">进食情况</string>
+    <string name="other_change">其他情况</string>
+    <string name="xx_description">%s描述</string>
+    <string name="status_invalid">无效</string>
+    <string name="status_better">好转</string>
+    <string name="status_best">痊愈</string>
+    <string name="medicine_bad_reaction">药物不良反应</string>
+    <string name="occurrence_time">发生时间</string>
+    <string name="duration_time">持续时间</string>
+    <string name="symptoms_des">症状描述</string>
+    <string name="impact">影&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;响</string>
+    <string name="important_doctor_advice">重要医嘱</string>
 </resources>

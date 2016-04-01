@@ -4,4 +4,68 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:shrinkColumns="1"
+        android:stretchColumns="1">
+
+        <View style="@style/divider_line" />
+
+        <TableRow>
+
+            <TextView
+                style="@style/follow_up_form_left"
+                android:text="@string/check_name" />
+
+            <TextView
+                android:id="@+id/tvCheckName"
+                style="@style/follow_up_form_right"
+                android:text="肾功能检查" />
+        </TableRow>
+
+        <View style="@style/divider_line" />
+
+        <TableRow>
+
+            <TextView
+                style="@style/follow_up_form_left"
+                android:layout_height="match_parent"
+                android:gravity="top"
+                android:paddingTop="@dimen/space_10"
+                android:text="@string/check_result" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvCheckResultText"
+                    style="@style/follow_up_form_right"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="肾功能检查" />
+
+                <View
+                    android:id="@+id/lineBelowRetText"
+                    style="@style/divider_line" />
+
+                <com.hxqydyl.app.ys.ui.fullshowview.FullShowGridView
+                    android:id="@+id/checkResultPic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/space_10"
+                    android:paddingBottom="@dimen/space_10"
+                    android:paddingRight="@dimen/space_25"
+                    android:paddingLeft="@dimen/space_25"
+                    android:numColumns="3">
+
+                </com.hxqydyl.app.ys.ui.fullshowview.FullShowGridView>
+            </LinearLayout>
+
+        </TableRow>
+
+        <View style="@style/divider_line" />
+    </TableLayout>
 </LinearLayout>
