@@ -13,7 +13,7 @@ public class Constants {
     //请求网络失败
     public static int REQUEST_FAIL = 1101;
 
-    private static String url = /*"http://172.168.1.57";*//*"http://172.168.1.30";*/"http://172.168.1.33";/*"http://172.168.1.63";*/
+    private static String url = "http://192.168.0.150:8080";/*"http://172.168.1.30";*//*"http://172.168.1.233";*//*"http://172.168.1.63";*//*"http://172.168.1.10";*/
 //  private static String url = "http://119.254.32.92:4097";
     public static String phone = "10000000000";
     public static String password = "000000";
@@ -30,6 +30,8 @@ public class Constants {
     public static String REGISTER_THREE = url+"/app/pub/doctor/registerThree";
     //修改密码
     public static String UPDATE_PASSWORD = url+"/app/pub/doctor/updatePassword";
+    //退出登陆
+    public static String STAFF_OUT_OF = url+"/app/pub/doctor/staffOutOf";
 
     //获取医生基本信息（新添加）
     public static  String GET_DOCTOR_INFO = url+"/app/service/doctor/getDoctorInfo";
@@ -62,5 +64,6 @@ public class Constants {
     public static String GET_CLINIC = "http://101.201.150.23:8080/html/clinic/index.shtml";
     //我的患者
     public static String MY_PATIENT = "http://101.201.150.23:8080/html/mypatient/index.shtml";
-    public static final String GET_PATIENT_GROUP = url + "/app/service/customer/%s/getCaseGroupByDoctorId";
+    //患者分组
+    public static final String GET_PATIENT_GROUP = url + "/app/service/customer/1.0/getGroupAndCustomer";
 }

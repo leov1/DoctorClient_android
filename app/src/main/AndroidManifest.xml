@@ -40,6 +40,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.LoginActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
         <meta-data
@@ -48,9 +49,11 @@
 
         <activity
             android:name=".activity.register.RegisterActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.ForgetPasswordActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.register.RegisterOrderActivity"

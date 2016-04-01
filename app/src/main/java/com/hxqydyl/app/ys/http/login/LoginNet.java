@@ -33,31 +33,7 @@ public class LoginNet {
     }
 
     public void loginData(String mobile,String password){
-        OkHttpUtils
-                .post()
-                .url("http://172.168.1.57/app/service/customer/1.0/addCaseGroup")
-                .addParams("doctorUuid", "ctorAdvice0000000061002")
-                .addParams("groupName", "中国")
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e) {
-                        mListener.requestLoginNetFail(Constants.REQUEST_FAIL);
-                    }
-
-                    @Override
-                    public void onResponse(String response) {
-                        System.out.println("response---->"+response);
-//                        try {
-//                            mListener.requestLoginNetSuccess(JsonUtils.JsonLoginData(StringUtils.cutoutBracketToString(response)));
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-                    }
-                });
-
-
-     /*   OkHttpUtils
+      OkHttpUtils
                 .post()
                 .url(Constants.LOGIN_URL)
                 .addParams("mobile", mobile)
@@ -79,7 +55,7 @@ public class LoginNet {
                             e.printStackTrace();
                         }
                     }
-                });*/
+                });
     }
 
 }

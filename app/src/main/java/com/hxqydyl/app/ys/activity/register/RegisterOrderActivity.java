@@ -32,7 +32,8 @@ public class RegisterOrderActivity extends BaseTitleActivity implements View.OnC
     private void initViews() {
         initViewOnBaseTitle("注册协议");
         webView = (WebView) findViewById(R.id.webview_order);
-        webView.loadUrl("file:///android_asset/register/register_order.html");
+//        webView.loadUrl("file:///android_asset/register/register_order.html");
+        webView.loadUrl("http://172.168.1.41/html/reg/addreginfo_amet.shtml");
     }
 
     @Override

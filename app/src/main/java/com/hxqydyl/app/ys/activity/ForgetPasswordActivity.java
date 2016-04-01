@@ -31,7 +31,6 @@ public class ForgetPasswordActivity extends BaseTitleActivity implements View.On
     private EditText password_edit;
 
     private String captcha = "";//验证码
-    private String captchaRight = "";//系统返回的验证码
     private String mobile = "";//手机号
     private String password = "";//密码
 
@@ -135,6 +134,11 @@ public class ForgetPasswordActivity extends BaseTitleActivity implements View.On
      * 获取验证码网络请求
      */
     private void obtainCaptcha() {
+        if (!TextUtils.isEmpty(validateMobile())){
+            UIHelper.ToastMessage(ForgetPasswordActivity.this,validateMobile());
+            return;
+        }
+
         btn_code.setEnabled(false);
         timeCount = 60;
         handler.sendEmptyMessage(GET_VERIFICATION);
@@ -151,7 +155,6 @@ public class ForgetPasswordActivity extends BaseTitleActivity implements View.On
 
         captcha = captcha_edit.getText().toString();
         if (TextUtils.isEmpty(captcha)) return "验证码不能为空";
-        if (!captcha.equals(captchaRight)) return "验证码不正确";
 
         password = password_edit.getText().toString();
         if (TextUtils.isEmpty(password)) return "密码不能为空";
@@ -195,7 +198,8 @@ public class ForgetPasswordActivity extends BaseTitleActivity implements View.On
     @Override
     public void requestCaptchaNetSuc(CaptchaResult captchaResult) {
         System.out.println("capche--->"+captchaResult.getCaptcha());
-        captchaRight = captchaResult.getCaptcha();
+        if (captchaResult == null)return;
+        UIHelper.ToastMessage(ForgetPasswordActivity.this,captchaResult.getQuery().getMessage());
     }
 
     @Override

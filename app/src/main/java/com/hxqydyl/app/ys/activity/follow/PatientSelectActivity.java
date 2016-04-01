@@ -14,16 +14,23 @@ import com.hxqydyl.app.ys.adapter.PatientSelectAdapter;
 import com.hxqydyl.app.ys.bean.article.Child;
 import com.hxqydyl.app.ys.bean.article.Group;
 import com.hxqydyl.app.ys.ui.fullshowview.FullShowExpandableListView;
+import com.hxqydyl.app.ys.utils.Constants;
+import com.hxqydyl.app.ys.utils.LoginManager;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
+
+import okhttp3.Call;
 
 /**
  * 挑选患者页面
  */
 public class PatientSelectActivity extends BaseTitleActivity {
 
-    private FullShowExpandableListView expand_lv;
+    private ExpandableListView expand_lv;
     private View mHeader;
+    private View mFooter;
     private CheckBox checkbox_all;
     private Button btn_send_patient;
     private TextView text_head;
@@ -36,15 +43,28 @@ public class PatientSelectActivity extends BaseTitleActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_select);
 
+        initHeadView();
         getDatas();
         initViews();
-        initHeadView();
+
     }
 
     private void initHeadView() {
         mHeader = View.inflate(this,R.layout.head_textview,null);
         text_head = (TextView) mHeader.findViewById(R.id.text_head);
+        mFooter = View.inflate(this,R.layout.foot_patient_layout,null);
+        checkbox_all = (CheckBox) mFooter.findViewById(R.id.checkbox_all);
+        btn_send_patient = (Button) mFooter.findViewById(R.id.btn_send_patient);
+    }
+
+    private void initViews() {
+        expand_lv = (ExpandableListView) findViewById(R.id.expand_lv);
+        System.out.println("groups---->"+groups.toString());
+        adapter = new PatientSelectAdapter(this,groups);
+        expand_lv.setGroupIndicator(null);
         expand_lv.addHeaderView(mHeader);
+        expand_lv.addFooterView(mFooter);
+        expand_lv.setAdapter(adapter);
     }
 
     private void getDatas(){
@@ -57,16 +77,20 @@ public class PatientSelectActivity extends BaseTitleActivity {
             }
             groups.add(group);
         }
-    }
 
-    private void initViews() {
-        expand_lv = (FullShowExpandableListView) findViewById(R.id.expand_lv);
-        btn_send_patient = (Button)findViewById(R.id.btn_send_patient);
-        checkbox_all = (CheckBox) findViewById(R.id.checkbox_all);
-        System.out.println("groups---->"+groups.toString());
-        adapter = new PatientSelectAdapter(this,groups);
-        expand_lv.setGroupIndicator(null);
-        expand_lv.setAdapter(adapter);
+        System.out.println("doctorUuid--->" + LoginManager.getDoctorUuid());
+        OkHttpUtils.get().url(Constants.GET_PATIENT_GROUP).addParams("doctorUuid", "6d3f252bc13e432f9fdc8a81a2ff425a")
+                .build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e) {
+                System.out.println("onError--->" + LoginManager.getDoctorUuid());
+            }
+
+            @Override
+            public void onResponse(String onError) {
+                System.out.println("doctorUuid--->" + onError);
+            }
+        });
     }
 
 

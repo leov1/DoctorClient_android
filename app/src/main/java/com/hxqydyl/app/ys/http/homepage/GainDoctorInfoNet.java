@@ -27,6 +27,7 @@ public class GainDoctorInfoNet {
      }
 
      public void gainDoctorInfo(String doctorUuid){
+         System.out.println("response--->"+doctorUuid);
           OkHttpUtils
                   .get()
                   .url(Constants.GET_DOCTOR_INFO)
@@ -41,6 +42,7 @@ public class GainDoctorInfoNet {
 
                        @Override
                        public void onResponse(String response) {
+                           System.out.println("response--->"+response);
                             onGainDoctorInfoListener.requestGainDoctorInfoSuccess(JsonUtils.JsonDoctorInfoNew(StringUtils.cutoutBracketToString(response)));
                        }
                   });

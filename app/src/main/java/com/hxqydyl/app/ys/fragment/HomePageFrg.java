@@ -19,8 +19,11 @@ import com.hxqydyl.app.ys.activity.reading.ReadingActivity;
 import com.hxqydyl.app.ys.activity.video.VideoActivity;
 import com.hxqydyl.app.ys.adapter.GalleryPagerAdapter;
 import com.hxqydyl.app.ys.adapter.LineGridViewAdapter;
+import com.hxqydyl.app.ys.bean.Query;
 import com.hxqydyl.app.ys.bean.register.DoctorInfoNew;
 import com.hxqydyl.app.ys.http.homepage.GainDoctorInfoNet;
+import com.hxqydyl.app.ys.http.login.QuitLoginNet;
+import com.hxqydyl.app.ys.ui.CircleImageView;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.ui.linegridview.LineGridView;
 import com.hxqydyl.app.ys.ui.loopviewpager.AutoLoopViewPager;
@@ -32,14 +35,14 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 /**
  * 首页frg
  */
-public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGainDoctorInfoListener,View.OnClickListener,AdapterView.OnItemClickListener{
+public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGainDoctorInfoListener, View.OnClickListener, AdapterView.OnItemClickListener,QuitLoginNet.OnQuitLoginListener {
 
     private LinearLayout loginLiear;
     private LinearLayout noLoginLinear;
     private TextView loginBtn;
     private TextView registerBtn;
 
-    private ImageView headImg;//医生头像
+    private CircleImageView headImg;//医生头像
     private TextView headName;//医生名字
     private TextView suffererNum;//患者数量
     private TextView followNum;//随访数量
@@ -56,6 +59,7 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
     private String doctorUuid;
 
     private GainDoctorInfoNet gainDoctorInfoNet;
+    private QuitLoginNet quitLoginNet;
 
     private View mHeader;
     private ListView listView;
@@ -86,20 +90,25 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
 
     private void initListeners() {
         gainDoctorInfoNet.setOnGainDoctorInfoListener(this);
+        quitLoginNet.setListener(this);
         lineGridView.setOnItemClickListener(this);
         loginBtn.setOnClickListener(this);
         registerBtn.setOnClickListener(this);
+        headImg.setOnClickListener(this);
     }
 
-    private void initHeadView(){
+    private void initHeadView() {
         listView.addHeaderView(mHeader);
         listView.setAdapter(null);
     }
 
     private void initViews() {
-        initViewOnBaseTitle("首页",view);
+        initViewOnBaseTitle("首页", view);
+
         gainDoctorInfoNet = new GainDoctorInfoNet();
-        mHeader = View.inflate(this.getActivity(),R.layout.home_header,null);
+        quitLoginNet = new QuitLoginNet();
+
+        mHeader = View.inflate(this.getActivity(), R.layout.home_header, null);
 
         listView = (ListView) view.findViewById(R.id.list_view);
 
@@ -107,7 +116,7 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
         loginLiear = (LinearLayout) mHeader.findViewById(R.id.login_linear);
         //已经登陆
 
-        headImg = (ImageView) mHeader.findViewById(R.id.head_img);
+        headImg = (CircleImageView) mHeader.findViewById(R.id.head_img);
         headName = (TextView) mHeader.findViewById(R.id.head_name);
         suffererNum = (TextView) mHeader.findViewById(R.id.sufferer_num);
         followNum = (TextView) mHeader.findViewById(R.id.follow_num);
@@ -135,35 +144,38 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
     public void onResume() {
         super.onResume();
         pager.startAutoScroll();
+        loadDoctorInfo();
     }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (!hidden){
-            if (LoginManager.isHasLogin()) {
-                doctorUuid = SharedPreferences.getInstance().getString("doctorUuid", "");
-                loadDoctorInfo();
-            }
-        }
+        loadDoctorInfo();
     }
 
     /**
-     *请求网络
+     * 请求网络
      */
     private void loadDoctorInfo() {
-        gainDoctorInfoNet.gainDoctorInfo(doctorUuid);
+        System.out.println("isLogin-->" + LoginManager.isHasLogin());
+        System.out.println("doctoruuid-->" + LoginManager.getDoctorUuid());
+        if (LoginManager.isHasLogin()) {
+            doctorUuid = LoginManager.getDoctorUuid();
+            gainDoctorInfoNet.gainDoctorInfo(doctorUuid);
+        }
+
     }
 
     /**
      * 更新数据显示
+     *
      * @param doctorInfo
      */
     private void updateDoctorInfo(DoctorInfoNew doctorInfo) {
         updateLinear(LoginManager.isHasLogin());
-        ImageLoader.getInstance().displayImage(doctorInfo.getDoctorIcon(),headImg);
+        ImageLoader.getInstance().displayImage(doctorInfo.getDoctorIcon(), headImg);
         headName.setText(doctorInfo.getDoctorName());
-        suffererNum.setText(doctorInfo.getCustomerNum()+"");
+        suffererNum.setText(doctorInfo.getCustomerNum() + "");
         followNum.setText(doctorInfo.getVisitNum() + "");
         income.setText(doctorInfo.getIncome());
     }
@@ -214,20 +226,30 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.login_btn:
                 UIHelper.showLogin(getActivity());
                 break;
             case R.id.register_btn:
                 UIHelper.showRegister(getActivity());
                 break;
+            case R.id.head_img:
+                quitLogin();
+                break;
         }
+    }
+
+    /**
+     * 退出登陆
+     */
+    private void quitLogin(){
+        quitLoginNet.quit();
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-        switch (position){
+        switch (position) {
             case 0://阅读
                 intent = new Intent(getActivity(), ReadingActivity.class);
                 startActivity(intent);
@@ -245,5 +267,21 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
                 startActivity(intent);
                 break;
         }
+    }
+
+    @Override
+    public void requestQuitSuc(Query query) {
+        if (query == null)return;
+        System.out.println("response-quit-->"+query.toString());
+        if (query.getSuccess().equals("1")){
+            LoginManager.quitLogin();
+            updateLinear(false);
+            UIHelper.ToastMessage(getActivity(),"退出登陆成功");
+        }
+    }
+
+    @Override
+    public void requestQuitFail() {
+
     }
 }

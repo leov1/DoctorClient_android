@@ -15,12 +15,12 @@
     <TextView
         android:id="@+id/group_text"
         android:layout_width="wrap_content"
-        android:layout_height="55dp"
+        android:layout_height="50dp"
         android:layout_toRightOf="@+id/checkbox"
         android:layout_centerVertical="true"
        android:gravity="center"
         android:textColor="@color/text_color_black"
-        android:textSize="@dimen/text_size_18"
+        android:textSize="@dimen/text_size_16"
         android:layout_marginLeft="@dimen/space_12"
         android:text="妄想症"
       />

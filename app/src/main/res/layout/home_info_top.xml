@@ -8,7 +8,7 @@
     android:orientation="horizontal"
     android:visibility="gone">
 
-    <ImageView
+    <com.hxqydyl.app.ys.ui.CircleImageView
         android:id="@+id/head_img"
         android:layout_width="66dp"
         android:layout_height="66dp"

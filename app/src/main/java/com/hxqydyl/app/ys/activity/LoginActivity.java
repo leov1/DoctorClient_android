@@ -81,6 +81,7 @@ public class LoginActivity extends BaseTitleActivity implements View.OnClickList
                UIHelper.showRegister(this);
                 break;
             case R.id.login_btn:
+                showDialog("登陆中...");
                 loginNet.loginData(mobileEdit.getText().toString(), passwordEdit.getText().toString());
                 break;
         }
@@ -89,10 +90,10 @@ public class LoginActivity extends BaseTitleActivity implements View.OnClickList
     @Override
     public void requestLoginNetSuccess(DoctorResult doctorResult) {
         System.out.println("doctorinfo--->"+doctorResult);
+        dismissDialog();
         if (doctorResult == null) return;
         if (doctorResult.getQuery().getSuccess().equals("1")){
             SharedPreferences.getInstance().putString("doctorUuid", doctorResult.getServiceStaff().getDoctorUuid());
-            LoginManager.setLoginStatus(true);
             UIHelper.ToastMessage(LoginActivity.this, "登陆成功");
             finish();
         }else {
@@ -103,6 +104,7 @@ public class LoginActivity extends BaseTitleActivity implements View.OnClickList
 
     @Override
     public void requestLoginNetFail(int statusCode) {
+        dismissDialog();
         UIHelper.ToastMessage(LoginActivity.this,"登陆失败");
     }
 
