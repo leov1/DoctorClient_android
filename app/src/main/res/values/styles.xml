@@ -208,6 +208,7 @@
 		<item name="android:layout_height">match_parent</item>
 	</style>
 
+	<!-- 病历左 -->
 	<style name="case_report_left">
 		<item name="android:paddingLeft">@dimen/space_15</item>
 		<item name="android:paddingTop">@dimen/space_10</item>
@@ -220,6 +221,7 @@
 		<item name="android:paddingRight">@dimen/space_15</item>
 	</style>
 
+	<!-- 病历右 -->
 	<style name="case_report_right" parent="case_report_left">
 		<item name="android:paddingLeft">@dimen/space_30</item>
 		<item name="android:textColor">@color/color_686868</item>
@@ -228,6 +230,7 @@
 		<item name="android:background">@drawable/shape_case_report_right_bg</item>
 	</style>
 
+	<!-- 添加病历左 -->
 	<style name="add_case_report_left">
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:paddingBottom">@dimen/space_13</item>
@@ -239,9 +242,43 @@
 		<item name="android:background">@color/color_ddf0f6</item>
 		<item name="android:textColor">@color/black</item>
 	</style>
+
+	<!-- 添加病历右 -->
 	<style name="add_case_report_right" parent="add_case_report_left">
 		<item name="android:background">@color/white</item>
 		<item name="android:textColor">@color/color_4b4b4b</item>
 		<item name="android:paddingLeft">40dp</item>
+	</style>
+
+	<!-- 查看随访表单左 -->
+	<style name="follow_up_form_left">
+		<item name="android:background">@color/color_f7f7f7</item>
+		<item name="android:gravity">center</item>
+		<item name="android:minHeight">@dimen/space_40</item>
+		<item name="android:paddingLeft">@dimen/space_25</item>
+		<item name="android:paddingRight">@dimen/space_30</item>
+		<item name="android:textColor">@color/black</item>
+		<item name="android:textSize">@dimen/text_size_15</item>
+	</style>
+
+	<!-- 查看随访表单 -->
+	<style name="follow_up_form_right">
+		<item name="android:background">@color/white</item>
+		<item name="android:gravity">left|center_vertical</item>
+		<item name="android:paddingLeft">@dimen/space_30</item>
+		<item name="android:minHeight">@dimen/space_40</item>
+		<item name="android:paddingRight">@dimen/space_25</item>
+		<item name="android:textColor">@color/color_696969</item>
+		<item name="android:textSize">@dimen/text_size_14</item>
+	</style>
+
+	<style name="measure_result">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:gravity">left|center</item>
+		<item name="android:paddingLeft">@dimen/space_10</item>
+		<item name="android:paddingRight">@dimen/space_10</item>
+		<item name="android:textColor">@color/black</item>
+		<item name="android:background">@color/white</item>
 	</style>
 </resources>

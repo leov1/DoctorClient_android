@@ -11,7 +11,7 @@ public class EatMedRecord extends FollowUpFormOneRecord{
 //    服药结束时间
     private String endTime;
 //    单次服用量
-    private String smpleAmount;
+    private String singleAmount;
 //    频率
     private String rate;
 //    服用方法
@@ -41,12 +41,12 @@ public class EatMedRecord extends FollowUpFormOneRecord{
         this.endTime = endTime;
     }
 
-    public String getSmpleAmount() {
-        return smpleAmount;
+    public String getSingleAmount() {
+        return singleAmount;
     }
 
-    public void setSmpleAmount(String smpleAmount) {
-        this.smpleAmount = smpleAmount;
+    public void setSmpleAmount(String singleAmount) {
+        this.singleAmount = singleAmount;
     }
 
     public String getRate() {

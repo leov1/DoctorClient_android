@@ -17,10 +17,9 @@
         android:id="@+id/llEatMedRecord"
         layout="@layout/eat_med_record" />
     <include
-        android:id="@+id/llFormSelfMeasure"
-        layout="@layout/form_self_measure" />
+        android:id="@+id/llBadReactionRecord"
+        layout="@layout/bad_reaction_record"/>
     <include
-        android:id="@+id/llFormDoctorMeasure"
-        layout="@layout/form_doctor_measure" />
-
+        android:id="@+id/llFormMeasure"
+        layout="@layout/form_self_measure" />
 </LinearLayout>

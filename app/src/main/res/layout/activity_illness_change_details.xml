@@ -7,111 +7,91 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/space_10"
-        android:layout_marginRight="@dimen/space_10"
-        android:background="@drawable/shape_illness_change_bg">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:id="@+id/llUsualChange"
+        <TableLayout
+            android:id="@+id/tlUsualChange"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tvChangeName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="left|center_vertical"
-                    android:paddingLeft="@dimen/space_10"
-                    android:minWidth="90dp"
-                    android:text="@string/illness_change"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_15" />
-
-                <TextView
-                    android:id="@+id/tvChangeStatus"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/white"
-                    android:gravity="left|center_vertical"
-                    android:paddingRight="@dimen/space_10"
-                    android:text="好转"
-                    android:textColor="@color/color_696969"
-                    android:textSize="@dimen/text_size_14" />
-            </LinearLayout>
+            android:shrinkColumns="1"
+            android:stretchColumns="1">
 
             <View style="@style/divider_line" />
 
-            <TextView
-                android:id="@+id/tvChangeDescriptionTitle"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginLeft="90dp"
-                android:background="@color/white"
-                android:gravity="left|center_vertical"
-                android:paddingRight="@dimen/space_10"
-                android:text="病情变化描述"
-                android:textColor="@color/color_696969"
-                android:textSize="@dimen/text_size_14" />
+            <TableRow>
 
-            <View
-                style="@style/divider_line"
-                android:layout_marginLeft="90dp" />
+                <TextView
+                    android:id="@+id/tvChangeName"
+                    style="@style/follow_up_form_left"
+                    android:text="@string/illness_change" />
 
-            <TextView
-                android:id="@+id/tvChangeDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="90dp"
-                android:background="@color/white"
-                android:paddingBottom="12dp"
-                android:paddingRight="@dimen/space_10"
-                android:paddingTop="12dp"
-                android:text="病情变化描述详情"
-                android:textColor="@color/color_696969"
-                android:textSize="@dimen/text_size_14" />
+                <TextView
+                    android:id="@+id/tvChangeStatus"
+                    style="@style/follow_up_form_right"
+                    android:text="好转" />
+            </TableRow>
 
-        </LinearLayout>
+            <View style="@style/divider_line" />
 
-        <LinearLayout
-            android:id="@+id/llOtherChange"
+            <TableRow>
+
+                <TextView style="@style/follow_up_form_left" />
+
+                <TextView
+                    android:id="@+id/tvChangeDescriptionTitle"
+                    style="@style/follow_up_form_right"
+                    android:text="病情变化描述" />
+            </TableRow>
+
+            <TableRow android:background="@color/color_f7f7f7">
+
+                <View
+                    style="@style/divider_line"
+                    android:layout_column="1" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView style="@style/follow_up_form_left" />
+
+                <TextView
+                    android:id="@+id/tvChangeDescription"
+                    style="@style/follow_up_form_right"
+                    android:paddingBottom="@dimen/space_10"
+                    android:paddingTop="@dimen/space_10"
+                    android:text="病情变化描述详情" />
+            </TableRow>
+
+            <View style="@style/divider_line" />
+        </TableLayout>
+
+        <TableLayout
+            android:id="@+id/tlOtherChange"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="40dp"
-            android:orientation="horizontal">
+            android:shrinkColumns="1"
+            android:stretchColumns="1"
+            android:visibility="gone">
 
-            <TextView
-                android:id="@+id/tvOtherChangeTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:gravity="left|center_vertical"
-                android:paddingLeft="@dimen/space_10"
-                android:minWidth="90dp"
-                android:text="其他情况"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_15" />
+            <View style="@style/divider_line" />
 
-            <TextView
-                android:id="@+id/tvOtherChangeDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:paddingBottom="12dp"
-                android:paddingRight="@dimen/space_10"
-                android:paddingTop="12dp"
-                android:text="其他情况描述详情"
-                android:textColor="@color/color_696969"
-                android:textSize="@dimen/text_size_14" />
-        </LinearLayout>
+            <TableRow>
 
+                <TextView
+                    android:id="@+id/tvOtherChangeTitle"
+                    style="@style/follow_up_form_left"
+                    android:text="其他情况" />
+
+                <TextView
+                    android:id="@+id/tvOtherChangeDescription"
+                    style="@style/follow_up_form_right"
+                    android:paddingBottom="@dimen/space_10"
+                    android:paddingTop="@dimen/space_10"
+                    android:text="况描述详情其他情况描述详情" />
+            </TableRow>
+
+            <View style="@style/divider_line" />
+        </TableLayout>
     </FrameLayout>
 
 </LinearLayout>

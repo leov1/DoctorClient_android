@@ -15,7 +15,12 @@
             android:id="@+id/lvForm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:dividerHeight="@dimen/space_5"></ExpandableListView>
+            android:dividerHeight="@dimen/space_5"
+            android:divider="@color/color_f7f7f7"
+            android:background="@color/white"
+            android:layout_marginBottom="55dp">
+
+        </ExpandableListView>
 
         <Button
             android:id="@+id/bDoctorAdvice"
@@ -25,6 +30,8 @@
             android:layout_marginBottom="@dimen/space_10"
             android:layout_marginLeft="@dimen/space_15"
             android:layout_marginRight="@dimen/space_15"
+            android:textColor="@color/white"
+            android:text="@string/important_doctor_advice"
             android:background="@color/color_2080ba" />
     </FrameLayout>
 
