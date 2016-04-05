@@ -17,6 +17,8 @@ import com.hxqydyl.app.ys.activity.case_report.OutPatientCaseReportActivity;
 import com.hxqydyl.app.ys.adapter.PatientTreatInfoAdapter;
 import com.hxqydyl.app.ys.bean.Patient;
 import com.hxqydyl.app.ys.bean.PatientTreatInfo;
+import com.hxqydyl.app.ys.http.CaseReportNet;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.InjectId;
 import com.hxqydyl.app.ys.utils.InjectUtils;
 
@@ -43,6 +45,8 @@ public class PatientDetailsActivity extends BaseTitleActivity implements View.On
     @InjectId(id = R.id.bSelectNewFollowUpForPatient)
     private Button bSelectNewFollowUpForPatient;
 
+    private CaseReportNet caseReportNet;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +69,6 @@ public class PatientDetailsActivity extends BaseTitleActivity implements View.On
         });
         InjectUtils.injectView(this);
 
-        patientTreatInfoArrayList.add(new PatientTreatInfo("2015/03/20", 1, false));
-        patientTreatInfoArrayList.add(new PatientTreatInfo("2015/03/21", 1, false));
-        patientTreatInfoArrayList.add(new PatientTreatInfo("2015/03/19", 3, true));
-        patientTreatInfoArrayList.add(new PatientTreatInfo("2015/03/11", 2, false));
         patientTreatInfoAdapter = new PatientTreatInfoAdapter(this, patientTreatInfoArrayList);
         lvPatientTreatInfo.setAdapter(patientTreatInfoAdapter);
         lvPatientTreatInfo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -96,8 +96,8 @@ public class PatientDetailsActivity extends BaseTitleActivity implements View.On
             }
         });
 
-
         bAddCaseReport.setOnClickListener(this);
+        caseReportNet.getAllTreatInfoRecordOfPatient("efec4e3969234184840e37033fc1d3fd","88888888");
     }
 
     @Override
@@ -117,6 +117,15 @@ public class PatientDetailsActivity extends BaseTitleActivity implements View.On
         }
         if (intent != null) {
             startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onResponse(String url, Object result) {
+        super.onResponse(url, result);
+        if (url.endsWith(UrlConstants.GET_PATIENT_TREAT_RECORD)) {
+            patientTreatInfoArrayList.clear();
+            patientTreatInfoArrayList.addAll((ArrayList<PatientTreatInfo>) result);
         }
     }
 }
