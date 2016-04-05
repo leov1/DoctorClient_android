@@ -53,7 +53,7 @@ public class FollowMainActivity extends BaseTitleActivity implements View.OnClic
         initListeners();
 
         patientNet = new PatientGroupNet(this);
-        patientNet.getAllPatientGroupAndPatient();
+        patientNet.getAllPatientGroupAndPatient("d000688d038b476384a408c17ad25faa");
     }
 
     private PatientListAdapter.OnChildClickListener onChildClickListener = new PatientListAdapter.OnChildClickListener() {
