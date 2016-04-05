@@ -1,6 +1,7 @@
 package com.hxqydyl.app.ys.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,11 +13,13 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
+import com.hxqydyl.app.ys.activity.case_report.IllnessChangeRecordActivity;
 import com.hxqydyl.app.ys.bean.followupform.BadReactionRecord;
 import com.hxqydyl.app.ys.bean.followupform.EatMedRecord;
 import com.hxqydyl.app.ys.bean.followupform.FollowUpFormGroup;
 import com.hxqydyl.app.ys.bean.followupform.FollowUpFormOneRecord;
 import com.hxqydyl.app.ys.bean.followupform.IllnessChange;
+import com.hxqydyl.app.ys.bean.followupform.IllnessChangeRecord;
 import com.hxqydyl.app.ys.bean.followupform.MeasureFormRecord;
 import com.hxqydyl.app.ys.bean.followupform.OtherCheckRecord;
 import com.hxqydyl.app.ys.bean.followupform.WeightRecord;
@@ -229,6 +232,21 @@ public class FollowUpFormAdapter extends BaseExpandableListAdapter {
     private void bindIllnessChangeData(IllnessChange change, LinearLayout llIllnessChangeDetails) {
         IllnessChangeViewHolder viewHolder = new IllnessChangeViewHolder();
         InjectUtils.injectView(viewHolder,llIllnessChangeDetails);
+        if(change.getType() == IllnessChange.Type.SEE_OTHET_BUTTON){
+            viewHolder.tlOtherChange.setVisibility(View.GONE);
+            viewHolder.tlUsualChange.setVisibility(View.GONE);
+            viewHolder.llSeeOtherRecord.setVisibility(View.VISIBLE);
+            viewHolder.llSeeOtherRecord.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, IllnessChangeRecordActivity.class);
+                    context.startActivity(intent);
+                }
+            });
+            return;
+        }else{
+            viewHolder.llSeeOtherRecord.setVisibility(View.GONE);
+        }
         String changeName = null;
         switch(change.getType()){
             case IllnessChange.Type.ILL:
@@ -240,7 +258,7 @@ public class FollowUpFormAdapter extends BaseExpandableListAdapter {
             case IllnessChange.Type.SLEEP:
                 changeName = context.getString(R.string.sleep_change);
                 break;
-            default:
+            case IllnessChange.Type.OTHER:
                 changeName = context.getString(R.string.other_change);
                 break;
         }
@@ -260,15 +278,15 @@ public class FollowUpFormAdapter extends BaseExpandableListAdapter {
                 break;
         }
         if(change.getType() != IllnessChange.Type.OTHER){
-            viewHolder.llOtherChange.setVisibility(View.GONE);
-            viewHolder.llUsualChange.setVisibility(View.VISIBLE);
+            viewHolder.tlOtherChange.setVisibility(View.GONE);
+            viewHolder.tlUsualChange.setVisibility(View.VISIBLE);
             viewHolder.tvChangeName.setText(changeName);
             viewHolder.tvChangeStatus.setText(status);
             viewHolder.tvChangeDescriptionTitle.setText(changeDescriptionTile);
             viewHolder.tvChangeDescription.setText(change.getDescription());
         }else{
-            viewHolder.llOtherChange.setVisibility(View.VISIBLE);
-            viewHolder.llUsualChange.setVisibility(View.GONE);
+            viewHolder.tlOtherChange.setVisibility(View.VISIBLE);
+            viewHolder.tlUsualChange.setVisibility(View.GONE);
             viewHolder.tvOtherChangeTitle.setText(changeName);
             viewHolder.tvOtherChangeDescription.setText(change.getDescription());
         }
@@ -336,7 +354,7 @@ public class FollowUpFormAdapter extends BaseExpandableListAdapter {
     class IllnessChangeViewHolder {
         // 常见变化（病情，饮食等）
         @InjectId(id = R.id.tlUsualChange)
-        TableLayout llUsualChange;
+        TableLayout tlUsualChange;
         @InjectId(id = R.id.tvChangeName)
         TextView tvChangeName;
         @InjectId(id = R.id.tvChangeStatus)
@@ -347,11 +365,14 @@ public class FollowUpFormAdapter extends BaseExpandableListAdapter {
         TextView tvChangeDescription;
         // 其他变化
         @InjectId(id = R.id.tlOtherChange)
-        TableLayout llOtherChange;
+        TableLayout tlOtherChange;
         @InjectId(id = R.id.tvOtherChangeTitle)
         TextView tvOtherChangeTitle;
         @InjectId(id = R.id.tvOtherChangeDescription)
         TextView tvOtherChangeDescription;
+        // 查看病情变化历史记录按钮
+        @InjectId(id = R.id.llSeeOtherRecord)
+        LinearLayout llSeeOtherRecord;
 
     }
 

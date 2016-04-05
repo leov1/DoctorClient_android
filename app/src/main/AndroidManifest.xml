@@ -114,6 +114,12 @@
         <activity
             android:name=".activity.case_report.FollowUpFormActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.case_report.IllnessChangeRecordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.case_report.IllnessChangeDetalsActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".activity.clinic.ClinicActivity" />
         <activity android:name=".activity.follow.ArticleDetailActivity" />
         <activity android:name=".activity.follow.PatientSelectActivity"></activity>

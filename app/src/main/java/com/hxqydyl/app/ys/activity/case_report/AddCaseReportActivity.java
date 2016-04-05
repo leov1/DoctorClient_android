@@ -16,11 +16,13 @@ import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.adapter.CaseHistoryAdapter;
 import com.hxqydyl.app.ys.bean.Pic;
+import com.hxqydyl.app.ys.http.UploadFileNet;
 import com.hxqydyl.app.ys.utils.GetPicUtils;
 import com.hxqydyl.app.ys.utils.InjectId;
 import com.hxqydyl.app.ys.utils.InjectUtils;
 import com.hxqydyl.app.ys.utils.Utils;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -69,6 +71,8 @@ public class AddCaseReportActivity extends BaseTitleActivity implements View.OnC
     @InjectId(id = R.id.bSaveCaseReport)
     private Button bSaveCaseReport;
 
+    private UploadFileNet uploadFileNet;
+
     private int currentCaseType = CASE_REPORT_TYPE_OUT_PATIENT;
 
     @Override
@@ -83,6 +87,7 @@ public class AddCaseReportActivity extends BaseTitleActivity implements View.OnC
         setCaseReportType(currentCaseType);
         tvOutPatient.setOnClickListener(this);
         tvInPatient.setOnClickListener(this);
+        bSaveCaseReport.setOnClickListener(this);
 
         Pic addPic = new Pic(Pic.Source.DRAWABLE);
         addPic.setThumbUrl(R.mipmap.icon_add_case_history + "");
@@ -102,6 +107,7 @@ public class AddCaseReportActivity extends BaseTitleActivity implements View.OnC
                 }
             }
         });
+        uploadFileNet = new UploadFileNet(this);
     }
 
     private GetPicUtils getPicUtils;
@@ -122,8 +128,9 @@ public class AddCaseReportActivity extends BaseTitleActivity implements View.OnC
         Pic pic = new Pic(Pic.Source.SD);
         pic.setUrl(getPicUtils.getPicPath());
         pic.setThumbUrl(getPicUtils.getPicThumbPath());
-        if(picList.size() < 5){
-            picList.add(picList.size(),pic);
+        int length = picList.size();
+        if(length < 5){
+            picList.add(length-1,pic);
         }else{
             picList.remove(4);
             picList.add(pic);
@@ -170,7 +177,22 @@ public class AddCaseReportActivity extends BaseTitleActivity implements View.OnC
                 setCaseReportType(CASE_REPORT_TYPE_IN_PATIENT);
                 break;
             case R.id.bSaveCaseReport:
+                int length = picList.size();
+                if(picList.get(length-1).getSource() == Pic.Source.DRAWABLE){
+                    length = length -1;
+                }
+                File[] files = new File[length];
+                for(int i=0;i<length;i++){
+                    files[i] = new File(picList.get(i).getUrl());
+                }
+                uploadFileNet.uploadPic(files);
                 break;
         }
+    }
+
+    @Override
+    public void onResponse(String url, Object result) {
+        super.onResponse(url, result);
+        Toast.makeText(this,"保存成功",Toast.LENGTH_SHORT).show();
     }
 }

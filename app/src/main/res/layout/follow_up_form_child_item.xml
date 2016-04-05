@@ -6,7 +6,7 @@
 
     <include
         android:id="@+id/llIllnessChangeDetails"
-        layout="@layout/activity_illness_change_details" />
+        layout="@layout/illness_change_details" />
     <include
         android:id="@+id/llWeightRecord"
         layout="@layout/weight_record" />

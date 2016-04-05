@@ -97,6 +97,7 @@ public class PatientDetailsActivity extends BaseTitleActivity implements View.On
         });
 
         bAddCaseReport.setOnClickListener(this);
+        caseReportNet = new CaseReportNet(this);
         caseReportNet.getAllTreatInfoRecordOfPatient("efec4e3969234184840e37033fc1d3fd","88888888");
     }
 
@@ -126,6 +127,7 @@ public class PatientDetailsActivity extends BaseTitleActivity implements View.On
         if (url.endsWith(UrlConstants.GET_PATIENT_TREAT_RECORD)) {
             patientTreatInfoArrayList.clear();
             patientTreatInfoArrayList.addAll((ArrayList<PatientTreatInfo>) result);
+            patientTreatInfoAdapter.notifyDataSetChanged();
         }
     }
 }

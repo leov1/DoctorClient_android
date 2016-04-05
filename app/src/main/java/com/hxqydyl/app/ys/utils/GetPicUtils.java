@@ -166,13 +166,13 @@ public class GetPicUtils implements DialogUtils.GetPicWaySelectedListener{
         Bitmap thumbBitmap = ImageUtils.compressBitmap(picAbsolutePath,thumbPicSize,picQuality);;
 
         // 将获得的照片文件备份保存到自己应用的目录
-        File picPath = activity.getFilesDir();
+        File picDir = activity.getFilesDir();
         // 将要保存的文件路径-包含文件名
-        String picName = getFilePath(picPath);
-        String thumbPicName = picName.replace(".jpg","_THUMB.jpg");
+        picPath = getFilePath(picDir);
+        picThumbPath = picPath.replace(".jpg","_THUMB.jpg");
         // 保存照片到SD卡（大图和缩略图）
-        ImageUtils.savePhoto(bitmap, picName, picQuality);
-        ImageUtils.savePhoto(bitmap,thumbPicName,picQuality);
+        ImageUtils.savePhoto(bitmap, picPath, picQuality);
+        ImageUtils.savePhoto(bitmap,picThumbPath,picQuality);
         // 将拍照生成的图片删除
         if (picGetWay == CAMERA) {
             if(StringUtils.isEmpty(picAbsolutePath)){

@@ -9,6 +9,8 @@ import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.activity.patient.PatientSimpleInfoViewHolder;
 import com.hxqydyl.app.ys.adapter.FollowUpFormAdapter;
+import com.hxqydyl.app.ys.bean.FollowUpForm;
+import com.hxqydyl.app.ys.bean.PatientTreatInfo;
 import com.hxqydyl.app.ys.bean.Pic;
 import com.hxqydyl.app.ys.bean.followupform.BadReactionRecord;
 import com.hxqydyl.app.ys.bean.followupform.EatMedRecord;
@@ -18,6 +20,8 @@ import com.hxqydyl.app.ys.bean.followupform.IllnessChange;
 import com.hxqydyl.app.ys.bean.followupform.MeasureFormRecord;
 import com.hxqydyl.app.ys.bean.followupform.OtherCheckRecord;
 import com.hxqydyl.app.ys.bean.followupform.WeightRecord;
+import com.hxqydyl.app.ys.http.CaseReportNet;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.InjectId;
 import com.hxqydyl.app.ys.utils.InjectUtils;
 
@@ -31,16 +35,23 @@ public class FollowUpFormActivity extends BaseTitleActivity implements View.OnCl
     @InjectId(id = R.id.lvForm)
     private ExpandableListView lvForm;
     private ArrayList<FollowUpFormGroup> formList = new ArrayList<FollowUpFormGroup>();
+    private FollowUpFormAdapter followUpFormAdapter;
     private int curExpandGroup = -1;
 
     @InjectId(id = R.id.bDoctorAdvice)
     private Button bDoctorAdvice;
 
+    private CaseReportNet caseReportNet;
 
+    private PatientTreatInfo treatInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        treatInfo = (PatientTreatInfo) getIntent().getSerializableExtra("treat_info");
+        if(treatInfo ==null){
+            finish();
+        }
         setContentView(R.layout.activity_follow_up_form);
 
         initViewOnBaseTitle(String.format(getString(R.string.follow_up_form_title),"林志玲"));
@@ -48,9 +59,8 @@ public class FollowUpFormActivity extends BaseTitleActivity implements View.OnCl
 
         simpleInfoViewHolder = new PatientSimpleInfoViewHolder(this);
         InjectUtils.injectView(this);
-        initTestData();
-        FollowUpFormAdapter adapter = new FollowUpFormAdapter(this,formList);
-        lvForm.setAdapter(adapter);
+        followUpFormAdapter = new FollowUpFormAdapter(this,formList);
+        lvForm.setAdapter(followUpFormAdapter);
         lvForm.setGroupIndicator(null);
 
         lvForm.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
@@ -64,6 +74,10 @@ public class FollowUpFormActivity extends BaseTitleActivity implements View.OnCl
         });
 
         bDoctorAdvice.setOnClickListener(this);
+        initTestData();
+        caseReportNet = new CaseReportNet(this);
+//        caseReportNet.getFollowUpFormDetails(treatInfo.getId());
+        caseReportNet.getFollowUpFormDetails("0ef34b3fabbd44b1b9e1d72c0350a552");
     }
 
     private void initTestData() {
@@ -90,6 +104,9 @@ public class FollowUpFormActivity extends BaseTitleActivity implements View.OnCl
                     record = new IllnessChange();
                     ((IllnessChange)record).setType(IllnessChange.Type.OTHER);
                     ((IllnessChange)record).setDescription("病情变化描述详情");
+                    group.addRecord(record);
+                    record = new IllnessChange();
+                    ((IllnessChange)record).setType(IllnessChange.Type.SEE_OTHET_BUTTON);
                     group.addRecord(record);
                     break;
                 case FollowUpFormGroup.Type.WEIGHT_RECORD:
@@ -187,6 +204,19 @@ public class FollowUpFormActivity extends BaseTitleActivity implements View.OnCl
                 break;
             case R.id.bDoctorAdvice:
                 break;
+        }
+    }
+
+    @Override
+    public void onResponse(String url, Object result) {
+        super.onResponse(url, result);
+        if(url.endsWith(UrlConstants.GET_FOLLOW_UP_FORM_DETAILS)){
+            FollowUpForm form = (FollowUpForm) result;
+            if(form!=null){
+                formList.clear();
+                formList.addAll(form.getRecordGroups());
+                followUpFormAdapter.notifyDataSetChanged();
+            }
         }
     }
 }

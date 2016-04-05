@@ -50,6 +50,8 @@ public class IllnessChange extends FollowUpFormOneRecord{
         public static final int FOOD = 3;
 //        其他
         public static final int OTHER = 4;
+//        查看病情变化历史记录按钮
+        public static final int SEE_OTHET_BUTTON = 5;
     }
 
 }

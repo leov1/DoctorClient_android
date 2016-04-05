@@ -2,12 +2,13 @@ package com.hxqydyl.app.ys.bean.followupform;
 
 import com.hxqydyl.app.ys.bean.BaseBean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by white_ash on 2016/3/27.
  */
-public class IllnessChangeRecord extends BaseBean {
+public class IllnessChangeRecord extends BaseBean implements Serializable{
     private String description;
     private String status;
     private String time;

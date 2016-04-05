@@ -24,7 +24,7 @@ public class UploadFileNet extends BaseNet {
         super(listener);
     }
 
-    public void uploadPic(File...files){
+    public void uploadPic(File[] files){
         if(files == null){
             return;
         }
@@ -61,7 +61,7 @@ public class UploadFileNet extends BaseNet {
                                 pics.add(jsonToPic(array.getJSONObject(i)));
                             }
                         }
-                        return null;
+                        return pics;
                     }
 
                     @Override

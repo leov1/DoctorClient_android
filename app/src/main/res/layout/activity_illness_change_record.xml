@@ -2,17 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/color_f7f7f7"
     android:orientation="vertical">
 
-    <include layout="@layout/top_title"/>
+    <include layout="@layout/top_title" />
 
     <ListView
-        android:id="@+id/lvIllnessChange"
+        android:id="@+id/lvIllnessChangeRecord"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:divider="#00000000"
-        android:dividerHeight="@dimen/space_5">
+        android:dividerHeight="@dimen/space_10">
 
     </ListView>
 
