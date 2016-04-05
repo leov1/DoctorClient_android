@@ -11,6 +11,8 @@ import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.adapter.PatientGroupSelectAdapter;
 import com.hxqydyl.app.ys.bean.PatientGroup;
+import com.hxqydyl.app.ys.http.PatientGroupNet;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.DialogUtils;
 
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ public class PatientGroupSelectActivity extends BaseTitleActivity implements Vie
     private PatientGroupSelectAdapter patientGroupSelectAdapter;
 
     private Button bAddPatientGroup;
+    private PatientGroupNet patientGroupNet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +37,6 @@ public class PatientGroupSelectActivity extends BaseTitleActivity implements Vie
         setBackListener(this);
 
         lvPatientGroup = (ListView) findViewById(R.id.lvPatientGroup);
-        patientGroupArrayList.add(new PatientGroup("妄想症"));
-        patientGroupArrayList.add(new PatientGroup("遗忘症"));
-        patientGroupArrayList.add(new PatientGroup("衰弱症"));
         patientGroupSelectAdapter = new PatientGroupSelectAdapter(this, patientGroupArrayList);
         lvPatientGroup.setAdapter(patientGroupSelectAdapter);
         lvPatientGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -48,6 +48,24 @@ public class PatientGroupSelectActivity extends BaseTitleActivity implements Vie
 
         bAddPatientGroup = (Button) findViewById(R.id.bAddPatientGroup);
         bAddPatientGroup.setOnClickListener(this);
+        initListData();
+    }
+
+    private void initListData() {
+        ArrayList<PatientGroup> groups = (ArrayList<PatientGroup>) getIntent().getSerializableExtra(PatientGroupManageActivity.GROUPS_INFO_KEY);
+        if (groups != null && groups.size() > 0) {
+            patientGroupArrayList.addAll(groups);
+            patientGroupSelectAdapter.notifyDataSetChanged();
+        }else{
+            refreshPatientGroups();
+        }
+    }
+
+    private void refreshPatientGroups(){
+        if(patientGroupNet == null) {
+            patientGroupNet = new PatientGroupNet(this);
+        }
+        patientGroupNet.getPatientGroups("d000688d038b476384a408c17ad25faa");
     }
 
     @Override
@@ -77,7 +95,18 @@ public class PatientGroupSelectActivity extends BaseTitleActivity implements Vie
 
     @Override
     public void onSaveGroup(String groupName) {
-        patientGroupArrayList.add(new PatientGroup(groupName));
-        patientGroupSelectAdapter.notifyDataSetChanged();
+        patientGroupNet.addPatientGroup("d000688d038b476384a408c17ad25faa",groupName);
+    }
+
+    @Override
+    public void onResponse(String url, Object result) {
+        super.onResponse(url, result);
+        if(url.endsWith(UrlConstants.GET_ALL_PATIENT_GROUP)){
+            patientGroupArrayList.clear();
+            patientGroupArrayList.addAll((ArrayList<PatientGroup>)result);
+            patientGroupSelectAdapter.notifyDataSetChanged();
+        }else{
+            refreshPatientGroups();
+        }
     }
 }

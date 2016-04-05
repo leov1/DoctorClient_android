@@ -3,18 +3,22 @@ package com.hxqydyl.app.ys.activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.register.listener.RegisterSucListener;
 import com.hxqydyl.app.ys.activity.register.listener.RegisterSucMag;
+import com.hxqydyl.app.ys.http.NetRequestListener;
 import com.hxqydyl.app.ys.ui.swipebacklayout.SwipeBackActivity;
+import com.hxqydyl.app.ys.utils.Utils;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class BaseTitleActivity extends SwipeBackActivity {
+public class BaseTitleActivity extends SwipeBackActivity implements NetRequestListener{
 
     protected final String HTTP_TASK_KEY = "HttpTaskKey_" + hashCode();
 
@@ -79,4 +83,23 @@ public class BaseTitleActivity extends SwipeBackActivity {
         }
     }
 
+    @Override
+    public void onSend(String url) {
+        showDialog("加载中");
+    }
+
+    @Override
+    public void onResponse(String url, Object result) {
+        dismissDialog();
+    }
+
+    @Override
+    public void onError(String url, Exception exception) {
+        dismissDialog();
+        Toast.makeText(this,"服务器异常",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onProgress(String url, Float progress) {
+    }
 }

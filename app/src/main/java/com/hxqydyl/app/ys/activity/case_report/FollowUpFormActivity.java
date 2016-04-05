@@ -15,7 +15,6 @@ import com.hxqydyl.app.ys.bean.followupform.EatMedRecord;
 import com.hxqydyl.app.ys.bean.followupform.FollowUpFormGroup;
 import com.hxqydyl.app.ys.bean.followupform.FollowUpFormOneRecord;
 import com.hxqydyl.app.ys.bean.followupform.IllnessChange;
-import com.hxqydyl.app.ys.bean.followupform.IllnessChangeRecord;
 import com.hxqydyl.app.ys.bean.followupform.MeasureFormRecord;
 import com.hxqydyl.app.ys.bean.followupform.OtherCheckRecord;
 import com.hxqydyl.app.ys.bean.followupform.WeightRecord;
@@ -128,7 +127,7 @@ public class FollowUpFormActivity extends BaseTitleActivity implements View.OnCl
                     ((EatMedRecord)record).setMedName("阿司匹林");
                     ((EatMedRecord)record).setStartTime("2016-03-20");
                     ((EatMedRecord)record).setEndTime("2013-03-21");
-                    ((EatMedRecord)record).setSmpleAmount("0.5mg");
+                    ((EatMedRecord)record).setSingleAmount("0.5mg");
                     ((EatMedRecord)record).setRate("1天3次");
                     ((EatMedRecord)record).setEatMethod("口服");
                     group.addRecord(record);
@@ -136,7 +135,7 @@ public class FollowUpFormActivity extends BaseTitleActivity implements View.OnCl
                     ((EatMedRecord)record).setMedName("阿司匹林速溶片");
                     ((EatMedRecord)record).setStartTime("2013-03-24");
                     ((EatMedRecord)record).setEndTime("2016-03-21");
-                    ((EatMedRecord)record).setSmpleAmount("0.3mg");
+                    ((EatMedRecord)record).setSingleAmount("0.3mg");
                     ((EatMedRecord)record).setRate("1天2次");
                     ((EatMedRecord)record).setEatMethod("口服");
                     group.addRecord(record);

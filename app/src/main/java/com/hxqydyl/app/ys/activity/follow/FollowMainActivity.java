@@ -15,6 +15,7 @@ import com.hxqydyl.app.ys.activity.patient_group.PatientGroupManageActivity;
 import com.hxqydyl.app.ys.adapter.PatientListAdapter;
 import com.hxqydyl.app.ys.bean.Patient;
 import com.hxqydyl.app.ys.bean.PatientGroup;
+import com.hxqydyl.app.ys.http.PatientGroupNet;
 import com.hxqydyl.app.ys.ui.fullshowview.FullShowExpandableListView;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
  */
 public class FollowMainActivity extends BaseTitleActivity implements View.OnClickListener {
 
+    private static final int REQ_PATIENT_GROUP = 1 ;
     private ImageView addBtn;
     private RelativeLayout applyBtn;
     private RelativeLayout mgrBtn;
@@ -36,17 +38,22 @@ public class FollowMainActivity extends BaseTitleActivity implements View.OnClic
     private ArrayList<PatientGroup> patientGroups = new ArrayList<PatientGroup>();
     private PatientListAdapter patientListAdapter;
 
+    private PatientGroupNet patientNet;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_follow);
-        initListData();
+//        initListData();
         initViews();
         patientListAdapter = new PatientListAdapter(this, patientGroups);
         elvPatientList.setGroupIndicator(null);
         elvPatientList.setAdapter(patientListAdapter);
         initListeners();
+
+        patientNet = new PatientGroupNet(this);
+        patientNet.getAllPatientGroupAndPatient();
     }
 
     private PatientListAdapter.OnChildClickListener onChildClickListener = new PatientListAdapter.OnChildClickListener() {
@@ -143,12 +150,19 @@ public class FollowMainActivity extends BaseTitleActivity implements View.OnClic
                 break;
             case R.id.rl_patient:
                 Intent groupManageIntent = new Intent(FollowMainActivity.this,PatientGroupManageActivity.class);
-                startActivity(groupManageIntent);
+                startActivityForResult(groupManageIntent,REQ_PATIENT_GROUP);
                 break;
             case R.id.rl_follow_task:
                 Intent taskIntent = new Intent(this, FollowTaskActivity.class);
                 startActivity(taskIntent);
                 break;
         }
+    }
+
+    @Override
+    public void onResponse(String url, Object result) {
+        super.onResponse(url, result);
+        patientGroups.addAll((ArrayList<PatientGroup>) result);
+        patientListAdapter.notifyDataSetChanged();
     }
 }

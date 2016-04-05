@@ -45,7 +45,7 @@ public class EatMedRecord extends FollowUpFormOneRecord{
         return singleAmount;
     }
 
-    public void setSmpleAmount(String singleAmount) {
+    public void setSingleAmount(String singleAmount) {
         this.singleAmount = singleAmount;
     }
 
