@@ -129,6 +129,10 @@ public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClick
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position == tempSelectBitmap.size()) {
+                    if(position==5){
+                        UIHelper.ToastMessage(EvpiPhotoActivity.this,"对不起，图片只能添加5张");
+return;
+                    }
                     edit_photo_fullscreen_layout.setVisibility(View.VISIBLE);
                     get_photo_layout_in_from_down = AnimationUtils.loadAnimation(EvpiPhotoActivity.this, R.anim.search_layout_in_from_down);
                     edit_photo_outer_layout.startAnimation(get_photo_layout_in_from_down);
