@@ -34,7 +34,7 @@ public class PagerNet {
                 .build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e) {
-
+                listener.PagerNetFail(1);
             }
 
             @Override

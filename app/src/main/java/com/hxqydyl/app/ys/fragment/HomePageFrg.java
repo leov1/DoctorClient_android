@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.hxqydyl.app.ys.R;
+import com.hxqydyl.app.ys.activity.BaseWebActivity;
+import com.hxqydyl.app.ys.activity.LoginActivity;
 import com.hxqydyl.app.ys.activity.clinic.ClinicActivity;
 import com.hxqydyl.app.ys.activity.follow.FollowMainActivity;
 import com.hxqydyl.app.ys.activity.reading.ReadingActivity;
@@ -300,6 +302,8 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
         switch (v.getId()) {
             case R.id.login_btn:
                 UIHelper.showLogin(getActivity());
+                intent = new Intent(getActivity(), LoginActivity.class);
+                startActivityForResult(intent,LOGIN_STATE);
                 break;
             case R.id.register_btn:
                 UIHelper.showRegister(getActivity());
@@ -307,6 +311,14 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
             case R.id.head_img:
                 quitLogin();
                 break;
+        }
+    }
+
+    private int LOGIN_STATE = 0;
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == LOGIN_STATE){
+            startRefreshing();
         }
     }
 
@@ -374,4 +386,5 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
     public void PagerNetFail(int statueCode) {
 
     }
+    
 }
