@@ -10,10 +10,10 @@
 
     <com.hxqydyl.app.ys.ui.CircleImageView
         android:id="@+id/head_img"
-        android:layout_width="66dp"
-        android:layout_height="66dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginLeft="20dp"
-        android:src="@drawable/qd_button_nomal" />
+        android:src="@mipmap/portrait_man" />
 
     <LinearLayout
         android:layout_width="wrap_content"

@@ -1,8 +1,10 @@
 package com.hxqydyl.app.ys.http.homepage;
 
+import com.google.gson.Gson;
 import com.hxqydyl.app.ys.bean.homepage.PageIconResult;
 import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.utils.Constants;
+import com.hxqydyl.app.ys.utils.SharedPreferences;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -22,7 +24,7 @@ public class PagerNet {
     }
 
     public interface OnPagerNetListener{
-        void PagerNetSuccess(PageIconResult pageIconResult);
+        void PagerNetSuccess(PageIconResult pageIconResult,String str);
         void PagerNetFail(int statueCode);
     }
 
@@ -38,7 +40,7 @@ public class PagerNet {
             @Override
             public void onResponse(String response) {
                 try {
-                    listener.PagerNetSuccess(JsonUtils.JsonPageIconResult(response));
+                    listener.PagerNetSuccess(JsonUtils.JsonPageIconResult(response),response);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

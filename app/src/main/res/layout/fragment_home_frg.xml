@@ -5,11 +5,22 @@
 
     <include layout="@layout/top_title"></include>
 
-    <ListView
+    <com.hxqydyl.app.ys.ui.library.PullToRefreshListView
+        xmlns:ptr="http://schemas.android.com/apk/res-auto"
         android:id="@+id/list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none"></ListView>
+        android:background="@color/background_color"
+        android:divider="@null"
+        android:fadingEdge="none"
+        android:fastScrollEnabled="true"
+        android:listSelector="@color/transparent"
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollbars="none"
+        ptr:ptrAnimationStyle="flip"
+        ptr:ptrDrawable="@drawable/default_ptr_flip"
+        ptr:ptrHeaderBackground="@null"
+        ptr:ptrHeaderTextColor="@color/text_color_black" ></com.hxqydyl.app.ys.ui.library.PullToRefreshListView>
 
 </LinearLayout>
 

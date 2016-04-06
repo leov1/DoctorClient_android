@@ -57,7 +57,7 @@ public class Constants {
     public static String UPLOAD_IMGS = url +"/app/support/common/uploadimg";
 
     //获取阅读列表
-    public static String GET_READING = /*"http://172.168.1.41/html/thedoctorinformation/index.shtml";*/"http://admin.hxqydyl.com/html/thedoctorinformation/index.shtml";
+    public static String GET_READING = "http://172.168.1.41/html/thedoctorinformation/index.shtml";/*"http://admin.hxqydyl.com/html/thedoctorinformation/index.shtml";*/
     //获取讲堂列表信息
     public static String GET_VIDEOS = "http://172.168.1.41/html/lecture/all_course.shtml";
     //获取诊所
