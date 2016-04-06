@@ -35,7 +35,7 @@ public class UploadFileNet extends BaseNet {
             postFormBuilder.addFile("files",files[i].getName(),files[i]);
         }
         postFormBuilder
-                .url(UrlConstants.getWholeApiUrl(shortUrl,null))
+                .url(UrlConstants.getWholeApiUrl(shortUrl))
                 .addParams("thumbnail","true")
                 .addHeader("Accept","application/json")
                 .build()

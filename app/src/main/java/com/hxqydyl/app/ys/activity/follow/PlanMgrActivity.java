@@ -13,7 +13,10 @@ import android.widget.RelativeLayout;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.adapter.PlanMgrAdapter;
-import com.hxqydyl.app.ys.bean.plan.Plan;
+import com.hxqydyl.app.ys.bean.follow.plan.Plan;
+import com.hxqydyl.app.ys.bean.follow.plan.PlanBaseInfo;
+import com.hxqydyl.app.ys.http.follow.FollowCallback;
+import com.hxqydyl.app.ys.http.follow.FollowPlanNet;
 import com.hxqydyl.app.ys.ui.UIHelper;
 
 import java.util.ArrayList;
@@ -45,6 +48,13 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
 
         initViews();
         initListeners();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getMyVisitPreceptList();
+        getRecommendVisitpreceptByDoctorid();
     }
 
     private void initListeners() {
@@ -96,19 +106,11 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
         reLayoutAddPlan.setOnClickListener(this);
         swipeMenuListView = (SwipeMenuListView) findViewById(R.id.swipe_menu_lv);
         myPlanList = new ArrayList<>();
-        myPlanList.add(new Plan("我的方案111"));
-        myPlanList.add(new Plan("我的方案222"));
-        myPlanList.add(new Plan("我的方案333"));
-        myPlanList.add(new Plan("我的方案444"));
         adapter = new PlanMgrAdapter(this, myPlanList);
         swipeMenuListView.setAdapter(adapter);
 
         lvSuggestPlan = (ListView) findViewById(R.id.lvSuggestPlan);
         suggestPlanList = new ArrayList<>();
-        suggestPlanList.add(new Plan("建议方案111"));
-        suggestPlanList.add(new Plan("建议方案222"));
-        suggestPlanList.add(new Plan("建议方案333"));
-        suggestPlanList.add(new Plan("建议方案444"));
         suggestPlanAdapter = new PlanMgrAdapter(this, suggestPlanList, false);
         lvSuggestPlan.setAdapter(suggestPlanAdapter);
 
@@ -131,5 +133,52 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
     private int dp2px(int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
                 getResources().getDisplayMetrics());
+    }
+
+    private void getMyVisitPreceptList() {
+        FollowPlanNet.getMyVisitPreceptList(new FollowCallback(){
+            @Override
+            public void onResult(String result) {
+                super.onResult(result);
+                result = "[" +
+                        "{" +
+                        "\"visitUuid\": \"0000\"," +
+                        "\"preceptName\": \"我的方案\"," +
+                        "\"doctorUuid\": \"4c61df50ebb34b7bac8339f605f2c218\"," +
+                        "\"num\": \"1\"" +
+                        "}" +
+                        "]";
+                List<Plan> tmp = Plan.parseList2(result);
+                if (tmp.size() > 0) {
+                    myPlanList.clear();
+                    myPlanList.addAll(tmp);
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
+    }
+
+
+    private void getRecommendVisitpreceptByDoctorid() {
+        FollowPlanNet.getRecommendVisitpreceptByDoctorid(new FollowCallback(){
+            @Override
+            public void onResult(String result) {
+                super.onResult(result);
+                result = "[" +
+                        "{" +
+                        "\"visitUuid\": \"0000\"," +
+                        "\"preceptName\": \"建议方案\"," +
+                        "\"doctorUuid\": \"4c61df50ebb34b7bac8339f605f2c218\"," +
+                        "\"num\": \"1\"" +
+                        "}" +
+                        "]";
+                List<Plan> tmp = Plan.parseList2(result);
+                if (tmp.size() > 0) {
+                    suggestPlanList.clear();
+                    suggestPlanList.addAll(tmp);
+                    suggestPlanAdapter.notifyDataSetChanged();
+                }
+            }
+        });
     }
 }

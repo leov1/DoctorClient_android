@@ -13,7 +13,15 @@ import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.adapter.PatientGroupSelectAdapter;
 import com.hxqydyl.app.ys.adapter.PlanSelectAdapter;
 import com.hxqydyl.app.ys.bean.PatientGroup;
-import com.hxqydyl.app.ys.bean.plan.Plan;
+import com.hxqydyl.app.ys.bean.follow.FollowApply;
+import com.hxqydyl.app.ys.bean.follow.plan.Plan;
+import com.hxqydyl.app.ys.bean.follow.plan.PlanBaseInfo;
+import com.hxqydyl.app.ys.http.PatientGroupNet;
+import com.hxqydyl.app.ys.http.UrlConstants;
+import com.hxqydyl.app.ys.http.follow.FollowApplyNet;
+import com.hxqydyl.app.ys.http.follow.FollowCallback;
+import com.hxqydyl.app.ys.http.follow.FollowPlanNet;
+import com.hxqydyl.app.ys.utils.LoginManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +40,9 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
 
     private PlanSelectAdapter planSelectAdapter;
     private PatientGroupSelectAdapter patientGroupSelectAdapter;
+    private PatientGroupNet patientGroupNet;
 
-    private List<Plan> planList;
+    private List<PlanBaseInfo> planList;
     private List<PatientGroup> patientGroupList;
 
     @Override
@@ -46,6 +55,13 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
         initEvent();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getMyVisitPreceptList();
+        patientGroupNet.getPatientGroups(LoginManager.getDoctorUuid());
+    }
+
     private void initView() {
         llAddPlan = (LinearLayout) findViewById(R.id.llAddPlan);
         llAddGroup = (LinearLayout) findViewById(R.id.llAddGroup);
@@ -54,19 +70,13 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
         btnApply = (Button) findViewById(R.id.btnApply);
 
         planList = new ArrayList<>();
-        planList.add(new Plan("方案1"));
-        planList.add(new Plan("方案2"));
-        planList.add(new Plan("方案3"));
-        planList.add(new Plan("方案4"));
         patientGroupList = new ArrayList<>();
-        patientGroupList.add(new PatientGroup("组1"));
-        patientGroupList.add(new PatientGroup("组2"));
-        patientGroupList.add(new PatientGroup("组3"));
 
         planSelectAdapter = new PlanSelectAdapter(this, planList);
         lvPlan.setAdapter(planSelectAdapter);
         patientGroupSelectAdapter = new PatientGroupSelectAdapter(this, patientGroupList);
         lvGroup.setAdapter(patientGroupSelectAdapter);
+        patientGroupNet = new PatientGroupNet(this);
     }
 
     private void initEvent() {
@@ -94,4 +104,39 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
     private void addGroupDialog() {
 
     }
+
+    private void getMyVisitPreceptList() {
+        FollowPlanNet.getMyVisitPreceptList(new FollowCallback(){
+            @Override
+            public void onResult(String result) {
+                super.onResult(result);
+                result = "[" +
+                        "{" +
+                        "\"visitUuid\": \"0000\"," +
+                        "\"preceptName\": \"推荐你就选我呗\"," +
+                        "\"doctorUuid\": \"4c61df50ebb34b7bac8339f605f2c218\"," +
+                        "\"num\": \"1\"" +
+                        "}" +
+                        "]";
+                List<PlanBaseInfo> tmp = PlanBaseInfo.parseList(result);
+                if (tmp.size() > 0) {
+                    planList.clear();
+                    planList.addAll(tmp);
+                    planSelectAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onResponse(String url, Object result) {
+        super.onResponse(url, result);
+        if (url.endsWith(UrlConstants.GET_ALL_PATIENT_GROUP)) {
+            List<PatientGroup> pgList = (ArrayList<PatientGroup>) result;
+            patientGroupList.clear();
+            patientGroupList.addAll(pgList);
+            patientGroupSelectAdapter.notifyDataSetChanged();
+        }
+    }
+
 }

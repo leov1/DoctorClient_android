@@ -43,6 +43,7 @@
                 android:src="@mipmap/ic_launcher"/>
 
             <TextView
+                android:id="@+id/tvAge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="年龄：26岁"
@@ -52,6 +53,7 @@
                 />
 
             <TextView
+                android:id="@+id/tvDay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2015-04-12"
@@ -62,6 +64,7 @@
         </RelativeLayout>
 
        <TextView
+           android:id="@+id/tvQ"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_marginTop="3dp"

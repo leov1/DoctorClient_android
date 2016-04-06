@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
-import com.hxqydyl.app.ys.bean.plan.HealthTips;
+import com.hxqydyl.app.ys.bean.follow.plan.HealthTips;
 
 import java.util.List;
 

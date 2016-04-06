@@ -7,15 +7,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.NormalListDialog;
 import com.hxqydyl.app.ys.R;
-import com.hxqydyl.app.ys.bean.plan.Medicine;
-import com.hxqydyl.app.ys.bean.plan.MedicineDosage;
+import com.hxqydyl.app.ys.bean.follow.plan.Medicine;
 
 import java.util.List;
 

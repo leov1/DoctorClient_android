@@ -1,4 +1,4 @@
-package com.hxqydyl.app.ys.bean.plan;
+package com.hxqydyl.app.ys.bean.follow.plan;
 
 /**
  * Created by wangchao36 on 16/3/22.

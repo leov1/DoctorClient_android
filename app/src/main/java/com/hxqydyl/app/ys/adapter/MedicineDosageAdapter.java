@@ -5,17 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
-import com.hxqydyl.app.ys.bean.plan.MedicineDosage;
+import com.hxqydyl.app.ys.bean.follow.plan.MedicineDosage;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 药品用量adapter

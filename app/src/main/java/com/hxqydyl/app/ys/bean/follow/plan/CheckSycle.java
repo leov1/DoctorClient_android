@@ -1,4 +1,8 @@
-package com.hxqydyl.app.ys.bean.plan;
+package com.hxqydyl.app.ys.bean.follow.plan;
+
+import com.alibaba.fastjson.JSONArray;
+
+import java.util.List;
 
 /**
  * Created by wangchao36 on 16/3/23.
@@ -15,6 +19,13 @@ public class CheckSycle {
     public CheckSycle(String name, String sycle) {
         this.name = name;
         this.sycle = sycle;
+    }
+
+    public static String list2json(List<CheckSycle> list) {
+        if (list == null || list.size() == 0) {
+            return  "[]";
+        }
+        return JSONArray.toJSONString(list);
     }
 
     public String getName() {

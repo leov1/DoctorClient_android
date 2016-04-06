@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
-import com.hxqydyl.app.ys.bean.plan.CheckSycle;
+import com.hxqydyl.app.ys.bean.follow.plan.CheckSycle;
 import com.hxqydyl.app.ys.utils.DialogUtils;
 
 import java.util.List;

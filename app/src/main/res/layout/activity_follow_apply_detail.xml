@@ -63,6 +63,7 @@
                             />
 
                         <TextView
+                            android:id="@+id/tvAge"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="26"
@@ -73,6 +74,7 @@
                     </RelativeLayout>
 
                     <TextView
+                        android:id="@+id/tvQ"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
@@ -111,6 +113,7 @@
                     android:background="#e4e4e4"/>
 
                 <TextView
+                    android:id="@+id/tvContent"
                     android:layout_width="match_parent"
                     android:layout_marginLeft="20dp"
                     android:gravity="center_vertical"

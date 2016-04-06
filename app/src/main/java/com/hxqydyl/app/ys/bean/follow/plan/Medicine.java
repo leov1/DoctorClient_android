@@ -1,4 +1,4 @@
-package com.hxqydyl.app.ys.bean.plan;
+package com.hxqydyl.app.ys.bean.follow.plan;
 
 import java.util.ArrayList;
 import java.util.List;

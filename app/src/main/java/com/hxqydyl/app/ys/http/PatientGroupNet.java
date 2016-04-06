@@ -119,7 +119,7 @@ public class PatientGroupNet extends BaseNet {
         final String shortUrl = UrlConstants.GET_ALL_PATIENT_GROUP;
         String version = "1.0";
         OkHttpUtils
-                .post()
+                .get()
                 .url(UrlConstants.getWholeApiUrl(shortUrl, version))
                 .addParams("doctorUuid", doctorUuid)
                 .build()

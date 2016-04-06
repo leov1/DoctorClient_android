@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
-import com.hxqydyl.app.ys.bean.plan.Plan;
+import com.hxqydyl.app.ys.bean.follow.plan.Plan;
 
 import java.util.List;
 
@@ -56,10 +56,10 @@ public class PlanMgrAdapter extends BaseAdapter{
 
         TextView name_tv = BaseViewHolder.get(convertView,R.id.name_tv);
         TextView tag_tv = BaseViewHolder.get(convertView,R.id.tag_tv);
-
-        name_tv.setText("妄想症初期随访方案");
+        final Plan plan = planList.get(position);
+        name_tv.setText(plan.getPreceptName());
         if (isShowTag) {
-            tag_tv.setText("已关联1人");
+            tag_tv.setText("已关联" + plan.getNum() + "人");
         } else {
             tag_tv.setText("");
         }

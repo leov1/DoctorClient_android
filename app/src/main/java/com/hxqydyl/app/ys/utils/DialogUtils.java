@@ -183,4 +183,45 @@ public class DialogUtils {
         boolean save(String name, String sycle);
     }
 
+    /**
+     * 仅有一个输入框的
+     * @param context
+     * @param listener
+     */
+    public static void showSignleEditTextDialog(final Context context, final SaveTextListener listener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_add_text, null);
+        builder.setView(view);
+        final Dialog dialog = builder.create();
+        final EditText etName = (EditText) view.findViewById(R.id.etName);
+        TextView tvOk = (TextView) view.findViewById(R.id.tvOk);
+        TextView tvCancel = (TextView) view.findViewById(R.id.tvCancel);
+
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        tvOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = etName.getText().toString();
+                if (StringUtils.isEmpty(name)) {
+                    Toast.makeText(context, "请输入内容", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                boolean result = listener.save(name);
+                if (result) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        dialog.show();
+    }
+
+    public interface SaveTextListener {
+        boolean save(String text);
+    }
 }

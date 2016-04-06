@@ -1,5 +1,7 @@
 package com.hxqydyl.app.ys.http;
 
+import java.util.Objects;
+
 /**
  * Created by white_ash on 2016/4/1.
  */
@@ -49,7 +51,7 @@ public class UrlConstants {
      * @param args  url參數
      * @return 完整地址
      */
-    public static String getWholeApiUrl(String shortUrl, String... args) {
+    public static String getWholeApiUrl(String shortUrl, Object... args) {
         return BASE_IP + ":" + BASE_PORT + SERVER_BASE_API_PATH + String.format(shortUrl,args);
     }
 

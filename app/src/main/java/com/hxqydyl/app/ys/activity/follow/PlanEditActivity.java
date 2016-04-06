@@ -6,24 +6,20 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.flyco.dialog.listener.OnOperItemClickL;
-import com.flyco.dialog.widget.NormalListDialog;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.adapter.HealthTipsAdapter;
 import com.hxqydyl.app.ys.adapter.MedicineAdapter;
 import com.hxqydyl.app.ys.adapter.PlanCheckSycleAdapter;
 import com.hxqydyl.app.ys.adapter.PlanSelfScaleAdapter;
-import com.hxqydyl.app.ys.bean.plan.CheckSycle;
-import com.hxqydyl.app.ys.bean.plan.HealthTips;
-import com.hxqydyl.app.ys.bean.plan.Medicine;
-import com.hxqydyl.app.ys.ui.UIHelper;
+import com.hxqydyl.app.ys.bean.follow.plan.CheckSycle;
+import com.hxqydyl.app.ys.bean.follow.plan.HealthTips;
+import com.hxqydyl.app.ys.bean.follow.plan.Medicine;
 import com.hxqydyl.app.ys.utils.DialogUtils;
 import com.hxqydyl.app.ys.utils.StringUtils;
 

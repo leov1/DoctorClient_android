@@ -10,7 +10,8 @@ import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.bean.PatientGroup;
-import com.hxqydyl.app.ys.bean.plan.Plan;
+import com.hxqydyl.app.ys.bean.follow.plan.Plan;
+import com.hxqydyl.app.ys.bean.follow.plan.PlanBaseInfo;
 
 import java.util.List;
 
@@ -19,10 +20,10 @@ import java.util.List;
  */
 public class PlanSelectAdapter extends BaseAdapter {
     private Context context;
-    private List<Plan> planList;
+    private List<PlanBaseInfo> planList;
     private int select = -1;
 
-    public PlanSelectAdapter(Context context, List<Plan> planList) {
+    public PlanSelectAdapter(Context context, List<PlanBaseInfo> planList) {
         this.context = context;
         this.planList = planList;
     }
@@ -61,8 +62,8 @@ public class PlanSelectAdapter extends BaseAdapter {
             }
         });
         TextView tvGroupName = BaseViewHolder.get(convertView, R.id.tvGroupName);
-        final PatientGroup patientGroup = (PatientGroup) getItem(position);
-        tvGroupName.setText(patientGroup.getGroupName());
+        final PlanBaseInfo p = (PlanBaseInfo) getItem(position);
+        tvGroupName.setText(p.getPreceptName());
         return convertView;
     }
 
