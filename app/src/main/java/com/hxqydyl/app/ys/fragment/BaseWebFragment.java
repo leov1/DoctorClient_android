@@ -25,16 +25,29 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * Created by hxq on 2016/3/26.
  */
-public class BaseWebFragment extends BaseFragment{
+public class BaseWebFragment extends BaseFragment {
 
     public View view;
     public ProgressWebView webView;
+    private boolean isCustom = false;
+    private DoJsBridge doJsBridge;
+    private boolean isNeedLogin=false;
+
+    public void setIsNeedLogin(boolean isNeedLogin) {
+        this.isNeedLogin = isNeedLogin;
+    }
+
+    public void setCustomInterceptor( DoJsBridge doJsBridge) {
+        isCustom = true;
+        this.doJsBridge = doJsBridge;
+    }
 
     @Nullable
     @Override
@@ -71,18 +84,22 @@ public class BaseWebFragment extends BaseFragment{
     public WebViewClient webViewClient = new WebViewClient() {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            if (isNeedLogin&&TextUtils.isEmpty(LoginManager.getDoctorUuid())){
+                UIHelper.showLogin(getActivity());
+            }
             super.onPageStarted(view, url, favicon);
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            webView.loadUrl("javascript:gm.user.setDoctor('"+ LoginManager.getDoctorUuid()+"')");
+            webView.loadUrl("javascript:gm.user.setDoctor('" + LoginManager.getDoctorUuid() + "')");
         }
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            System.out.println("goodm---->"+url);
+            System.out.println("goodm---->" + url);
+
             if (url.contains("goodm://")) {//自定义js协议
                 Pattern pl = Pattern.compile("goodm://([a-zA-Z0-9]+)(/[\\w\\W]*)?");
                 Matcher ml = pl.matcher(url);
@@ -94,7 +111,11 @@ public class BaseWebFragment extends BaseFragment{
                 if (!TextUtils.isEmpty(paramater)) {
                     paramater = paramater.substring(1);
                 }
-                SetJsBridge(functionname,paramater);
+                SetJsBridge(functionname, paramater);
+                return true;
+            }
+            if (isCustom) {
+                doJsBridge.doJs(url);
                 return true;
             }
             return super.shouldOverrideUrlLoading(view, url);
@@ -194,7 +215,7 @@ public class BaseWebFragment extends BaseFragment{
                 JSONObject u = null;// aliasEdit.getText().toString().trim();
                 try {
                     u = new JSONObject(parameters);
-                    System.out.println("js--->"+parameters);
+                    System.out.println("js--->" + parameters);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -230,4 +251,8 @@ public class BaseWebFragment extends BaseFragment{
             }
         }
     };
+
+    public interface DoJsBridge {
+        void doJs(String url);
+    }
 }

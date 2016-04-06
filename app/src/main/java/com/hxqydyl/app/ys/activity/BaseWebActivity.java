@@ -1,5 +1,7 @@
 package com.hxqydyl.app.ys.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,6 +12,8 @@ import android.webkit.WebViewClient;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.ui.ProgressWebView;
+import com.hxqydyl.app.ys.ui.UIHelper;
+import com.hxqydyl.app.ys.utils.LoginManager;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -22,6 +26,13 @@ import java.util.regex.Pattern;
  */
 public class BaseWebActivity extends BaseTitleActivity {
     public ProgressWebView webView;
+    private boolean isNeedLogin = false;
+    private OnLoginSuccess onLoginSuccess;
+
+    public void setIsNeedLogin(boolean isNeedLogin, OnLoginSuccess onLoginSuccess) {
+        this.isNeedLogin = isNeedLogin;
+        this.onLoginSuccess = onLoginSuccess;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +49,7 @@ public class BaseWebActivity extends BaseTitleActivity {
         initWebSetting();
     }
 
-    public void loadUrl(String url){
+    public void loadUrl(String url) {
         webView.loadUrl(url);
     }
 
@@ -60,16 +71,21 @@ public class BaseWebActivity extends BaseTitleActivity {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
+            if (isNeedLogin && TextUtils.isEmpty(LoginManager.getDoctorUuid())) {
+                UIHelper.showLogin(BaseWebActivity.this);
+            }
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
+            webView.loadUrl("javascript:gm.user.setDoctor('" + LoginManager.getDoctorUuid() + "')");
+
         }
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            System.out.println("goodm---->"+url);
+            System.out.println("goodm---->" + url);
             if (url.contains("goodm://")) {//自定义js协议
                 Pattern pl = Pattern.compile("goodm://([a-zA-Z0-9]+)(/[\\w\\W]*)?");
                 Matcher ml = pl.matcher(url);
@@ -81,7 +97,7 @@ public class BaseWebActivity extends BaseTitleActivity {
                 if (!TextUtils.isEmpty(paramater)) {
                     paramater = paramater.substring(1);
                 }
-                SetJsBridge(functionname,paramater);
+                SetJsBridge(functionname, paramater);
                 return true;
             }
             return super.shouldOverrideUrlLoading(view, url);
@@ -197,14 +213,34 @@ public class BaseWebActivity extends BaseTitleActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (isNeedLogin){
+            if (!TextUtils.isEmpty(LoginManager.getDoctorUuid())){
+                onLoginSuccess.onLoginSuccess();
+            }else{
+                onLoginSuccess.onLoginfail();
+            }
+        }
+    }
+
+
+
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK){
-            if (webView.canGoBack())
-            {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (webView.canGoBack()) {
                 webView.goBack();
                 return true;
             }
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    public interface OnLoginSuccess {
+        void onLoginSuccess();
+
+        void onLoginfail();
+
     }
 }

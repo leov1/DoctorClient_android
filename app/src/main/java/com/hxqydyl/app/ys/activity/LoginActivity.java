@@ -1,5 +1,6 @@
 package com.hxqydyl.app.ys.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -22,7 +23,7 @@ import com.hxqydyl.app.ys.utils.SharedPreferences;
  * Created by hxq on 2016/2/25.
  * 登陆页面
  */
-public class LoginActivity extends BaseTitleActivity implements View.OnClickListener,LoginNet.OnLoginNetListener,RegisterSucListener{
+public class LoginActivity extends BaseTitleActivity implements View.OnClickListener, LoginNet.OnLoginNetListener, RegisterSucListener {
 
     private TextView forgetBtn;
     private TextView registerBtn;
@@ -33,12 +34,10 @@ public class LoginActivity extends BaseTitleActivity implements View.OnClickList
     private Button loginBtn;
 
     private LoginNet loginNet = new LoginNet();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         initViews();
         initListener();
     }
@@ -46,7 +45,7 @@ public class LoginActivity extends BaseTitleActivity implements View.OnClickList
     private void initViews() {
         initViewOnBaseTitle(getResources().getString(R.string.login));
 
-       addRegisterListener(this);
+        addRegisterListener(this);
 
         forgetBtn = (TextView) findViewById(R.id.forget_btn);
         registerBtn = (TextView) findViewById(R.id.register_btn);
@@ -67,16 +66,16 @@ public class LoginActivity extends BaseTitleActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.back_img:
                 finish();
                 break;
             case R.id.forget_btn:
-                Intent forgetIntent = new Intent(this,ForgetPasswordActivity.class);
+                Intent forgetIntent = new Intent(this, ForgetPasswordActivity.class);
                 startActivity(forgetIntent);
                 break;
             case R.id.register_btn:
-               UIHelper.showRegister(this);
+                UIHelper.showRegister(this);
                 break;
             case R.id.login_btn:
                 showDialog("登陆中...");
@@ -87,15 +86,16 @@ public class LoginActivity extends BaseTitleActivity implements View.OnClickList
 
     @Override
     public void requestLoginNetSuccess(DoctorResult doctorResult) {
-        System.out.println("doctorinfo--->"+doctorResult);
+        System.out.println("doctorinfo--->" + doctorResult);
         dismissDialog();
         if (doctorResult == null) return;
-        if (doctorResult.getQuery().getSuccess().equals("1")){
+        if (doctorResult.getQuery().getSuccess().equals("1")) {
             SharedPreferences.getInstance().putString("doctorUuid", doctorResult.getServiceStaff().getDoctorUuid());
             UIHelper.ToastMessage(LoginActivity.this, "登陆成功");
+
             finish();
-        }else {
-            UIHelper.ToastMessage(LoginActivity.this,doctorResult.getQuery().getMessage());
+        } else {
+            UIHelper.ToastMessage(LoginActivity.this, doctorResult.getQuery().getMessage());
         }
 
     }
@@ -103,9 +103,8 @@ public class LoginActivity extends BaseTitleActivity implements View.OnClickList
     @Override
     public void requestLoginNetFail(int statusCode) {
         dismissDialog();
-        UIHelper.ToastMessage(LoginActivity.this,"登陆失败");
+        UIHelper.ToastMessage(LoginActivity.this, "登陆失败");
     }
-
 
     @Override
     public void onRegisterSuc() {

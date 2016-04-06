@@ -6,7 +6,6 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import common.BaseApplication;
 
 public class AppContext extends BaseApplication {
-
     @Override
     public void onCreate() {
         super.onCreate();

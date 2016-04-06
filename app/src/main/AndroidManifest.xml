@@ -49,6 +49,9 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
+            android:name=".activity.CommentWebActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activity.register.RegisterActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
