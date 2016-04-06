@@ -2,8 +2,11 @@ package com.hxqydyl.app.ys.fragment;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +15,16 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.hxqydyl.app.ys.R;
+import com.hxqydyl.app.ys.ui.ProgressWebView;
+import com.hxqydyl.app.ys.ui.UIHelper;
+import com.hxqydyl.app.ys.utils.Constants;
+import com.hxqydyl.app.ys.utils.LoginManager;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,7 +34,7 @@ import java.util.regex.Pattern;
 public class BaseWebFragment extends BaseFragment{
 
     public View view;
-    public WebView webView;
+    public ProgressWebView webView;
 
     @Nullable
     @Override
@@ -38,7 +50,7 @@ public class BaseWebFragment extends BaseFragment{
     }
 
     private void initViews() {
-        webView = (WebView) view.findViewById(R.id.webview);
+        webView = (ProgressWebView) view.findViewById(R.id.webview);
         initWebSetting();
     }
 
@@ -65,10 +77,12 @@ public class BaseWebFragment extends BaseFragment{
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
+            webView.loadUrl("javascript:gm.user.setDoctor('"+ LoginManager.getDoctorUuid()+"')");
         }
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            System.out.println("goodm---->"+url);
             if (url.contains("goodm://")) {//自定义js协议
                 Pattern pl = Pattern.compile("goodm://([a-zA-Z0-9]+)(/[\\w\\W]*)?");
                 Matcher ml = pl.matcher(url);
@@ -80,10 +94,140 @@ public class BaseWebFragment extends BaseFragment{
                 if (!TextUtils.isEmpty(paramater)) {
                     paramater = paramater.substring(1);
                 }
-//                SetJsBridge(functionname,paramater);
+                SetJsBridge(functionname,paramater);
                 return true;
             }
             return super.shouldOverrideUrlLoading(view, url);
+        }
+    };
+
+    private void SetJsBridge(String functionname, String parameters) {
+        switch (functionname) {
+            case "setTitle":
+                try {
+                    String title = URLDecoder.decode(parameters, "UTF-8");
+                    if (title.length() > 10) {
+                        title = title.substring(0, 10) + "...";
+                    }
+//                    topTv.setText(title);
+                } catch (UnsupportedEncodingException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                break;
+//            case "getFriendList":
+//                new ContactHelper().init(this, this);
+//                break;
+//            case "setLeftMenu":
+//                IniLeftMenu(parameters);
+//                break;
+//            case "setRightMenu":
+//                IniRightMenu(parameters);
+//                break;
+//            case "share":
+//                showsharePop();
+//                shareobj = new JSONObject(parameters);
+//                break;
+//            case "openContacts":
+//                Intent intent = new Intent(this, ContactListActivity.class);
+//                startActivityForResult(intent, CONTRACTCODE);
+//                break;
+//            case "takephoto":
+//                ll_popup.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.activity_translate_in));
+//                pop.showAtLocation(parentView, Gravity.BOTTOM, 0, 0);
+//                break;
+//            case "saveImage":
+//                new RemoteImageHelper().downloadImage2local(this, parameters, this);
+//                break;
+//            case "returnIndexPage":
+//                returnIndexPage = true;
+//                break;
+//            case "fullPage":
+//                String[] ps = new String[2];
+//                ps = parameters.split("\\|");
+//                String sourceUrl = ps[0];
+//                String duration = ps[1];
+//                Intent intent2 = new Intent(this, VideoPlayActivity.class);
+//                intent2.putExtra("rtspUrl", sourceUrl);
+//                intent2.putExtra("duration", duration);
+//                startActivityForResult(intent2, FULLPLAY);
+//                break;
+//            case "openScan":
+//                Intent intent3 = new Intent();
+//                intent3.setClass(MainActivity.this, MipcaActivityCapture.class);
+//                intent3.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivityForResult(intent3, SCANNIN_GREQUEST_CODE);
+//                break;
+//            case "openUrl":
+//                if (!parameters.contains("http")) {
+//                    parameters = "http://" + parameters;
+//                }
+//                Uri uri = Uri.parse(parameters);
+//                Intent a = new Intent(Intent.ACTION_VIEW, uri);
+//                startActivity(a);
+//                break;
+//            case "payment":
+//                JSONObject obj = new JSONObject(parameters);
+//                if (obj.optInt("payType") == 1)//1(支付宝)|2(微信),
+//                {
+//                    AlipayUtils.getInstance().pay(this, parameters, mHandler);
+//                } else if (obj.optInt("payType") == 2)//
+//                {
+//                    Tools.GetWxPayOrderInfo(MainActivity.this, obj.optString("order"), this);
+//                }
+//                break;
+//            case "sendUser":
+//                String alias = parameters;// aliasEdit.getText().toString().trim();
+//                if (TextUtils.isEmpty(alias)) {
+//                    Toast.makeText(MainActivity.this, "别名不能为空", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+//                if (!JushUtil.isValidTagAndAlias(alias)) {
+//                    Toast.makeText(MainActivity.this, "别名无效", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
+//                //调用JPush API设置Alias
+//                mHandlerJpush.sendMessage(mHandlerJpush.obtainMessage(MSG_SET_ALIAS, alias));
+//                break;
+            case "setUserInfo"://
+                //{"userType":"1","user":"xxxxxx"} 1(医生)|2(患者)
+                JSONObject u = null;// aliasEdit.getText().toString().trim();
+                try {
+                    u = new JSONObject(parameters);
+                    System.out.println("js--->"+parameters);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+//                String alias2 = u.optString("user");
+//                if (TextUtils.isEmpty(alias2)) {
+//                    UIHelper.ToastMessage(this.getActivity(), "别名不能为空");
+//                    return;
+//                }
+//                if (!JushUtil.isValidTagAndAlias(alias2)) {
+//                    UIHelper.ToastMessage(this.getActivity(), "别名无效");
+//                    return;
+//                }
+//
+                //调用JPush API设置Alias
+//                mHandlerJpush.sendMessage(mHandlerJpush.obtainMessage(1, alias2));
+
+                break;
+        }
+    }
+
+    private final Handler mHandlerJpush = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 1:
+                    Log.d("itvapp", "Set alias in handler.");
+                    webView.loadUrl(Constants.USER_INFO);
+                    break;
+
+                default:
+                    Log.i("itvapp", "Unhandled msg - " + msg.what);
+            }
         }
     };
 }

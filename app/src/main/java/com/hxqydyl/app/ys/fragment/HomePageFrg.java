@@ -1,13 +1,12 @@
 package com.hxqydyl.app.ys.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,22 +19,33 @@ import com.hxqydyl.app.ys.activity.video.VideoActivity;
 import com.hxqydyl.app.ys.adapter.GalleryPagerAdapter;
 import com.hxqydyl.app.ys.adapter.LineGridViewAdapter;
 import com.hxqydyl.app.ys.bean.Query;
+import com.hxqydyl.app.ys.bean.homepage.PageIconBean;
+import com.hxqydyl.app.ys.bean.homepage.PageIconResult;
 import com.hxqydyl.app.ys.bean.register.DoctorInfoNew;
+import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.http.homepage.GainDoctorInfoNet;
+import com.hxqydyl.app.ys.http.homepage.PagerNet;
 import com.hxqydyl.app.ys.http.login.QuitLoginNet;
 import com.hxqydyl.app.ys.ui.CircleImageView;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.ui.linegridview.LineGridView;
 import com.hxqydyl.app.ys.ui.loopviewpager.AutoLoopViewPager;
+import com.hxqydyl.app.ys.ui.pulltozoomview.PullToZoomListViewEx;
 import com.hxqydyl.app.ys.ui.viewpagerindicator.CirclePageIndicator;
 import com.hxqydyl.app.ys.utils.LoginManager;
-import com.hxqydyl.app.ys.utils.SharedPreferences;
+import com.hxqydyl.app.ys.utils.Utils;
 import com.nostra13.universalimageloader.core.ImageLoader;
+
+import org.json.JSONException;
+
+import java.util.ArrayList;
 
 /**
  * 首页frg
  */
-public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGainDoctorInfoListener, View.OnClickListener, AdapterView.OnItemClickListener,QuitLoginNet.OnQuitLoginListener {
+public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGainDoctorInfoListener, View.OnClickListener
+        , AdapterView.OnItemClickListener,QuitLoginNet.OnQuitLoginListener
+,PagerNet.OnPagerNetListener {
 
     private LinearLayout loginLiear;
     private LinearLayout noLoginLinear;
@@ -57,9 +67,12 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
     private GalleryPagerAdapter galleryAdapter;
 
     private String doctorUuid;
+    private String vpInfoCache;
+    private ArrayList<PageIconBean> pageIconBeans = new ArrayList<>();
 
     private GainDoctorInfoNet gainDoctorInfoNet;
     private QuitLoginNet quitLoginNet;
+    private PagerNet pagerNet;
 
     private View mHeader;
     private ListView listView;
@@ -83,14 +96,45 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        readHeaderInfoFromCache();
         initViews();
         initListeners();
         initHeadView();
+        parseHeaderJSON();
+        getData();
+    }
+
+    private void parseHeaderJSON() {
+        if (!TextUtils.isEmpty(vpInfoCache)) {
+            pageIconBeans.clear();
+            try {
+                pageIconBeans = JsonUtils.JsonPageIconResult(vpInfoCache).getPageIconBeans();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            galleryAdapter = new GalleryPagerAdapter(this.getContext(),pageIconBeans);
+            pager.setAdapter(galleryAdapter);
+            indicator.setViewPager(pager);
+            indicator.setPadding(5, 5, 10, 5);
+        }
+    }
+
+    private void readHeaderInfoFromCache() {
+        vpInfoCache = readHeaderInfoFromAssets();
+    }
+
+    private String readHeaderInfoFromAssets(){
+        return Utils.readAssetFileData(this.getContext(),"data/header_vp.txt");
+    }
+
+    private void getData() {
+        pagerNet.getPager();
     }
 
     private void initListeners() {
         gainDoctorInfoNet.setOnGainDoctorInfoListener(this);
         quitLoginNet.setListener(this);
+        pagerNet.setPagerNetListener(this);
         lineGridView.setOnItemClickListener(this);
         loginBtn.setOnClickListener(this);
         registerBtn.setOnClickListener(this);
@@ -107,6 +151,7 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
 
         gainDoctorInfoNet = new GainDoctorInfoNet();
         quitLoginNet = new QuitLoginNet();
+        pagerNet = new PagerNet();
 
         mHeader = View.inflate(this.getActivity(), R.layout.home_header, null);
 
@@ -133,10 +178,6 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
 
         pager = (AutoLoopViewPager) mHeader.findViewById(R.id.pager);
         indicator = (CirclePageIndicator) mHeader.findViewById(R.id.indicator);
-        galleryAdapter = new GalleryPagerAdapter(this.getContext());
-        pager.setAdapter(galleryAdapter);
-        indicator.setViewPager(pager);
-        indicator.setPadding(5, 5, 10, 5);
 
     }
 
@@ -163,7 +204,6 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
             doctorUuid = LoginManager.getDoctorUuid();
             gainDoctorInfoNet.gainDoctorInfo(doctorUuid);
         }
-
     }
 
     /**
@@ -173,7 +213,7 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
      */
     private void updateDoctorInfo(DoctorInfoNew doctorInfo) {
         updateLinear(LoginManager.isHasLogin());
-        ImageLoader.getInstance().displayImage(doctorInfo.getDoctorIcon(), headImg);
+        ImageLoader.getInstance().displayImage(doctorInfo.getDoctorIcon(), headImg,Utils.initImageLoader(R.mipmap.portrait_man,true));
         headName.setText(doctorInfo.getDoctorName());
         suffererNum.setText(doctorInfo.getCustomerNum() + "");
         followNum.setText(doctorInfo.getVisitNum() + "");
@@ -199,19 +239,6 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
     public void onPause() {
         super.onPause();
         pager.stopAutoScroll();
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    private void saveHeaderInfoToCache(String str) {
-        SharedPreferences.getInstance().putString("doctor_info", str);
-    }
-
-    private void getHeaderInfoFromCache() {
-        SharedPreferences.getInstance().getString("doctor_info", "");
     }
 
     @Override
@@ -282,6 +309,21 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
 
     @Override
     public void requestQuitFail() {
+
+    }
+
+    @Override
+    public void PagerNetSuccess(PageIconResult pageIconResult) {
+        if (pageIconResult == null) return;
+        if (pageIconResult.getQuery().getSuccess().equals("1")){
+            pageIconBeans = pageIconResult.getPageIconBeans();
+            galleryAdapter.update(pageIconBeans);
+            System.out.println("img--->"+pageIconBeans.toString());
+        }
+    }
+
+    @Override
+    public void PagerNetFail(int statueCode) {
 
     }
 }

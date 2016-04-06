@@ -13,12 +13,12 @@ public class Constants {
     //请求网络失败
     public static int REQUEST_FAIL = 1101;
 
-    private static String url = "http://192.168.0.150:8080";/*"http://172.168.1.30";*//*"http://172.168.1.233";*//*"http://172.168.1.63";*//*"http://172.168.1.10";*/
-//  private static String url = "http://119.254.32.92:4097";
-    public static String phone = "10000000000";
-    public static String password = "000000";
+    private static String url = /*"http://192.168.0.150:8080";*//*"http://172.168.1.30";*/"http://172.168.1.233";/*"http://172.168.1.63";*//*"http://172.168.1.10";*/
     public static String LOGIN_URL = url+"/app/pub/doctor/gotoLogin";
 
+
+    //获取轮播图
+    public static String GET_PLATFORMPIC = url+"/app/pub/doctor/getPlatformPic";
 
     //手机获取验证码
     public static String GET_VERIFICATION_CODE=url+"/app/pub/doctor/getVerificationCode";
@@ -57,13 +57,26 @@ public class Constants {
     public static String UPLOAD_IMGS = url +"/app/support/common/uploadimg";
 
     //获取阅读列表
-    public static String GET_READING = "http://admin.hxqydyl.com/html/thedoctorinformation/index.shtml";
+    public static String GET_READING = /*"http://172.168.1.41/html/thedoctorinformation/index.shtml";*/"http://admin.hxqydyl.com/html/thedoctorinformation/index.shtml";
     //获取讲堂列表信息
-    public static String GET_VIDEOS = "http://101.201.150.23:8080/html/lecture/all_course.shtml";
+    public static String GET_VIDEOS = "http://172.168.1.41/html/lecture/all_course.shtml";
     //获取诊所
-    public static String GET_CLINIC = "http://101.201.150.23:8080/html/clinic/index.shtml";
+    public static String GET_CLINIC = "http://172.168.1.41/html/clinic/index.shtml";
     //我的患者
-    public static String MY_PATIENT = "http://101.201.150.23:8080/html/mypatient/index.shtml";
+    public static String MY_PATIENT = "http://172.168.1.41/html/mypatient/index.shtml";
+    //我的任务
+    public static String MY_TASK = "http://172.168.1.41/html/task/my_task.shtml";
+    //个人中心
+    public static String USER_INFO = "http://172.168.1.41/html/user/index.shtml";
+   //患教库
+    public static String PATIENT_EDUCATION = "http://172.168.1.41/html/follow_up/toolbox/patient_education.shtml";
+
+
     //患者分组
-    public static final String GET_PATIENT_GROUP = url + "/app/service/customer/1.0/getGroupAndCustomer";
+    public static String GET_PATIENT_GROUP = url + "/app/service/customer/1.0/getGroupAndCustomer";
+    //医生群发消息给患者
+    public static String ADD_INNER_MSG = url+"/app/service/customer/1.0/addInnerMessage";
+
+
+
 }

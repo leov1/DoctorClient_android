@@ -45,7 +45,7 @@ public class BaseApplication extends Application {
     }
 
     private void configurationImageLoader(){
-        File cacheDir = StorageUtils.getOwnCacheDirectory(getApplicationContext(), "wanwu/Cache");
+        File cacheDir = StorageUtils.getOwnCacheDirectory(getApplicationContext(), "hxq/Cache");
         ImageLoaderConfiguration configuration = new ImageLoaderConfiguration
                 .Builder(this)
                 .memoryCacheExtraOptions(480, 800) // max width, max height，即保存的每个缓存文件的最大长宽

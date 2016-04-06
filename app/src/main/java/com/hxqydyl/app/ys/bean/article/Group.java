@@ -6,15 +6,12 @@ import java.util.ArrayList;
  * Created by hxq on 2016/3/28.
  */
 public class Group {
-    private String id;
-    private String title;
     private ArrayList<Child> children;
     private boolean isChecked;
+    private String groupName;
+    private String groupId;
 
-    public Group(String id, String title) {
-        this.title = title;
-        children = new ArrayList<Child>();
-        this.isChecked = false;
+    public Group() {
     }
 
     public void setChecked(boolean isChecked) {
@@ -29,12 +26,36 @@ public class Group {
         return this.isChecked;
     }
 
-    public String getId() {
-        return id;
+    public ArrayList<Child> getChildren() {
+        return children;
     }
 
-    public String getTitle() {
-        return title;
+    public void setChildren(ArrayList<Child> children) {
+        this.children = children;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setIsChecked(boolean isChecked) {
+        this.isChecked = isChecked;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 
     public void addChildrenItem(Child child) {
@@ -52,10 +73,10 @@ public class Group {
     @Override
     public String toString() {
         return "Group{" +
-                "id='" + id + '\'' +
-                ", title='" + title + '\'' +
-                ", children=" + children +
+                "children=" + children +
                 ", isChecked=" + isChecked +
+                ", groupName='" + groupName + '\'' +
+                ", groupId='" + groupId + '\'' +
                 '}';
     }
 }

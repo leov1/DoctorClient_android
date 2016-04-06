@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <uses-permission-sdk-23 android:name="android.permission.READ_CONTACTS" />
 
@@ -79,8 +80,7 @@
         <activity android:name=".activity.video.VideoActivity" />
         <activity android:name=".activity.patient.PatientInfoActivity" />
         <activity android:name=".activity.follow.ArticleActivity" />
-        <activity android:name=".activity.follow.ChoiceUserActivity" />
-        <activity android:name=".activity.follow.MassActivity" />
+        <activity android:name=".activity.follow.MassActivity" android:windowSoftInputMode="stateHidden|stateAlwaysHidden"/>
         <activity android:name=".activity.follow.ChoiceScaleActivity" />
         <activity android:name=".activity.follow.ChoiceSelfActivity" />
         <activity android:name=".activity.follow.FollowMainActivity" />
@@ -121,7 +121,6 @@
             android:name=".activity.case_report.IllnessChangeDetalsActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".activity.clinic.ClinicActivity" />
-        <activity android:name=".activity.follow.ArticleDetailActivity" />
         <activity android:name=".activity.follow.PatientSelectActivity"></activity>
     </application>
 

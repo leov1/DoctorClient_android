@@ -20,6 +20,7 @@
             android:paddingTop="@dimen/space_25">
 
             <EditText
+                android:id="@+id/edit_msg"
                 style="@style/edit_blue"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
@@ -27,14 +28,30 @@
                 android:hint="群发内容"
                 android:padding="@dimen/space_8" />
 
-            <Button
-                style="@style/btn_address"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_25"
+                android:textSize="@dimen/text_size_16"
+                android:text="所选患者:"/>
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_15"
+                />
+
+            <Button
+                android:id="@+id/btn_choice_patient"
+                style="@style/btn_blue"
+                android:layout_marginTop="120dp"
                 android:text="选择患者" />
 
             <Button
+                android:id="@+id/btn_send"
                 style="@style/btn_blue"
-                android:layout_marginTop="150dp"
+                android:layout_marginTop="30dp"
                 android:text="群发" />
         </LinearLayout>
     </ScrollView>

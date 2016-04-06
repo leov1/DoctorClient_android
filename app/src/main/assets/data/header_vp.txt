@@ -1,0 +1,40 @@
+{
+  "query": {
+    "success": "1",
+    "message": "²Ù×÷³É¹¦"
+  },
+  "relist": [
+    {
+      "note": "",
+      "imageUrl": "http://101.201.150.49:7500/dev1/0/000/002/0000002368.fid",
+      "imageNote": "",
+      "position": 0,
+      "imageUuid": "8a991d2d554940e0b23dec3feb32962a",
+      "url": "https://jinshuju.net/f/sYCPIq"
+    },
+    {
+      "note": "",
+      "imageUrl": "http://101.201.150.49:7500/dev1/0/000/002/0000002047.fid",
+      "imageNote": "",
+      "position": 1,
+      "imageUuid": "c094731583854d2db0acae02720ead27",
+      "url": ""
+    },
+    {
+      "note": "",
+      "imageUrl": "http://101.201.150.49:7500/dev1/0/000/002/0000002048.fid",
+      "imageNote": "",
+      "position": 2,
+      "imageUuid": "e76ee43c2f6a4451a08fd7d8b2b12774",
+      "url": ""
+    },
+    {
+      "note": "",
+      "imageUrl": "http://101.201.150.49:7500/dev1/0/000/002/0000002050.fid",
+      "imageNote": "",
+      "position": 3,
+      "imageUuid": "3ea0c792a962409c850f5cca36af41c5",
+      "url": ""
+    }
+  ]
+}

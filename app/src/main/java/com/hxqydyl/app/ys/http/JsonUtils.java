@@ -2,8 +2,14 @@ package com.hxqydyl.app.ys.http;
 
 import android.text.TextUtils;
 
+import com.alibaba.fastjson.JSONPObject;
 import com.google.gson.Gson;
 import com.hxqydyl.app.ys.bean.Query;
+import com.hxqydyl.app.ys.bean.article.ArticleResult;
+import com.hxqydyl.app.ys.bean.article.Child;
+import com.hxqydyl.app.ys.bean.article.Group;
+import com.hxqydyl.app.ys.bean.homepage.PageIconBean;
+import com.hxqydyl.app.ys.bean.homepage.PageIconResult;
 import com.hxqydyl.app.ys.bean.register.CaptchaResult;
 import com.hxqydyl.app.ys.bean.register.CityBean;
 import com.hxqydyl.app.ys.bean.register.CityResultBean;
@@ -362,5 +368,78 @@ public class JsonUtils {
         query.setSuccess(queryJs.getString("success"));
         query.setMessage(queryJs.getString("message"));
         return query;
+    }
+
+    /**
+     * 群发分组
+     * @param string
+     * @return
+     * @throws JSONException
+     */
+    public static ArticleResult JsonArticleResult(String string) throws JSONException{
+        if (TextUtils.isEmpty(string)) return null;
+        JSONObject js = new JSONObject(string);
+        ArticleResult articleResult = new ArticleResult();
+        articleResult.setQuery(JsonQuery(string));
+        if (js.has("relist")){
+            JSONArray relist = js.getJSONArray("relist");
+            ArrayList<Group> groups = new ArrayList<>();
+            for (int i = 0;i<relist.length();i++){
+                JSONObject groupJs = relist.getJSONObject(i);
+                Group group = new Group();
+                group.setChecked(false);
+                group.setGroupId(groupJs.getString("groupId"));
+                group.setGroupName(groupJs.getString("groupName"));
+                JSONArray customers = groupJs.getJSONArray("customers");
+                ArrayList<Child> children = new ArrayList<>();
+                for (int j = 0;j<customers.length();j++){
+                    JSONObject customJs = customers.getJSONObject(j);
+                    Child child = new Child();
+                    child.setAge(customJs.getString("age"));
+                    child.setCustomerImg(customJs.getString("customerImg"));
+                    child.setCustomerUuid(customJs.getString("customerUuid"));
+                    child.setCustomerMessage(customJs.getString("customerMessage"));
+                    child.setSex(customJs.getString("sex"));
+                    child.setCustomerName(customJs.getString("customerName"));
+                    child.setChecked(false);
+                    children.add(child);
+                }
+                group.setChildren(children);
+                groups.add(group);
+            }
+            articleResult.setGroups(groups);
+        }
+        return articleResult;
+    }
+
+    /**
+     * 获取导航图
+     * @param string
+     * @return
+     * @throws JSONException
+     */
+    public static PageIconResult JsonPageIconResult(String string) throws JSONException{
+        if (TextUtils.isEmpty(string)) return null;
+        PageIconResult pageIconResult = new PageIconResult();
+        pageIconResult.setQuery(JsonQuery(string));
+
+        JSONObject js = new JSONObject(string);
+        if (js.has("relist")){
+            JSONArray relist = js.getJSONArray("relist");
+            ArrayList<PageIconBean> pageIconBeans = new ArrayList<>();
+            for (int i = 0;i<relist.length();i++){
+                JSONObject jsonObject = relist.getJSONObject(i);
+                PageIconBean pageIconBean = new PageIconBean();
+                pageIconBean.setNote(jsonObject.getString("note"));
+                pageIconBean.setImageUrl(jsonObject.getString("imageUrl"));
+                pageIconBean.setImageNote(jsonObject.getString("imageNote"));
+                pageIconBean.setPosition(jsonObject.getInt("position"));
+                pageIconBean.setImageUuid(jsonObject.getString("imageUuid"));
+                pageIconBean.setUrl(jsonObject.getString("url"));
+                pageIconBeans.add(pageIconBean);
+            }
+            pageIconResult.setPageIconBeans(pageIconBeans);
+        }
+        return pageIconResult;
     }
 }

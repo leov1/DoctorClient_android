@@ -59,8 +59,6 @@ public class LoginActivity extends BaseTitleActivity implements View.OnClickList
     private void initListener() {
         loginNet.setmListener(this);
         setBackListener(this);
-        mobileEdit.setText(Constants.phone);
-        passwordEdit.setText(Constants.password);
 
         forgetBtn.setOnClickListener(this);
         registerBtn.setOnClickListener(this);

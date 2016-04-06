@@ -41,6 +41,7 @@ import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.ui.scrollviewandgridview.MyGridView;
 import com.hxqydyl.app.ys.ui.uploadimage.UploadPhotoUtil;
 import com.hxqydyl.app.ys.utils.LoginManager;
+import com.hxqydyl.app.ys.utils.StringUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -333,25 +334,11 @@ public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClick
         System.out.println("list --->" + uploadImgUrlList.toString());
     }
 
-
-    /**
-     * 将list转换成string
-     * @param list
-     * @param separator
-     * @return
-     */
-    public String listToString(List<String> list, char separator) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < list.size(); i++) {
-            sb.append(list.get(i)).append(separator);
-        }
-        return sb.toString().substring(0,sb.toString().length()-1);
-    }
     @Override
     public void requestUploadIconsSuc(ArrayList<IconBean> iconBeans) {
         if (iconBeans == null) return;
 
-        saveUserIconNet.saveUserIcon(LoginManager.getDoctorUuid(), listToString(uploadImgUrlList,','));
+        saveUserIconNet.saveUserIcon(LoginManager.getDoctorUuid(), StringUtils.listToString(uploadImgUrlList, ','));
  //       UIHelper.ToastMessage(EvpiPhotoActivity.this,query.getMessage());
     }
 

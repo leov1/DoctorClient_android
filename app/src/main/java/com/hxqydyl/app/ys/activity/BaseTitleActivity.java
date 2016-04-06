@@ -4,7 +4,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +25,7 @@ public class BaseTitleActivity extends SwipeBackActivity implements NetRequestLi
     protected final String HTTP_TASK_KEY = "HttpTaskKey_" + hashCode();
 
     private ImageView backImg;
-    private TextView topTv;
+    public TextView topTv;
 
     private SweetAlertDialog pDialog;
 
@@ -57,6 +59,20 @@ public class BaseTitleActivity extends SwipeBackActivity implements NetRequestLi
                 finish();
             }
         });
+    }
+
+    public void setWebBackListener(final WebView webView){
+        backImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (webView.canGoBack()){
+                    webView.goBack();
+                }else {
+                    finish();
+                }
+            }
+        });
+
     }
 
     public void addRegisterListener(RegisterSucListener listener){
