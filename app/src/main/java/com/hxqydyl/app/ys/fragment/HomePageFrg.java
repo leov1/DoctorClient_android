@@ -2,6 +2,7 @@ package com.hxqydyl.app.ys.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.clinic.ClinicActivity;
 import com.hxqydyl.app.ys.activity.follow.FollowMainActivity;
@@ -22,17 +24,21 @@ import com.hxqydyl.app.ys.bean.Query;
 import com.hxqydyl.app.ys.bean.homepage.PageIconBean;
 import com.hxqydyl.app.ys.bean.homepage.PageIconResult;
 import com.hxqydyl.app.ys.bean.register.DoctorInfoNew;
+import com.hxqydyl.app.ys.bean.register.DoctorResultNew;
 import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.http.homepage.GainDoctorInfoNet;
 import com.hxqydyl.app.ys.http.homepage.PagerNet;
 import com.hxqydyl.app.ys.http.login.QuitLoginNet;
 import com.hxqydyl.app.ys.ui.CircleImageView;
 import com.hxqydyl.app.ys.ui.UIHelper;
+import com.hxqydyl.app.ys.ui.library.PullToRefreshBase;
+import com.hxqydyl.app.ys.ui.library.PullToRefreshListView;
 import com.hxqydyl.app.ys.ui.linegridview.LineGridView;
 import com.hxqydyl.app.ys.ui.loopviewpager.AutoLoopViewPager;
-import com.hxqydyl.app.ys.ui.pulltozoomview.PullToZoomListViewEx;
 import com.hxqydyl.app.ys.ui.viewpagerindicator.CirclePageIndicator;
 import com.hxqydyl.app.ys.utils.LoginManager;
+import com.hxqydyl.app.ys.utils.SharedPreferences;
+import com.hxqydyl.app.ys.utils.StringUtils;
 import com.hxqydyl.app.ys.utils.Utils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -44,8 +50,8 @@ import java.util.ArrayList;
  * 首页frg
  */
 public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGainDoctorInfoListener, View.OnClickListener
-        , AdapterView.OnItemClickListener,QuitLoginNet.OnQuitLoginListener
-,PagerNet.OnPagerNetListener {
+        , AdapterView.OnItemClickListener, QuitLoginNet.OnQuitLoginListener
+        , PagerNet.OnPagerNetListener {
 
     private LinearLayout loginLiear;
     private LinearLayout noLoginLinear;
@@ -68,7 +74,9 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
 
     private String doctorUuid;
     private String vpInfoCache;
+    private String doctorInfoCache;
     private ArrayList<PageIconBean> pageIconBeans = new ArrayList<>();
+    private DoctorInfoNew doctorInfoNew;
 
     private GainDoctorInfoNet gainDoctorInfoNet;
     private QuitLoginNet quitLoginNet;
@@ -78,12 +86,10 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
     private ListView listView;
     private Intent intent;
 
-    public HomePageFrg() {
-    }
+    private PullToRefreshListView pullToRefreshListView;
+    private Handler mHandler = new Handler();
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public HomePageFrg() {
     }
 
     @Override
@@ -98,8 +104,8 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
         super.onActivityCreated(savedInstanceState);
         readHeaderInfoFromCache();
         initViews();
-        initListeners();
         initHeadView();
+        initListeners();
         parseHeaderJSON();
         getData();
     }
@@ -112,21 +118,27 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            galleryAdapter = new GalleryPagerAdapter(this.getContext(),pageIconBeans);
+            galleryAdapter = new GalleryPagerAdapter(this.getContext(), pageIconBeans);
             pager.setAdapter(galleryAdapter);
             indicator.setViewPager(pager);
             indicator.setPadding(5, 5, 10, 5);
         }
+
+        if (!TextUtils.isEmpty(doctorInfoCache)) {
+            doctorInfoNew = JsonUtils.JsonDoctorInfoNew(StringUtils.cutoutBracketToString(doctorInfoCache)).getDoctorInfo();
+            updateDoctorInfo(doctorInfoNew);
+        }
     }
 
     private void readHeaderInfoFromCache() {
-        vpInfoCache = readHeaderInfoFromAssets();
+        vpInfoCache = SharedPreferences.getInstance().getString(SharedPreferences.HOME_VP_CACHE, "");
+        if (TextUtils.isEmpty(vpInfoCache)) {
+            vpInfoCache = Utils.readAssetFileData(this.getContext(), "data/header_vp.txt");
+        }
+        doctorInfoCache = SharedPreferences.getInstance().getString(SharedPreferences.HOME_DOCTOR_INFO_CACHE, "");
     }
 
-    private String readHeaderInfoFromAssets(){
-        return Utils.readAssetFileData(this.getContext(),"data/header_vp.txt");
-    }
-
+    //获取导航图
     private void getData() {
         pagerNet.getPager();
     }
@@ -139,24 +151,24 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
         loginBtn.setOnClickListener(this);
         registerBtn.setOnClickListener(this);
         headImg.setOnClickListener(this);
+        pullToRefreshListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
+            @Override
+            public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+                mHandler.postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        System.out.println("--onRefresh-->");
+                        loadDoctorInfo();
+                    }
+                }, 200);
+            }
+        });
+
     }
 
     private void initHeadView() {
-        listView.addHeaderView(mHeader);
-        listView.setAdapter(null);
-    }
-
-    private void initViews() {
-        initViewOnBaseTitle("首页", view);
-
-        gainDoctorInfoNet = new GainDoctorInfoNet();
-        quitLoginNet = new QuitLoginNet();
-        pagerNet = new PagerNet();
-
         mHeader = View.inflate(this.getActivity(), R.layout.home_header, null);
-
-        listView = (ListView) view.findViewById(R.id.list_view);
-
         noLoginLinear = (LinearLayout) mHeader.findViewById(R.id.not_login_linear);
         loginLiear = (LinearLayout) mHeader.findViewById(R.id.login_linear);
         //已经登陆
@@ -170,8 +182,6 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
         loginBtn = (TextView) mHeader.findViewById(R.id.login_btn);
         registerBtn = (TextView) mHeader.findViewById(R.id.register_btn);
 
-//        updateLinear(LoginManager.isHasLogin());
-
         lineGridView = (LineGridView) mHeader.findViewById(R.id.home_gridview);
         lineGridViewAdapter = new LineGridViewAdapter(this.getContext());
         lineGridView.setAdapter(lineGridViewAdapter);
@@ -179,19 +189,40 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
         pager = (AutoLoopViewPager) mHeader.findViewById(R.id.pager);
         indicator = (CirclePageIndicator) mHeader.findViewById(R.id.indicator);
 
+        listView.addHeaderView(mHeader);
+        listView.setAdapter(null);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        pager.startAutoScroll();
-        loadDoctorInfo();
+    private void initViews() {
+        initViewOnBaseTitle("首页", view);
+
+        gainDoctorInfoNet = new GainDoctorInfoNet();
+        quitLoginNet = new QuitLoginNet();
+        pagerNet = new PagerNet();
+
+        pullToRefreshListView = (PullToRefreshListView) view.findViewById(R.id.list_view);
+        listView = pullToRefreshListView.getRefreshableView();
+        listView.setHeaderDividersEnabled(false);
+        pullToRefreshListView.setMode(PullToRefreshBase.Mode.PULL_DOWN_TO_REFRESH);
+
     }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        loadDoctorInfo();
+        startRefreshing();
+    }
+
+    private void startRefreshing() {
+        if (pullToRefreshListView != null) {
+            pullToRefreshListView.setRefreshing();
+        }
+    }
+
+    private void stopRefreshing() {
+        if (pullToRefreshListView != null) {
+            pullToRefreshListView.onRefreshComplete();
+        }
     }
 
     /**
@@ -203,6 +234,8 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
         if (LoginManager.isHasLogin()) {
             doctorUuid = LoginManager.getDoctorUuid();
             gainDoctorInfoNet.gainDoctorInfo(doctorUuid);
+        }else {
+            stopRefreshing();
         }
     }
 
@@ -213,7 +246,9 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
      */
     private void updateDoctorInfo(DoctorInfoNew doctorInfo) {
         updateLinear(LoginManager.isHasLogin());
-        ImageLoader.getInstance().displayImage(doctorInfo.getDoctorIcon(), headImg,Utils.initImageLoader(R.mipmap.portrait_man,true));
+        if (!TextUtils.isEmpty(doctorInfo.getDoctorIcon())) {
+            ImageLoader.getInstance().displayImage(doctorInfo.getDoctorIcon(), headImg, Utils.initImageLoader(R.mipmap.portrait_man, true));
+        }
         headName.setText(doctorInfo.getDoctorName());
         suffererNum.setText(doctorInfo.getCustomerNum() + "");
         followNum.setText(doctorInfo.getVisitNum() + "");
@@ -242,13 +277,22 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
     }
 
     @Override
-    public void requestGainDoctorInfoSuccess(DoctorInfoNew doctorInfoNew) {
-        updateDoctorInfo(doctorInfoNew);
+    public void requestGainDoctorInfoSuccess(DoctorResultNew doctorResultNew,String str) {
+        stopRefreshing();
+        if (doctorResultNew == null) return;
+        if (doctorResultNew.getQuery().getSuccess().equals("1")) {
+            updateDoctorInfo(doctorResultNew.getDoctorInfo());
+            SharedPreferences.getInstance().putString(SharedPreferences.HOME_DOCTOR_INFO_CACHE, str);
+        } else {
+            UIHelper.ToastMessage(getActivity(), doctorResultNew.getQuery().getMessage());
+        }
+
     }
 
     @Override
     public void requestGainDoctorInfoFail(int statueCode) {
-
+        UIHelper.ToastMessage(getActivity(), "请求失败");
+        stopRefreshing();
     }
 
     @Override
@@ -269,7 +313,7 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
     /**
      * 退出登陆
      */
-    private void quitLogin(){
+    private void quitLogin() {
         quitLoginNet.quit();
     }
 
@@ -298,27 +342,31 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
 
     @Override
     public void requestQuitSuc(Query query) {
-        if (query == null)return;
-        System.out.println("response-quit-->"+query.toString());
-        if (query.getSuccess().equals("1")){
+
+        if (query == null) return;
+        System.out.println("response-quit-->" + query.toString());
+        if (query.getSuccess().equals("1")) {
             LoginManager.quitLogin();
             updateLinear(false);
-            UIHelper.ToastMessage(getActivity(),"退出登陆成功");
+            UIHelper.ToastMessage(getActivity(), "退出登陆成功");
+        } else {
+            UIHelper.ToastMessage(getActivity(), query.getMessage());
         }
     }
 
     @Override
     public void requestQuitFail() {
-
+        UIHelper.ToastMessage(getActivity(), "退出失败");
     }
 
     @Override
-    public void PagerNetSuccess(PageIconResult pageIconResult) {
+    public void PagerNetSuccess(PageIconResult pageIconResult,String str) {
         if (pageIconResult == null) return;
-        if (pageIconResult.getQuery().getSuccess().equals("1")){
+        if (pageIconResult.getQuery().getSuccess().equals("1")) {
             pageIconBeans = pageIconResult.getPageIconBeans();
             galleryAdapter.update(pageIconBeans);
-            System.out.println("img--->"+pageIconBeans.toString());
+            SharedPreferences.getInstance().putString(SharedPreferences.HOME_VP_CACHE, str);
+            System.out.println("img--->" + pageIconBeans.toString());
         }
     }
 

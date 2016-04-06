@@ -71,10 +71,10 @@ public class JsonUtils {
      * @param string
      * @return
      */
-    public static DoctorInfoNew JsonDoctorInfoNew(String string){
+    public static DoctorResultNew JsonDoctorInfoNew(String string){
         if (TextUtils.isEmpty(string)) return null;
         DoctorResultNew doctorResultNew = new Gson().fromJson(string, DoctorResultNew.class);
-        return doctorResultNew.getDoctorInfo();
+        return doctorResultNew;
     }
 
     /**

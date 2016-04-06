@@ -47,7 +47,6 @@ public class GalleryPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        System.out.println("----instantiateItem------");
         if (list.size() != 0){
             position %= list.size();
             ImageView item = new ImageView(mContext);

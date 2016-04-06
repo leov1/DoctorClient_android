@@ -1,8 +1,10 @@
 package com.hxqydyl.app.ys.http.homepage;
 
 import com.hxqydyl.app.ys.bean.register.DoctorInfoNew;
+import com.hxqydyl.app.ys.bean.register.DoctorResultNew;
 import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.utils.Constants;
+import com.hxqydyl.app.ys.utils.SharedPreferences;
 import com.hxqydyl.app.ys.utils.StringUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -22,7 +24,7 @@ public class GainDoctorInfoNet {
      }
 
      public interface OnGainDoctorInfoListener{
-          void requestGainDoctorInfoSuccess(DoctorInfoNew doctorInfoNew);
+          void requestGainDoctorInfoSuccess(DoctorResultNew doctorResultNew,String str);
           void requestGainDoctorInfoFail(int statueCode);
      }
 
@@ -42,8 +44,8 @@ public class GainDoctorInfoNet {
 
                        @Override
                        public void onResponse(String response) {
-                           System.out.println("response--->"+response);
-                            onGainDoctorInfoListener.requestGainDoctorInfoSuccess(JsonUtils.JsonDoctorInfoNew(StringUtils.cutoutBracketToString(response)));
+                           System.out.println("response--->" + response);
+                           onGainDoctorInfoListener.requestGainDoctorInfoSuccess(JsonUtils.JsonDoctorInfoNew(StringUtils.cutoutBracketToString(response)),response);
                        }
                   });
      }
