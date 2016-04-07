@@ -301,7 +301,6 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.login_btn:
-                UIHelper.showLogin(getActivity());
                 intent = new Intent(getActivity(), LoginActivity.class);
                 startActivityForResult(intent,LOGIN_STATE);
                 break;

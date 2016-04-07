@@ -27,20 +27,21 @@
 
                 <com.hxqydyl.app.ys.ui.CircleImageView
                     android:id="@+id/image_upload"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
                     android:onClick="showEditPhotoLayout"
                     android:layout_centerHorizontal="true"
                     android:src="@mipmap/upload_photo" />
 
                 <TextView
+                    android:id="@+id/text_head"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:paddingTop="95dp"
+                    android:paddingTop="80dp"
                     android:text="@string/upload_photo"
                     android:textColor="@color/text_color_white"
-                    android:textSize="@dimen/text_size_18" />
+                    android:textSize="@dimen/text_size_16" />
             </RelativeLayout>
 
             <EditText
