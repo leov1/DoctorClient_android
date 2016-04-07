@@ -13,7 +13,7 @@ public class Constants {
     //请求网络失败
     public static int REQUEST_FAIL = 1101;
 
-    private static String url = /*"http://192.168.0.150:8080";*//*"http://172.168.1.30";*/"http://172.168.1.233";/*"http://172.168.1.63";*//*"http://172.168.1.10";*/
+    private static String url = /*"http://192.168.0.150:8080";*//*"http://172.168.1.30";*/"http://172.168.1.9";/*"http://172.168.1.63";*//*"http://172.168.1.10";*/
     public static String LOGIN_URL = url+"/app/pub/doctor/gotoLogin";
 
 

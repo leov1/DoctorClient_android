@@ -10,6 +10,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
 import com.hxqydyl.app.ys.utils.Constants;
+import com.hxqydyl.app.ys.utils.LoginManager;
 
 import framework.BaseFragmentActivity;
 
@@ -19,8 +20,8 @@ import framework.BaseFragmentActivity;
 public class CommentWebActivity extends BaseWebActivity implements BaseWebActivity.OnLoginSuccess {
     private String url;
     private String title;
+    private boolean isfrist = true;   //应该需要传所需的方法对象
 
-    //应该需要传所需的方法对象
     public static void toCommentWeb(String url, String title, FragmentActivity a, boolean isNeedLogin) {
         Intent intent = new Intent(a, CommentWebActivity.class);
         if (!TextUtils.isEmpty(title)) {
@@ -34,6 +35,7 @@ public class CommentWebActivity extends BaseWebActivity implements BaseWebActivi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e("wangxu",TextUtils.isEmpty(LoginManager.getDoctorUuid())+"");
         if (getIntent().hasExtra("title")) {
             title = getIntent().getStringExtra("title");
 
@@ -54,7 +56,10 @@ public class CommentWebActivity extends BaseWebActivity implements BaseWebActivi
 
     @Override
     public void onLoginSuccess() {
-        loadUrl(url);
+        if (!isfrist) {
+            loadUrl(url);
+        }
+        isfrist=false;
     }
 
     @Override

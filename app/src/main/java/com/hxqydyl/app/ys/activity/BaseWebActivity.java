@@ -222,8 +222,8 @@ public class BaseWebActivity extends BaseTitleActivity {
                 onLoginSuccess.onLoginfail();
             }
         }
-    }
 
+    }
 
 
     @Override
