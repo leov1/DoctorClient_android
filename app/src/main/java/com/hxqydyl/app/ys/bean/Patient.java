@@ -7,28 +7,58 @@ import java.util.ArrayList;
  * Created by white_ash on 2016/3/20.
  */
 public class Patient extends BaseBean implements Serializable {
+    //    头像
+    private String portrait;
+    //    电话
     private String phoneNumber;
+    //    昵称
     private String nick;
+    //    姓名
     private String name;
+    //    年龄
     private String age;
+    //    性别
     private String sex;
+    //    建立随访关系的时间
     private String followTime;
+    //    生日
     private String birthday;
+    //    身份证号
     private String card;
+    //    email地址
     private String email;
+    //    婚姻情况
     private String marriage;
+    //    职业
     private String vocation;
+    //    地址
     private String address;
+    //    病程
     private String diseaseProcess;
+    //    首次就诊时间
     private String firstSeeDoctorTime;
+    //    是否复发
     private String relapse;
+    //    复发次数
     private String relapseTimes;
+    //    身高
     private String height;
+    //    体重
     private String weight;
+    //    近3个月使用药物
     private String useCondition;
+    //    病情描述
     private String description;
 
     private ArrayList<PatientTreatInfo> patientTreatInfos = new ArrayList<PatientTreatInfo>();
+
+    public String getPortrait() {
+        return portrait;
+    }
+
+    public void setPortrait(String portrait) {
+        this.portrait = portrait;
+    }
 
     public String getPhoneNumber() {
         return phoneNumber;

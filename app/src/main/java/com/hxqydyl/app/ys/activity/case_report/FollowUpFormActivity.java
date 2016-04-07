@@ -7,9 +7,11 @@ import android.widget.ExpandableListView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+import com.hxqydyl.app.ys.activity.patient.PatientDetailsActivity;
 import com.hxqydyl.app.ys.activity.patient.PatientSimpleInfoViewHolder;
 import com.hxqydyl.app.ys.adapter.FollowUpFormAdapter;
 import com.hxqydyl.app.ys.bean.FollowUpForm;
+import com.hxqydyl.app.ys.bean.Patient;
 import com.hxqydyl.app.ys.bean.PatientTreatInfo;
 import com.hxqydyl.app.ys.bean.Pic;
 import com.hxqydyl.app.ys.bean.followupform.BadReactionRecord;
@@ -44,17 +46,20 @@ public class FollowUpFormActivity extends BaseTitleActivity implements View.OnCl
     private CaseReportNet caseReportNet;
 
     private PatientTreatInfo treatInfo;
+    private Patient patient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        treatInfo = (PatientTreatInfo) getIntent().getSerializableExtra("treat_info");
-        if(treatInfo ==null){
+        treatInfo = (PatientTreatInfo) getIntent().getSerializableExtra(PatientDetailsActivity.KEY_TREAT_INFO);
+        patient = (Patient) getIntent().getSerializableExtra(PatientDetailsActivity.KEY_PATIENT);
+        if(treatInfo ==null || patient==null){
             finish();
+            return;
         }
         setContentView(R.layout.activity_follow_up_form);
 
-        initViewOnBaseTitle(String.format(getString(R.string.follow_up_form_title),"林志玲"));
+        initViewOnBaseTitle(String.format(getString(R.string.follow_up_form_title),patient.getName()));
         setBackListener(this);
 
         simpleInfoViewHolder = new PatientSimpleInfoViewHolder(this);
@@ -74,7 +79,7 @@ public class FollowUpFormActivity extends BaseTitleActivity implements View.OnCl
         });
 
         bDoctorAdvice.setOnClickListener(this);
-        initTestData();
+//        initTestData();
         caseReportNet = new CaseReportNet(this);
 //        caseReportNet.getFollowUpFormDetails(treatInfo.getId());
         caseReportNet.getFollowUpFormDetails("0ef34b3fabbd44b1b9e1d72c0350a552");

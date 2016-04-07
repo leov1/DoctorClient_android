@@ -15,7 +15,6 @@ import com.hxqydyl.app.ys.utils.InjectId;
  * Created by white_ash on 2016/3/20.
  */
 public class PatientInfoActivity extends BaseTitleActivity implements View.OnClickListener {
-    public static final String KEY_PATIENT = "patient";
     @InjectId(id = R.id.tvPhoneNumber)
     private TextView tvPhoneNumber;
     @InjectId(id = R.id.tvNick)
@@ -69,7 +68,7 @@ public class PatientInfoActivity extends BaseTitleActivity implements View.OnCli
     }
 
     private void initData() {
-        patient = (Patient) getIntent().getSerializableExtra(KEY_PATIENT);
+        patient = (Patient) getIntent().getSerializableExtra(PatientDetailsActivity.KEY_PATIENT);
         if (patient != null) {
             initViewData();
         } else {

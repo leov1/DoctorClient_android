@@ -28,6 +28,8 @@ import java.util.ArrayList;
  * Created by shs.cn on 2016/3/19.
  */
 public class PatientDetailsActivity extends BaseTitleActivity implements View.OnClickListener {
+    public static final String KEY_PATIENT = "patient";
+    public static final String KEY_TREAT_INFO = "treat_info";
     //    患者基本信息
     private PatientSimpleInfoViewHolder simpleInfoViewHolder;
 
@@ -46,6 +48,7 @@ public class PatientDetailsActivity extends BaseTitleActivity implements View.On
     private Button bSelectNewFollowUpForPatient;
 
     private CaseReportNet caseReportNet;
+    private Patient patient;
 
 
     @Override
@@ -53,13 +56,14 @@ public class PatientDetailsActivity extends BaseTitleActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_details);
 
-        Patient patient = (Patient) getIntent().getSerializableExtra("patient");
-        if (!TextUtils.isEmpty(patient.getName())) {
+        patient = (Patient) getIntent().getSerializableExtra(KEY_PATIENT);
+        if (patient!=null&&!TextUtils.isEmpty(patient.getName())) {
             initViewOnBaseTitle(patient.getName());
         }
         setBackListener(this);
 
         simpleInfoViewHolder = new PatientSimpleInfoViewHolder(this);
+        simpleInfoViewHolder.setPatient(patient);
         simpleInfoViewHolder.wholeView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,7 +93,8 @@ public class PatientDetailsActivity extends BaseTitleActivity implements View.On
                             break;
                     }
                     if (intent != null) {
-                        intent.putExtra("treat_info", treatInfo);
+                        intent.putExtra(KEY_TREAT_INFO, treatInfo);
+                        intent.putExtra(KEY_PATIENT,patient);
                         startActivity(intent);
                     }
                 }
@@ -117,6 +122,7 @@ public class PatientDetailsActivity extends BaseTitleActivity implements View.On
                 break;
         }
         if (intent != null) {
+            intent.putExtra(KEY_PATIENT,patient);
             startActivity(intent);
         }
     }

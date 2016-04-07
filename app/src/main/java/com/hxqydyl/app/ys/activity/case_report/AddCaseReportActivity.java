@@ -14,7 +14,9 @@ import android.widget.Toast;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+import com.hxqydyl.app.ys.activity.patient.PatientDetailsActivity;
 import com.hxqydyl.app.ys.adapter.CaseHistoryAdapter;
+import com.hxqydyl.app.ys.bean.Patient;
 import com.hxqydyl.app.ys.bean.Pic;
 import com.hxqydyl.app.ys.http.UploadFileNet;
 import com.hxqydyl.app.ys.utils.GetPicUtils;
@@ -75,15 +77,24 @@ public class AddCaseReportActivity extends BaseTitleActivity implements View.OnC
 
     private int currentCaseType = CASE_REPORT_TYPE_OUT_PATIENT;
 
+    private Patient patient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        patient = (Patient) getIntent().getSerializableExtra(PatientDetailsActivity.KEY_PATIENT);
+
         setContentView(R.layout.activity_add_case_report);
+
 
         initViewOnBaseTitle(getString(R.string.add_case_report_title));
         setBackListener(this);
 
         InjectUtils.injectView(this);
+
+        tvPatientName.setText(patient.getName());
+
         setCaseReportType(currentCaseType);
         tvOutPatient.setOnClickListener(this);
         tvInPatient.setOnClickListener(this);
