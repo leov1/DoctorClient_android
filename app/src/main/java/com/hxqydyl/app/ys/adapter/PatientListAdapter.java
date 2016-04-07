@@ -1,6 +1,7 @@
 package com.hxqydyl.app.ys.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -15,6 +16,10 @@ import com.daimajia.swipe.SwipeLayout;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.bean.Patient;
 import com.hxqydyl.app.ys.bean.PatientGroup;
+import com.hxqydyl.app.ys.utils.DensityUtils;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import org.w3c.dom.Text;
 
@@ -24,6 +29,7 @@ import java.util.ArrayList;
  * Created by white_ash on 2016/3/21.
  */
 public class PatientListAdapter extends BaseExpandableListAdapter {
+    private DisplayImageOptions options;
     private Context context;
     private ArrayList<PatientGroup> patientGroups;
     private SwipeLayout currentExpandedSwipeLayout;
@@ -45,6 +51,14 @@ public class PatientListAdapter extends BaseExpandableListAdapter {
     public PatientListAdapter(Context context, ArrayList<PatientGroup> patientGroups) {
         this.context = context;
         this.patientGroups = patientGroups;
+        options = new DisplayImageOptions.Builder()
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .displayer(new RoundedBitmapDisplayer(DensityUtils.dp2px(context, 50)))
+                .showImageForEmptyUri(R.mipmap.portrait_man)
+                .showImageOnFail(R.mipmap.portrait_man)
+                .build();
     }
 
 
@@ -109,6 +123,7 @@ public class PatientListAdapter extends BaseExpandableListAdapter {
         }
         final Patient patient = (Patient) getChild(groupPosition, childPosition);
         ImageView ivPatientPortrait = BaseViewHolder.get(convertView, R.id.ivPatientPortrait);
+        ImageLoader.getInstance().displayImage(patient.getPortrait(), ivPatientPortrait, options);
         TextView tvPatientName = BaseViewHolder.get(convertView, R.id.tvPatientName);
         tvPatientName.setText(patient.getName());
         ImageView ivSexFlag = BaseViewHolder.get(convertView, R.id.ivSexFlag);

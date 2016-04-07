@@ -44,6 +44,7 @@ public class CaseReportNet extends BaseNet {
         String version = "1.0";
         OkHttpUtils
                 .get()
+                .addHeader("Accept","application/json")
                 .url(UrlConstants.getWholeApiUrl(shortUrl, version,visitRecordUuid))
                 .build()
                 .execute(new Callback<FollowUpForm>() {
@@ -89,38 +90,46 @@ public class CaseReportNet extends BaseNet {
             JSONObject json = null;
             if (obj.has("illnessRecord")) {
                 json = obj.optJSONObject("illnessRecord");
-                change = new IllnessChange();
-                change.setType(IllnessChange.Type.ILL);
-                change.setDescription(json.optString("newCondition"));
-                String state = json.optString("previons");
-                if ("无效".equals(state)) {
-                    change.setStatus(IllnessChange.Status.INVALID);
-                } else if ("好转".equals(state)) {
-                    change.setStatus(IllnessChange.Status.BETTER);
-                } else if ("痊愈".equals(state)) {
-                    change.setStatus(IllnessChange.Status.BEST);
-                } else {
-                    change.setStatus(IllnessChange.Status.INVALID);
+                if(json!=null) {
+                    change = new IllnessChange();
+                    change.setType(IllnessChange.Type.ILL);
+                    change.setDescription(json.optString("newCondition"));
+                    String state = json.optString("previons");
+                    if ("无效".equals(state)) {
+                        change.setStatus(IllnessChange.Status.INVALID);
+                    } else if ("好转".equals(state)) {
+                        change.setStatus(IllnessChange.Status.BETTER);
+                    } else if ("痊愈".equals(state)) {
+                        change.setStatus(IllnessChange.Status.BEST);
+                    } else {
+                        change.setStatus(IllnessChange.Status.INVALID);
+                    }
+                    oneGroupData.addRecord(change);
                 }
-                oneGroupData.addRecord(change);
             }
             if (obj.has("sleep")) {
                 json = obj.optJSONObject("sleep");
-                change = jsonToIllnessChange(json);
-                change.setType(IllnessChange.Type.SLEEP);
-                oneGroupData.addRecord(change);
+                if(json!=null) {
+                    change = jsonToIllnessChange(json);
+                    change.setType(IllnessChange.Type.SLEEP);
+                    oneGroupData.addRecord(change);
+                }
             }
             if (obj.has("eat")) {
                 json = obj.optJSONObject("eat");
-                change = jsonToIllnessChange(json);
-                change.setType(IllnessChange.Type.FOOD);
-                oneGroupData.addRecord(change);
+                if(json!=null) {
+                    change = jsonToIllnessChange(json);
+                    change.setType(IllnessChange.Type.FOOD);
+                    oneGroupData.addRecord(change);
+                }
             }
             if (obj.has("other")) {
                 json = obj.optJSONObject("other");
-                change = jsonToIllnessChange(json);
-                change.setType(IllnessChange.Type.OTHER);
-                oneGroupData.addRecord(change);
+                if(json!=null) {
+                    change = jsonToIllnessChange(json);
+                    change.setType(IllnessChange.Type.OTHER);
+                    oneGroupData.addRecord(change);
+                }
             }
             formData.addRecordGroup(oneGroupData);
         }
@@ -128,10 +137,12 @@ public class CaseReportNet extends BaseNet {
             oneGroupData = new FollowUpFormGroup();
             oneGroupData.setFormGroupType(FollowUpFormGroup.Type.WEIGHT_RECORD);
             JSONObject json = obj.optJSONObject("weight");
-            int weight = Integer.parseInt(json.optString("result"));
-            WeightRecord weightRecord = new WeightRecord();
-            weightRecord.setWeight(weight);
-            oneGroupData.addRecord(weightRecord);
+            if(json!=null) {
+                int weight = Integer.parseInt(json.optString("result"));
+                WeightRecord weightRecord = new WeightRecord();
+                weightRecord.setWeight(weight);
+                oneGroupData.addRecord(weightRecord);
+            }
             formData.addRecordGroup(oneGroupData);
         }
         if (obj.has("checkResult")) {
@@ -160,8 +171,10 @@ public class CaseReportNet extends BaseNet {
             }
             if (obj.has("drugReaction")) {
                 JSONObject json = obj.optJSONObject("drugReaction");
-                BadReactionRecord badReactionRecord = jsonToBadReactionRecord(json);
-                oneGroupData.addRecord(badReactionRecord);
+                if(json!=null) {
+                    BadReactionRecord badReactionRecord = jsonToBadReactionRecord(json);
+                    oneGroupData.addRecord(badReactionRecord);
+                }
             }
             formData.addRecordGroup(oneGroupData);
         }
