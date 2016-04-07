@@ -33,6 +33,7 @@ import com.hxqydyl.app.ys.ui.CircleImageView;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.ui.uploadimage.UploadPhotoUtil;
 import com.hxqydyl.app.ys.utils.LoginManager;
+import com.hxqydyl.app.ys.utils.Utils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import java.io.File;
 import java.util.HashMap;
@@ -46,6 +47,7 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
 
     private Button nextBtn;
     private CircleImageView image_upload;
+    private TextView text_head;
     private EditText text_nick;
     private EditText text_email;
     private TextView take_picture;
@@ -82,7 +84,10 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
             switch (msg.what) {
 
                 case SHOW_UPDATE_PHOTO:
-                    ImageLoader.getInstance().displayImage((String) msg.obj, image_upload);
+                    if (!TextUtils.isEmpty(msg.obj.toString())){
+                        text_head.setVisibility(View.GONE);
+                        ImageLoader.getInstance().displayImage((String) msg.obj, image_upload, Utils.initImageLoader(R.mipmap.portrait_man,true));
+                    }
                     dismissDialog();
                     UIHelper.ToastMessage(EvpiUserActivity.this, "上传成功");
                     break;
@@ -147,6 +152,7 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
         addRegisterListener(this);
         nextBtn = (Button) findViewById(R.id.next_btn);
         image_upload = (CircleImageView) findViewById(R.id.image_upload);
+        text_head = (TextView) findViewById(R.id.text_head);
         text_nick = (EditText) findViewById(R.id.text_nick);
         text_email = (EditText) findViewById(R.id.text_email);
 

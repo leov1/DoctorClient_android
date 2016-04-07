@@ -17,7 +17,6 @@ public class MyTaskFrg extends BaseWebFragment implements BaseWebFragment.DoJsBr
         initViewOnBaseTitle("我的任务", view);
         setCustomInterceptor(this);
         setIsNeedLogin(true);
-        webView.loadUrl("javascript:gm.user.setDoctor(" + LoginManager.getDoctorUuid() + ")");
         webView.loadUrl(Constants.MY_TASK);
     }
 
