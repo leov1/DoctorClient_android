@@ -11,6 +11,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.hxqydyl.app.ys.R;
+import com.hxqydyl.app.ys.activity.video.VideoPlayActivity;
 import com.hxqydyl.app.ys.ui.ProgressWebView;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.LoginManager;
@@ -28,6 +29,7 @@ public class BaseWebActivity extends BaseTitleActivity {
     public ProgressWebView webView;
     private boolean isNeedLogin = false;
     private OnLoginSuccess onLoginSuccess;
+    private Intent intent;
 
     public void setIsNeedLogin(boolean isNeedLogin, OnLoginSuccess onLoginSuccess) {
         this.isNeedLogin = isNeedLogin;
@@ -145,16 +147,17 @@ public class BaseWebActivity extends BaseTitleActivity {
 //            case "returnIndexPage":
 //                returnIndexPage = true;
 //                break;
-//            case "fullPage":
-//                String[] ps = new String[2];
-//                ps = parameters.split("\\|");
-//                String sourceUrl = ps[0];
-//                String duration = ps[1];
-//                Intent intent2 = new Intent(this, VideoPlayActivity.class);
-//                intent2.putExtra("rtspUrl", sourceUrl);
-//                intent2.putExtra("duration", duration);
-//                startActivityForResult(intent2, FULLPLAY);
-//                break;
+            case "fullPage":
+                String[] ps = new String[2];
+                ps = parameters.split("\\|");
+                String sourceUrl = ps[0];
+                String duration = ps[1];
+                intent = new Intent(this, VideoPlayActivity.class);
+                intent.putExtra("VideoUrl", sourceUrl);
+                intent.putExtra("VideoTitle", duration);
+//                startActivityForResult(intent, FULLPLAY);
+                startActivity(intent);
+                break;
 //            case "openScan":
 //                Intent intent3 = new Intent();
 //                intent3.setClass(MainActivity.this, MipcaActivityCapture.class);

@@ -70,6 +70,8 @@ public class Constants {
     public static String USER_INFO = "http://172.168.1.41/html/user/index.shtml";
    //患教库
     public static String PATIENT_EDUCATION = "http://172.168.1.41/html/follow_up/toolbox/patient_education.shtml";
+    //二维码页面
+    public static String CURPAGE="http://172.168.1.41/html/user/personal_curpage.shtml";
 
 
     //患者分组

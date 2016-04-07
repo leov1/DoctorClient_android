@@ -92,6 +92,7 @@
         <activity android:name=".activity.follow.FollowApplyOkActivity" />
         <activity android:name=".activity.follow.PlanMgrActivity" />
         <activity android:name=".activity.patient_group.PatientGroupManageActivity" />
+        <activity android:name=".activity.video.VideoPlayActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activity.patient.PatientAddActivity"
             android:screenOrientation="portrait" />

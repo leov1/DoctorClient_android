@@ -40,6 +40,5 @@ public class LoginManager {
     public static void quitLogin(){
         SharedPreferences.getInstance().putString("doctorUuid","");
         SharedPreferences.getInstance().putString(SharedPreferences.HOME_DOCTOR_INFO_CACHE,"");
-        SharedPreferences.getInstance().putString(SharedPreferences.HOME_VP_CACHE,"");
     }
 }

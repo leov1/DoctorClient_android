@@ -15,7 +15,7 @@ import com.hxqydyl.app.ys.utils.SharedPreferences;
  */
 public class BaseFragment extends Fragment{
 
-    private ImageView backImg;
+    public ImageView backImg;
     private TextView topTv;
 
     @Override

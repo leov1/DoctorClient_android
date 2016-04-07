@@ -22,7 +22,7 @@ public class CommentWebActivity extends BaseWebActivity implements BaseWebActivi
     private String title;
     private boolean isfrist = true;   //应该需要传所需的方法对象
 
-    public static void toCommentWeb(String url, String title, FragmentActivity a, boolean isNeedLogin) {
+    public static void toCommentWeb(String url, String title, Activity a, boolean isNeedLogin) {
         Intent intent = new Intent(a, CommentWebActivity.class);
         if (!TextUtils.isEmpty(title)) {
             intent.putExtra("title", title);

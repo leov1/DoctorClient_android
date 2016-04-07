@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseWebActivity;
+import com.hxqydyl.app.ys.activity.CommentWebActivity;
 import com.hxqydyl.app.ys.activity.LoginActivity;
 import com.hxqydyl.app.ys.activity.clinic.ClinicActivity;
 import com.hxqydyl.app.ys.activity.follow.FollowMainActivity;
@@ -38,6 +39,7 @@ import com.hxqydyl.app.ys.ui.library.PullToRefreshListView;
 import com.hxqydyl.app.ys.ui.linegridview.LineGridView;
 import com.hxqydyl.app.ys.ui.loopviewpager.AutoLoopViewPager;
 import com.hxqydyl.app.ys.ui.viewpagerindicator.CirclePageIndicator;
+import com.hxqydyl.app.ys.utils.Constants;
 import com.hxqydyl.app.ys.utils.LoginManager;
 import com.hxqydyl.app.ys.utils.SharedPreferences;
 import com.hxqydyl.app.ys.utils.StringUtils;
@@ -120,7 +122,7 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            galleryAdapter = new GalleryPagerAdapter(this.getContext(), pageIconBeans);
+            galleryAdapter = new GalleryPagerAdapter(this.getContext(), pageIconBeans,getActivity());
             pager.setAdapter(galleryAdapter);
             indicator.setViewPager(pager);
             indicator.setPadding(5, 5, 10, 5);
@@ -153,6 +155,7 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
         loginBtn.setOnClickListener(this);
         registerBtn.setOnClickListener(this);
         headImg.setOnClickListener(this);
+        backImg.setOnClickListener(this);
         pullToRefreshListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
             @Override
             public void onRefresh(PullToRefreshBase<ListView> refreshView) {
@@ -197,6 +200,8 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
 
     private void initViews() {
         initViewOnBaseTitle("首页", view);
+        backImg.setVisibility(View.VISIBLE);
+        backImg.setImageResource(R.mipmap.erweima);
 
         gainDoctorInfoNet = new GainDoctorInfoNet();
         quitLoginNet = new QuitLoginNet();
@@ -309,6 +314,9 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
                 break;
             case R.id.head_img:
                 quitLogin();
+                break;
+            case R.id.back_img:
+                CommentWebActivity.toCommentWeb(Constants.CURPAGE,null,getActivity(),true);
                 break;
         }
     }
