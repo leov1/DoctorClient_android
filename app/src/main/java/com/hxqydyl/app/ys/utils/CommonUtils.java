@@ -24,11 +24,17 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import java.io.File;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -259,5 +265,20 @@ public class CommonUtils {
 				.showImageOnLoading(R.drawable.image_show_default)
 				.build();
 		mImageLoader.displayImage(url, view, options);
+	}
+	public static LinkedHashMap<String, String> objectToMap(Object obj) throws Exception {
+		if(obj == null){
+			return null;
+		}
+
+		LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
+
+		Field[] declaredFields = obj.getClass().getDeclaredFields();
+		for (Field field : declaredFields) {
+			field.setAccessible(true);
+			map.put(field.getName(), field.get(obj).toString());
+		}
+
+		return map;
 	}
 }
