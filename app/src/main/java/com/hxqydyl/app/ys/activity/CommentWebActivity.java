@@ -36,19 +36,7 @@ public class CommentWebActivity extends BaseWebActivity implements BaseWebActivi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.e("wangxu",TextUtils.isEmpty(LoginManager.getDoctorUuid())+"");
-        if (getIntent().hasExtra("title")) {
-            title = getIntent().getStringExtra("title");
 
-        } else {
-            WebChromeClient wvcc = new WebChromeClient() {
-                @Override
-                public void onReceivedTitle(WebView view, String title) {
-                    super.onReceivedTitle(view, title);
-                    initViewOnBaseTitle(title);
-                }
-            };
-            webView.setWebChromeClient(wvcc);
-        }
         url = getIntent().getStringExtra("url");
         setIsNeedLogin(getIntent().getBooleanExtra("isNeedLogin", false), this);
         loadUrl(url);

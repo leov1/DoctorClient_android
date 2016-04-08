@@ -217,7 +217,9 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        startRefreshing();
+        if (!hidden){
+            startRefreshing();
+        }
     }
 
     private void startRefreshing() {
