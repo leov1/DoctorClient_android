@@ -14,6 +14,7 @@ import com.hxqydyl.app.ys.bean.PatientGroup;
 import com.hxqydyl.app.ys.http.PatientGroupNet;
 import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.DialogUtils;
+import com.hxqydyl.app.ys.utils.LoginManager;
 
 import java.util.ArrayList;
 
@@ -65,7 +66,7 @@ public class PatientGroupSelectActivity extends BaseTitleActivity implements Vie
         if(patientGroupNet == null) {
             patientGroupNet = new PatientGroupNet(this);
         }
-        patientGroupNet.getPatientGroups("d000688d038b476384a408c17ad25faa");
+        patientGroupNet.getPatientGroups(LoginManager.getDoctorUuid());
     }
 
     @Override
@@ -75,7 +76,7 @@ public class PatientGroupSelectActivity extends BaseTitleActivity implements Vie
                 int groupSelcect = patientGroupSelectAdapter.getSelect();
                 if (groupSelcect != -1) {
                     Intent resultIntent = new Intent();
-                    resultIntent.putExtra("patient_group", patientGroupArrayList.get(groupSelcect));
+                    resultIntent.putExtra(PatientGroupManageActivity.GROUPS_INFO_KEY, patientGroupArrayList.get(groupSelcect));
                     setResult(RESULT_OK, resultIntent);
                 } else {
                     setResult(RESULT_CANCELED);
@@ -95,7 +96,7 @@ public class PatientGroupSelectActivity extends BaseTitleActivity implements Vie
 
     @Override
     public void onSaveGroup(String groupName) {
-        patientGroupNet.addPatientGroup("d000688d038b476384a408c17ad25faa",groupName);
+        patientGroupNet.addPatientGroup(LoginManager.getDoctorUuid(),groupName);
     }
 
     @Override

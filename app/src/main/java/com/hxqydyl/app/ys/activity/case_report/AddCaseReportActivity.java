@@ -18,7 +18,9 @@ import com.hxqydyl.app.ys.activity.patient.PatientDetailsActivity;
 import com.hxqydyl.app.ys.adapter.CaseHistoryAdapter;
 import com.hxqydyl.app.ys.bean.Patient;
 import com.hxqydyl.app.ys.bean.Pic;
+import com.hxqydyl.app.ys.http.CaseReportNet;
 import com.hxqydyl.app.ys.http.UploadFileNet;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.GetPicUtils;
 import com.hxqydyl.app.ys.utils.InjectId;
 import com.hxqydyl.app.ys.utils.InjectUtils;
@@ -34,20 +36,20 @@ public class AddCaseReportActivity extends BaseTitleActivity implements View.OnC
     public static final int CASE_REPORT_TYPE_OUT_PATIENT = 1;
     public static final int CASE_REPORT_TYPE_IN_PATIENT = 2;
 
-//    患者姓名
+    //    患者姓名
     @InjectId(id = R.id.tvPatientName)
     private TextView tvPatientName;
-//    门诊或者住院类型选择
+    //    门诊或者住院类型选择
     @InjectId(id = R.id.tvOutPatient)
     private TextView tvOutPatient;
     @InjectId(id = R.id.tvInPatient)
     private TextView tvInPatient;
-//    门诊就诊时间
+    //    门诊就诊时间
     @InjectId(id = R.id.treatmentTimeRow)
     private TableRow treatmentTimeRow;
     @InjectId(id = R.id.etTreatmentTime)
     private EditText etTreatmentTime;
-//    入出院时间
+    //    入出院时间
     @InjectId(id = R.id.beInHospitalTimeRow)
     private TableRow beInHospitalTimeRow;
     @InjectId(id = R.id.etBeInHospitalTime)
@@ -58,22 +60,23 @@ public class AddCaseReportActivity extends BaseTitleActivity implements View.OnC
     private EditText etOutHospitalTime;
     @InjectId(id = R.id.outHospitalTimeDividerRow)
     private TableRow outHospitalTimeDividerRow;
-//    医院
+    //    医院
     @InjectId(id = R.id.etTreatmentHospital)
     private EditText etTreatmentHospital;
-//    医生
+    //    医生
     @InjectId(id = R.id.etDoctor)
     private EditText etDoctor;
-//    病历照片
+    //    病历照片
     @InjectId(id = R.id.gvPatientCaseHistory)
     private GridView gvPatientCaseHistory;
     private CaseHistoryAdapter caseHistoryAdapter;
     private ArrayList<Pic> picList = new ArrayList<Pic>();
-//    保存
+    //    保存
     @InjectId(id = R.id.bSaveCaseReport)
     private Button bSaveCaseReport;
 
     private UploadFileNet uploadFileNet;
+    private CaseReportNet caseReportNet;
 
     private int currentCaseType = CASE_REPORT_TYPE_OUT_PATIENT;
 
@@ -103,22 +106,23 @@ public class AddCaseReportActivity extends BaseTitleActivity implements View.OnC
         Pic addPic = new Pic(Pic.Source.DRAWABLE);
         addPic.setThumbUrl(R.mipmap.icon_add_case_history + "");
         picList.add(addPic);
-        caseHistoryAdapter = new CaseHistoryAdapter(this,picList);
+        caseHistoryAdapter = new CaseHistoryAdapter(this, picList);
         gvPatientCaseHistory.setAdapter(caseHistoryAdapter);
         gvPatientCaseHistory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Pic pic = (Pic) parent.getItemAtPosition(position);
-                if(pic != null){
+                if (pic != null) {
                     if (("" + R.mipmap.icon_add_case_history).equals(pic.getThumbUrl())) {
                         showGetPhotoDialog();
-                    }else{
+                    } else {
                         // 跳转到查看大图
                     }
                 }
             }
         });
         uploadFileNet = new UploadFileNet(this);
+        caseReportNet = new CaseReportNet(this);
     }
 
     private GetPicUtils getPicUtils;
@@ -128,21 +132,21 @@ public class AddCaseReportActivity extends BaseTitleActivity implements View.OnC
             getPicUtils = new GetPicUtils(this);
             getPicUtils.getPic();
         } else {
-            Toast.makeText(this,getString(R.string.sdcard_not_exist),Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.sdcard_not_exist), Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        getPicUtils.onActivityResult(requestCode,resultCode,data);
+        getPicUtils.onActivityResult(requestCode, resultCode, data);
         Pic pic = new Pic(Pic.Source.SD);
         pic.setUrl(getPicUtils.getPicPath());
         pic.setThumbUrl(getPicUtils.getPicThumbPath());
         int length = picList.size();
-        if(length < 5){
-            picList.add(length-1,pic);
-        }else{
+        if (length < 5) {
+            picList.add(length - 1, pic);
+        } else {
             picList.remove(4);
             picList.add(pic);
         }
@@ -151,7 +155,7 @@ public class AddCaseReportActivity extends BaseTitleActivity implements View.OnC
 
     private void setCaseReportType(int caseType) {
         currentCaseType = caseType;
-        switch(currentCaseType){
+        switch (currentCaseType) {
             case CASE_REPORT_TYPE_OUT_PATIENT:
                 tvOutPatient.setBackgroundResource(R.drawable.shape_treatment_type_bg_selected);
                 tvOutPatient.setTextColor(Color.WHITE);
@@ -177,7 +181,7 @@ public class AddCaseReportActivity extends BaseTitleActivity implements View.OnC
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()){
+        switch (v.getId()) {
             case R.id.back_img:
                 finish();
                 break;
@@ -189,14 +193,21 @@ public class AddCaseReportActivity extends BaseTitleActivity implements View.OnC
                 break;
             case R.id.bSaveCaseReport:
                 int length = picList.size();
-                if(picList.get(length-1).getSource() == Pic.Source.DRAWABLE){
-                    length = length -1;
+                if (picList.get(length - 1).getSource() == Pic.Source.DRAWABLE) {
+                    length = length - 1;
                 }
-                File[] files = new File[length];
-                for(int i=0;i<length;i++){
-                    files[i] = new File(picList.get(i).getUrl());
+                if(length >0) {
+                    File[] files = new File[length];
+                    for (int i = 0; i < length; i++) {
+                        files[i] = new File(picList.get(i).getUrl());
+                    }
+                    uploadFileNet.uploadPic(files);
+                }else{
+                    caseReportNet.addCaseReportForPatient("efec4e3969234184840e37033fc1d3fd", "88888888", // 患者id，医生id
+                            null, "1", // 医院id，病历类型
+                            etTreatmentTime.getText().toString(), null, null,  //就诊时间，入院时间，出院时间
+                            null); // 照片id
                 }
-                uploadFileNet.uploadPic(files);
                 break;
         }
     }
@@ -204,6 +215,34 @@ public class AddCaseReportActivity extends BaseTitleActivity implements View.OnC
     @Override
     public void onResponse(String url, Object result) {
         super.onResponse(url, result);
-        Toast.makeText(this,"保存成功",Toast.LENGTH_SHORT).show();
+        if (url.endsWith(UrlConstants.UPLOAD_PIC)) {
+            ArrayList<Pic> pics = (ArrayList<Pic>) result;
+            String[] picsId = new String[pics.size()];
+            for (int i = 0; i < pics.size(); i++) {
+                picsId[i] = pics.get(i).getId();
+            }
+            if (currentCaseType == CASE_REPORT_TYPE_IN_PATIENT) {
+                //住院
+                caseReportNet.addCaseReportForPatient("efec4e3969234184840e37033fc1d3fd", "88888888",
+                        etTreatmentHospital.getText().toString(), "0",// 医院id，病历类型
+                        null, etBeInHospitalTime.getText().toString(), etOutHospitalTime.getText().toString(), //就诊时间，入院时间，出院时间
+                        picsId);// 照片id
+            } else if (currentCaseType == CASE_REPORT_TYPE_OUT_PATIENT) {
+//                门诊
+                caseReportNet.addCaseReportForPatient("efec4e3969234184840e37033fc1d3fd", "88888888", // 患者id，医生id
+                        etTreatmentHospital.getText().toString(), "1", // 医院id，病历类型
+                        etTreatmentTime.getText().toString(), null, null,  //就诊时间，入院时间，出院时间
+                        picsId); // 照片id
+            }
+        } else if (url.endsWith(UrlConstants.ADD_CASE_REPORT_FOR_PATIENT)) {
+            Boolean ret = (Boolean) result;
+            if(ret){
+                Toast.makeText(this,"添加病历成功",Toast.LENGTH_SHORT).show();
+                setResult(RESULT_OK);
+                finish();
+            }else{
+                Toast.makeText(this,"添加病历失败，请重试",Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

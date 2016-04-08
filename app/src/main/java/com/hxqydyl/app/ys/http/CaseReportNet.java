@@ -33,7 +33,6 @@ public class CaseReportNet extends BaseNet {
         super(listener);
     }
 
-
     /**
      * 获取随访表单详情
      *
@@ -407,11 +406,12 @@ public class CaseReportNet extends BaseNet {
      */
     public void addCaseReportForPatient(final String customerUuid, final String doctorUuid,
                                         final String hospitalUuid, final String caseCategoryType,
-                                        final String seeDoctorTime, final String[] imageIds) {
+                                        final String seeDoctorTime, final String startTime,final String endTime,final String[] imageIds) {
         final String shortUrl = UrlConstants.ADD_CASE_REPORT_FOR_PATIENT;
         String version = "1.0";
         PostFormBuilder formBuilder = OkHttpUtils
                 .post()
+                .addHeader("Accept","application/json")
                 .url(UrlConstants.getWholeApiUrl(shortUrl, version))
                 .addParams("customerUuid", customerUuid)
                 .addParams("doctorUuid", doctorUuid);
@@ -423,6 +423,12 @@ public class CaseReportNet extends BaseNet {
         }
         if (seeDoctorTime != null) {
             formBuilder.addParams("seeDoctorTime", seeDoctorTime);
+        }
+        if(startTime!=null){
+            formBuilder.addParams("startTime", startTime);
+        }
+        if(endTime!=null){
+            formBuilder.addParams("endTime", endTime);
         }
         if (imageIds != null && imageIds.length > 0) {
             for (int i = 1; i < imageIds.length + 1; i++) {

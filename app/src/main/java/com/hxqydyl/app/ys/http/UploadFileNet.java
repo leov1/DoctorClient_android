@@ -35,7 +35,7 @@ public class UploadFileNet extends BaseNet {
             postFormBuilder.addFile("files",files[i].getName(),files[i]);
         }
         postFormBuilder
-                .url(UrlConstants.getWholeApiUrl(shortUrl))
+                .url(/*UrlConstants.getWholeApiUrl(shortUrl)*/ "http://101.201.154.86:8080/app/support/common/uploadimg")
                 .addParams("thumbnail","true")
                 .addHeader("Accept","application/json")
                 .build()

@@ -14,12 +14,12 @@ public class UrlConstants {
      * 线上测试 isOnline = true,isTest = true;
      * 线上发布 isOnline = true,isTest = false;
      */
-    public static final boolean isOnline = false;//    是否是线上环境
-    public static final boolean isTest = false;//    是否是测试包
+    public static final boolean isOnline = true;//    是否是线上环境
+    public static final boolean isTest = true;//    是否是测试包
 
 
     //    内网开发ip
-    public static final String BASE_IP_DEVELOP = "http://101.201.154.86";
+    public static final String BASE_IP_DEVELOP = "http://172.168.1.53";
     //    内网开发端口
     public static final String BASE_PORT_DEVELOP = "8080";
     //    内网测试ip
@@ -27,9 +27,9 @@ public class UrlConstants {
     //    内网测试端口
     public static final String BASE_PORT_TEST = "";
     //    线上测试ip
-    public static final String BASE_IP_ONLINE_TEST = "";
+    public static final String BASE_IP_ONLINE_TEST = "http://101.201.154.86";
     //    线上测试端口
-    public static final String BASE_PORT_ONLINE_TEST = "";
+    public static final String BASE_PORT_ONLINE_TEST = "8080";
     //    线上发布ip
     public static final String BASE_IP_ONLINE_REALEASE = "";
     //    线上发布端口
@@ -93,7 +93,7 @@ public class UrlConstants {
     // 获取病情变化列表（暂缺）
     // 根据id查询病情变化详情（暂缺）
 
-    // 获取患者详细个人信息（暂缺）
-    public static final String GET_PATIENT_PERSIONAL_INFO = "/app/service/customer/getCustomerByCostomerUuid";
+    // 获取患者详细个人信息（版本号）
+    public static final String GET_PATIENT_PERSIONAL_INFO = "/mobile/doctor/visit/visitrecord/%s/getCustomerInfo";
 
 }

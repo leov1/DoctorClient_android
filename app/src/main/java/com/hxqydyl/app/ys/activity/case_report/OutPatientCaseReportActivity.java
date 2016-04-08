@@ -7,8 +7,10 @@ import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+import com.hxqydyl.app.ys.activity.patient.PatientDetailsActivity;
 import com.hxqydyl.app.ys.activity.patient.PatientSimpleInfoViewHolder;
 import com.hxqydyl.app.ys.adapter.CaseHistoryAdapter;
+import com.hxqydyl.app.ys.bean.Patient;
 import com.hxqydyl.app.ys.bean.Pic;
 import com.hxqydyl.app.ys.utils.InjectId;
 import com.hxqydyl.app.ys.utils.InjectUtils;
@@ -34,24 +36,32 @@ public class OutPatientCaseReportActivity extends BaseTitleActivity implements V
     private CaseHistoryAdapter caseHistoryAdapter;
     private ArrayList<Pic> picList = new ArrayList<Pic>();
 
+    private Patient patient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        patient = (Patient) getIntent().getSerializableExtra(PatientDetailsActivity.KEY_PATIENT);
+        if(patient == null){
+            finish();
+            return;
+        }
         setContentView(R.layout.activity_out_patient_case_report);
 
         initViewOnBaseTitle(getString(R.string.patient_details));
         setBackListener(this);
         patientSimpleInfo = new PatientSimpleInfoViewHolder(this);
         InjectUtils.injectView(this);
+        patientSimpleInfo.setPatient(patient);
 
-        picList.add(new Pic());
-        picList.add(new Pic());
-        picList.add(new Pic());
-        picList.add(new Pic());
-        picList.add(new Pic());
         caseHistoryAdapter = new CaseHistoryAdapter(this,picList);
         gvPatientCaseHistory.setAdapter(caseHistoryAdapter);
     }
+
+    private void initData(){
+
+    }
+
 
     @Override
     public void onClick(View v) {

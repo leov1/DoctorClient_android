@@ -10,6 +10,7 @@ import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.bean.Patient;
 import com.hxqydyl.app.ys.http.PatientNet;
 import com.hxqydyl.app.ys.utils.InjectId;
+import com.hxqydyl.app.ys.utils.InjectUtils;
 
 /**
  * Created by white_ash on 2016/3/20.
@@ -54,33 +55,32 @@ public class PatientInfoActivity extends BaseTitleActivity implements View.OnCli
 
     private Patient patient;
     private PatientNet patientNet;
+    private String patientId;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        patientId = getIntent().getStringExtra("patientId");
+        if(patientId==null){
+            finish();
+            return;
+        }
         setContentView(R.layout.activity_patient_info);
 
         initViewOnBaseTitle(getString(R.string.patient_info));
         setBackListener(this);
 
-        initData();
-    }
+        InjectUtils.injectView(this);
 
-    private void initData() {
-        patient = (Patient) getIntent().getSerializableExtra(PatientDetailsActivity.KEY_PATIENT);
-        if (patient != null) {
-            initViewData();
-        } else {
-            refreshPatient();
-        }
+        refreshPatient();
     }
 
     private void refreshPatient() {
         if (patientNet == null) {
             patientNet = new PatientNet(this);
         }
-//        patientNet.getPersionalInfo();
+        patientNet.getPatientPersionalInfo(patientId);
     }
 
 
@@ -112,5 +112,12 @@ public class PatientInfoActivity extends BaseTitleActivity implements View.OnCli
                 finish();
                 break;
         }
+    }
+
+    @Override
+    public void onResponse(String url, Object result) {
+        super.onResponse(url, result);
+        patient = (Patient) result;
+        initViewData();
     }
 }

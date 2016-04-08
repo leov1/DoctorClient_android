@@ -57,8 +57,14 @@ public class PatientDetailsActivity extends BaseTitleActivity implements View.On
         setContentView(R.layout.activity_patient_details);
 
         patient = (Patient) getIntent().getSerializableExtra(KEY_PATIENT);
-        if (patient!=null&&!TextUtils.isEmpty(patient.getName())) {
+        if(patient ==null){
+            finish();
+            return;
+        }
+        if (!TextUtils.isEmpty(patient.getName())) {
             initViewOnBaseTitle(patient.getName());
+        }else{
+            initViewOnBaseTitle("患者详情");
         }
         setBackListener(this);
 
@@ -68,6 +74,7 @@ public class PatientDetailsActivity extends BaseTitleActivity implements View.On
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PatientDetailsActivity.this, PatientInfoActivity.class);
+                intent.putExtra("patientId",patient.getId());
                 startActivity(intent);
             }
         });
