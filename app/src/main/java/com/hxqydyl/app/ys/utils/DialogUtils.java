@@ -25,6 +25,75 @@ import com.hxqydyl.app.ys.bean.PatientGroup;
  */
 public class DialogUtils {
     /**
+     *
+     */
+    public static void showDeleteDialog(Context context,final DeleteListener deleteListener,String message){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(context.getString(R.string.prompt));
+        builder.setMessage(message);
+        builder.setPositiveButton(context.getString(R.string.confirm), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                if(deleteListener!=null){
+                    deleteListener.onConfirmDelete();
+                }
+            }
+        });
+        builder.setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                if(deleteListener!=null){
+                    deleteListener.onCancelDelete();
+                }
+            }
+        });
+        builder.create().show();
+    }
+
+    public interface DeleteListener{
+        void onConfirmDelete();
+        void onCancelDelete();
+    }
+
+
+
+    /**
+     * 显示重命名分组的对话框
+     * @param context
+     * @param renameGroupListener
+     */
+    public static void showRenamePatientGroupDialog(Context context, final RenameGroupListener renameGroupListener,final String groupId) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_add_patient_group, null);
+        builder.setView(view);
+        final Dialog dialog = builder.create();
+        TextView tvTitle = (TextView) view.findViewById(R.id.tvTitle);
+        tvTitle.setText(context.getString(R.string.rename_group));
+        final EditText et = (EditText) view.findViewById(R.id.etGroupName);
+        Button b = (Button) view.findViewById(R.id.bSaveGroup);
+        b.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String groupName = et.getText().toString();
+                if (!TextUtils.isEmpty(groupName)) {
+                    dialog.dismiss();
+                    if (renameGroupListener != null) {
+                        renameGroupListener.onConfirmRename(groupId,groupName);
+                    }
+                } else {
+                }
+            }
+        });
+        dialog.show();
+    }
+
+    public interface RenameGroupListener{
+        void onConfirmRename(String groupId,String groupName);
+    }
+
+    /**
      * 显示添加患者分组的对话框
      * @param context
      * @param savePatientGroupListener

@@ -1,5 +1,6 @@
 package com.hxqydyl.app.ys.activity.case_report;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -32,7 +33,7 @@ import java.util.ArrayList;
 /**
  * Created by white_ash on 2016/3/23.
  */
-public class FollowUpFormActivity extends BaseTitleActivity implements View.OnClickListener{
+public class FollowUpFormActivity extends BaseTitleActivity implements View.OnClickListener, FollowUpFormAdapter.SeeHistoryButtonListener {
     private PatientSimpleInfoViewHolder simpleInfoViewHolder;
     @InjectId(id = R.id.lvForm)
     private ExpandableListView lvForm;
@@ -64,7 +65,7 @@ public class FollowUpFormActivity extends BaseTitleActivity implements View.OnCl
 
         simpleInfoViewHolder = new PatientSimpleInfoViewHolder(this);
         InjectUtils.injectView(this);
-        followUpFormAdapter = new FollowUpFormAdapter(this,formList);
+        followUpFormAdapter = new FollowUpFormAdapter(this,formList,this);
         lvForm.setAdapter(followUpFormAdapter);
         lvForm.setGroupIndicator(null);
 
@@ -81,8 +82,7 @@ public class FollowUpFormActivity extends BaseTitleActivity implements View.OnCl
         bDoctorAdvice.setOnClickListener(this);
 //        initTestData();
         caseReportNet = new CaseReportNet(this);
-//        caseReportNet.getFollowUpFormDetails(treatInfo.getId());
-        caseReportNet.getFollowUpFormDetails("0ef34b3fabbd44b1b9e1d72c0350a552");
+        caseReportNet.getFollowUpFormDetails(treatInfo.getId());
     }
 
     private void initTestData() {
@@ -111,12 +111,12 @@ public class FollowUpFormActivity extends BaseTitleActivity implements View.OnCl
                     ((IllnessChange)record).setDescription("病情变化描述详情");
                     group.addRecord(record);
                     record = new IllnessChange();
-                    ((IllnessChange)record).setType(IllnessChange.Type.SEE_OTHET_BUTTON);
+                    ((IllnessChange)record).setType(IllnessChange.Type.SEE_HISTORY_BUTTON);
                     group.addRecord(record);
                     break;
                 case FollowUpFormGroup.Type.WEIGHT_RECORD:
                     record = new WeightRecord();
-                    ((WeightRecord)record).setWeight(60);
+                    ((WeightRecord)record).setWeight("60");
                     group.addRecord(record);
                     break;
                 case FollowUpFormGroup.Type.OTHER_CHECK_RECORD:
@@ -223,5 +223,12 @@ public class FollowUpFormActivity extends BaseTitleActivity implements View.OnCl
                 followUpFormAdapter.notifyDataSetChanged();
             }
         }
+    }
+
+    @Override
+    public void onButtonClick() {
+        Intent intent = new Intent(this, IllnessChangeRecordActivity.class);
+        intent.putExtra(PatientDetailsActivity.KEY_PATIENT,patient);
+        startActivity(intent);
     }
 }

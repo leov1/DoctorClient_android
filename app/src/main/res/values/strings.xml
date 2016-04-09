@@ -170,4 +170,9 @@
     <string name="see_illness_change_record">查看病情变化记录</string>
     <string name="illness_change_status_in_record_list">病情变化：%s</string>
     <string name="illness_change_question">问题：%s</string>
+    <string name="rename_group">请输入修改后的分组名称</string>
+    <string name="prompt">提示</string>
+    <string name="confirm_delete_this_patient">您是否要删除患者：%s？患者将不再收到您的随访相关消息。</string>
+    <string name="confirm">确认</string>
+    <string name="age_xx">年龄：%s岁</string>
 </resources>

@@ -23,6 +23,7 @@ import com.hxqydyl.app.ys.http.PatientGroupNet;
 import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.DensityUtils;
 import com.hxqydyl.app.ys.utils.DialogUtils;
+import com.hxqydyl.app.ys.utils.LoginManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,7 +33,7 @@ import ui.swipemenulistview.SwipeMenuCreator;
 import ui.swipemenulistview.SwipeMenuItem;
 import ui.swipemenulistview.SwipeMenuListView;
 
-public class PatientGroupManageActivity extends BaseTitleActivity implements View.OnClickListener ,DialogUtils.SavePatientGroupListener{
+public class PatientGroupManageActivity extends BaseTitleActivity implements View.OnClickListener ,DialogUtils.SavePatientGroupListener,DialogUtils.RenameGroupListener{
     public static final String GROUPS_INFO_KEY = "groups_info";
     private RelativeLayout rlAddPatientGroup;
     private SwipeMenuListView lvPatientGroup;
@@ -84,11 +85,8 @@ public class PatientGroupManageActivity extends BaseTitleActivity implements Vie
         lvPatientGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                PatientGroup patientGroup = (PatientGroup) parent.getItemAtPosition(position);
-//                if(patientGroup!=null) {
-//                    patientGroupNet.renamePatientGroup(patientGroup.getId(),"new name");
-//                }
-                showInputDialog();
+                PatientGroup patientGroup = (PatientGroup) parent.getItemAtPosition(position);
+                DialogUtils.showRenamePatientGroupDialog(PatientGroupManageActivity.this,PatientGroupManageActivity.this,patientGroup.getId());
             }
         });
         initListData();
@@ -101,7 +99,7 @@ public class PatientGroupManageActivity extends BaseTitleActivity implements Vie
             patientGroupAdapter.notifyDataSetChanged();
         }else{
             patientGroupNet = new PatientGroupNet(this);
-            patientGroupNet.getPatientGroups("d000688d038b476384a408c17ad25faa");
+            patientGroupNet.getPatientGroups(LoginManager.getDoctorUuid());
         }
     }
 
@@ -109,7 +107,7 @@ public class PatientGroupManageActivity extends BaseTitleActivity implements Vie
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rlAddPatientGroup:
-                showInputDialog();
+                DialogUtils.showAddPatientGroupDialog(this,this);
                 break;
             case R.id.back_img:
                 finish();
@@ -117,14 +115,9 @@ public class PatientGroupManageActivity extends BaseTitleActivity implements Vie
         }
     }
 
-    private void showInputDialog() {
-        DialogUtils.showAddPatientGroupDialog(this,this);
-    }
-
-
     @Override
     public void onSaveGroup(String groupName) {
-        patientGroupNet.addPatientGroup("d000688d038b476384a408c17ad25faa",groupName);
+        patientGroupNet.addPatientGroup(LoginManager.getDoctorUuid(),groupName);
     }
 
     @Override
@@ -135,7 +128,13 @@ public class PatientGroupManageActivity extends BaseTitleActivity implements Vie
             patientGroupArrayList.addAll((ArrayList<PatientGroup>) result);
             patientGroupAdapter.notifyDataSetChanged();
         } else {
-            patientGroupNet.getPatientGroups("d000688d038b476384a408c17ad25faa");
+            patientGroupNet.getPatientGroups(LoginManager.getDoctorUuid());
+            setResult(RESULT_OK);
         }
+    }
+
+    @Override
+    public void onConfirmRename(String groupId,String groupName) {
+        patientGroupNet.renamePatientGroup(groupId,groupName);
     }
 }

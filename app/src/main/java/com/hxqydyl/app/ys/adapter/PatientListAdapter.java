@@ -29,6 +29,8 @@ import java.util.ArrayList;
  * Created by white_ash on 2016/3/21.
  */
 public class PatientListAdapter extends BaseExpandableListAdapter {
+    public static final int MOVE = 1;//移动
+    public static final int DELETE = 2; // 删除
     private DisplayImageOptions options;
     private Context context;
     private ArrayList<PatientGroup> patientGroups;
@@ -133,11 +135,29 @@ public class PatientListAdapter extends BaseExpandableListAdapter {
             ivSexFlag.setImageResource(R.mipmap.icon_man_flag);
         }
         TextView tvPatientAge = BaseViewHolder.get(convertView, R.id.tvPatientAge);
-        tvPatientAge.setText(patient.getAge());
+        tvPatientAge.setText(String.format(context.getString(R.string.age_xx),patient.getAge()));
         TextView tvPatientFollowTime = BaseViewHolder.get(convertView, R.id.tvPatientFollowTime);
         tvPatientFollowTime.setText(patient.getFollowTime());
         TextView tvDescription = BaseViewHolder.get(convertView, R.id.tvDescription);
         tvDescription.setText(patient.getDescription());
+        ImageView ivMoveToOtherGroup = BaseViewHolder.get(convertView,R.id.ivMoveToOtherGroup);
+        ivMoveToOtherGroup.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if(listener!=null){
+                    listener.onMenuClick(groupPosition,childPosition,MOVE);
+                }
+            }
+        });
+        ImageView ivDeletePatient = BaseViewHolder.get(convertView,R.id.ivDeletePatient);
+        ivDeletePatient.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if(listener!=null){
+                    listener.onMenuClick(groupPosition,childPosition,DELETE);
+                }
+            }
+        });
         final SwipeLayout swipeLayout = BaseViewHolder.get(convertView, R.id.swipLayout);
         swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
         swipeLayout.addDrag(SwipeLayout.DragEdge.Right,BaseViewHolder.get(convertView,R.id.llSwipMenu));
@@ -195,5 +215,6 @@ public class PatientListAdapter extends BaseExpandableListAdapter {
 
     public interface OnChildClickListener {
         void onChildClick(int groupPosition, int childPosition);
+        void onMenuClick(int groupPosition,int childPosition,int menu);
     }
 }

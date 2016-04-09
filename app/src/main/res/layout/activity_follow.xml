@@ -131,12 +131,14 @@
                     android:text="@string/follow_user" />
 
                 <ImageView
+                    android:id="@+id/ivManagePatientGroup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:padding="10dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/space_23"
-                    android:src="@mipmap/icon_right_arrow" />
+                    android:layout_marginRight="@dimen/space_15"
+                    android:src="@mipmap/icon_manage_patient_group" />
             </RelativeLayout>
 
             <View style="@style/divider_line" />

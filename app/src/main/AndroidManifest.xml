@@ -131,6 +131,9 @@
         <activity
             android:name=".activity.case_report.IllnessChangeDetalsActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.patient_group.PatientGroupSelectActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".activity.clinic.ClinicActivity" />
         <activity android:name=".activity.follow.PatientSelectActivity"></activity>
     </application>

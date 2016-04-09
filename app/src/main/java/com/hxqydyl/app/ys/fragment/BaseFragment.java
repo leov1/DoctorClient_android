@@ -16,6 +16,7 @@ import com.hxqydyl.app.ys.utils.SharedPreferences;
 public class BaseFragment extends Fragment{
 
     public ImageView backImg;
+    public ImageView rightImg;
     private TextView topTv;
 
     @Override
@@ -28,6 +29,7 @@ public class BaseFragment extends Fragment{
         try {
             backImg = (ImageView) v.findViewById(R.id.back_img);
             topTv = (TextView) v.findViewById(R.id.title_name);
+            rightImg = (ImageView) v.findViewById(R.id.right_img);
             backImg.setVisibility(View.GONE);
             if (!TextUtils.isEmpty(title)) {
                 topTv.setText(title);
