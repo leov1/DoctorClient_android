@@ -69,6 +69,7 @@ public class BaseWebFragment extends BaseFragment {
         initWebSetting();
     }
 
+
     private void initWebSetting() {
         WebSettings webSettings = webView.getSettings();
         webSettings.setDomStorageEnabled(true);

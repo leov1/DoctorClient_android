@@ -35,6 +35,7 @@ import com.hxqydyl.app.ys.ui.uploadimage.UploadPhotoUtil;
 import com.hxqydyl.app.ys.utils.LoginManager;
 import com.hxqydyl.app.ys.utils.Utils;
 import com.nostra13.universalimageloader.core.ImageLoader;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,8 +43,8 @@ import java.util.Map;
 /**
  * 完善姓名邮箱信息页面
  */
-public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickListener,RadioGroup.OnCheckedChangeListener,HeadIconNet.OnHeadIconNetListener
-        ,RegisterSecNet.OnRegisterSecListener,RegisterSucListener{
+public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, HeadIconNet.OnHeadIconNetListener
+        , RegisterSecNet.OnRegisterSecListener, RegisterSucListener {
 
     private Button nextBtn;
     private CircleImageView image_upload;
@@ -53,15 +54,15 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
     private TextView take_picture;
     private TextView select_local_picture;
     private RadioGroup genderGroup;
-    private RadioButton femaleRadioButton,maleRadioButton;
+    private RadioButton femaleRadioButton, maleRadioButton;
 
-    private RelativeLayout edit_photo_fullscreen_layout,edit_photo_outer_layout;
+    private RelativeLayout edit_photo_fullscreen_layout, edit_photo_outer_layout;
     private Animation get_photo_layout_out_from_up, get_photo_layout_in_from_down;
     private Intent intent;
     private final int NONE = 0, TAKE_PICTURE = 1, LOCAL_PICTURE = 2;
     private final int SHOW_UPDATE_PHOTO = 3;
     private final int UPLOAD_TAKE_PICTURE = 4;
-    private final int UPLOAD_LOCAL_PICTURE =5;
+    private final int UPLOAD_LOCAL_PICTURE = 5;
     private final int SAVE_PHOTO_IMAGE = 6;
     File sdcardDir = Environment.getExternalStorageDirectory();
     private String photo_path = sdcardDir.getPath() + "/Gosu/cache/photoes/";
@@ -84,9 +85,9 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
             switch (msg.what) {
 
                 case SHOW_UPDATE_PHOTO:
-                    if (!TextUtils.isEmpty(msg.obj.toString())){
+                    if (!TextUtils.isEmpty(msg.obj.toString())) {
                         text_head.setVisibility(View.GONE);
-                        ImageLoader.getInstance().displayImage((String) msg.obj, image_upload, Utils.initImageLoader(R.mipmap.portrait_man,true));
+                        ImageLoader.getInstance().displayImage((String) msg.obj, image_upload, Utils.initImageLoader(R.mipmap.portrait_man, true));
                     }
                     dismissDialog();
                     UIHelper.ToastMessage(EvpiUserActivity.this, "上传成功");
@@ -101,7 +102,7 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
                         // String) from the type Activity is deprecated
                         // android用CursorLoader代替
 
-                        CursorLoader cursorLoader = new CursorLoader(EvpiUserActivity.this, uri, pojo, null,null, null);
+                        CursorLoader cursorLoader = new CursorLoader(EvpiUserActivity.this, uri, pojo, null, null, null);
                         Cursor cursor = cursorLoader.loadInBackground();
                         cursor.moveToFirst();
                         String photo_local_file_path = cursor.getString(cursor.getColumnIndex(pojo[0]));
@@ -120,8 +121,8 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
                 case SAVE_PHOTO_IMAGE:
                     Log.d("gaolei", " case SAVE_PHOTO_IMAGE:------------------");
                     Map<String, String> map = (Map<String, String>) msg.obj;
-                   headIconNet.uploadHeadImg(map);
-                   break;
+                    headIconNet.uploadHeadImg(map);
+                    break;
             }
         }
     };
@@ -177,41 +178,40 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
-         if (checkedId == maleRadioButton.getId()){
-             sex = 1;
-         }else if(checkedId == femaleRadioButton.getId()){
-             sex = 2;
-         }
+        if (checkedId == maleRadioButton.getId()) {
+            sex = 1;
+        } else if (checkedId == femaleRadioButton.getId()) {
+            sex = 2;
+        }
     }
 
     /**
      * 下一步
      */
-    private void loadNext(){
-       nick = text_nick.getText().toString();
-       email = text_email.getText().toString();
+    private void loadNext() {
+        nick = text_nick.getText().toString();
+        email = text_email.getText().toString();
 
-        if (TextUtils.isEmpty(smallImage)){
-            UIHelper.ToastMessage(EvpiUserActivity.this,"请上传头像");
+        if (TextUtils.isEmpty(smallImage)) {
+            UIHelper.ToastMessage(EvpiUserActivity.this, "请上传头像");
             return;
         }
 
-       if(TextUtils.isEmpty(nick)) {
-           UIHelper.ToastMessage(EvpiUserActivity.this,"姓名不能为空");
-           return;
-       }
-        if (TextUtils.isEmpty(email)){
-           UIHelper.ToastMessage(EvpiUserActivity.this,"邮箱不能为空");
+        if (TextUtils.isEmpty(nick)) {
+            UIHelper.ToastMessage(EvpiUserActivity.this, "姓名不能为空");
+            return;
+        }
+        if (TextUtils.isEmpty(email)) {
+            UIHelper.ToastMessage(EvpiUserActivity.this, "邮箱不能为空");
         }
 
         registerSecNet.registerSec(doctorUUid, email, sex + "", smallImage, nick);
     }
 
 
-
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.next_btn:
 
                 loadNext();
@@ -309,20 +309,20 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
 
     @Override
     public void requestHeadIconNetSuc(HeadIconResult headIconResult) {
-        if (headIconResult == null){
-            UIHelper.ToastMessage(EvpiUserActivity.this,"请求出错");
+        if (headIconResult == null) {
+            UIHelper.ToastMessage(EvpiUserActivity.this, "请求出错");
             return;
         }
-        if (headIconResult.getQuery().getSuccess().equals("1")){
+        if (headIconResult.getQuery().getSuccess().equals("1")) {
             String photoUrl = headIconResult.getSmallUrl();
-            smallImage = headIconResult.getIcon();
-            System.out.println("smallImage--->"+headIconResult.toString());
+            smallImage = TextUtils.isEmpty(headIconResult.getIcon()) ? headIconResult.getSmallImage() : headIconResult.getIcon();
+            System.out.println("smallImage--->" + headIconResult.toString());
             Message msg = handler.obtainMessage();
             msg.obj = photoUrl;
             msg.what = SHOW_UPDATE_PHOTO;
             handler.sendMessage(msg);
-        }else{
-            UIHelper.ToastMessage(EvpiUserActivity.this,headIconResult.getQuery().getMessage());
+        } else {
+            UIHelper.ToastMessage(EvpiUserActivity.this, headIconResult.getQuery().getMessage());
         }
     }
 
@@ -335,13 +335,13 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
     @Override
     public void requestRegisterSecSuc(RegisterFirst registerFirst) {
         if (registerFirst == null) {
-            UIHelper.ToastMessage(EvpiUserActivity.this,"请求出错");
+            UIHelper.ToastMessage(EvpiUserActivity.this, "请求出错");
             return;
         }
-        if (registerFirst.getQuery().getSuccess().equals("1")){
-            startActivity(new Intent(this,EvpiAddressActivity.class));
-        }else {
-            UIHelper.ToastMessage(EvpiUserActivity.this,registerFirst.getQuery().getMessage());
+        if (registerFirst.getQuery().getSuccess().equals("1")) {
+            startActivity(new Intent(this, EvpiAddressActivity.class));
+        } else {
+            UIHelper.ToastMessage(EvpiUserActivity.this, registerFirst.getQuery().getMessage());
         }
 
     }
