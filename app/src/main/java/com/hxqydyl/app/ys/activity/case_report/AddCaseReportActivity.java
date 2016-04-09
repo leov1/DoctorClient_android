@@ -24,6 +24,7 @@ import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.GetPicUtils;
 import com.hxqydyl.app.ys.utils.InjectId;
 import com.hxqydyl.app.ys.utils.InjectUtils;
+import com.hxqydyl.app.ys.utils.LoginManager;
 import com.hxqydyl.app.ys.utils.Utils;
 
 import java.io.File;
@@ -203,7 +204,7 @@ public class AddCaseReportActivity extends BaseTitleActivity implements View.OnC
                     }
                     uploadFileNet.uploadPic(files);
                 }else{
-                    caseReportNet.addCaseReportForPatient("efec4e3969234184840e37033fc1d3fd", "88888888", // 患者id，医生id
+                    caseReportNet.addCaseReportForPatient(patient.getId(), LoginManager.getDoctorUuid(), // 患者id，医生id
                             null, "1", // 医院id，病历类型
                             etTreatmentTime.getText().toString(), null, null,  //就诊时间，入院时间，出院时间
                             null); // 照片id
@@ -223,13 +224,13 @@ public class AddCaseReportActivity extends BaseTitleActivity implements View.OnC
             }
             if (currentCaseType == CASE_REPORT_TYPE_IN_PATIENT) {
                 //住院
-                caseReportNet.addCaseReportForPatient("efec4e3969234184840e37033fc1d3fd", "88888888",
+                caseReportNet.addCaseReportForPatient(patient.getId(), LoginManager.getDoctorUuid(),
                         etTreatmentHospital.getText().toString(), "0",// 医院id，病历类型
                         null, etBeInHospitalTime.getText().toString(), etOutHospitalTime.getText().toString(), //就诊时间，入院时间，出院时间
                         picsId);// 照片id
             } else if (currentCaseType == CASE_REPORT_TYPE_OUT_PATIENT) {
 //                门诊
-                caseReportNet.addCaseReportForPatient("efec4e3969234184840e37033fc1d3fd", "88888888", // 患者id，医生id
+                caseReportNet.addCaseReportForPatient(patient.getId(), LoginManager.getDoctorUuid(), // 患者id，医生id
                         etTreatmentHospital.getText().toString(), "1", // 医院id，病历类型
                         etTreatmentTime.getText().toString(), null, null,  //就诊时间，入院时间，出院时间
                         picsId); // 照片id

@@ -10,8 +10,12 @@ import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.activity.patient.PatientDetailsActivity;
 import com.hxqydyl.app.ys.activity.patient.PatientSimpleInfoViewHolder;
 import com.hxqydyl.app.ys.adapter.CaseHistoryAdapter;
+import com.hxqydyl.app.ys.bean.CaseReport;
 import com.hxqydyl.app.ys.bean.Patient;
+import com.hxqydyl.app.ys.bean.PatientTreatInfo;
 import com.hxqydyl.app.ys.bean.Pic;
+import com.hxqydyl.app.ys.http.CaseReportNet;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.InjectId;
 import com.hxqydyl.app.ys.utils.InjectUtils;
 
@@ -37,12 +41,17 @@ public class OutPatientCaseReportActivity extends BaseTitleActivity implements V
     private ArrayList<Pic> picList = new ArrayList<Pic>();
 
     private Patient patient;
+    private PatientTreatInfo treatInfo;
+
+    private CaseReportNet caseReportNet;
+    private CaseReport caseReport;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         patient = (Patient) getIntent().getSerializableExtra(PatientDetailsActivity.KEY_PATIENT);
-        if(patient == null){
+        treatInfo = (PatientTreatInfo) getIntent().getSerializableExtra(PatientDetailsActivity.KEY_TREAT_INFO);
+        if(patient == null || treatInfo == null){
             finish();
             return;
         }
@@ -56,12 +65,10 @@ public class OutPatientCaseReportActivity extends BaseTitleActivity implements V
 
         caseHistoryAdapter = new CaseHistoryAdapter(this,picList);
         gvPatientCaseHistory.setAdapter(caseHistoryAdapter);
+
+        caseReportNet = new CaseReportNet(this);
+        caseReportNet.getCaseRecordDetails(treatInfo.getId());
     }
-
-    private void initData(){
-
-    }
-
 
     @Override
     public void onClick(View v) {
@@ -69,6 +76,29 @@ public class OutPatientCaseReportActivity extends BaseTitleActivity implements V
             case R.id.back_img:
                 finish();
                 break;
+        }
+    }
+
+    @Override
+    public void onResponse(String url, Object result) {
+        super.onResponse(url, result);
+        if(url.endsWith(UrlConstants.GET_PATIENT_CASE_REPORT_DETAILS)){
+            caseReport = (CaseReport) result;
+            initViewData();
+        }
+    }
+
+    private void initViewData() {
+        if(caseReport!=null){
+            tvTreatMentType.setText("门诊");
+            tvTreatmentTime.setText(caseReport.getSeeDoctorTime());
+            tvHospital.setText(caseReport.getHospitalName());
+            tvDoctor.setText(caseReport.getDoctorName());
+            if(caseReport.getPics()!=null&&caseReport.getPics().size()>0){
+                picList.clear();
+                picList.addAll(caseReport.getPics());
+                caseHistoryAdapter.notifyDataSetChanged();
+            }
         }
     }
 }

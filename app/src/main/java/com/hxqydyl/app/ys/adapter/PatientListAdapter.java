@@ -135,7 +135,7 @@ public class PatientListAdapter extends BaseExpandableListAdapter {
             ivSexFlag.setImageResource(R.mipmap.icon_man_flag);
         }
         TextView tvPatientAge = BaseViewHolder.get(convertView, R.id.tvPatientAge);
-        tvPatientAge.setText(patient.getAge());
+        tvPatientAge.setText(String.format(context.getString(R.string.age_xx),patient.getAge()));
         TextView tvPatientFollowTime = BaseViewHolder.get(convertView, R.id.tvPatientFollowTime);
         tvPatientFollowTime.setText(patient.getFollowTime());
         TextView tvDescription = BaseViewHolder.get(convertView, R.id.tvDescription);

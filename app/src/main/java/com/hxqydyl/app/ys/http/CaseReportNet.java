@@ -10,6 +10,8 @@ import com.hxqydyl.app.ys.bean.followupform.BadReactionRecord;
 import com.hxqydyl.app.ys.bean.followupform.EatMedRecord;
 import com.hxqydyl.app.ys.bean.followupform.FollowUpFormGroup;
 import com.hxqydyl.app.ys.bean.followupform.IllnessChange;
+import com.hxqydyl.app.ys.bean.followupform.IllnessChangeRecord;
+import com.hxqydyl.app.ys.bean.followupform.MeasureFormRecord;
 import com.hxqydyl.app.ys.bean.followupform.OtherCheckRecord;
 import com.hxqydyl.app.ys.bean.followupform.WeightRecord;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -34,6 +36,156 @@ public class CaseReportNet extends BaseNet {
     }
 
     /**
+     * 获取患者病情变化的历史记录
+     *
+     * @param doctorId  医生id
+     * @param patientId 患者id
+     */
+    public void getIllnessChangeRecordHistory(final String doctorId, final String patientId) {
+        final String shortUrl = UrlConstants.GET_ILLNESS_CHANGE_HISTORY_LIST;
+        String version = "1.0";
+        OkHttpUtils
+                .post()
+                .addHeader("Accept", "application/json")
+                .addParams("serviceStaffUuid", doctorId)
+                .addParams("customerUuid", patientId)
+                .url(UrlConstants.getWholeApiUrl(shortUrl, version))
+                .build()
+                .execute(new Callback<ArrayList<IllnessChangeRecord>>() {
+
+                    @Override
+                    public void onBefore(Request request) {
+                        super.onBefore(request);
+                        callListener(ON_SEND, shortUrl, null);
+                    }
+
+                    @Override
+                    public ArrayList<IllnessChangeRecord> parseNetworkResponse(Response response) throws Exception {
+                        ArrayList<IllnessChangeRecord> records = new ArrayList<IllnessChangeRecord>();
+                        JSONArray array = new JSONArray(response.body().string());
+                        if (array != null && array.length() > 0) {
+                            for (int i = 0; i < array.length(); i++) {
+                                records.add(jsonToILlnessChangeRecord(array.getJSONObject(i)));
+                            }
+                        }
+                        return records;
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e) {
+                        callListener(ON_ERROR, shortUrl, e);
+                    }
+
+                    @Override
+                    public void onResponse(ArrayList<IllnessChangeRecord> response) {
+                        callListener(ON_RESPONSE, shortUrl, response);
+                    }
+                });
+    }
+
+    private IllnessChangeRecord jsonToILlnessChangeRecord(JSONObject jsonObject) throws Exception {
+        IllnessChangeRecord record = new IllnessChangeRecord();
+        record.setId(jsonObject.optString("uuid"));
+        record.setStatus(jsonObject.optString("previons"));
+        record.setTime(jsonObject.optString("createTime"));
+        record.setDescription(jsonObject.optString("newCondition"));
+        return record;
+    }
+
+    /**
+     * 获取病情变化记录详情
+     * 由于病情变化记录详情的构成是不定长的变化list（包括睡眠变化，饮食变化等），所以这里的数据格式解析为了一个list。
+     * 这个list代表的是一条病情变化记录的详情。
+     *
+     * @param illnessChangeId
+     */
+    public void getIllnessChangeDetails(final String illnessChangeId) {
+        final String shortUrl = UrlConstants.GET_ILLNESS_CHANGE_DETAILS;
+        String version = "1.0";
+        OkHttpUtils
+                .get()
+                .addHeader("Accept", "application/json")
+                .url(UrlConstants.getWholeApiUrl(shortUrl, version, illnessChangeId))
+                .build()
+                .execute(new Callback<ArrayList<IllnessChange>>() {
+
+                    @Override
+                    public void onBefore(Request request) {
+                        super.onBefore(request);
+                        callListener(ON_SEND, shortUrl, null);
+                    }
+
+                    @Override
+                    public ArrayList<IllnessChange> parseNetworkResponse(Response response) throws Exception {
+                        JSONObject obj = new JSONObject(response.body().string());
+                        return getChangesFromJson(obj);
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e) {
+                        callListener(ON_ERROR, shortUrl, e);
+                    }
+
+                    @Override
+                    public void onResponse(ArrayList<IllnessChange> response) {
+                        callListener(ON_RESPONSE, shortUrl, response);
+                    }
+                });
+    }
+
+    private ArrayList<IllnessChange> getChangesFromJson(JSONObject obj) throws Exception {
+        ArrayList<IllnessChange> changes = new ArrayList<IllnessChange>();
+        if (obj != null) {
+            JSONObject json = null;
+            IllnessChange change = null;
+            if (obj.has("illnessRecord")) {
+                json = obj.optJSONObject("illnessRecord");
+                if (json != null) {
+                    change = new IllnessChange();
+                    change.setType(IllnessChange.Type.ILL);
+                    change.setDescription(json.optString("newCondition"));
+                    String state = json.optString("previons");
+                    if ("无效".equals(state)) {
+                        change.setStatus(IllnessChange.Status.INVALID);
+                    } else if ("好转".equals(state)) {
+                        change.setStatus(IllnessChange.Status.BETTER);
+                    } else if ("痊愈".equals(state)) {
+                        change.setStatus(IllnessChange.Status.BEST);
+                    } else {
+                        change.setStatus(IllnessChange.Status.INVALID);
+                    }
+                    changes.add(change);
+                }
+            }
+            if (obj.has("sleep")) {
+                json = obj.optJSONObject("sleep");
+                if (json != null) {
+                    change = jsonToIllnessChange(json);
+                    change.setType(IllnessChange.Type.SLEEP);
+                    changes.add(change);
+                }
+            }
+            if (obj.has("eat")) {
+                json = obj.optJSONObject("eat");
+                if (json != null) {
+                    change = jsonToIllnessChange(json);
+                    change.setType(IllnessChange.Type.FOOD);
+                    changes.add(change);
+                }
+            }
+            if (obj.has("other")) {
+                json = obj.optJSONObject("other");
+                if (json != null) {
+                    change = jsonToIllnessChange(json);
+                    change.setType(IllnessChange.Type.OTHER);
+                    changes.add(change);
+                }
+            }
+        }
+        return changes;
+    }
+
+    /**
      * 获取随访表单详情
      *
      * @param visitRecordUuid 随访表单id
@@ -43,8 +195,8 @@ public class CaseReportNet extends BaseNet {
         String version = "1.0";
         OkHttpUtils
                 .get()
-                .addHeader("Accept","application/json")
-                .url(UrlConstants.getWholeApiUrl(shortUrl, version,visitRecordUuid))
+                .addHeader("Accept", "application/json")
+                .url(UrlConstants.getWholeApiUrl(shortUrl, version, visitRecordUuid))
                 .build()
                 .execute(new Callback<FollowUpForm>() {
 
@@ -74,123 +226,156 @@ public class CaseReportNet extends BaseNet {
 
     /**
      * json 对象转化为随访表单对象
-     * @param obj
+     *
+     * @param totalObj
      * @return
      * @throws Exception
      */
-    private FollowUpForm jsonToFormData(JSONObject obj) throws Exception {
+    private FollowUpForm jsonToFormData(JSONObject totalObj) throws Exception {
         FollowUpForm formData = new FollowUpForm();
-        formData.setId(obj.optString("uuid"));
+        formData.setId(totalObj.optString("uuid"));
+        JSONObject obj = totalObj.optJSONObject("visitRecord");
         FollowUpFormGroup oneGroupData = null;
-        if (obj.has("illnessRecord") || obj.has("sleep") || obj.has("eat") || obj.has("other")) {
-            oneGroupData = new FollowUpFormGroup();
-            oneGroupData.setFormGroupType(FollowUpFormGroup.Type.ILLNESS_CHANGE);
-            IllnessChange change = null;
-            JSONObject json = null;
-            if (obj.has("illnessRecord")) {
-                json = obj.optJSONObject("illnessRecord");
-                if(json!=null) {
-                    change = new IllnessChange();
-                    change.setType(IllnessChange.Type.ILL);
-                    change.setDescription(json.optString("newCondition"));
-                    String state = json.optString("previons");
-                    if ("无效".equals(state)) {
-                        change.setStatus(IllnessChange.Status.INVALID);
-                    } else if ("好转".equals(state)) {
-                        change.setStatus(IllnessChange.Status.BETTER);
-                    } else if ("痊愈".equals(state)) {
-                        change.setStatus(IllnessChange.Status.BEST);
-                    } else {
-                        change.setStatus(IllnessChange.Status.INVALID);
+        if (obj != null) {
+            if (obj.has("illnessRecord") || obj.has("sleep") || obj.has("eat") || obj.has("other")) {
+                oneGroupData = new FollowUpFormGroup();
+                oneGroupData.setFormGroupType(FollowUpFormGroup.Type.ILLNESS_CHANGE);
+                IllnessChange change = null;
+                JSONObject json = null;
+                if (obj.has("illnessRecord")) {
+                    json = obj.optJSONObject("illnessRecord");
+                    if (json != null) {
+                        change = new IllnessChange();
+                        change.setType(IllnessChange.Type.ILL);
+                        change.setDescription(json.optString("newCondition"));
+                        String state = json.optString("previons");
+                        if ("无效".equals(state)) {
+                            change.setStatus(IllnessChange.Status.INVALID);
+                        } else if ("好转".equals(state)) {
+                            change.setStatus(IllnessChange.Status.BETTER);
+                        } else if ("痊愈".equals(state)) {
+                            change.setStatus(IllnessChange.Status.BEST);
+                        } else {
+                            change.setStatus(IllnessChange.Status.INVALID);
+                        }
+                        oneGroupData.addRecord(change);
                     }
+                }
+                if (obj.has("sleep")) {
+                    json = obj.optJSONObject("sleep");
+                    if (json != null) {
+                        change = jsonToIllnessChange(json);
+                        change.setType(IllnessChange.Type.SLEEP);
+                        oneGroupData.addRecord(change);
+                    }
+                }
+                if (obj.has("eat")) {
+                    json = obj.optJSONObject("eat");
+                    if (json != null) {
+                        change = jsonToIllnessChange(json);
+                        change.setType(IllnessChange.Type.FOOD);
+                        oneGroupData.addRecord(change);
+                    }
+                }
+                if (obj.has("other")) {
+                    json = obj.optJSONObject("other");
+                    if (json != null) {
+                        change = jsonToIllnessChange(json);
+                        change.setType(IllnessChange.Type.OTHER);
+                        oneGroupData.addRecord(change);
+                    }
+                }
+                if (oneGroupData.getRecords().size() > 0) {
+                    change = new IllnessChange();
+                    change.setType(IllnessChange.Type.SEE_HISTORY_BUTTON);
                     oneGroupData.addRecord(change);
                 }
+                formData.addRecordGroup(oneGroupData);
             }
-            if (obj.has("sleep")) {
-                json = obj.optJSONObject("sleep");
-                if(json!=null) {
-                    change = jsonToIllnessChange(json);
-                    change.setType(IllnessChange.Type.SLEEP);
-                    oneGroupData.addRecord(change);
+            if (obj.has("weight")) {
+                oneGroupData = new FollowUpFormGroup();
+                oneGroupData.setFormGroupType(FollowUpFormGroup.Type.WEIGHT_RECORD);
+                JSONObject json = obj.optJSONObject("weight");
+                if (json != null) {
+                    WeightRecord weightRecord = new WeightRecord();
+                    weightRecord.setWeight(json.optString("result"));
+                    oneGroupData.addRecord(weightRecord);
                 }
+                formData.addRecordGroup(oneGroupData);
             }
-            if (obj.has("eat")) {
-                json = obj.optJSONObject("eat");
-                if(json!=null) {
-                    change = jsonToIllnessChange(json);
-                    change.setType(IllnessChange.Type.FOOD);
-                    oneGroupData.addRecord(change);
+            if (obj.has("checkResult")) {
+                oneGroupData = new FollowUpFormGroup();
+                oneGroupData.setFormGroupType(FollowUpFormGroup.Type.OTHER_CHECK_RECORD);
+                JSONArray array = obj.optJSONArray("checkResult");
+                if (array != null && array.length() > 0) {
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject json = array.getJSONObject(i);
+                        OtherCheckRecord otherCheckRecord = jsonToOtherCheckRecord(json);
+                        oneGroupData.addRecord(otherCheckRecord);
+                    }
                 }
+                formData.addRecordGroup(oneGroupData);
             }
-            if (obj.has("other")) {
-                json = obj.optJSONObject("other");
-                if(json!=null) {
-                    change = jsonToIllnessChange(json);
-                    change.setType(IllnessChange.Type.OTHER);
-                    oneGroupData.addRecord(change);
+            if (obj.has("doctorAdvice") || obj.has("drugReaction")) {
+                oneGroupData = new FollowUpFormGroup();
+                oneGroupData.setFormGroupType(FollowUpFormGroup.Type.EAT_MED_RECORD);
+                JSONArray array = obj.optJSONArray("doctorAdvice");
+                if (array != null && array.length() > 0) {
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject json = array.getJSONObject(i);
+                        EatMedRecord eatMedRecord = jsonToEatMedRecord(json);
+                        oneGroupData.addRecord(eatMedRecord);
+                    }
                 }
+                if (obj.has("drugReaction")) {
+                    JSONObject json = obj.optJSONObject("drugReaction");
+                    if (json != null) {
+                        BadReactionRecord badReactionRecord = jsonToBadReactionRecord(json);
+                        oneGroupData.addRecord(badReactionRecord);
+                    }
+                }
+                formData.addRecordGroup(oneGroupData);
             }
-            formData.addRecordGroup(oneGroupData);
         }
-        if (obj.has("weight")) {
-            oneGroupData = new FollowUpFormGroup();
-            oneGroupData.setFormGroupType(FollowUpFormGroup.Type.WEIGHT_RECORD);
-            JSONObject json = obj.optJSONObject("weight");
-            if(json!=null) {
-                int weight = Integer.parseInt(json.optString("result"));
-                WeightRecord weightRecord = new WeightRecord();
-                weightRecord.setWeight(weight);
-                oneGroupData.addRecord(weightRecord);
-            }
-            formData.addRecordGroup(oneGroupData);
-        }
-        if (obj.has("checkResult")) {
-            oneGroupData = new FollowUpFormGroup();
-            oneGroupData.setFormGroupType(FollowUpFormGroup.Type.OTHER_CHECK_RECORD);
-            JSONArray array = obj.optJSONArray("checkResult");
-            if (array != null && array.length() > 0) {
-                for (int i = 0; i < array.length(); i++) {
-                    JSONObject json = array.getJSONObject(i);
-                    OtherCheckRecord otherCheckRecord = jsonToOtherCheckRecord(json);
-                    oneGroupData.addRecord(otherCheckRecord);
+        obj = totalObj.optJSONObject("query");
+        if (obj != null) {
+            if (obj.has("selfList")) {
+                oneGroupData = new FollowUpFormGroup();
+                oneGroupData.setFormGroupType(FollowUpFormGroup.Type.MEASURE_SELF_RECORD);
+                JSONArray array = obj.getJSONArray("selfList");
+                if(array!=null&&array.length()>0){
+                    for(int i=0;i<array.length();i++) {
+                        MeasureFormRecord record = jsonToMeasureFormRecord(MeasureFormRecord.Type.SELF,array.getJSONObject(i));
+                        oneGroupData.addRecord(record);
+                    }
                 }
+                formData.addRecordGroup(oneGroupData);
             }
-            formData.addRecordGroup(oneGroupData);
-        }
-        if (obj.has("doctorAdvice") || obj.has("drugReaction")) {
-            oneGroupData = new FollowUpFormGroup();
-            oneGroupData.setFormGroupType(FollowUpFormGroup.Type.EAT_MED_RECORD);
-            JSONArray array = obj.optJSONArray("doctorAdvice");
-            if (array != null && array.length() > 0) {
-                for (int i = 0; i < array.length(); i++) {
-                    JSONObject json = array.getJSONObject(i);
-                    EatMedRecord eatMedRecord = jsonToEatMedRecord(json);
-                    oneGroupData.addRecord(eatMedRecord);
+            if (obj.has("doctorList")) {
+                oneGroupData = new FollowUpFormGroup();
+                oneGroupData.setFormGroupType(FollowUpFormGroup.Type.DOC_MEASURE_RECORD);
+                JSONArray array = obj.getJSONArray("doctorList");
+                if(array!=null&&array.length()>0){
+                    for(int i=0;i<array.length();i++) {
+                        MeasureFormRecord record = jsonToMeasureFormRecord(MeasureFormRecord.Type.DOCTOR,array.getJSONObject(i));
+                        oneGroupData.addRecord(record);
+                    }
                 }
+                formData.addRecordGroup(oneGroupData);
             }
-            if (obj.has("drugReaction")) {
-                JSONObject json = obj.optJSONObject("drugReaction");
-                if(json!=null) {
-                    BadReactionRecord badReactionRecord = jsonToBadReactionRecord(json);
-                    oneGroupData.addRecord(badReactionRecord);
-                }
-            }
-            formData.addRecordGroup(oneGroupData);
-        }
-        if (obj.has("selfmeasureform")) {
-            oneGroupData = new FollowUpFormGroup();
-            oneGroupData.setFormGroupType(FollowUpFormGroup.Type.MEASURE_SELF_RECORD);
-            // 由于后台暂时没有给出该不分数据样式，故暂未添加解析
-            formData.addRecordGroup(oneGroupData);
-        }
-        if (obj.has("doctormeasureform")) {
-            oneGroupData = new FollowUpFormGroup();
-            oneGroupData.setFormGroupType(FollowUpFormGroup.Type.DOC_MEASURE_RECORD);
-            // 由于后台暂时没有给出该不分数据样式，故暂未添加解析
-            formData.addRecordGroup(oneGroupData);
         }
 
         return formData;
+    }
+
+    private MeasureFormRecord jsonToMeasureFormRecord(int type,JSONObject jsonObject) throws Exception{
+        MeasureFormRecord record = new MeasureFormRecord();
+        record.setName(jsonObject.optString("subject"));
+        record.setResult(jsonObject.optString("analys"));
+        record.setRetDescription(jsonObject.optString("resultId"));
+        record.setScore(jsonObject.optString("score"));
+        record.setType(type);
+        return record;
     }
 
     private BadReactionRecord jsonToBadReactionRecord(JSONObject json) throws Exception {
@@ -406,12 +591,12 @@ public class CaseReportNet extends BaseNet {
      */
     public void addCaseReportForPatient(final String customerUuid, final String doctorUuid,
                                         final String hospitalUuid, final String caseCategoryType,
-                                        final String seeDoctorTime, final String startTime,final String endTime,final String[] imageIds) {
+                                        final String seeDoctorTime, final String startTime, final String endTime, final String[] imageIds) {
         final String shortUrl = UrlConstants.ADD_CASE_REPORT_FOR_PATIENT;
         String version = "1.0";
         PostFormBuilder formBuilder = OkHttpUtils
                 .post()
-                .addHeader("Accept","application/json")
+                .addHeader("Accept", "application/json")
                 .url(UrlConstants.getWholeApiUrl(shortUrl, version))
                 .addParams("customerUuid", customerUuid)
                 .addParams("doctorUuid", doctorUuid);
@@ -424,10 +609,10 @@ public class CaseReportNet extends BaseNet {
         if (seeDoctorTime != null) {
             formBuilder.addParams("seeDoctorTime", seeDoctorTime);
         }
-        if(startTime!=null){
+        if (startTime != null) {
             formBuilder.addParams("startTime", startTime);
         }
-        if(endTime!=null){
+        if (endTime != null) {
             formBuilder.addParams("endTime", endTime);
         }
         if (imageIds != null && imageIds.length > 0) {

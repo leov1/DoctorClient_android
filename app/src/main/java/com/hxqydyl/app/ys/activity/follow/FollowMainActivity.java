@@ -72,7 +72,7 @@ public class FollowMainActivity extends BaseTitleActivity implements View.OnClic
         public void onChildClick(int groupPosition, int childPosition) {
             Intent intent = new Intent(FollowMainActivity.this, PatientDetailsActivity.class);
             Patient patient = (Patient) patientListAdapter.getChild(groupPosition, childPosition);
-            intent.putExtra("patient", patient);
+            intent.putExtra(PatientDetailsActivity.KEY_PATIENT, patient);
             startActivity(intent);
         }
 
