@@ -104,6 +104,12 @@
             android:name=".activity.patient.PatientDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activity.follow.PlanPatientListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.follow.PlanInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activity.follow.PlanEditActivity"
             android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait" />

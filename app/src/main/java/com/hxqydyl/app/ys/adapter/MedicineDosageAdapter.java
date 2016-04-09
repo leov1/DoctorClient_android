@@ -31,13 +31,16 @@ public class MedicineDosageAdapter extends BaseAdapter{
     private List<MedicineDosage> list;
     private ListView listView;
     private MedicineAdapter medicineAdapter;
+    private boolean isEdit;
 
     public MedicineDosageAdapter(Context context, List<MedicineDosage> list,
-                                 ListView listView, MedicineAdapter medicineAdapter){
+                                 ListView listView, MedicineAdapter medicineAdapter,
+                                 boolean isEdit){
         this.context = context;
         this.list = list;
         this.listView = listView;
         this.medicineAdapter = medicineAdapter;
+        this.isEdit = isEdit;
     }
     @Override
     public int getCount() {
@@ -79,30 +82,38 @@ public class MedicineDosageAdapter extends BaseAdapter{
         holder.etDay.setText(md.getDay());
         holder.etSize.setText(md.getSize());
         holder.tvUnit.setText(md.getUnit());
-        holder.tvUnit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                unitDialog(holder.tvUnit);
+        if (isEdit) {
+            holder.etDay.setEnabled(true);
+            holder.etSize.setEnabled(true);
+            holder.tvUnit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    unitDialog(holder.tvUnit);
+                }
+            });
+            if (position == list.size() - 1) {
+                holder.ibBtn.setImageDrawable(convertView.getResources().getDrawable(R.mipmap.tianjiayongliang));
+                holder.ibBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        list.add(new MedicineDosage("", "", "mg"));
+                        MedicineDosageAdapter.this.notifyDataSetChanged(true);
+                    }
+                });
+            } else {
+                holder.ibBtn.setImageDrawable(convertView.getResources().getDrawable(R.mipmap.shanchuyongliang));
+                holder.ibBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        list.remove(position);
+                        MedicineDosageAdapter.this.notifyDataSetChanged();
+                    }
+                });
             }
-        });
-        if (position == list.size() -1) {
-            holder.ibBtn.setImageDrawable(convertView.getResources().getDrawable(R.mipmap.tianjiayongliang));
-            holder.ibBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    list.add(new MedicineDosage("", "", "mg"));
-                    MedicineDosageAdapter.this.notifyDataSetChanged(true);
-                }
-            });
         } else {
-            holder.ibBtn.setImageDrawable(convertView.getResources().getDrawable(R.mipmap.shanchuyongliang));
-            holder.ibBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    list.remove(position);
-                    MedicineDosageAdapter.this.notifyDataSetChanged();
-                }
-            });
+            holder.etDay.setEnabled(false);
+            holder.etSize.setEnabled(false);
+            holder.ibBtn.setVisibility(View.GONE);
         }
 
         return convertView;

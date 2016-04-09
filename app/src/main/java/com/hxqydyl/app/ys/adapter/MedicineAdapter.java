@@ -35,11 +35,13 @@ public class MedicineAdapter extends BaseAdapter {
     private Context context;
     private List<Medicine> list;
     private ListView listView;
+    private boolean isEdit;
 
-    public MedicineAdapter(Context context, List<Medicine> list, ListView listView){
+    public MedicineAdapter(Context context, List<Medicine> list, ListView listView, boolean isEdit){
         this.context = context;
         this.list = list;
         this.listView = listView;
+        this.isEdit = isEdit;
     }
     @Override
     public int getCount() {
@@ -57,7 +59,7 @@ public class MedicineAdapter extends BaseAdapter {
     }
 
     public void notifyDataSetChanged(boolean updateData) {
-        if (updateData) {
+        if (updateData && isEdit) {
             for (int i = 0; i < listView.getChildCount() && i < list.size(); i++) {
                 ViewHolder vh = (ViewHolder) listView.getChildAt(i).getTag();
                 Medicine m = list.get(i);
@@ -86,7 +88,6 @@ public class MedicineAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;
         final Medicine m = list.get(position);
-
         if (convertView == null){
             convertView = LayoutInflater.from(context).inflate(R.layout.item_medicine, null);
             holder = new ViewHolder();
@@ -104,22 +105,6 @@ public class MedicineAdapter extends BaseAdapter {
         }
         holder.etName.setText(m.getName());
         holder.tvFoodRelation.setText(m.getFood());
-        holder.ibDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                list.remove(position);
-                MedicineAdapter.this.notifyDataSetChanged(true);
-            }
-        });
-        holder.tvFoodRelation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                foodRelationDialog((TextView)v, m);
-            }
-        });
-        setTimeClick(holder.tvTimeMorning, m);
-        setTimeClick(holder.tvTimeNoon, m);
-        setTimeClick(holder.tvTimeNight, m);
         timeSelected(holder.tvTimeMorning, m.isTimeMorning());
         timeSelected(holder.tvTimeNoon, m.isTimeNoon());
         timeSelected(holder.tvTimeNight, m.isTimeNight());
@@ -133,8 +118,31 @@ public class MedicineAdapter extends BaseAdapter {
         if (mdList.size() == 0) {
             mdList.add(new MedicineDosage("", "", "mg"));
         }
-        adapter = new MedicineDosageAdapter(context, mdList, holder.lvDosage, this);
+        adapter = new MedicineDosageAdapter(context, mdList, holder.lvDosage, this, isEdit);
         holder.lvDosage.setAdapter(adapter);
+        if (isEdit) {
+            holder.etName.setEnabled(true);
+            holder.ibDelete.setVisibility(View.VISIBLE);
+            setTimeClick(holder.tvTimeMorning, m);
+            setTimeClick(holder.tvTimeNoon, m);
+            setTimeClick(holder.tvTimeNight, m);
+            holder.ibDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    list.remove(position);
+                    MedicineAdapter.this.notifyDataSetChanged(true);
+                }
+            });
+            holder.tvFoodRelation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    foodRelationDialog((TextView)v, m);
+                }
+            });
+        } else {
+            holder.etName.setEnabled(false);
+            holder.ibDelete.setVisibility(View.GONE);
+        }
         return convertView;
     }
 

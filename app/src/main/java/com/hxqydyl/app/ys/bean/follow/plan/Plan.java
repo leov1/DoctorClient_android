@@ -1,6 +1,12 @@
 package com.hxqydyl.app.ys.bean.follow.plan;
 
+import android.util.Log;
+
 import com.alibaba.fastjson.JSONArray;
+import com.hxqydyl.app.ys.http.JsonUtils;
+import com.hxqydyl.app.ys.utils.LoginManager;
+
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -44,6 +50,39 @@ public class Plan extends PlanBaseInfo {
 
     public Plan() {
 
+    }
+
+
+    public static Plan parseDetailJson(String response) {
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            JSONObject query = jsonObject.getJSONObject("query");
+            if (!"1".equals(query.getString("success"))) {
+                Log.e("client", "API返回失败， success 不为1");
+                return null;
+            }
+
+            Plan plan = new Plan();
+            plan.setPreceptName(jsonObject.getString("preceptName"));
+            plan.setVisitUuid(jsonObject.getString("visitUuid"));
+            plan.setHepatic(jsonObject.getString("hepatic"));
+            plan.setPeriod(jsonObject.getString("period"));
+            plan.setElectrocardiogram(jsonObject.getString("electrocardiogram"));
+            plan.setWeight(jsonObject.getString("weight"));
+            plan.setDrugTherapy(jsonObject.getString("drugTherapy"));
+            plan.setSideEffects(jsonObject.getString("sideEffects"));
+            plan.setBloodRoutine(jsonObject.getString("bloodRoutine"));
+
+            plan.setSelfTestList(Scale.parse(jsonObject.optJSONArray("selfTest")));
+            plan.setDoctorTestList(Scale.parse(jsonObject.optJSONArray("doctorTest")));
+            plan.setOtherCheckSycle(CheckSycle.parse(jsonObject.optJSONArray("otherMap")));
+            plan.setMedicineList(Medicine.parse(jsonObject.optJSONArray("doctorAdvice")));
+            plan.setHealthTipsList(HealthTips.parse(jsonObject.optJSONArray("healthGuide")));
+            return plan;
+        } catch (Exception e) {
+            Log.e("client", e.getMessage());
+            return null;
+        }
     }
 
     public static List<Plan> parseList2(String string) {
@@ -185,4 +224,5 @@ public class Plan extends PlanBaseInfo {
     public void setHealthTipsList(List<HealthTips> healthTipsList) {
         this.healthTipsList = healthTipsList;
     }
+
 }

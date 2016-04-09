@@ -86,8 +86,10 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
         swipeMenuListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(PlanMgrActivity.this, PlanEditActivity.class);
+                Intent intent = new Intent(PlanMgrActivity.this, PlanInfoActivity.class);
                 intent.putExtra("visitUuid", myPlanList.get(position).getVisitUuid());
+                intent.putExtra("from", "my");
+                intent.putExtra("preceptName", myPlanList.get(position).getPreceptName());
                 startActivity(intent);
             }
         });
@@ -95,9 +97,10 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
         lvSuggestPlan.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(PlanMgrActivity.this, PlanEditActivity.class);
+                Intent intent = new Intent(PlanMgrActivity.this, PlanInfoActivity.class);
                 intent.putExtra("visitUuid", suggestPlanList.get(position).getVisitUuid());
                 intent.putExtra("from", "suggest");
+                intent.putExtra("preceptName", myPlanList.get(position).getPreceptName());
                 startActivity(intent);
             }
         });

@@ -60,14 +60,15 @@ public class FollowPlanNet {
                 .execute(callback);
     }
 
-    public static void editVisitPrecept(Plan plan, FollowCallback callback) {
+    public static void editVisitPrecept(Plan plan, FollowCallback callback) throws JSONException {
         OkHttpUtils.post().url(FollowApplyNet.baseURL
                 + "app/pub/doctor/1.0/editVisitPrecept")
                 .addParams("doctorUuid", LoginManager.getDoctorUuid())        //医生ID
+                .addParams("visitUuid", plan.getVisitUuid())        //医生ID
                 .addParams("preceptName", plan.getPreceptName())       //方案名称
                 .addParams("drugTherapy", plan.getDrugTherapy())       //药物不良反应处理
                 .addParams("sideEffects", plan.getSideEffects())   //其他治疗
-                .addParams("doctorAdvice", "")  //药物信息
+                .addParams("doctorAdvice", Medicine.toJson(plan.getMedicineList()))  //药物信息
                 .addParams("ortherMap", CheckSycle.list2json(plan.getOtherCheckSycle())) //其他自定义随访周期
                 .addParams("period", plan.getPeriod())                //随访周期
                 .addParams("electrocardiogram", plan.getElectrocardiogram()) //心电图检查周期
@@ -95,6 +96,20 @@ public class FollowPlanNet {
     }
 
     /**
+     * 查看随访方案
+     * @param visitUuid
+     * @param callback
+     */
+    public static void visitPreceptDetail(String visitUuid, FollowCallback callback) {
+        OkHttpUtils.get().url(FollowApplyNet.baseURL
+                + "app/pub/doctor/1.0/visitPreceptDetail")
+                .addParams("doctorUuid", LoginManager.getDoctorUuid())
+                .addParams("visitUuid", visitUuid)
+                .build()
+                .execute(callback);
+    }
+
+    /**
      * 获取医评和自评列表
      *
      * @param type     0——患者自评，1——医生评测
@@ -104,6 +119,20 @@ public class FollowPlanNet {
         OkHttpUtils.get().url(FollowApplyNet.baseURL
                 + "app/pub/doctor/1.0/selectPreceptDetail")
                 .addParams("type", type)
+                .build()
+                .execute(callback);
+    }
+
+    /**
+     * 查询方案已关联患者列表
+     * @param preceptUuid
+     * @param callback
+     */
+    public static void getCustomerVisitRecordByUuid(String preceptUuid, FollowCallback callback) {
+        OkHttpUtils.get().url(FollowApplyNet.baseURL
+                + "app/pub/doctor/1.0/getCustomerVisitRecordByUuid")
+                .addParams("doctorUuid", LoginManager.getDoctorUuid())
+                .addParams("preceptUuid", preceptUuid)
                 .build()
                 .execute(callback);
     }

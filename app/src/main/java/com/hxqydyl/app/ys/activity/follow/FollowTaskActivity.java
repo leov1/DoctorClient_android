@@ -30,7 +30,6 @@ public class FollowTaskActivity extends BaseTitleActivity
 
     private void initViews() {
         initViewOnBaseTitle("待处理随访任务");
-        setBackListener();
         listView = (ListView) findViewById(R.id.list_view);
         adapter = new FollowTaskAdapter(this);
         listView.setAdapter(adapter);
@@ -38,7 +37,7 @@ public class FollowTaskActivity extends BaseTitleActivity
     }
 
     private void initListeners() {
-        setBackListener(this);
+        setBackListener();
     }
 
     @Override

@@ -66,6 +66,43 @@ public class Medicine implements Serializable {
         return m;
     }
 
+    public static List<Medicine> parse(JSONArray jsonArray) throws JSONException {
+        List<Medicine> list = new ArrayList<>();
+        if (jsonArray == null) return list;
+        for (int i=0; i<jsonArray.length(); i++) {
+            JSONObject obj = jsonArray.getJSONObject(i);
+            Medicine m = new Medicine();
+            m.setUuid(obj.getString("uuid"));
+            m.setFood(obj.getString("food"));
+            m.setName(obj.getString("medicineUuid"));
+
+            String directions = obj.getString("directions");
+            if (directions.contains("早")) {
+                m.setTimeMorning(true);
+            }
+            if (directions.contains("中")) {
+                m.setTimeNoon(true);
+            }
+            if (directions.contains("晚")) {
+                m.setTimeNight(true);
+            }
+            List<MedicineDosage> mdList = new ArrayList<>();
+            String[] dosage = obj.getString("dosage").split(",");
+            String[] frequency = obj.getString("frequency").split(",");
+            for (int j=0; j<dosage.length; j++) {
+                MedicineDosage md = new MedicineDosage();
+                md.setDay(frequency[j]);
+                String[] tmp = dosage[j].split("\\|");
+                md.setSize(tmp[0]);
+                md.setUnit(tmp[1]);
+                mdList.add(md);
+            }
+            m.setMdList(mdList);
+            list.add(m);
+        }
+        return list;
+    }
+
     public static String toJson(List<Medicine> medicineList) throws JSONException {
         JSONArray jsonArray = new JSONArray();
         for (Medicine m : medicineList) {

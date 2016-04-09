@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,13 +19,11 @@ import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.adapter.HealthTipsAdapter;
 import com.hxqydyl.app.ys.adapter.MedicineAdapter;
-import com.hxqydyl.app.ys.adapter.MedicineDosageAdapter;
 import com.hxqydyl.app.ys.adapter.PlanCheckSycleAdapter;
 import com.hxqydyl.app.ys.adapter.PlanSelfScaleAdapter;
 import com.hxqydyl.app.ys.bean.follow.plan.CheckSycle;
 import com.hxqydyl.app.ys.bean.follow.plan.HealthTips;
 import com.hxqydyl.app.ys.bean.follow.plan.Medicine;
-import com.hxqydyl.app.ys.bean.follow.plan.MedicineDosage;
 import com.hxqydyl.app.ys.bean.follow.plan.Plan;
 import com.hxqydyl.app.ys.bean.follow.plan.Scale;
 import com.hxqydyl.app.ys.http.follow.FollowCallback;
@@ -88,10 +88,22 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
     private Button btnSave;
 
     private String visitUuid = null;    //随访方案uuid
-    private String from = null;
+    private String preceptName = null;
+    private String from = null; // my\suggest
+    private String edit = null;
     private Plan plan = null;
 
     private FollowCallback updateFollowCallback;
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 100) {
+                updateUIData();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,22 +111,32 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
         setContentView(R.layout.activity_plan_edit);
         Intent intent = getIntent();
         visitUuid = intent.getStringExtra("visitUuid");
-        if (StringUtils.isNotEmpty(visitUuid)) {
-            // 编辑
-            initViewOnBaseTitle("编辑方案");
-            from = intent.getStringExtra("from");
+        edit = intent.getStringExtra("edit");
+        from = intent.getStringExtra("from");
+        preceptName = intent.getStringExtra("preceptName");
+        if ("edit".equals(edit)) {
+            if (StringUtils.isNotEmpty(visitUuid)) {
+                // 编辑
+                initViewOnBaseTitle("编辑方案");
+            } else {
+                initViewOnBaseTitle("新增方案");
+            }
         } else {
-            initViewOnBaseTitle("新增方案");
+            initViewOnBaseTitle(preceptName + "随访方案");
         }
+
         setBackListener();
 
         initView();
         bindEvent();
         initUpdateFollowCallback();
         if (StringUtils.isNotEmpty(visitUuid)) {
-
-        } else {
-            plan = new Plan();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    visitPreceptDetail(visitUuid);
+                }
+            }).run();
         }
     }
 
@@ -147,7 +169,7 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
 
         medicineList = new ArrayList<>();
         medicineList.add(new Medicine());
-        medicineAdapter = new MedicineAdapter(this, medicineList, lvMedicine);
+        medicineAdapter = new MedicineAdapter(this, medicineList, lvMedicine, true);
         lvMedicine.setAdapter(medicineAdapter);
 
         selfScaleList = new ArrayList<>();
@@ -168,6 +190,9 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
             elvHealthTips.expandGroup(i);
         }
         btnSave = (Button) findViewById(R.id.btnSave);
+        if ("edit".equals(edit)) {
+
+        }
     }
 
     private void bindEvent() {
@@ -427,5 +452,102 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
     private int dp2px(int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
                 getResources().getDisplayMetrics());
+    }
+
+    private void visitPreceptDetail(String visitUuid) {
+        FollowPlanNet.visitPreceptDetail(visitUuid, new FollowCallback(){
+            @Override
+            public void onResponse(String response) {
+                super.onResponse(response);
+                response = "{" +
+                        "  \"hepatic\" : \"1\"," +
+                        "  \"selfTest\" : [" +
+                        "    {" +
+                        "      \"description\" : \"\"," +
+                        "      \"id\" : \"0001\"," +
+                        "      \"thumb\" : \"\"," +
+                        "      \"digest\" : \"\"," +
+                        "      \"createDate\" : \"2015-11-24 20:09:56\"," +
+                        "      \"total\" : 0," +
+                        "      \"url\" : \"\"," +
+                        "      \"title\" : \"综合测试2\"," +
+                        "      \"self\" : \"0\"," +
+                        "      \"cover\" : \"\"," +
+                        "      \"integral\" : 0," +
+                        "      \"media\" : \"\"," +
+                        "      \"sort\" : 1," +
+                        "      \"parentId\" : \"00\"" +
+                        "    }," +
+                        "    {" +
+                        "      \"description\" : \"\"," +
+                        "      \"id\" : \"0002\"," +
+                        "      \"thumb\" : \"\"," +
+                        "      \"digest\" : \"\"," +
+                        "      \"createDate\" : \"2015-11-24 20:10:10\"," +
+                        "      \"total\" : 0," +
+                        "      \"url\" : \"\"," +
+                        "      \"title\" : \"综合测试3\"," +
+                        "      \"self\" : \"0\"," +
+                        "      \"cover\" : \"\"," +
+                        "      \"integral\" : 0," +
+                        "      \"media\" : \"\"," +
+                        "      \"sort\" : 2," +
+                        "      \"parentId\" : \"00\"" +
+                        "    }" +
+                        "  ]," +
+                        "  \"period\" : \"6\"," +
+                        "  \"preceptName\" : \"方案名称\"," +
+                        "  \"query\" : {" +
+                        "    \"success\" : \"1\"," +
+                        "    \"message\" : \"操作成功\"" +
+                        "  }," +
+                        "  \"doctorAdvice\" : null," +
+                        "  \"electrocardiogram\" : \"5\"," +
+                        "  \"weight\" : \"4\"," +
+                        "  \"drugTherapy\" : \"药物不良咋处理\"," +
+                        "  \"sideEffects\" : \"其他治疗也行\"," +
+                        "  \"otherMap\" : [" +
+                        "" +
+                        "  ]," +
+                        "  \"visitUuid\" : \"sitPrecept0000000342\"," +
+                        "  \"bloodRoutine\" : \"2\"," +
+                        "  \"healthGuide\" : [" +
+                        "" +
+                        "  ]" +
+                        "}";
+                plan = Plan.parseDetailJson(response);
+                handler.sendEmptyMessage(100);
+            }
+        });
+    }
+
+    private void updateUIData() {
+        if (plan == null) {
+            UIHelper.ToastMessage(this, "数据加载失败");
+        }
+        if ("my".equals(from)) {
+            etTitle.setText(plan.getPreceptName());
+        }
+        etDrugTherapy.setText(plan.getDrugTherapy());
+        etSideEffects.setText(plan.getSideEffects());
+
+        medicineList.clear();
+        medicineList.addAll(plan.getMedicineList());
+        healthTipsList.clear();
+        healthTipsList.addAll(plan.getHealthTipsList());
+        checkSycleList.clear();
+        checkSycleList.addAll(plan.getOtherCheckSycle());
+        selfScaleList.clear();
+        selfScaleList.addAll(plan.getSelfTestList());
+        doctorScaleList.clear();
+        doctorScaleList.addAll(plan.getDoctorTestList());
+
+        medicineAdapter.notifyDataSetChanged();
+        planCheckSycleAdapter.notifyDataSetChanged();
+        selfScaleAdapter.notifyDataSetChanged();
+        doctorScaleAdapter.notifyDataSetChanged();
+        BaseExpandableListAdapter adapter =
+                (BaseExpandableListAdapter) elvHealthTips.getExpandableListAdapter();
+        adapter.notifyDataSetChanged();
     }
 }
