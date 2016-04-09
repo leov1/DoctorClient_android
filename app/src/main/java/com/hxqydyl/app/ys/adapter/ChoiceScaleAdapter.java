@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 
 import com.hxqydyl.app.ys.R;
+import com.hxqydyl.app.ys.bean.follow.plan.Scale;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,10 +22,10 @@ import java.util.Map;
 public class ChoiceScaleAdapter extends BaseAdapter{
 
     private Context context;
-    private List<String> list;
+    private List<Scale> list;
     private static Map<Integer, Boolean> isSelectMap;
 
-    public ChoiceScaleAdapter(Context context, List<String> list){
+    public ChoiceScaleAdapter(Context context, List<Scale> list){
         this.context = context;
         this.list = list;
         isSelectMap = new HashMap<>();
@@ -55,7 +56,7 @@ public class ChoiceScaleAdapter extends BaseAdapter{
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.checkBox.setText(list.get(position));
+        holder.checkBox.setText(list.get(position).getTitle());
         Boolean bool = isSelectMap.get(position);
         if (bool != null && bool) {
             holder.checkBox.setChecked(true);

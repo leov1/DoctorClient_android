@@ -76,7 +76,7 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                 switch (index) {
                     case 0:
-                        UIHelper.ToastMessage(PlanMgrActivity.this, "删除");
+                        delPreceptDetail(position);
                         break;
                 }
                 return false;
@@ -87,6 +87,7 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(PlanMgrActivity.this, PlanEditActivity.class);
+                intent.putExtra("visitUuid", myPlanList.get(position).getVisitUuid());
                 startActivity(intent);
             }
         });
@@ -95,6 +96,8 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(PlanMgrActivity.this, PlanEditActivity.class);
+                intent.putExtra("visitUuid", suggestPlanList.get(position).getVisitUuid());
+                intent.putExtra("from", "suggest");
                 startActivity(intent);
             }
         });
@@ -146,6 +149,12 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
                         "\"preceptName\": \"我的方案\"," +
                         "\"doctorUuid\": \"4c61df50ebb34b7bac8339f605f2c218\"," +
                         "\"num\": \"1\"" +
+                        "}," +
+                        "{" +
+                        "\"visitUuid\": \"0000\"," +
+                        "\"preceptName\": \"我的方案\"," +
+                        "\"doctorUuid\": \"4c61df50ebb34b7bac8339f605f2c218\"," +
+                        "\"num\": \"1\"" +
                         "}" +
                         "]";
                 List<Plan> tmp = Plan.parseList2(result);
@@ -177,6 +186,27 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
                     suggestPlanList.clear();
                     suggestPlanList.addAll(tmp);
                     suggestPlanAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+    }
+
+    private void delPreceptDetail(final int position) {
+        Plan plan = myPlanList.get(position);
+        FollowPlanNet.delPreceptDetail(plan.getVisitUuid(), new FollowCallback(){
+            @Override
+            public void onResponse(String response) {
+                super.onResponse(response);
+                myPlanList.remove(position);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFail(String status, String msg) {
+                super.onFail(status, msg);
+                if ("0".equals(status)) {
+                    myPlanList.remove(position);
+                    adapter.notifyDataSetChanged();
                 }
             }
         });

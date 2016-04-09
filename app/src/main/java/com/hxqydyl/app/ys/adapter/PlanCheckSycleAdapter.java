@@ -43,16 +43,21 @@ public class PlanCheckSycleAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        final ViewHolder viewHolder;
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_plan_check_sycle, parent, false);
+            viewHolder = new ViewHolder();
+            viewHolder.tvName = BaseViewHolder.get(convertView, R.id.tvName);
+            viewHolder.tvLiverCycle = BaseViewHolder.get(convertView, R.id.tvLiverCycle);
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
         }
-        TextView tvName = BaseViewHolder.get(convertView, R.id.tvName);
-        TextView tvLiverCycle = BaseViewHolder.get(convertView, R.id.tvLiverCycle);
         final CheckSycle cs = list.get(position);
-        tvName.setText(cs.getName());
-        tvLiverCycle.setText(cs.getSycle());
+        viewHolder.tvName.setText(cs.getName());
+        viewHolder.tvLiverCycle.setText(cs.getPeriod());
 
-        tvLiverCycle.setOnClickListener(new View.OnClickListener() {
+        viewHolder.tvLiverCycle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DialogUtils.cycleDialog(context, (TextView) v, CheckSycle.cycleItem2);
@@ -60,4 +65,10 @@ public class PlanCheckSycleAdapter extends BaseAdapter {
         });
         return convertView;
     }
+
+    public final class ViewHolder {
+        public TextView tvName;
+        public TextView tvLiverCycle;
+    }
+
 }

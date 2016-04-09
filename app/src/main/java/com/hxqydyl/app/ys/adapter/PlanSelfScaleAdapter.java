@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
+import com.hxqydyl.app.ys.bean.follow.plan.Scale;
 
 import java.util.List;
 
@@ -17,10 +18,10 @@ import java.util.List;
 public class PlanSelfScaleAdapter extends BaseAdapter {
 
     private Context context;
-    private List<String> list;
+    private List<Scale> list;
     private View topLine;
 
-    public PlanSelfScaleAdapter(Context context, List<String> dataList, View topLine) {
+    public PlanSelfScaleAdapter(Context context, List<Scale> dataList, View topLine) {
         this.context = context;
         this.list = dataList;
         this.topLine = topLine;
@@ -47,7 +48,7 @@ public class PlanSelfScaleAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_plan_self_scale, parent, false);
         }
         TextView tvName = BaseViewHolder.get(convertView,R.id.tvName);
-        tvName.setText(list.get(position));
+        tvName.setText(list.get(position).getTitle());
         return convertView;
     }
 

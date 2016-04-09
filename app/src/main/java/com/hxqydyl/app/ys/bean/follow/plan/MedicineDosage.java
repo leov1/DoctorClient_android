@@ -6,33 +6,32 @@ package com.hxqydyl.app.ys.bean.follow.plan;
  */
 public class MedicineDosage {
 
-    private int day;
-    private int size;
+    private String day;
+    private String size;
     private String unit;
 
     public MedicineDosage() {
-        unit = "mg";
     }
 
-    public MedicineDosage(int day, int size, String unit) {
+    public MedicineDosage(String day, String size, String unit) {
         this.day = day;
         this.size = size;
         this.unit = unit;
     }
 
-    public int getDay() {
+    public String getDay() {
         return day;
     }
 
-    public void setDay(int day) {
+    public void setDay(String day) {
         this.day = day;
     }
 
-    public int getSize() {
+    public String getSize() {
         return size;
     }
 
-    public void setSize(int size) {
+    public void setSize(String size) {
         this.size = size;
     }
 

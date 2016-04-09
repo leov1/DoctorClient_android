@@ -29,6 +29,7 @@
             android:layout_weight="1"
             android:layout_height="match_parent" />
         <ImageButton
+            android:id="@+id/ibDelete"
             android:src="@mipmap/btn_delete"
             android:layout_marginRight="@dimen/space_15"
             android:background="@color/transparent"

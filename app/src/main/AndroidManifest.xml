@@ -95,6 +95,7 @@
         <activity android:name=".activity.video.VideoPlayActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activity.patient.PatientAddActivity"
+            android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.patient.AddressBookSelectActivity"
@@ -104,6 +105,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.follow.PlanEditActivity"
+            android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.case_report.InPatientCaseReportActivity"

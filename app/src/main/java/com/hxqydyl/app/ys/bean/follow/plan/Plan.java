@@ -18,12 +18,18 @@ public class Plan extends PlanBaseInfo {
     private String electrocardiogram;       //心电图检查周期
     private String bloodRoutine;        //血常规周期
     private String hepatic;         //肝功能周期
-    private String renal;   //  肾功能周期
     private String weight;  //
-    private List<CheckSycle> otherCheckSycle;   //其他自定义随访周期
+    private String ortherMap;       //其他自定义随访周期
 
+    private String selfTest;        //自评量表
+    private String doctorTest;      //医评量表
+    private String healthGuide; //健康小贴士
+
+    private List<Medicine> medicineList;        //药品信息
+    private List<CheckSycle> otherCheckSycle;   //其他自定义随访周期
     private List<Scale> selfTestList;   //自评量表
     private List<Scale> doctorTestList; //医评量表
+    private List<HealthTips> healthTipsList;        //健康小贴士
 
     public Plan(String doctorUuid,
                 String visitUuid,
@@ -46,6 +52,46 @@ public class Plan extends PlanBaseInfo {
 
     public List<CheckSycle> getOtherCheckSycle() {
         return otherCheckSycle;
+    }
+
+    public String getOrtherMap() {
+        return ortherMap;
+    }
+
+    public void setOrtherMap(String ortherMap) {
+        this.ortherMap = ortherMap;
+    }
+
+    public String getSelfTest() {
+        return selfTest;
+    }
+
+    public void setSelfTest(String selfTest) {
+        this.selfTest = selfTest;
+    }
+
+    public String getDoctorTest() {
+        return doctorTest;
+    }
+
+    public void setDoctorTest(String doctorTest) {
+        this.doctorTest = doctorTest;
+    }
+
+    public String getHealthGuide() {
+        return healthGuide;
+    }
+
+    public void setHealthGuide(String healthGuide) {
+        this.healthGuide = healthGuide;
+    }
+
+    public List<Medicine> getMedicineList() {
+        return medicineList;
+    }
+
+    public void setMedicineList(List<Medicine> medicineList) {
+        this.medicineList = medicineList;
     }
 
     public void setOtherCheckSycle(List<CheckSycle> otherCheckSycle) {
@@ -108,14 +154,6 @@ public class Plan extends PlanBaseInfo {
         this.hepatic = hepatic;
     }
 
-    public String getRenal() {
-        return renal;
-    }
-
-    public void setRenal(String renal) {
-        this.renal = renal;
-    }
-
     public String getWeight() {
         return weight;
     }
@@ -138,5 +176,13 @@ public class Plan extends PlanBaseInfo {
 
     public void setDoctorTestList(List<Scale> doctorTestList) {
         this.doctorTestList = doctorTestList;
+    }
+
+    public List<HealthTips> getHealthTipsList() {
+        return healthTipsList;
+    }
+
+    public void setHealthTipsList(List<HealthTips> healthTipsList) {
+        this.healthTipsList = healthTipsList;
     }
 }

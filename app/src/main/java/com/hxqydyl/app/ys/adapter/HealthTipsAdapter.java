@@ -6,10 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.bean.follow.plan.HealthTips;
+import com.hxqydyl.app.ys.bean.follow.plan.Medicine;
+import com.hxqydyl.app.ys.utils.StringUtils;
 
 import java.util.List;
 
@@ -21,10 +25,12 @@ public class HealthTipsAdapter extends BaseExpandableListAdapter {
 
     private Context context;
     private List<HealthTips> list;
+    private ExpandableListView listView;
 
-    public HealthTipsAdapter(Context context, List<HealthTips> list) {
+    public HealthTipsAdapter(Context context, List<HealthTips> list, ExpandableListView listView) {
         this.context = context;
         this.list = list;
+        this.listView = listView;
     }
 
     @Override
@@ -34,7 +40,7 @@ public class HealthTipsAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return list.size();
+        return 1;
     }
 
     @Override
@@ -62,20 +68,37 @@ public class HealthTipsAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
+    public void notifyDataSetChanged(boolean updateData) {
+        if (updateData) {
+            for (int i = 1, j = 0;
+                    i < listView.getChildCount() && j < list.size();
+                    i+=2, j = (i-1)/2) {
+                ChildViewHolder vh = (ChildViewHolder) listView.getChildAt(i).getTag();
+                HealthTips m = list.get(j);
+                m.setDay(vh.etDay.getText().toString());
+                m.setFood(vh.etFood.getText().toString());
+                m.setSleep(vh.etSleep.getText().toString());
+                m.setSport(vh.etSport.getText().toString());
+                m.setOther(vh.etOther.getText().toString());
+            }
+        }
+        BaseExpandableListAdapter adapter =
+                (BaseExpandableListAdapter) listView.getExpandableListAdapter();
+        adapter.notifyDataSetChanged();
+    }
+
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+    public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, final ViewGroup parent) {
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_health_tips_group, null);
         }
         TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
         final HealthTips tips = list.get(groupPosition);
-        tvTitle.setText("第" + tips.getDay() + "天");
-        tvTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                notifyDataSetChanged();
-            }
-        });
+        if (StringUtils.isEmpty(tips.getDay())) {
+            tvTitle.setText("新增");
+        } else {
+            tvTitle.setText("第" + tips.getDay() + "天");
+        }
         return convertView;
     }
 
@@ -109,7 +132,7 @@ public class HealthTipsAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
-    class ChildViewHolder {
+    public final class ChildViewHolder {
         public EditText etDay;
         public EditText etFood;
         public EditText etSport;

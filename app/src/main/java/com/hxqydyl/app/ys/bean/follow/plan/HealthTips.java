@@ -6,17 +6,17 @@ package com.hxqydyl.app.ys.bean.follow.plan;
  */
 public class HealthTips {
 
-    private int day = 1;
+    private String day = "";
     private String food;
     private String sport;
     private String sleep;
     private String other;
 
-    public int getDay() {
+    public String getDay() {
         return day;
     }
 
-    public void setDay(int day) {
+    public void setDay(String day) {
         this.day = day;
     }
 

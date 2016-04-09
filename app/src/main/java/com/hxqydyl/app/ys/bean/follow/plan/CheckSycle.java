@@ -14,11 +14,14 @@ public class CheckSycle {
     public static final String[] cycleItem2 = {"1周", "2周", "4周", "8周"};
 
     private String name;
-    private String sycle;   //周期
+    private String period;   //周期
+
+    public CheckSycle() {
+    }
 
     public CheckSycle(String name, String sycle) {
         this.name = name;
-        this.sycle = sycle;
+        this.period = sycle;
     }
 
     public static String list2json(List<CheckSycle> list) {
@@ -36,11 +39,11 @@ public class CheckSycle {
         this.name = name;
     }
 
-    public String getSycle() {
-        return sycle;
+    public String getPeriod() {
+        return period;
     }
 
-    public void setSycle(String sycle) {
-        this.sycle = sycle;
+    public void setPeriod(String period) {
+        this.period = period;
     }
 }

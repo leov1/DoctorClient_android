@@ -3,12 +3,13 @@ package com.hxqydyl.app.ys.bean.follow.plan;
 import com.alibaba.fastjson.JSONArray;
 import com.hxqydyl.app.ys.utils.StringUtils;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by wangchao36 on 16/4/4.
  */
-public class Scale {
+public class Scale implements Serializable {
 
     private String id;
     private String title;

@@ -8,7 +8,8 @@
     <include layout="@layout/top_title"></include>
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,7 +28,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent" />
                 <EditText
-                    android:text="名称"
+                    android:id="@+id/etTitle"
+                    android:hint="方案名称"
                     android:textSize="@dimen/text_size_16"
                     android:background="@color/transparent"
                     android:textColor="#747474"
@@ -75,7 +77,35 @@
                     android:layout_width="match_parent"
                     android:layout_height="45dp" />
                 <EditText
+                    android:id="@+id/etDrugTherapy"
                     android:hint="请输入药物不良反应处理方案"
+                    android:gravity="top|left"
+                    android:textSize="@dimen/text_size_16"
+                    android:textColor="#696969"
+                    android:background="@color/transparent"
+                    android:layout_marginTop="@dimen/space_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/space_20"
+                android:paddingRight="@dimen/space_20"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_plan_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="其他治疗"
+                    android:textColor="#696969"
+                    android:gravity="center_vertical|left"
+                    android:textSize="@dimen/text_size_16"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp" />
+                <EditText
+                    android:id="@+id/etSideEffects"
+                    android:hint="请输入其他治疗"
                     android:gravity="top|left"
                     android:textSize="@dimen/text_size_16"
                     android:textColor="#696969"
@@ -258,10 +288,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/space_40" />
 
-            <com.hxqydyl.app.ys.ui.scrollviewandgridview.MyScrollExpandableListView
+            <ui.swipemenulistview.SwipeMenuExpandableListView
                 android:id="@+id/elvHealthTips"
                 android:dividerHeight="@dimen/space_10"
-                android:background="@color/color_f7f7f7"
+                android:divider="@color/color_f7f7f7"
+                android:childDivider="@color/color_f7f7f7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -286,5 +317,13 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="@string/save"
+        style="@style/btn_blue"
+        android:textColor="@color/white"
+        android:layout_gravity="bottom" />
 
 </LinearLayout>
