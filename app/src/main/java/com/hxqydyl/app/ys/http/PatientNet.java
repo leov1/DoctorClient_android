@@ -20,6 +20,10 @@ public class PatientNet extends BaseNet {
         super(listener);
     }
 
+    /**
+     * 获取患者私人信息
+     * @param patientId
+     */
     public void getPatientPersionalInfo(final String patientId){
         final String shortUrl = UrlConstants.GET_PATIENT_PERSIONAL_INFO;
         String version = "1.0";

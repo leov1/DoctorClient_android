@@ -28,43 +28,48 @@
             android:layout_weight="1">
 
             <TextView
-                android:id="@+id/tvPatientName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="王超马汉"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_16"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/ivSexFlag"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/tvPatientName"
-                android:layout_marginLeft="@dimen/space_2"
-                android:layout_toRightOf="@id/tvPatientName"
-                android:src="@mipmap/icon_man_flag" />
-
-            <TextView
-                android:id="@+id/tvPatientAge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/tvPatientName"
-                android:layout_centerHorizontal="true"
-                android:text="年龄：16岁"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_11" />
-
-            <TextView
                 android:id="@+id/tvPatientFollowTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/tvPatientName"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
                 android:text="2016-03-19 09:35"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_11" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="bottom"
+                android:layout_toLeftOf="@id/tvPatientFollowTime">
+                <TextView
+                    android:id="@+id/tvPatientName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="王超马汉"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_16"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/ivSexFlag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_2"
+                    android:src="@mipmap/icon_man_flag" />
+
+                <TextView
+                    android:id="@+id/tvPatientAge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/tvPatientName"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="@dimen/space_20"
+                    android:text="年龄：16岁"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_11" />
+            </LinearLayout>
 
         </RelativeLayout>
 

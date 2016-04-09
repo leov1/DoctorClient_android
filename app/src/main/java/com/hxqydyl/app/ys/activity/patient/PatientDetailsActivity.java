@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
@@ -21,6 +23,7 @@ import com.hxqydyl.app.ys.http.CaseReportNet;
 import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.InjectId;
 import com.hxqydyl.app.ys.utils.InjectUtils;
+import com.hxqydyl.app.ys.utils.LoginManager;
 
 import java.util.ArrayList;
 
@@ -30,6 +33,7 @@ import java.util.ArrayList;
 public class PatientDetailsActivity extends BaseTitleActivity implements View.OnClickListener {
     public static final String KEY_PATIENT = "patient";
     public static final String KEY_TREAT_INFO = "treat_info";
+    private static final int REQ_ADD_CASE_REPORT = 1;
     //    患者基本信息
     private PatientSimpleInfoViewHolder simpleInfoViewHolder;
 
@@ -47,6 +51,9 @@ public class PatientDetailsActivity extends BaseTitleActivity implements View.On
     @InjectId(id = R.id.bSelectNewFollowUpForPatient)
     private Button bSelectNewFollowUpForPatient;
 
+    @InjectId(id = R.id.right_txt_btn)
+    private TextView right_txt_btn;
+
     private CaseReportNet caseReportNet;
     private Patient patient;
 
@@ -62,9 +69,9 @@ public class PatientDetailsActivity extends BaseTitleActivity implements View.On
             return;
         }
         if (!TextUtils.isEmpty(patient.getName())) {
-            initViewOnBaseTitle(patient.getName());
+            initViewTitle(patient.getName());
         }else{
-            initViewOnBaseTitle("患者详情");
+            initViewTitle("患者详情");
         }
         setBackListener(this);
 
@@ -109,8 +116,35 @@ public class PatientDetailsActivity extends BaseTitleActivity implements View.On
         });
 
         bAddCaseReport.setOnClickListener(this);
-        caseReportNet = new CaseReportNet(this);
-        caseReportNet.getAllTreatInfoRecordOfPatient("efec4e3969234184840e37033fc1d3fd","88888888");
+
+        refreshTreatInfoList();
+    }
+
+    private void refreshTreatInfoList(){
+        if(caseReportNet == null){
+            caseReportNet = new CaseReportNet(this);
+        }
+        caseReportNet.getAllTreatInfoRecordOfPatient(patient.getId(), LoginManager.getDoctorUuid());
+    }
+
+    private void initViewTitle(String title) {
+        initViewOnBaseTitle(title);
+//        right_txt_btn.setBackgroundResource(R.mipmap.dot_dot_dot);
+//        right_txt_btn.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v) {
+//                PopupWindow pop = new PopupWindow();
+//                View view = View.inflate(PatientDetailsActivity.this,R.layout.delete_patient_button,null);
+//                view.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//
+//                    }
+//                });
+//                pop.setContentView(view);
+//                pop.showAsDropDown();
+//            }
+//        });
     }
 
     @Override
@@ -124,13 +158,11 @@ public class PatientDetailsActivity extends BaseTitleActivity implements View.On
                 break;
             case R.id.bAddCaseReport:
                 intent = new Intent(this, AddCaseReportActivity.class);
+                intent.putExtra(KEY_PATIENT,patient);
+                startActivityForResult(intent,REQ_ADD_CASE_REPORT);
                 break;
             case R.id.bSelectNewFollowUpForPatient:
                 break;
-        }
-        if (intent != null) {
-            intent.putExtra(KEY_PATIENT,patient);
-            startActivity(intent);
         }
     }
 
@@ -141,6 +173,14 @@ public class PatientDetailsActivity extends BaseTitleActivity implements View.On
             patientTreatInfoArrayList.clear();
             patientTreatInfoArrayList.addAll((ArrayList<PatientTreatInfo>) result);
             patientTreatInfoAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQ_ADD_CASE_REPORT && resultCode == RESULT_OK){
+            refreshTreatInfoList();
         }
     }
 }

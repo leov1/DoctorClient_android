@@ -4,13 +4,13 @@ package com.hxqydyl.app.ys.bean.followupform;
  * Created by white_ash on 2016/3/27.
  */
 public class WeightRecord extends FollowUpFormOneRecord{
-    private int weight;
+    private String weight;
 
-    public int getWeight() {
+    public String getWeight() {
         return weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(String weight) {
         this.weight = weight;
     }
 }

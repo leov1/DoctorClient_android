@@ -25,6 +25,7 @@
             android:paddingLeft="@dimen/space_5"
             android:paddingRight="@dimen/space_5"
             android:paddingTop="@dimen/space_5"
+            android:visibility="gone"
             android:text="@string/delete_patient" />
     </FrameLayout>
 
