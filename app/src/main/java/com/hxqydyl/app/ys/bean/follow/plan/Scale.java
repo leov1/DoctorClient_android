@@ -24,8 +24,8 @@ public class Scale implements Serializable {
         return JSONArray.parseArray(string, Scale.class);
     }
 
-    public static List<Scale> parse(org.json.JSONArray jsonArray) throws JSONException {
-        List<Scale> list = new ArrayList<>();
+    public static ArrayList<Scale> parse(org.json.JSONArray jsonArray) throws JSONException {
+        ArrayList<Scale> list = new ArrayList<>();
         if (jsonArray == null) return list;
         if (jsonArray == null) return list;
         for (int i=0; i<jsonArray.length(); i++) {

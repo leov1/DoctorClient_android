@@ -38,14 +38,14 @@ public class Medicine implements Serializable {
     private boolean timeNoon;
     private boolean timeNight;
     private String food;
-    private List<MedicineDosage> mdList;
+    private ArrayList<MedicineDosage> mdList;
 
     public Medicine() {
 
     }
 
     public Medicine(String name, boolean timeMorning, boolean timeNoon, boolean timeNight,
-                    String food, List<MedicineDosage> mdList) {
+                    String food, ArrayList<MedicineDosage> mdList) {
         this.name = name;
         this.timeMorning = timeMorning;
         this.timeNoon = timeNoon;
@@ -66,8 +66,8 @@ public class Medicine implements Serializable {
         return m;
     }
 
-    public static List<Medicine> parse(JSONArray jsonArray) throws JSONException {
-        List<Medicine> list = new ArrayList<>();
+    public static ArrayList<Medicine> parse(JSONArray jsonArray) throws JSONException {
+        ArrayList<Medicine> list = new ArrayList<>();
         if (jsonArray == null) return list;
         for (int i=0; i<jsonArray.length(); i++) {
             JSONObject obj = jsonArray.getJSONObject(i);
@@ -86,7 +86,7 @@ public class Medicine implements Serializable {
             if (directions.contains("晚")) {
                 m.setTimeNight(true);
             }
-            List<MedicineDosage> mdList = new ArrayList<>();
+            ArrayList<MedicineDosage> mdList = new ArrayList<>();
             String[] dosage = obj.getString("dosage").split(",");
             String[] frequency = obj.getString("frequency").split(",");
             for (int j=0; j<dosage.length; j++) {
@@ -189,11 +189,11 @@ public class Medicine implements Serializable {
         this.food = food;
     }
 
-    public List<MedicineDosage> getMdList() {
+    public ArrayList<MedicineDosage> getMdList() {
         return mdList;
     }
 
-    public void setMdList(List<MedicineDosage> mdList) {
+    public void setMdList(ArrayList<MedicineDosage> mdList) {
         this.mdList = mdList;
     }
 }

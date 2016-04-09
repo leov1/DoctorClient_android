@@ -19,11 +19,13 @@ import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.adapter.HealthTipsAdapter;
 import com.hxqydyl.app.ys.adapter.MedicineAdapter;
+import com.hxqydyl.app.ys.adapter.MedicineDosageAdapter;
 import com.hxqydyl.app.ys.adapter.PlanCheckSycleAdapter;
 import com.hxqydyl.app.ys.adapter.PlanSelfScaleAdapter;
 import com.hxqydyl.app.ys.bean.follow.plan.CheckSycle;
 import com.hxqydyl.app.ys.bean.follow.plan.HealthTips;
 import com.hxqydyl.app.ys.bean.follow.plan.Medicine;
+import com.hxqydyl.app.ys.bean.follow.plan.MedicineDosage;
 import com.hxqydyl.app.ys.bean.follow.plan.Plan;
 import com.hxqydyl.app.ys.bean.follow.plan.Scale;
 import com.hxqydyl.app.ys.http.follow.FollowCallback;
@@ -66,34 +68,33 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
 
     private ListView lvMedicine;
     private MedicineAdapter medicineAdapter;
-    private List<Medicine> medicineList;        // 药品列表
+    private ArrayList<Medicine> medicineList;        // 药品列表
 
     private SwipeMenuListView lvOtherSycle;
     private PlanCheckSycleAdapter planCheckSycleAdapter;
-    private List<CheckSycle> checkSycleList;
+    private ArrayList<CheckSycle> checkSycleList;
 
     private ListView lvSelfScale;
     private ListView lvDoctorScale;
     private PlanSelfScaleAdapter selfScaleAdapter;
     private PlanSelfScaleAdapter doctorScaleAdapter;
 
-    private List<Scale> selfScaleList;
-    private List<Scale> doctorScaleList;
+    private ArrayList<Scale> selfScaleList;
+    private ArrayList<Scale> doctorScaleList;
 
     private SwipeMenuExpandableListView elvHealthTips;
     private HealthTipsAdapter healthTipsAdapter;
-    private List<HealthTips> healthTipsList;
+    private ArrayList<HealthTips> healthTipsList;
     private LinearLayout llAddTips;
 
     private Button btnSave;
 
-    private String visitUuid = null;    //随访方案uuid
-    private String preceptName = null;
     private String from = null; // my\suggest
-    private String edit = null;
     private Plan plan = null;
 
     private FollowCallback updateFollowCallback;
+    private StringBuffer ortherMapDelete = new StringBuffer();
+    private StringBuffer healthGuideDelete = new StringBuffer();
 
     private Handler handler = new Handler() {
         @Override
@@ -110,34 +111,19 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plan_edit);
         Intent intent = getIntent();
-        visitUuid = intent.getStringExtra("visitUuid");
-        edit = intent.getStringExtra("edit");
+        plan = (Plan) intent.getSerializableExtra("plan");
         from = intent.getStringExtra("from");
-        preceptName = intent.getStringExtra("preceptName");
-        if ("edit".equals(edit)) {
-            if (StringUtils.isNotEmpty(visitUuid)) {
-                // 编辑
-                initViewOnBaseTitle("编辑方案");
-            } else {
-                initViewOnBaseTitle("新增方案");
-            }
+        if (plan != null) {
+            // 编辑
+            initViewOnBaseTitle("编辑方案");
         } else {
-            initViewOnBaseTitle(preceptName + "随访方案");
+            initViewOnBaseTitle("新增方案");
         }
-
-        setBackListener();
 
         initView();
         bindEvent();
         initUpdateFollowCallback();
-        if (StringUtils.isNotEmpty(visitUuid)) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    visitPreceptDetail(visitUuid);
-                }
-            }).run();
-        }
+        handler.sendEmptyMessage(100);
     }
 
     private void initView() {
@@ -190,12 +176,10 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
             elvHealthTips.expandGroup(i);
         }
         btnSave = (Button) findViewById(R.id.btnSave);
-        if ("edit".equals(edit)) {
-
-        }
     }
 
     private void bindEvent() {
+        setBackListener();
         tvFollowCycle.setOnClickListener(this);
         tvWeightCycle.setOnClickListener(this);
         tvEcgCycle.setOnClickListener(this);
@@ -224,6 +208,11 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                 switch (index) {
                     case 0:
+                        CheckSycle tmp = checkSycleList.get(position);
+                        if (StringUtils.isNotEmpty(tmp.getUuid())) {
+                            if (ortherMapDelete.length() > 0) ortherMapDelete.append(",");
+                            ortherMapDelete.append(tmp.getUuid());
+                        }
                         checkSycleList.remove(position);
                         planCheckSycleAdapter.notifyDataSetChanged();
                         break;
@@ -248,6 +237,11 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                 switch (index) {
                     case 0:
+                        HealthTips tmp = healthTipsList.get(position);
+                        if (StringUtils.isNotEmpty(tmp.getUuid())) {
+                            if (healthGuideDelete.length() > 0) healthGuideDelete.append(",");
+                            healthGuideDelete.append(tmp.getUuid());
+                        }
                         healthTipsList.remove(position);
                         healthTipsAdapter.notifyDataSetChanged(true);
                         break;
@@ -353,50 +347,51 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
             UIHelper.ToastMessage(this, "请添加药品信息");
             return;
         }
-//        List<Medicine> mList = new ArrayList<>();
-//        for (int i=0; i < lvMedicine.getChildCount(); i++) {
-//            MedicineAdapter.ViewHolder vh = (MedicineAdapter.ViewHolder) lvMedicine.getChildAt(i).getTag();
-//            Medicine m = new Medicine();
-//            m.setName(vh.etName.getText().toString());
-//            m.setFood(vh.tvFoodRelation.getText().toString());
-//            m.setTimeNoon(vh.boolTimeNoon);
-//            m.setTimeNight(vh.boolTimeNight);
-//            m.setTimeMorning(vh.boolTimeMorning);
-//
-//            ListView lvDosage = vh.lvDosage;
-//            List<MedicineDosage> mdList = new ArrayList<>();
-//            for (int j=0; j < lvDosage.getChildCount(); j++) {
-//                MedicineDosageAdapter.ViewHolder mdVh = (MedicineDosageAdapter.ViewHolder) lvDosage.getChildAt(j).getTag();
-//                MedicineDosage md = new MedicineDosage();
-//                md.setDay(mdVh.etDay.getText().toString());
-//                md.setSize(mdVh.etSize.getText().toString());
-//                md.setUnit(mdVh.tvUnit.getText().toString());
-//                mdList.add(md);
-//            }
-//            m.setMdList(mdList);
-//            mList.add(m);
-//        }
 
-//        List<CheckSycle> csList = new ArrayList<>();
-//        for (int i=0; i < lvOtherSycle.getChildCount(); i++) {
-//            PlanCheckSycleAdapter.ViewHolder vh = (PlanCheckSycleAdapter.ViewHolder) lvOtherSycle.getChildAt(i).getTag();
-//            CheckSycle cs = new CheckSycle();
-//            cs.setName(vh.tvName.getText().toString());
-//            cs.setPeriod(vh.tvLiverCycle.getText().toString());
-//            csList.add(cs);
-//        }
+        ArrayList<Medicine> mList = new ArrayList<>();
+        for (int i=0; i < lvMedicine.getChildCount(); i++) {
+            MedicineAdapter.ViewHolder vh = (MedicineAdapter.ViewHolder) lvMedicine.getChildAt(i).getTag();
+            Medicine m = new Medicine();
+            m.setName(vh.etName.getText().toString());
+            m.setFood(vh.tvFoodRelation.getText().toString());
+            m.setTimeNoon(vh.boolTimeNoon);
+            m.setTimeNight(vh.boolTimeNight);
+            m.setTimeMorning(vh.boolTimeMorning);
 
-//        List<HealthTips> htList = new ArrayList<>();
-//        for (int i=1; i < elvHealthTips.getChildCount(); i+=2) {
-//            HealthTipsAdapter.ChildViewHolder vh = (HealthTipsAdapter.ChildViewHolder) elvHealthTips.getChildAt(i).getTag();
-//            HealthTips ht = new HealthTips();
-//            ht.setDay(vh.etDay.getText().toString());
-//            ht.setFood(vh.etFood.getText().toString());
-//            ht.setSport(vh.etSport.getText().toString());
-//            ht.setSleep(vh.etSleep.getText().toString());
-//            ht.setOther(vh.etOther.getText().toString());
-//            htList.add(ht);
-//        }
+            ListView lvDosage = vh.lvDosage;
+            ArrayList<MedicineDosage> mdList = new ArrayList<>();
+            for (int j=0; j < lvDosage.getChildCount(); j++) {
+                MedicineDosageAdapter.ViewHolder mdVh = (MedicineDosageAdapter.ViewHolder) lvDosage.getChildAt(j).getTag();
+                MedicineDosage md = new MedicineDosage();
+                md.setDay(mdVh.etDay.getText().toString());
+                md.setSize(mdVh.etSize.getText().toString());
+                md.setUnit(mdVh.tvUnit.getText().toString());
+                mdList.add(md);
+            }
+            m.setMdList(mdList);
+            mList.add(m);
+        }
+
+        ArrayList<CheckSycle> csList = new ArrayList<>();
+        for (int i=0; i < lvOtherSycle.getChildCount(); i++) {
+            PlanCheckSycleAdapter.ViewHolder vh = (PlanCheckSycleAdapter.ViewHolder) lvOtherSycle.getChildAt(i).getTag();
+            CheckSycle cs = new CheckSycle();
+            cs.setName(vh.tvName.getText().toString());
+            cs.setPeriod(vh.tvLiverCycle.getText().toString());
+            csList.add(cs);
+        }
+
+        ArrayList<HealthTips> htList = new ArrayList<>();
+        for (int i=1; i < elvHealthTips.getChildCount(); i+=2) {
+            HealthTipsAdapter.ChildViewHolder vh = (HealthTipsAdapter.ChildViewHolder) elvHealthTips.getChildAt(i).getTag();
+            HealthTips ht = new HealthTips();
+            ht.setDay(vh.etDay.getText().toString());
+            ht.setFood(vh.etFood.getText().toString());
+            ht.setSport(vh.etSport.getText().toString());
+            ht.setSleep(vh.etSleep.getText().toString());
+            ht.setOther(vh.etOther.getText().toString());
+            htList.add(ht);
+        }
 
         plan.setPreceptName(title);
         plan.setDrugTherapy(drugTherapy);
@@ -409,15 +404,16 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
         plan.setBloodRoutine(cycleNum(tvBloodCycle));
         plan.setElectrocardiogram(cycleNum(tvEcgCycle));
 
-        plan.setMedicineList(medicineList);
-        plan.setOtherCheckSycle(checkSycleList);
-        plan.setHealthTipsList(healthTipsList);
+        plan.setMedicineList(mList);
+        plan.setOtherCheckSycle(csList);
+        plan.setHealthTipsList(htList);
         try {
             if (StringUtils.isEmpty(plan.getVisitUuid())) {
                 //新建
                 FollowPlanNet.addVisitPrecept(plan, updateFollowCallback);
             } else {
-                FollowPlanNet.editVisitPrecept(plan, updateFollowCallback);
+                FollowPlanNet.editVisitPrecept(plan, medicineAdapter.getUuidDeleteSb().toString(),
+                        ortherMapDelete.toString(), healthGuideDelete.toString(), updateFollowCallback);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -431,14 +427,14 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
             @Override
             public void onResponse(String response) {
                 super.onResponse(response);
-                UIHelper.ToastMessage(PlanEditActivity.this, "保持成功");
+                UIHelper.ToastMessage(PlanEditActivity.this, "保存成功");
                 finish();
             }
 
             @Override
             public void onFail(String status, String msg) {
                 super.onFail(status, msg);
-                UIHelper.ToastMessage(PlanEditActivity.this, "保持失败");
+                UIHelper.ToastMessage(PlanEditActivity.this, "保存失败");
             }
         };
     }
@@ -454,76 +450,9 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
                 getResources().getDisplayMetrics());
     }
 
-    private void visitPreceptDetail(String visitUuid) {
-        FollowPlanNet.visitPreceptDetail(visitUuid, new FollowCallback(){
-            @Override
-            public void onResponse(String response) {
-                super.onResponse(response);
-                response = "{" +
-                        "  \"hepatic\" : \"1\"," +
-                        "  \"selfTest\" : [" +
-                        "    {" +
-                        "      \"description\" : \"\"," +
-                        "      \"id\" : \"0001\"," +
-                        "      \"thumb\" : \"\"," +
-                        "      \"digest\" : \"\"," +
-                        "      \"createDate\" : \"2015-11-24 20:09:56\"," +
-                        "      \"total\" : 0," +
-                        "      \"url\" : \"\"," +
-                        "      \"title\" : \"综合测试2\"," +
-                        "      \"self\" : \"0\"," +
-                        "      \"cover\" : \"\"," +
-                        "      \"integral\" : 0," +
-                        "      \"media\" : \"\"," +
-                        "      \"sort\" : 1," +
-                        "      \"parentId\" : \"00\"" +
-                        "    }," +
-                        "    {" +
-                        "      \"description\" : \"\"," +
-                        "      \"id\" : \"0002\"," +
-                        "      \"thumb\" : \"\"," +
-                        "      \"digest\" : \"\"," +
-                        "      \"createDate\" : \"2015-11-24 20:10:10\"," +
-                        "      \"total\" : 0," +
-                        "      \"url\" : \"\"," +
-                        "      \"title\" : \"综合测试3\"," +
-                        "      \"self\" : \"0\"," +
-                        "      \"cover\" : \"\"," +
-                        "      \"integral\" : 0," +
-                        "      \"media\" : \"\"," +
-                        "      \"sort\" : 2," +
-                        "      \"parentId\" : \"00\"" +
-                        "    }" +
-                        "  ]," +
-                        "  \"period\" : \"6\"," +
-                        "  \"preceptName\" : \"方案名称\"," +
-                        "  \"query\" : {" +
-                        "    \"success\" : \"1\"," +
-                        "    \"message\" : \"操作成功\"" +
-                        "  }," +
-                        "  \"doctorAdvice\" : null," +
-                        "  \"electrocardiogram\" : \"5\"," +
-                        "  \"weight\" : \"4\"," +
-                        "  \"drugTherapy\" : \"药物不良咋处理\"," +
-                        "  \"sideEffects\" : \"其他治疗也行\"," +
-                        "  \"otherMap\" : [" +
-                        "" +
-                        "  ]," +
-                        "  \"visitUuid\" : \"sitPrecept0000000342\"," +
-                        "  \"bloodRoutine\" : \"2\"," +
-                        "  \"healthGuide\" : [" +
-                        "" +
-                        "  ]" +
-                        "}";
-                plan = Plan.parseDetailJson(response);
-                handler.sendEmptyMessage(100);
-            }
-        });
-    }
-
     private void updateUIData() {
         if (plan == null) {
-            UIHelper.ToastMessage(this, "数据加载失败");
+            return;
         }
         if ("my".equals(from)) {
             etTitle.setText(plan.getPreceptName());

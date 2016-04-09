@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  * Created by wangchao36 on 16/3/23.
  * 检查周期
  */
-public class CheckSycle {
+public class CheckSycle implements Serializable {
 
     public static final String[] cycleItem1 = {"1周", "2周", "3周", "4周"};
     public static final String[] cycleItem2 = {"1周", "2周", "4周", "8周"};
@@ -29,8 +30,8 @@ public class CheckSycle {
         this.period = sycle;
     }
 
-    public static List<CheckSycle> parse(org.json.JSONArray jsonArray) throws JSONException {
-        List<CheckSycle> list = new ArrayList<>();
+    public static ArrayList<CheckSycle> parse(org.json.JSONArray jsonArray) throws JSONException {
+        ArrayList<CheckSycle> list = new ArrayList<>();
         if (jsonArray == null) return list;
         for(int i=0; i<jsonArray.length(); i++) {
             JSONObject obj = jsonArray.getJSONObject(i);

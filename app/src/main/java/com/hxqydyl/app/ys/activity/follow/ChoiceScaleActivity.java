@@ -12,6 +12,7 @@ import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.adapter.ChoiceScaleAdapter;
 import com.hxqydyl.app.ys.bean.follow.plan.Scale;
+import com.hxqydyl.app.ys.http.follow.FollowApplyNet;
 import com.hxqydyl.app.ys.http.follow.FollowCallback;
 import com.hxqydyl.app.ys.http.follow.FollowPlanNet;
 import com.hxqydyl.app.ys.ui.scrollviewandgridview.MyScrollListView;
@@ -88,7 +89,8 @@ public class ChoiceScaleActivity extends BaseTitleActivity implements View.OnCli
             @Override
             public void onResponse(String response) {
                 super.onResponse(response);
-                response = "[" +
+                if (FollowApplyNet.myDev)
+                    response = "[" +
                         "{" +
                         "        \"id\": \"0000\", " +
                         "        \"title\": \"医生评测1\", " +

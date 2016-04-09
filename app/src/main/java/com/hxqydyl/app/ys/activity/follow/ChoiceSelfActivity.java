@@ -11,6 +11,7 @@ import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.adapter.ChoiceScaleAdapter;
 import com.hxqydyl.app.ys.bean.follow.plan.Scale;
+import com.hxqydyl.app.ys.http.follow.FollowApplyNet;
 import com.hxqydyl.app.ys.http.follow.FollowCallback;
 import com.hxqydyl.app.ys.http.follow.FollowPlanNet;
 import com.hxqydyl.app.ys.ui.scrollviewandgridview.MyScrollListView;
@@ -21,7 +22,7 @@ import java.util.List;
 /**
  * 自评量表选择页面
  */
-public class ChoiceSelfActivity extends BaseTitleActivity implements View.OnClickListener {
+public class    ChoiceSelfActivity extends BaseTitleActivity implements View.OnClickListener {
 
     private MyScrollListView listView;
     private ChoiceScaleAdapter adapter;
@@ -87,7 +88,8 @@ public class ChoiceSelfActivity extends BaseTitleActivity implements View.OnClic
             @Override
             public void onResponse(String response) {
                 super.onResponse(response);
-                response = "[" +
+                if (FollowApplyNet.myDev)
+                    response = "[" +
                         "{" +
                         "        \"id\": \"0000\", " +
                         "        \"title\": \"综合测试\", " +

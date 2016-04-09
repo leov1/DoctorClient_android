@@ -15,6 +15,7 @@ import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.adapter.PlanMgrAdapter;
 import com.hxqydyl.app.ys.bean.follow.plan.Plan;
 import com.hxqydyl.app.ys.bean.follow.plan.PlanBaseInfo;
+import com.hxqydyl.app.ys.http.follow.FollowApplyNet;
 import com.hxqydyl.app.ys.http.follow.FollowCallback;
 import com.hxqydyl.app.ys.http.follow.FollowPlanNet;
 import com.hxqydyl.app.ys.ui.UIHelper;
@@ -146,7 +147,8 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
             @Override
             public void onResult(String result) {
                 super.onResult(result);
-                result = "[" +
+                if (FollowApplyNet.myDev)
+                    result = "[" +
                         "{" +
                         "\"visitUuid\": \"0000\"," +
                         "\"preceptName\": \"我的方案\"," +

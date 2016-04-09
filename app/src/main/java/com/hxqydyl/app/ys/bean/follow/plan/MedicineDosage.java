@@ -1,10 +1,12 @@
 package com.hxqydyl.app.ys.bean.follow.plan;
 
+import java.io.Serializable;
+
 /**
  * Created by wangchao36 on 16/3/22.
  * 药品用量
  */
-public class MedicineDosage {
+public class MedicineDosage implements Serializable {
 
     private String day;
     private String size;

@@ -1,6 +1,7 @@
 package com.hxqydyl.app.ys.http.follow;
 
 import com.hxqydyl.app.ys.bean.follow.plan.CheckSycle;
+import com.hxqydyl.app.ys.bean.follow.plan.HealthTips;
 import com.hxqydyl.app.ys.bean.follow.plan.Medicine;
 import com.hxqydyl.app.ys.bean.follow.plan.Plan;
 import com.hxqydyl.app.ys.bean.follow.plan.Scale;
@@ -56,11 +57,14 @@ public class FollowPlanNet {
                 .addParams("weight", plan.getWeight())        //体重功能周期
                 .addParams("selfTest", Scale.parseIdStr(plan.getSelfTestList()))      ///自评量表
                 .addParams("doctorTest", Scale.parseIdStr(plan.getDoctorTestList()))    //医评量表
+                .addParams("healthGuide", HealthTips.toJson(plan.getHealthTipsList()))    //健康小贴士
                 .build()
                 .execute(callback);
     }
 
-    public static void editVisitPrecept(Plan plan, FollowCallback callback) throws JSONException {
+    public static void editVisitPrecept(Plan plan, String doctorAdviceDelete,
+                                        String ortherMapDelete, String healthGuideDelete,
+                                        FollowCallback callback) throws JSONException {
         OkHttpUtils.post().url(FollowApplyNet.baseURL
                 + "app/pub/doctor/1.0/editVisitPrecept")
                 .addParams("doctorUuid", LoginManager.getDoctorUuid())        //医生ID
@@ -77,6 +81,10 @@ public class FollowPlanNet {
                 .addParams("weight", plan.getWeight())        //体重功能周期
                 .addParams("selfTest", Scale.parseIdStr(plan.getSelfTestList()))      ///自评量表
                 .addParams("doctorTest", Scale.parseIdStr(plan.getDoctorTestList()))    //医评量表
+                .addParams("healthGuide", HealthTips.toJson(plan.getHealthTipsList()))    //健康小贴士
+                .addParams("healthGuideDelete", healthGuideDelete)    //
+                .addParams("doctorAdviceDelete", doctorAdviceDelete)    //
+                .addParams("ortherMapDelete", ortherMapDelete)    //
                 .build()
                 .execute(callback);
     }

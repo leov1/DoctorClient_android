@@ -18,7 +18,7 @@
             android:id="@+id/etName"
             android:text=""
             android:background="@color/transparent"
-            android:gravity="center_vertical|left"
+            android:gravity="left|top"
             android:textSize="@dimen/text_size_16"
             android:paddingLeft="5dp"
             android:layout_width="0dp"

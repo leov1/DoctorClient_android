@@ -36,12 +36,14 @@ public class MedicineAdapter extends BaseAdapter {
     private List<Medicine> list;
     private ListView listView;
     private boolean isEdit;
+    private StringBuffer uuidDeleteSb;
 
     public MedicineAdapter(Context context, List<Medicine> list, ListView listView, boolean isEdit){
         this.context = context;
         this.list = list;
         this.listView = listView;
         this.isEdit = isEdit;
+        uuidDeleteSb = new StringBuffer();
     }
     @Override
     public int getCount() {
@@ -65,7 +67,7 @@ public class MedicineAdapter extends BaseAdapter {
                 Medicine m = list.get(i);
                 m.setName(vh.etName.getText().toString());
 
-                List<MedicineDosage> mdList = m.getMdList();
+                ArrayList<MedicineDosage> mdList = m.getMdList();
                 if (mdList == null) {
                     mdList = new ArrayList<>();
                     m.setMdList(mdList);
@@ -109,7 +111,7 @@ public class MedicineAdapter extends BaseAdapter {
         timeSelected(holder.tvTimeNoon, m.isTimeNoon());
         timeSelected(holder.tvTimeNight, m.isTimeNight());
 
-        List<MedicineDosage> mdList = m.getMdList();
+        ArrayList<MedicineDosage> mdList = m.getMdList();
         MedicineDosageAdapter adapter;
         if (mdList == null) {
             mdList = new ArrayList<>();
@@ -129,6 +131,11 @@ public class MedicineAdapter extends BaseAdapter {
             holder.ibDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Medicine m = list.get(position);
+                    if (StringUtils.isNotEmpty(m.getUuid())) {
+                        if (uuidDeleteSb.length() > 0) uuidDeleteSb.append(",");
+                        uuidDeleteSb.append(m.getUuid());
+                    }
                     list.remove(position);
                     MedicineAdapter.this.notifyDataSetChanged(true);
                 }
@@ -196,6 +203,10 @@ public class MedicineAdapter extends BaseAdapter {
                 timeSelected(tv, bool);
             }
         });
+    }
+
+    public StringBuffer getUuidDeleteSb() {
+        return uuidDeleteSb;
     }
 
     public final class ViewHolder {

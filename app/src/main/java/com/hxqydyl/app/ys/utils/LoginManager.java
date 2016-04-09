@@ -25,8 +25,7 @@ public class LoginManager {
      * @return
      */
     public static String getDoctorUuid() {
-//        return SharedPreferences.getInstance().getString("doctorUuid", "");
-        return "a9bedf064707480eaaa79388b227adb4";
+        return SharedPreferences.getInstance().getString("doctorUuid", "");
     }
 
     /**

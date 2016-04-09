@@ -21,6 +21,8 @@ import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.http.follow.FollowApplyNet;
 import com.hxqydyl.app.ys.http.follow.FollowCallback;
 import com.hxqydyl.app.ys.http.follow.FollowPlanNet;
+import com.hxqydyl.app.ys.ui.UIHelper;
+import com.hxqydyl.app.ys.utils.DialogUtils;
 import com.hxqydyl.app.ys.utils.LoginManager;
 
 import java.util.ArrayList;
@@ -45,11 +47,15 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
     private List<PlanBaseInfo> planList;
     private List<PatientGroup> patientGroupList;
 
+    private String applyUuid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_follow_apply_ok);
         initViewOnBaseTitle("选择随访方案");
+        applyUuid = getIntent().getStringExtra("applyUuid");
+
         setBackListener();
         initView();
         initEvent();
@@ -96,13 +102,21 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
                 startActivityForResult(planIntent, 0);
                 break;
             case R.id.btnApply:
-                Toast.makeText(this, "点击确定了", Toast.LENGTH_SHORT);
+                apply();
                 break;
         }
     }
 
     private void addGroupDialog() {
-
+        DialogUtils.showAddPatientGroupDialog(this, new DialogUtils.SavePatientGroupListener() {
+            @Override
+            public void onSaveGroup(String groupName) {
+                PatientGroup pg = new PatientGroup();
+                pg.setGroupName(groupName);
+                patientGroupList.add(pg);
+                patientGroupSelectAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     private void getMyVisitPreceptList() {
@@ -110,7 +124,8 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
             @Override
             public void onResult(String result) {
                 super.onResult(result);
-                result = "[" +
+                if (FollowApplyNet.myDev)
+                    result = "[" +
                         "{" +
                         "\"visitUuid\": \"0000\"," +
                         "\"preceptName\": \"推荐你就选我呗\"," +
@@ -139,4 +154,16 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
         }
     }
 
+    private void apply() {
+        showDialog("正在提交");
+        FollowApplyNet.addVisitRecord(applyUuid, applyUuid, new FollowCallback(){
+            @Override
+            public void onResult(String result) {
+                super.onResult(result);
+                dismissDialog();
+                UIHelper.ToastMessage(FollowApplyOkActivity.this, "保存成功");
+                finish();
+            }
+        });
+    }
 }

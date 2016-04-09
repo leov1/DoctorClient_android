@@ -64,7 +64,8 @@ public class PlanPatientListActivity extends BaseTitleActivity
             @Override
             public void onResult(String result) {
                 super.onResult(result);
-                result = "[" +
+                if (FollowApplyNet.myDev)
+                    result = "[" +
                         "    {" +
                         "        \"imgUrl\": \"http://101.201.150.49:7500/dev1/0/000/001/0000001978.fid\"," +
                         "        \"realName\": \"小马\"," +
