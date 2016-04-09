@@ -1,6 +1,7 @@
 package com.hxqydyl.app.ys.fragment;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.hxqydyl.app.ys.activity.CommentWebActivity;
 import com.hxqydyl.app.ys.utils.Constants;
@@ -16,7 +17,15 @@ public class PersonalFrg extends BaseWebFragment implements BaseWebFragment.DoJs
         super.onActivityCreated(savedInstanceState);
         initViewOnBaseTitle("个人中心", view);
         setCustomInterceptor(this);
-        webView.loadUrl(Constants.USER_INFO);
+        rightImg.setVisibility(View.VISIBLE);
+        webView.loadUrl(Constants.USER_INFO+ LoginManager.getDoctorUuid());
+
+        rightImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommentWebActivity.toCommentWeb(Constants.USER_SETTING,null,getActivity(),true);
+            }
+        });
     }
 
     @Override

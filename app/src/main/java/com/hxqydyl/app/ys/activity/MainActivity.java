@@ -107,6 +107,7 @@ public class MainActivity extends BaseFragmentActivity {
     private void showFragment() {
         if (currIndex == 3 && !LoginManager.isHasLogin()) {
             UIHelper.showLogin(MainActivity.this);
+           // return;
         }
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

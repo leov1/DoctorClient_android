@@ -50,8 +50,8 @@
             android:layout_height="45dp"
             android:layout_marginTop="@dimen/space_26"
             android:hint="@string/password"
-            android:inputType="number"
-            android:maxLength="11"
+            android:password="true"
+            android:digits="0123456789abcdefghigklmnopqrstuvwxyz"
             android:paddingLeft="@dimen/space_15" />
 
         <RelativeLayout
