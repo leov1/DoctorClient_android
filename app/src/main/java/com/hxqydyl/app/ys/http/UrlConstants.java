@@ -86,13 +86,9 @@ public class UrlConstants {
     // 查询患者所填写的随访表单详情 (版本号，表单uuid)（医生端随访模块）（1）Accept = application/json；
     public static final String GET_FOLLOW_UP_FORM_DETAILS = "/mobile/doctor/visit/visitrecord/%s/view/%s";
 
-    // 获取医评与自评列表
-    public static final String GET_MEASURE_FORM_SELF = "";
-    public static final String GET_MEASURE_FORM_DOCTOR = "";
-
-    // 获取病情变化列表（暂缺）
+    // 获取病情变化列表（版本号）
     public static final String GET_ILLNESS_CHANGE_HISTORY_LIST = "/mobile/doctor/visit/illness/%s/search";
-    // 根据id查询病情变化详情（暂缺）
+    // 根据id查询病情变化详情（版本号，变化记录id）
     public static final String GET_ILLNESS_CHANGE_DETAILS = "/mobile/doctor/visit/illness/%s/view/%s";
 
     // 获取患者详细个人信息（版本号）

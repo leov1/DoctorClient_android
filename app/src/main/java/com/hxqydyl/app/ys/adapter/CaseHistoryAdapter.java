@@ -2,6 +2,7 @@ package com.hxqydyl.app.ys.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,15 +24,17 @@ public class CaseHistoryAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<Pic> picList;
     private ImageLoader loader;
+    private DeleteListener listener;
     private DisplayImageOptions options = new DisplayImageOptions.Builder()
             .cacheInMemory(true)
             .cacheOnDisk(true)
             .bitmapConfig(Bitmap.Config.RGB_565)
             .build();
 
-    public CaseHistoryAdapter(Context context, ArrayList<Pic> picList) {
+    public CaseHistoryAdapter(Context context, ArrayList<Pic> picList,DeleteListener listener) {
         this.context = context;
         this.picList = picList;
+        this.listener = listener;
     }
 
     @Override
@@ -50,13 +53,31 @@ public class CaseHistoryAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.case_history_list_item, null);
         }
         final Pic pic = (Pic) getItem(position);
         ImageView iv = BaseViewHolder.get(convertView, R.id.iv);
         ImageLoader.getInstance().displayImage(pic.getDisplayThumbUri(),iv,options);
+        ImageView ivDeletePic = BaseViewHolder.get(convertView,R.id.ivDeletePic);
+        if(pic.isCanDel()){
+            ivDeletePic.setVisibility(View.VISIBLE);
+            ivDeletePic.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    if(listener!=null){
+                        listener.onDeleteClick(position);
+                    }
+                }
+            });
+        }else{
+            ivDeletePic.setVisibility(View.GONE);
+        }
         return convertView;
+    }
+
+    public interface DeleteListener{
+        void onDeleteClick(int position);
     }
 }

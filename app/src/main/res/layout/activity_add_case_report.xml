@@ -157,8 +157,8 @@
                             style="@style/add_case_report_left"
                             android:text="@string/treatment_time" />
 
-                        <EditText
-                            android:id="@+id/etTreatmentTime"
+                        <TextView
+                            android:id="@+id/tvTreatmentTime"
                             style="@style/add_case_report_right"
                             android:text="2016-03-25" />
                     </TableRow>
@@ -171,8 +171,8 @@
                             style="@style/add_case_report_left"
                             android:text="@string/be_in_hospital_time" />
 
-                        <EditText
-                            android:id="@+id/etBeInHospitalTime"
+                        <TextView
+                            android:id="@+id/tvBeInHospitalTime"
                             style="@style/add_case_report_right"
                             android:text="2016-03-25" />
                     </TableRow>
@@ -196,8 +196,8 @@
                             style="@style/add_case_report_left"
                             android:text="@string/out_hospital_time" />
 
-                        <EditText
-                            android:id="@+id/etOutHospitalTime"
+                        <TextView
+                            android:id="@+id/tvOutHospitalTime"
                             style="@style/add_case_report_right"
                             android:text="2016-03-25" />
 

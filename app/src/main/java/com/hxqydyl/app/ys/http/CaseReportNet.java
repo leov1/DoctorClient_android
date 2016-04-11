@@ -486,7 +486,7 @@ public class CaseReportNet extends BaseNet {
         caseReport.setInHospitalTime(obj.optString("startTime"));
         caseReport.setOutHospitalTime(obj.optString("endTime"));
         caseReport.setDoctorName(obj.optString("realName"));
-        caseReport.setHospitalName(obj.optString("hospitalName"));
+        caseReport.setHospitalName(obj.optString("hospitalUuid"));
         for (int i = 1; i <= 5; i++) {
             String image = obj.optString("image" + i);
             if (!TextUtils.isEmpty(image) && !image.equals(null)) {

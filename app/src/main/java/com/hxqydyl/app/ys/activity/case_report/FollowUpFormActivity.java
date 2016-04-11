@@ -8,6 +8,7 @@ import android.widget.ExpandableListView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+import com.hxqydyl.app.ys.activity.patient.PatientAdviceInfoActivity;
 import com.hxqydyl.app.ys.activity.patient.PatientDetailsActivity;
 import com.hxqydyl.app.ys.activity.patient.PatientSimpleInfoViewHolder;
 import com.hxqydyl.app.ys.adapter.FollowUpFormAdapter;
@@ -208,6 +209,9 @@ public class FollowUpFormActivity extends BaseTitleActivity implements View.OnCl
                 finish();
                 break;
             case R.id.bDoctorAdvice:
+                Intent intent = new Intent(this,PatientAdviceInfoActivity.class);
+                intent.putExtra("customerUuid",patient.getId());
+                startActivity(intent);
                 break;
         }
     }

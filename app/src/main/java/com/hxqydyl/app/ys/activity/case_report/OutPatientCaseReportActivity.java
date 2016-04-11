@@ -63,7 +63,7 @@ public class OutPatientCaseReportActivity extends BaseTitleActivity implements V
         InjectUtils.injectView(this);
         patientSimpleInfo.setPatient(patient);
 
-        caseHistoryAdapter = new CaseHistoryAdapter(this,picList);
+        caseHistoryAdapter = new CaseHistoryAdapter(this,picList,null);
         gvPatientCaseHistory.setAdapter(caseHistoryAdapter);
 
         caseReportNet = new CaseReportNet(this);
