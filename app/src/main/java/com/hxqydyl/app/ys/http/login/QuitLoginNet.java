@@ -2,6 +2,7 @@ package com.hxqydyl.app.ys.http.login;
 
 import com.hxqydyl.app.ys.bean.Query;
 import com.hxqydyl.app.ys.http.JsonUtils;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.hxqydyl.app.ys.utils.LoginManager;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -31,7 +32,7 @@ public class QuitLoginNet {
 
     public void quit() {
         OkHttpUtils.post()
-                .url(Constants.STAFF_OUT_OF)
+                .url(UrlConstants.getWholeApiUrl(UrlConstants.STAFF_OUT_OF))
                 .addParams("doctorUuid", LoginManager.getDoctorUuid())
                 .build()
                 .execute(new StringCallback() {

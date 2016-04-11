@@ -2,6 +2,7 @@ package com.hxqydyl.app.ys.http.register;
 
 import com.hxqydyl.app.ys.bean.register.CityResultBean;
 import com.hxqydyl.app.ys.http.JsonUtils;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -30,7 +31,7 @@ public class CityNet {
     public void obtainCity( String code){
         OkHttpUtils
                 .get()
-                .url(Constants.GET_CITY)
+                .url(UrlConstants.getWholeApiUrl(UrlConstants.GET_CITY))
                 .addParams("provinceUuid", code)
                 .build()
                 .execute(new StringCallback() {

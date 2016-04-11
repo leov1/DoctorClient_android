@@ -69,7 +69,6 @@ public class MassActivity extends BaseTitleActivity implements View.OnClickListe
       switch (v.getId()){
           case R.id.btn_choice_patient:
               intent = new Intent(MassActivity.this,PatientSelectActivity.class);
-              intent.putExtra("code","mass");
               startActivityForResult(intent, 0);
               break;
           case R.id.btn_send:
@@ -85,7 +84,7 @@ public class MassActivity extends BaseTitleActivity implements View.OnClickListe
               System.out.println("id---"+strsUuid);
               System.out.println("doc---"+LoginManager.getDoctorUuid());
               showDialog("发送中...");
-              sendMsgToPaNet.sendMsgToPa(strsUuid, LoginManager.getDoctorUuid(),"ddddd");
+              sendMsgToPaNet.sendMsgToPa(strsUuid, LoginManager.getDoctorUuid(),edit_msg.getText().toString());
               break;
       }
     }

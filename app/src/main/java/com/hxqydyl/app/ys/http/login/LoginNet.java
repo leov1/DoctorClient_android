@@ -3,6 +3,7 @@ package com.hxqydyl.app.ys.http.login;
 import com.hxqydyl.app.ys.bean.register.DoctorInfo;
 import com.hxqydyl.app.ys.bean.register.DoctorResult;
 import com.hxqydyl.app.ys.http.JsonUtils;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.hxqydyl.app.ys.utils.StringUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -35,7 +36,7 @@ public class LoginNet {
     public void loginData(String mobile,String password){
       OkHttpUtils
                 .post()
-                .url(Constants.LOGIN_URL)
+                .url(UrlConstants.getWholeApiUrl(UrlConstants.LOGIN_URL))
                 .addParams("mobile", mobile)
                 .addParams("password", password)
                 .addParams("callback",Constants.CALLBACK)

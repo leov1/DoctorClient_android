@@ -3,6 +3,7 @@ package com.hxqydyl.app.ys.http.homepage;
 import com.hxqydyl.app.ys.bean.register.DoctorInfoNew;
 import com.hxqydyl.app.ys.bean.register.DoctorResultNew;
 import com.hxqydyl.app.ys.http.JsonUtils;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.hxqydyl.app.ys.utils.SharedPreferences;
 import com.hxqydyl.app.ys.utils.StringUtils;
@@ -32,7 +33,7 @@ public class GainDoctorInfoNet {
          System.out.println("response--->"+doctorUuid);
           OkHttpUtils
                   .get()
-                  .url(Constants.GET_DOCTOR_INFO)
+                  .url(UrlConstants.getWholeApiUrl(UrlConstants.GET_DOCTOR_INFO))
                   .addParams("doctorUuid", doctorUuid)
                   .addParams("callback", Constants.CALLBACK)
                   .build()

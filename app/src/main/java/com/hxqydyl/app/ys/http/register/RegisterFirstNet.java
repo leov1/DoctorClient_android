@@ -2,6 +2,7 @@ package com.hxqydyl.app.ys.http.register;
 
 import com.hxqydyl.app.ys.bean.register.RegisterFirst;
 import com.hxqydyl.app.ys.http.JsonUtils;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.hxqydyl.app.ys.utils.StringUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -33,7 +34,7 @@ public class RegisterFirstNet {
 
         OkHttpUtils
                 .post()
-                .url(Constants.REGISTER_ONE)
+                .url(UrlConstants.getWholeApiUrl(UrlConstants.REGISTER_ONE))
                 .addParams("mobile", mobile)
                 .addParams("password", password)
                 .addParams("captcha", captcha)

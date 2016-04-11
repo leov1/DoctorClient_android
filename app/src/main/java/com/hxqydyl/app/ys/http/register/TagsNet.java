@@ -2,6 +2,7 @@ package com.hxqydyl.app.ys.http.register;
 
 import com.hxqydyl.app.ys.bean.register.TagsResultBean;
 import com.hxqydyl.app.ys.http.JsonUtils;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -28,11 +29,10 @@ public class TagsNet {
     }
 
     public void obtainTags(){
-        System.out.println("tagsResultBean--->" + Constants.GET_TAGS);
 
         OkHttpUtils
                 .post()
-                .url(Constants.GET_TAGS)
+                .url(UrlConstants.getWholeApiUrl(UrlConstants.GET_TAGS))
                 .build()
                 .execute(new StringCallback() {
                     @Override

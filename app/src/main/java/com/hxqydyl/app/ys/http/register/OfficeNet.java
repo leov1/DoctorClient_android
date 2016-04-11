@@ -2,6 +2,7 @@ package com.hxqydyl.app.ys.http.register;
 
 import com.hxqydyl.app.ys.bean.register.OfficeResultBean;
 import com.hxqydyl.app.ys.http.JsonUtils;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -31,7 +32,7 @@ public class OfficeNet {
         //获取科室
         OkHttpUtils
                 .get()
-                .url(Constants.GET_DEPARTMENT)
+                .url(UrlConstants.getWholeApiUrl(UrlConstants.GET_DEPARTMENT))
                 .addParams("callback", Constants.CALLBACK)
                 .build()
                 .execute(new StringCallback() {

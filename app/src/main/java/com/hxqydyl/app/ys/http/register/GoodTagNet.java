@@ -3,6 +3,7 @@ package com.hxqydyl.app.ys.http.register;
 import com.hxqydyl.app.ys.bean.register.AddressParamBean;
 import com.hxqydyl.app.ys.bean.register.RegisterFirst;
 import com.hxqydyl.app.ys.http.JsonUtils;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -32,7 +33,7 @@ public class GoodTagNet {
         System.out.println("request--->"+addressParamBean.toString());
         OkHttpUtils
                 .post()
-                .url(Constants.REGISTER_THREE)
+                .url(UrlConstants.getWholeApiUrl(UrlConstants.REGISTER_THREE))
                 .addParams("doctorUuid", addressParamBean.getDoctorUuid())
                 .addParams("province", addressParamBean.getProvinceCode())
                 .addParams("city", addressParamBean.getCityCode())

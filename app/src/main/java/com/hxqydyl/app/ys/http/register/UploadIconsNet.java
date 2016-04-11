@@ -3,6 +3,7 @@ package com.hxqydyl.app.ys.http.register;
 import com.hxqydyl.app.ys.bean.Query;
 import com.hxqydyl.app.ys.bean.register.IconBean;
 import com.hxqydyl.app.ys.http.JsonUtils;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.builder.PostFormBuilder;
@@ -38,7 +39,7 @@ public class UploadIconsNet {
         System.out.println("response--->" + imgUris.get(0));
 
         PostFormBuilder postFormBuilder = OkHttpUtils.post()
-                .url(Constants.UPLOAD_IMGS)
+                .url(UrlConstants.getWholeApiUrl(UrlConstants.UPLOAD_IMGS))
                 .addParams("thumbnail", "false")
                 .addHeader("accept", "text/html;q=0.9, text/plain;q=0.8, text/xml, application/xml, application/json, application/xhtml+xml, application/octet-stream, */*;q=0.5");
 

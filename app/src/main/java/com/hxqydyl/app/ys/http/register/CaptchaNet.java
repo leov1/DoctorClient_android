@@ -2,6 +2,7 @@ package com.hxqydyl.app.ys.http.register;
 
 import com.hxqydyl.app.ys.bean.register.CaptchaResult;
 import com.hxqydyl.app.ys.http.JsonUtils;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -30,7 +31,7 @@ public class CaptchaNet {
         System.out.println("request--->");
         OkHttpUtils
                 .get()
-                .url(Constants.GET_VERIFICATION_CODE)
+                .url(UrlConstants.getWholeApiUrl(UrlConstants.GET_VERIFICATION_CODE))
                 .addParams("mobile", mobile)
                 .build()
                 .execute(new StringCallback() {

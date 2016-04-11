@@ -3,6 +3,7 @@ package com.hxqydyl.app.ys.http.homepage;
 import com.google.gson.Gson;
 import com.hxqydyl.app.ys.bean.homepage.PageIconResult;
 import com.hxqydyl.app.ys.http.JsonUtils;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.hxqydyl.app.ys.utils.SharedPreferences;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -29,7 +30,7 @@ public class PagerNet {
     }
 
     public void getPager(){
-        OkHttpUtils.get().url(Constants.GET_PLATFORMPIC)
+        OkHttpUtils.get().url(UrlConstants.getWholeApiUrl(UrlConstants.GET_PLATFORMPIC))
                 .addParams("adUuid","customerLunBoTuId")
                 .build().execute(new StringCallback() {
             @Override

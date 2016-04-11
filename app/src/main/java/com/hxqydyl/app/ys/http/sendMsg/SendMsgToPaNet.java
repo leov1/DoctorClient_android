@@ -2,6 +2,7 @@ package com.hxqydyl.app.ys.http.sendMsg;
 
 import com.hxqydyl.app.ys.bean.Query;
 import com.hxqydyl.app.ys.http.JsonUtils;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -28,7 +29,7 @@ public class SendMsgToPaNet {
 
     public void sendMsgToPa(String customerUuids,String doctorUuid,String content){
 
-        OkHttpUtils.get().url(Constants.ADD_INNER_MSG)
+        OkHttpUtils.get().url(UrlConstants.getWholeApiUrl(UrlConstants.ADD_INNER_MSG))
                 .addParams("customerUuids",customerUuids)
                 .addParams("doctorUuid",doctorUuid)
                 .addParams("content",content)

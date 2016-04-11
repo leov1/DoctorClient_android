@@ -2,6 +2,7 @@ package com.hxqydyl.app.ys.http.register;
 
 import com.hxqydyl.app.ys.bean.Query;
 import com.hxqydyl.app.ys.http.JsonUtils;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -29,7 +30,7 @@ public class SaveUserIconNet {
     public void saveUserIcon(String doctorUuid,String userIconList){
         System.out.println("response---->"+userIconList);
         OkHttpUtils.get()
-                .url(Constants.SAVE_USER_ICON_LIST)
+                .url(UrlConstants.getWholeApiUrl(UrlConstants.SAVE_USER_ICON_LIST))
                 .addParams("doctorUuid",doctorUuid)
                 .addParams("userIconList",userIconList)
                 .build().execute(new StringCallback() {

@@ -2,6 +2,7 @@ package com.hxqydyl.app.ys.http.sendMsg;
 
 import com.hxqydyl.app.ys.bean.article.ArticleResult;
 import com.hxqydyl.app.ys.http.JsonUtils;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.hxqydyl.app.ys.utils.LoginManager;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -28,7 +29,7 @@ public class PatientGroupNet {
     }
 
     public void getPatientGroup(String doctorUuid) {
-        OkHttpUtils.get().url(Constants.GET_PATIENT_GROUP)
+        OkHttpUtils.get().url(UrlConstants.getWholeApiUrl(UrlConstants.GET_PATIENT_GROUP))
                 .addParams("doctorUuid", "6d3f252bc13e432f9fdc8a81a2ff425a")
                 .build().execute(new StringCallback() {
             @Override

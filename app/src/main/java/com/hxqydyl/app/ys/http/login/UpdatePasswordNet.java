@@ -2,6 +2,7 @@ package com.hxqydyl.app.ys.http.login;
 
 import com.hxqydyl.app.ys.bean.Query;
 import com.hxqydyl.app.ys.http.JsonUtils;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.hxqydyl.app.ys.utils.StringUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -33,7 +34,7 @@ public class UpdatePasswordNet {
     public void updatePassword(String mobile, String password, String captcha) {
         OkHttpUtils
                 .post()
-                .url(Constants.UPDATE_PASSWORD)
+                .url(UrlConstants.getWholeApiUrl(UrlConstants.UPDATE_PASSWORD))
                 .addParams("mobile", mobile)
                 .addParams("password", password)
                 .addParams("captcha", captcha)

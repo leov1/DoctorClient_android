@@ -2,6 +2,7 @@ package com.hxqydyl.app.ys.http.register;
 
 import com.hxqydyl.app.ys.bean.register.RegisterFirst;
 import com.hxqydyl.app.ys.http.JsonUtils;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -31,7 +32,7 @@ public class RegisterSecNet {
         System.out.println("response---->");
         OkHttpUtils
                 .post()
-                .url(Constants.REGISTER_TWO)
+                .url(UrlConstants.getWholeApiUrl(UrlConstants.REGISTER_TWO))
                 .addParams("uuid", uuid)
                 .addParams("email", email)
                 .addParams("sex", sex)

@@ -47,7 +47,7 @@ public class BaseNetHttp {
     }
 
     public <T> void toGet(final RequestModel<T> requestModel) {
-        GetBuilder getBuilder = OkHttpUtils.get().url(Constants.GET_CITY);
+        GetBuilder getBuilder = OkHttpUtils.get().url("");
         try {
             addParams(requestModel.getMaps(), getBuilder);
         } catch (Exception e) {

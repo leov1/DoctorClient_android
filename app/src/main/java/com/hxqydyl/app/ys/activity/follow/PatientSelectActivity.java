@@ -32,7 +32,7 @@ import okhttp3.Call;
 /**
  * 挑选患者页面
  */
-public class PatientSelectActivity extends BaseTitleActivity implements View.OnClickListener,PatientGroupNet.OnPatientGroupListener{
+public class PatientSelectActivity extends BaseTitleActivity implements View.OnClickListener, PatientGroupNet.OnPatientGroupListener {
 
     private ExpandableListView expand_lv;
     private View mHeader;
@@ -70,9 +70,9 @@ public class PatientSelectActivity extends BaseTitleActivity implements View.OnC
         patientGroupNet = new PatientGroupNet();
         patientGroupNet.setListener(this);
 
-        mHeader = View.inflate(this,R.layout.head_textview,null);
+        mHeader = View.inflate(this, R.layout.head_textview, null);
         text_head = (TextView) mHeader.findViewById(R.id.text_head);
-        mFooter = View.inflate(this,R.layout.foot_patient_layout,null);
+        mFooter = View.inflate(this, R.layout.foot_patient_layout, null);
         checkbox_all = (CheckBox) mFooter.findViewById(R.id.checkbox_all);
         btn_send_patient = (Button) mFooter.findViewById(R.id.btn_send_patient);
     }
@@ -80,7 +80,7 @@ public class PatientSelectActivity extends BaseTitleActivity implements View.OnC
     private void initViews() {
         expand_lv = (ExpandableListView) findViewById(R.id.expand_lv);
         System.out.println("groups---->" + groups.toString());
-        adapter = new PatientSelectAdapter(this,groups,checkbox_all);
+        adapter = new PatientSelectAdapter(this, groups, checkbox_all);
         expand_lv.setGroupIndicator(null);
         expand_lv.addHeaderView(mHeader);
         expand_lv.addFooterView(mFooter);
@@ -90,30 +90,26 @@ public class PatientSelectActivity extends BaseTitleActivity implements View.OnC
     /**
      * 获取网络数据
      */
-    private void getDatas(){
-        intent = getIntent();
-        if (intent != null){
-            code = intent.getStringExtra("code");
-        }
+    private void getDatas() {
         patientGroupNet.getPatientGroup(LoginManager.getDoctorUuid());
     }
 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_send_patient:
                 selectPatients();
-                if (strsUuid.size() == 0 ){
-                   UIHelper.ToastMessage(PatientSelectActivity.this,"请选择患者");
-                   return;
+                if (strsUuid.size() == 0) {
+                    UIHelper.ToastMessage(PatientSelectActivity.this, "请选择患者");
+                    return;
                 }
-                if (code.equals("mass")){
-                    intent = new Intent(PatientSelectActivity.this,MassActivity.class);
-                    intent.putExtra("customerUuids",StringUtils.listToString(strsUuid,','));
-                    intent.putExtra("customerNames",StringUtils.listToString(strName,','));
-                }
-                setResult(RESULT_OK,intent);
+
+                intent = new Intent(PatientSelectActivity.this, MassActivity.class);
+                intent.putExtra("customerUuids", StringUtils.listToString(strsUuid, ','));
+                intent.putExtra("customerNames", StringUtils.listToString(strName, ','));
+
+                setResult(RESULT_OK, intent);
                 finish();
                 break;
         }
@@ -121,14 +117,15 @@ public class PatientSelectActivity extends BaseTitleActivity implements View.OnC
 
     /**
      * 将选择的人放在一起
+     *
      * @return
      */
-    private void selectPatients(){
-        for (int i=0;i<groups.size();i++){
+    private void selectPatients() {
+        for (int i = 0; i < groups.size(); i++) {
             Group group = groups.get(i);
-            for (int j = 0;j<group.getChildrenCount();j++){
+            for (int j = 0; j < group.getChildrenCount(); j++) {
                 Child child = group.getChildItem(j);
-                if (child.getChecked()){
+                if (child.getChecked()) {
                     strName.add(child.getCustomerName());
                     strsUuid.add(child.getCustomerUuid());
                 }
@@ -139,17 +136,17 @@ public class PatientSelectActivity extends BaseTitleActivity implements View.OnC
     @Override
     public void patientGroupSuc(ArticleResult articleResult) {
         if (articleResult == null) return;
-        if (articleResult.getQuery().getSuccess().equals("1")){
+        if (articleResult.getQuery().getSuccess().equals("1")) {
             groups = articleResult.getGroups();
             System.out.println("group--->" + groups.toString());
             adapter.updataUI(groups);
-           return;
+            return;
         }
-        UIHelper.ToastMessage(PatientSelectActivity.this,"请求出错");
+        UIHelper.ToastMessage(PatientSelectActivity.this, "请求出错");
     }
 
     @Override
     public void patientGroupFail() {
-        UIHelper.ToastMessage(PatientSelectActivity.this,"请求出错");
+        UIHelper.ToastMessage(PatientSelectActivity.this, "请求出错");
     }
 }

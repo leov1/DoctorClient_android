@@ -97,4 +97,51 @@ public class UrlConstants {
     // 获取患者详细个人信息（版本号）
     public static final String GET_PATIENT_PERSIONAL_INFO = "/mobile/doctor/visit/visitrecord/%s/getCustomerInfo";
 
+    //患者分组
+    public static String GET_PATIENT_GROUP = "/app/service/customer/1.0/getGroupAndCustomer";
+    //医生群发消息给患者
+    public static String ADD_INNER_MSG = "/app/service/customer/1.0/addInnerMessage";
+
+    //登陆
+    public static String LOGIN_URL = "/app/pub/doctor/gotoLogin";
+
+    //获取轮播图
+    public static String GET_PLATFORMPIC = "/app/pub/doctor/getPlatformPic";
+
+    //手机获取验证码
+    public static String GET_VERIFICATION_CODE="/app/pub/doctor/getVerificationCode";
+    //手机新用户第一步
+    public static String REGISTER_ONE = "/app/pub/doctor/registerOne";
+    //第二步
+    public static String REGISTER_TWO = "/app/pub/doctor/registerTwo";
+    //第三步
+    public static String REGISTER_THREE = "/app/pub/doctor/registerThree";
+    //修改密码
+    public static String UPDATE_PASSWORD = "/app/pub/doctor/updatePassword";
+    //退出登陆
+    public static String STAFF_OUT_OF = "/app/pub/doctor/staffOutOf";
+
+    //获取医生基本信息（新添加）
+    public static  String GET_DOCTOR_INFO = "/app/service/doctor/getDoctorInfo";
+
+    //获取省
+    public static String GET_PROVINCE = "/app/service/doctor/getProvince";
+    //获取市
+    public static String GET_CITY = "/app/service/doctor/getCity";
+    //获取区县
+    public static String GET_REGION = "/app/service/doctor/getRegion";
+    //获取医院
+    public static String GET_HOSPITAL = "/app/service/doctor/getHospital";
+    //获取科室
+    public static String GET_DEPARTMENT = "/app/service/doctor/getDepartment";
+    //获取标签
+    public static String GET_TAGS = "/app/service/doctor/getTags";
+
+    //上传图片
+    public static String UPLOAD_IMAGE = "/app/pub/doctor/uploadIcon";
+    //上传完善用户图片信息
+    public static  String SAVE_USER_ICON_LIST = "/app/service/doctor/saveUserIconList";
+    //上传图片集
+    public static String UPLOAD_IMGS = "/app/support/common/uploadimg";
+
 }

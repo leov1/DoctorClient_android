@@ -2,6 +2,7 @@ package com.hxqydyl.app.ys.http.register;
 
 import com.hxqydyl.app.ys.bean.register.HospitalResultBean;
 import com.hxqydyl.app.ys.http.JsonUtils;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.hxqydyl.app.ys.utils.StringUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -31,7 +32,7 @@ public class HospitalNet {
 
         OkHttpUtils
                 .get()
-                .url(Constants.GET_HOSPITAL)
+                .url(UrlConstants.getWholeApiUrl(UrlConstants.GET_HOSPITAL))
                 .addParams("cityUuid", cityUuid)
                 .addParams("provinceUuid", provinceUuid)
                 .addParams("regionUuid", regionUuid)

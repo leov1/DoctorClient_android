@@ -2,6 +2,7 @@ package com.hxqydyl.app.ys.http.register;
 
 import com.hxqydyl.app.ys.bean.register.ProvinceInfoResult;
 import com.hxqydyl.app.ys.http.JsonUtils;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -32,7 +33,7 @@ public class ProvinceNet {
 
         OkHttpUtils
                 .get()
-                .url(Constants.GET_PROVINCE)
+                .url(UrlConstants.getWholeApiUrl(UrlConstants.GET_PROVINCE))
                 .build()
                 .execute(new StringCallback() {
                     @Override
