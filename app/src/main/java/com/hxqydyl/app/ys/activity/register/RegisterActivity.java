@@ -168,7 +168,7 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
      */
     private void registerOne(){
        showDialog("请稍等...");
-       registerFirstNet.registerFirst(mobile, password, "123456");
+       registerFirstNet.registerFirst(mobile, password, captcha);
     }
 
     /**
