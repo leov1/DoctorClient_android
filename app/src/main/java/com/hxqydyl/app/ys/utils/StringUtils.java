@@ -440,7 +440,7 @@ public class StringUtils {
     public static String cutoutBracketToString(String s){
         int first = s.indexOf("(");
         int last = s.lastIndexOf(")");
-        if(first != -1 && last == -1) {
+        if(first != -1 && last != -1) {
             s = s.substring(first + 1, last);
         }
         return s;

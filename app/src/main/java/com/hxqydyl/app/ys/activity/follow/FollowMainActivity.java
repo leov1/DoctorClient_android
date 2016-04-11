@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+import com.hxqydyl.app.ys.activity.CommentWebActivity;
 import com.hxqydyl.app.ys.activity.patient.PatientAddActivity;
 import com.hxqydyl.app.ys.activity.patient.PatientDetailsActivity;
 import com.hxqydyl.app.ys.activity.patient_group.PatientGroupManageActivity;
@@ -174,8 +175,7 @@ public class FollowMainActivity extends BaseTitleActivity implements View.OnClic
                 startActivity(noticeIntent);
                 break;
             case R.id.rl_articl://患教库
-                Intent articleIntent = new Intent(FollowMainActivity.this, ArticleActivity.class);
-                startActivity(articleIntent);
+                CommentWebActivity.toCommentWeb(UrlConstants.getWholeApiUrl(UrlConstants.PATIENT_EDUCATION), null, FollowMainActivity.this, false);
                 break;
             case R.id.ivManagePatientGroup:
                 Intent groupManageIntent = new Intent(FollowMainActivity.this,PatientGroupManageActivity.class);

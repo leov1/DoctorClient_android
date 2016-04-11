@@ -37,12 +37,18 @@ public class CommentWebActivity extends BaseWebActivity implements BaseWebActivi
         a.startActivity(intent);
     }
 
-    //
-    public static void toCommentWebForResult(String url,Activity activity,int resultCode){
+    public static void toCommentWebForResult(String url,Activity activity,int resultCode,boolean isNeedLogin){
         Intent intent = new Intent(activity,CommentWebActivity.class);
+        intent.putExtra("isNeedLogin", isNeedLogin);
         intent.putExtra("url",url);
         activity.startActivityForResult(intent, resultCode);
     }
+
+    //
+    public static void toCommentWebForResult(String url,Activity activity,int resultCode){
+        toCommentWebForResult(url,activity,resultCode,false);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -47,6 +47,7 @@ public class RegisterFirstNet {
 
                     @Override
                     public void onResponse(String response) {
+                        System.out.println("Request--->"+response);
                         try {
                             listener.requestRegisterFirstNetSuccess(JsonUtils.JsonRegisterFirst(StringUtils.cutoutBracketToString(response)));
                         } catch (JSONException e) {

@@ -193,8 +193,12 @@ public class MainActivity extends BaseFragmentActivity {
                     if (data.getBooleanExtra("isLogin", true)) {
                         showFragment();
                     } else {
-                        currIndex = 0;
-                        group.check(R.id.foot_bar_home);
+                        if (currIndex == 0){
+                            fragmentManager.findFragmentByTag(fragmentTags.get(0)).onHiddenChanged(false);
+                        }else{
+                            currIndex = 0;
+                            group.check(R.id.foot_bar_home);
+                        }
                     }
                     break;
                 case UIHelper.LOGINOUT_REQUEST_CODE:

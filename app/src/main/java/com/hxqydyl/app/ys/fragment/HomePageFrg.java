@@ -13,13 +13,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
-import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.activity.CommentWebActivity;
 import com.hxqydyl.app.ys.activity.LoginActivity;
-import com.hxqydyl.app.ys.activity.clinic.ClinicActivity;
 import com.hxqydyl.app.ys.activity.follow.FollowMainActivity;
 import com.hxqydyl.app.ys.activity.reading.ReadingActivity;
-import com.hxqydyl.app.ys.activity.video.VideoActivity;
 import com.hxqydyl.app.ys.adapter.GalleryPagerAdapter;
 import com.hxqydyl.app.ys.adapter.LineGridViewAdapter;
 import com.hxqydyl.app.ys.bean.Query;
@@ -323,7 +320,6 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
                 break;
             case R.id.register_btn:
                 UIHelper.showRegister(getActivity());
-             //   startActivity(new Intent(this.getActivity(), EvpiPhotoActivity.class));
                 break;
             case R.id.head_img:
                 quitLogin();
@@ -358,16 +354,14 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
                 startActivity(intent);
                 break;
             case 1://讲堂
-                intent = new Intent(getActivity(), VideoActivity.class);
-                startActivity(intent);
+                CommentWebActivity.toCommentWebForResult(UrlConstants.getWholeApiUrl(UrlConstants.GET_VIDEOS), getActivity(),LOGIN_STATE, true);
                 break;
             case 2://随访
                 intent = new Intent(getActivity(), FollowMainActivity.class);
                 startActivity(intent);
                 break;
             case 3://诊所
-                intent = new Intent(getActivity(), ClinicActivity.class);
-                startActivity(intent);
+                CommentWebActivity.toCommentWebForResult(UrlConstants.getWholeApiUrl(UrlConstants.GET_CLINIC), getActivity(),LOGIN_STATE, true);
                 break;
         }
     }

@@ -79,9 +79,7 @@
         <activity
             android:name=".activity.reading.ReadingActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.video.VideoActivity" />
         <activity android:name=".activity.patient.PatientInfoActivity" />
-        <activity android:name=".activity.follow.ArticleActivity" />
         <activity android:name=".activity.follow.MassActivity" android:windowSoftInputMode="stateHidden|stateAlwaysHidden"/>
         <activity android:name=".activity.follow.ChoiceScaleActivity" />
         <activity android:name=".activity.follow.ChoiceSelfActivity" />
@@ -113,10 +111,6 @@
             android:name=".activity.follow.PlanInfoActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.follow.PatientAdviceEditActivity"
-            android:windowSoftInputMode="stateHidden"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activity.follow.PlanEditActivity"
             android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait" />
@@ -141,7 +135,6 @@
         <activity
             android:name=".activity.patient_group.PatientGroupSelectActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.clinic.ClinicActivity" />
         <activity android:name=".activity.follow.PatientSelectActivity"></activity>
     </application>
 
