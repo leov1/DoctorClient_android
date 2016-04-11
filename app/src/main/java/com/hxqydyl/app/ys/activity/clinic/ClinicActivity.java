@@ -1,11 +1,9 @@
 package com.hxqydyl.app.ys.activity.clinic;
 
-import android.app.Activity;
 import android.os.Bundle;
 
-import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseWebActivity;
-import com.hxqydyl.app.ys.utils.Constants;
+import com.hxqydyl.app.ys.http.UrlConstants;
 
 /**
  * 诊所
@@ -16,6 +14,6 @@ public class ClinicActivity extends BaseWebActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        webView.loadUrl(Constants.GET_CLINIC);
+        webView.loadUrl(UrlConstants.getWholeApiUrl(UrlConstants.GET_CLINIC));
     }
 }

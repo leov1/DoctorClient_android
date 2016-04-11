@@ -1,7 +1,8 @@
 package com.hxqydyl.app.ys.fragment;
 
 import android.os.Bundle;
-import com.hxqydyl.app.ys.utils.Constants;
+
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.LoginManager;
 
 /**
@@ -13,7 +14,7 @@ public class MyPatientFrg extends BaseWebFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initViewOnBaseTitle("我的患者", view);
-        webView.loadUrl(Constants.MY_PATIENT);
+        webView.loadUrl(UrlConstants.getWholeApiUrl(UrlConstants.MY_PATIENT));
     }
 
     @Override
@@ -21,7 +22,7 @@ public class MyPatientFrg extends BaseWebFragment {
         super.onHiddenChanged(hidden);
         if (!hidden && LoginManager.isQuit_myPatient){
             LoginManager.isQuit_myPatient = false;
-            webView.loadUrl(Constants.MY_PATIENT);
+            webView.loadUrl(UrlConstants.getWholeApiUrl(UrlConstants.MY_PATIENT));
         }
     }
 }

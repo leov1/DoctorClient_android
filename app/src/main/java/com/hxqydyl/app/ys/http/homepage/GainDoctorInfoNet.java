@@ -4,8 +4,6 @@ import com.hxqydyl.app.ys.bean.register.DoctorInfoNew;
 import com.hxqydyl.app.ys.bean.register.DoctorResultNew;
 import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.http.UrlConstants;
-import com.hxqydyl.app.ys.utils.Constants;
-import com.hxqydyl.app.ys.utils.SharedPreferences;
 import com.hxqydyl.app.ys.utils.StringUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -26,7 +24,7 @@ public class GainDoctorInfoNet {
 
      public interface OnGainDoctorInfoListener{
           void requestGainDoctorInfoSuccess(DoctorResultNew doctorResultNew,String str);
-          void requestGainDoctorInfoFail(int statueCode);
+          void requestGainDoctorInfoFail();
      }
 
      public void gainDoctorInfo(String doctorUuid){
@@ -35,12 +33,12 @@ public class GainDoctorInfoNet {
                   .get()
                   .url(UrlConstants.getWholeApiUrl(UrlConstants.GET_DOCTOR_INFO))
                   .addParams("doctorUuid", doctorUuid)
-                  .addParams("callback", Constants.CALLBACK)
+                  .addParams("callback", UrlConstants.CALLBACK)
                   .build()
                   .execute(new StringCallback() {
                        @Override
                        public void onError(Call call, Exception e) {
-                            onGainDoctorInfoListener.requestGainDoctorInfoFail(Constants.REQUEST_FAIL);
+                            onGainDoctorInfoListener.requestGainDoctorInfoFail();
                        }
 
                        @Override

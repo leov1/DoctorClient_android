@@ -3,7 +3,7 @@ package com.hxqydyl.app.ys.fragment;
 import android.os.Bundle;
 
 import com.hxqydyl.app.ys.activity.CommentWebActivity;
-import com.hxqydyl.app.ys.utils.Constants;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.LoginManager;
 
 /**
@@ -17,7 +17,7 @@ public class MyTaskFrg extends BaseWebFragment implements BaseWebFragment.DoJsBr
         initViewOnBaseTitle("我的任务", view);
         setCustomInterceptor(this);
         setIsNeedLogin(false);
-        webView.loadUrl(Constants.MY_TASK);
+        webView.loadUrl(UrlConstants.getWholeApiUrl(UrlConstants.MY_TASK));
     }
 
     @Override
@@ -25,7 +25,7 @@ public class MyTaskFrg extends BaseWebFragment implements BaseWebFragment.DoJsBr
         super.onHiddenChanged(hidden);
         if (!hidden && LoginManager.isQuit_myTask){
             LoginManager.isQuit_myTask = false;
-            webView.loadUrl(Constants.MY_TASK);
+            webView.loadUrl(UrlConstants.getWholeApiUrl(UrlConstants.MY_TASK));
         }
     }
 

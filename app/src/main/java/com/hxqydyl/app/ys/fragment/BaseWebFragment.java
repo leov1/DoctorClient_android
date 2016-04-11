@@ -19,7 +19,6 @@ import android.webkit.WebViewClient;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.ui.ProgressWebView;
 import com.hxqydyl.app.ys.ui.UIHelper;
-import com.hxqydyl.app.ys.utils.Constants;
 import com.hxqydyl.app.ys.utils.LoginManager;
 
 import org.json.JSONException;
@@ -27,7 +26,6 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -238,22 +236,6 @@ public class BaseWebFragment extends BaseFragment {
                 break;
         }
     }
-
-    private final Handler mHandlerJpush = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case 1:
-                    Log.d("itvapp", "Set alias in handler.");
-                    webView.loadUrl(Constants.USER_INFO);
-                    break;
-
-                default:
-                    Log.i("itvapp", "Unhandled msg - " + msg.what);
-            }
-        }
-    };
 
     public interface DoJsBridge {
         void doJs(String url);

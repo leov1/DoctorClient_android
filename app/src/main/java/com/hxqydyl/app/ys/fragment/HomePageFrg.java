@@ -28,6 +28,7 @@ import com.hxqydyl.app.ys.bean.homepage.PageIconResult;
 import com.hxqydyl.app.ys.bean.register.DoctorInfoNew;
 import com.hxqydyl.app.ys.bean.register.DoctorResultNew;
 import com.hxqydyl.app.ys.http.JsonUtils;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.http.homepage.GainDoctorInfoNet;
 import com.hxqydyl.app.ys.http.homepage.PagerNet;
 import com.hxqydyl.app.ys.http.login.QuitLoginNet;
@@ -38,7 +39,6 @@ import com.hxqydyl.app.ys.ui.library.PullToRefreshListView;
 import com.hxqydyl.app.ys.ui.linegridview.LineGridView;
 import com.hxqydyl.app.ys.ui.loopviewpager.AutoLoopViewPager;
 import com.hxqydyl.app.ys.ui.viewpagerindicator.CirclePageIndicator;
-import com.hxqydyl.app.ys.utils.Constants;
 import com.hxqydyl.app.ys.utils.LoginManager;
 import com.hxqydyl.app.ys.utils.SharedPreferences;
 import com.hxqydyl.app.ys.utils.StringUtils;
@@ -309,7 +309,7 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
     }
 
     @Override
-    public void requestGainDoctorInfoFail(int statueCode) {
+    public void requestGainDoctorInfoFail() {
         UIHelper.ToastMessage(getActivity(), "请求失败");
         stopRefreshing();
     }
@@ -329,7 +329,7 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
                 quitLogin();
                 break;
             case R.id.back_img:
-                CommentWebActivity.toCommentWeb(Constants.CURPAGE,null,getActivity(),true);
+                CommentWebActivity.toCommentWeb(UrlConstants.getWholeApiUrl(UrlConstants.CURPAGE),null,getActivity(),true);
                 break;
         }
     }

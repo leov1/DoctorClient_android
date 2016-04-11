@@ -1,7 +1,6 @@
 package com.hxqydyl.app.ys.http.commen;
 
 import com.google.gson.Gson;
-import com.hxqydyl.app.ys.utils.Constants;
 import com.hxqydyl.app.ys.utils.StringUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.builder.GetBuilder;

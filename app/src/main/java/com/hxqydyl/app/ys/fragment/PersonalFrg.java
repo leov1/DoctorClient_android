@@ -4,9 +4,8 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.hxqydyl.app.ys.activity.CommentWebActivity;
-import com.hxqydyl.app.ys.activity.MainActivity;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.ui.UIHelper;
-import com.hxqydyl.app.ys.utils.Constants;
 import com.hxqydyl.app.ys.utils.LoginManager;
 
 /**
@@ -20,11 +19,11 @@ public class PersonalFrg extends BaseWebFragment implements BaseWebFragment.DoJs
         initViewOnBaseTitle("个人中心", view);
         setCustomInterceptor(this);
         rightImg.setVisibility(View.VISIBLE);
-        webView.loadUrl(Constants.USER_INFO + LoginManager.getDoctorUuid());
+        webView.loadUrl(UrlConstants.getWholeApiUrl(UrlConstants.USER_INFO) + LoginManager.getDoctorUuid());
         rightImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommentWebActivity.toCommentWebForResult(Constants.USER_SETTING, getActivity(), UIHelper.LOGINOUT_REQUEST_CODE);
+                CommentWebActivity.toCommentWebForResult(UrlConstants.getWholeApiUrl(UrlConstants.USER_SETTING), getActivity(), UIHelper.LOGINOUT_REQUEST_CODE);
             }
         });
     }
@@ -34,7 +33,7 @@ public class PersonalFrg extends BaseWebFragment implements BaseWebFragment.DoJs
         super.onHiddenChanged(hidden);
         if (!hidden && LoginManager.isQuit_user){
             LoginManager.isQuit_user = false;
-            webView.loadUrl(Constants.USER_INFO + LoginManager.getDoctorUuid());
+            webView.loadUrl(UrlConstants.getWholeApiUrl(UrlConstants.USER_INFO) + LoginManager.getDoctorUuid());
         }
     }
 

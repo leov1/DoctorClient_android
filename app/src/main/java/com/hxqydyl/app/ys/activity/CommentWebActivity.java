@@ -3,19 +3,11 @@ package com.hxqydyl.app.ys.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.Log;
-import android.webkit.WebChromeClient;
-import android.webkit.WebView;
 
-import com.hxqydyl.app.ys.ui.UIHelper;
-import com.hxqydyl.app.ys.bean.js.BaseJsBean;
-import com.hxqydyl.app.ys.bean.js.LoginOutJsBean;
-import com.hxqydyl.app.ys.utils.Constants;
 import com.hxqydyl.app.ys.utils.LoginManager;
 
-import framework.BaseFragmentActivity;
 
 /**
  * Created by admin on 2016/4/6.
@@ -27,20 +19,6 @@ public class CommentWebActivity extends BaseWebActivity implements BaseWebActivi
 
     public static void toCommentWeb(String url, String title, Activity a, boolean isNeedLogin) {
         Intent intent = new Intent(a, CommentWebActivity.class);
-        if (!TextUtils.isEmpty(title)) {
-            intent.putExtra("title", title);
-        }
-        intent.putExtra("beanPath", LoginOutJsBean.getPackgeName("LoginOutJsBean"));
-        intent.putExtra("isNeedLogin", isNeedLogin);
-        intent.putExtra("url", url);
-        a.startActivity(intent);
-    }
-    public static void toCommentWeb(String url, String title, Activity a, boolean isNeedLogin,String className) {
-        Intent intent = new Intent(a, CommentWebActivity.class);
-        if (!TextUtils.isEmpty(title)) {
-            intent.putExtra("title", title);
-        }
-        intent.putExtra("beanPath", BaseJsBean.getPackgeName(className));
         intent.putExtra("isNeedLogin", isNeedLogin);
         intent.putExtra("url", url);
         a.startActivity(intent);
@@ -52,9 +30,12 @@ public class CommentWebActivity extends BaseWebActivity implements BaseWebActivi
         intent.putExtra("url",url);
         activity.startActivityForResult(intent, resultCode);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e("wangxu",TextUtils.isEmpty(LoginManager.getDoctorUuid())+"");
+
         url = getIntent().getStringExtra("url");
         setIsNeedLogin(getIntent().getBooleanExtra("isNeedLogin", false), this);
         loadUrl(url);

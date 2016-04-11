@@ -3,7 +3,6 @@ package com.hxqydyl.app.ys.http.register;
 import com.hxqydyl.app.ys.bean.register.RegisterFirst;
 import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.http.UrlConstants;
-import com.hxqydyl.app.ys.utils.Constants;
 import com.hxqydyl.app.ys.utils.StringUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -38,7 +37,7 @@ public class RegisterFirstNet {
                 .addParams("mobile", mobile)
                 .addParams("password", password)
                 .addParams("captcha", captcha)
-                .addParams("callback", Constants.CALLBACK)
+                .addParams("callback", UrlConstants.CALLBACK)
                 .build()
                 .execute(new StringCallback() {
                     @Override

@@ -36,5 +36,5 @@ dependencies {
     compile 'com.daimajia.swipelayout:library:1.2.0@aar'
     compile 'com.flyco.dialog:FlycoDialog_Lib:1.2.6@aar'
     compile 'com.nineoldandroids:library:2.4.0'
-    compile 'com.zhy:okhttputils:2.3.8'
+  //  compile 'com.zhy:okhttputils:2.3.8'
 }

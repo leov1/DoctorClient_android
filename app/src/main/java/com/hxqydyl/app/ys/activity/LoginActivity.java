@@ -112,7 +112,7 @@ public class LoginActivity extends BaseTitleActivity implements View.OnClickList
     }
 
     @Override
-    public void requestLoginNetFail(int statusCode) {
+    public void requestLoginNetFail() {
         dismissDialog();
         UIHelper.ToastMessage(LoginActivity.this, "登陆失败");
     }

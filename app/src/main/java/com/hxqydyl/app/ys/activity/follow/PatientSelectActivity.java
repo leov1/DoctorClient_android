@@ -18,16 +18,10 @@ import com.hxqydyl.app.ys.bean.article.Child;
 import com.hxqydyl.app.ys.bean.article.Group;
 import com.hxqydyl.app.ys.http.sendMsg.PatientGroupNet;
 import com.hxqydyl.app.ys.ui.UIHelper;
-import com.hxqydyl.app.ys.ui.fullshowview.FullShowExpandableListView;
-import com.hxqydyl.app.ys.utils.Constants;
+
 import com.hxqydyl.app.ys.utils.LoginManager;
 import com.hxqydyl.app.ys.utils.StringUtils;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
-
 import java.util.ArrayList;
-
-import okhttp3.Call;
 
 /**
  * 挑选患者页面

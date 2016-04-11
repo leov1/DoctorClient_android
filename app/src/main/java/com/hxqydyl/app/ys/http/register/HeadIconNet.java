@@ -3,7 +3,6 @@ package com.hxqydyl.app.ys.http.register;
 import com.hxqydyl.app.ys.bean.register.HeadIconResult;
 import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.http.UrlConstants;
-import com.hxqydyl.app.ys.utils.Constants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -32,7 +31,7 @@ public class HeadIconNet {
                 .post()
                 .url(UrlConstants.getWholeApiUrl(UrlConstants.UPLOAD_IMAGE))
                 .addParams("icon", map.get("icon"))
-                .addParams("callback", Constants.CALLBACK)
+                .addParams("callback", UrlConstants.CALLBACK)
                 .build()
                 .execute(new StringCallback() {
                     @Override
