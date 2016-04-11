@@ -15,9 +15,12 @@
             android:layout_height="60dp" />
 
         <ImageView
+            android:id="@+id/ivDeletePic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"/>
+            android:layout_gravity="right"
+            android:visibility="gone"
+            android:src="@mipmap/icon_delete_pic"/>
 
     </FrameLayout>
 </LinearLayout>

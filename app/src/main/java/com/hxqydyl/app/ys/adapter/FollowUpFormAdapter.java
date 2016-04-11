@@ -208,7 +208,7 @@ public class FollowUpFormAdapter extends BaseExpandableListAdapter {
         }
         if (record.getResult().getPics().size() != 0) {
             hasPic = true;
-            viewHolder.checkResultPic.setAdapter(new CaseHistoryAdapter(context, record.getResult().getPics()));
+            viewHolder.checkResultPic.setAdapter(new CaseHistoryAdapter(context, record.getResult().getPics(),null));
         }
         if (hasText && hasPic) {
             viewHolder.tvCheckResultText.setVisibility(View.VISIBLE);

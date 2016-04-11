@@ -15,6 +15,15 @@ public class Pic extends BaseBean implements Serializable {
     private String url;
     private String thumbUrl;
     private int source = Source.WEB;
+    private boolean canDel;
+
+    public boolean isCanDel() {
+        return canDel;
+    }
+
+    public void setCanDel(boolean canDel) {
+        this.canDel = canDel;
+    }
 
     /**
      * 无参构造方法，会默认指定图片来源为Pic.Source.WEB
