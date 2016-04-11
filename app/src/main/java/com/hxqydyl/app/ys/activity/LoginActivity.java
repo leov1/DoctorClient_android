@@ -13,6 +13,7 @@ import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.bean.register.DoctorResult;
 import com.hxqydyl.app.ys.http.login.LoginNet;
 import com.hxqydyl.app.ys.ui.UIHelper;
+import com.hxqydyl.app.ys.utils.LoginManager;
 import com.hxqydyl.app.ys.utils.SharedPreferences;
 
 import framework.listener.RegisterSucListener;
