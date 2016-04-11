@@ -1,9 +1,11 @@
 package com.hxqydyl.app.ys.utils;
 
+import android.app.Activity;
 import android.text.TextUtils;
 
 import com.hxqydyl.app.ys.bean.register.DoctorInfoNew;
 import com.hxqydyl.app.ys.http.JsonUtils;
+import com.hxqydyl.app.ys.ui.UIHelper;
 
 /**
  * Created by hxq on 2016/3/3.
@@ -40,21 +42,26 @@ public class LoginManager {
     /**
      * 退出登陆时，清空
      */
-    public static void quitLogin(){
-        SharedPreferences.getInstance().putString("doctorUuid","");
-        SharedPreferences.getInstance().putString(SharedPreferences.HOME_DOCTOR_INFO_CACHE,"");
+    public static void quitLogin() {
+        SharedPreferences.getInstance().putString("doctorUuid", "");
+        SharedPreferences.getInstance().putString(SharedPreferences.HOME_DOCTOR_INFO_CACHE, "");
     }
 
     /**
      * 获取医生信息
+     *
      * @return
      */
-    public static DoctorInfoNew getDoctorInfo(){
-        String str = SharedPreferences.getInstance().getString(SharedPreferences.HOME_DOCTOR_INFO_CACHE,"");
-        if (!TextUtils.isEmpty(str)){
+    public static DoctorInfoNew getDoctorInfo() {
+        String str = SharedPreferences.getInstance().getString(SharedPreferences.HOME_DOCTOR_INFO_CACHE, "");
+        if (!TextUtils.isEmpty(str)) {
             DoctorInfoNew doctorInfoNew = JsonUtils.JsonDoctorInfoNew(StringUtils.cutoutBracketToString(str)).getDoctorInfo();
             return doctorInfoNew;
         }
         return null;
+    }
+    public interface OnLoginSuccess {
+        void onLoginSuccess(String doctorUuid);
+        void onLoginfail();
     }
 }

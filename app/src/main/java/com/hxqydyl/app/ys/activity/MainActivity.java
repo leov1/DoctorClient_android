@@ -1,11 +1,15 @@
 
 package com.hxqydyl.app.ys.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.hxqydyl.app.ys.R;
@@ -32,6 +36,8 @@ public class MainActivity extends BaseFragmentActivity {
     private static int currIndex = 0;
 
     private RadioGroup group;
+    private RadioButton home;
+
 
     private ArrayList<String> fragmentTags;
     private FragmentManager fragmentManager;
@@ -78,46 +84,59 @@ public class MainActivity extends BaseFragmentActivity {
 
     private void initView() {
         group = (RadioGroup) findViewById(R.id.group);
+        home = (RadioButton) findViewById(R.id.foot_bar_home);
 
         group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.foot_bar_home:
-                        currIndex = 0;
-                        break;
-                    case R.id.foot_bar_im:
-                        currIndex = 1;
-                        break;
-                    case R.id.foot_bar_interest:
-                        currIndex = 2;
-                        break;
-                    case R.id.main_footbar_user:
-                        currIndex = 3;
-                        break;
-                    default:
-                        break;
+                if (((RadioButton) findViewById(checkedId)).isChecked()) {
+                    switch (checkedId) {
+                        case R.id.foot_bar_home:
+                            chageIndex(0);
+                            break;
+                        case R.id.foot_bar_im:
+                            chageIndex(1);
+
+                            break;
+                        case R.id.foot_bar_interest:
+                            chageIndex(2);
+                            break;
+                        case R.id.main_footbar_user:
+                            chageIndex(3);
+                            break;
+                        default:
+                            break;
+                    }
                 }
-                showFragment();
             }
         });
         showFragment();
     }
 
+    public void chageIndex(int index) {
+        currIndex = index;
+        if (index == 0 || LoginManager.isHasLogin()) {
+            showFragment();
+        } else {
+            UIHelper.showLoginForResult(this);
+        }
+
+    }
+
     private void showFragment() {
         if (currIndex == 3 && !LoginManager.isHasLogin()) {
             UIHelper.showLogin(MainActivity.this);
-           // return;
+            // return;
         }
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Fragment fragment = fragmentManager.findFragmentByTag(fragmentTags.get(currIndex));
-        if(fragment == null) {
+        if (fragment == null) {
             fragment = instantFragment(currIndex);
         }
         for (int i = 0; i < fragmentTags.size(); i++) {
             Fragment f = fragmentManager.findFragmentByTag(fragmentTags.get(i));
-            if(f != null && f.isAdded()) {
+            if (f != null && f.isAdded()) {
                 fragmentTransaction.hide(f);
             }
         }
@@ -132,15 +151,20 @@ public class MainActivity extends BaseFragmentActivity {
 
     private Fragment instantFragment(int currIndex) {
         switch (currIndex) {
-            case 0: return new HomePageFrg();
-            case 1: return new MyPatientFrg();
-            case 2: return new MyTaskFrg();
-            case 3: return new PersonalFrg();
-            default: return null;
+            case 0:
+                return new HomePageFrg();
+            case 1:
+                return new MyPatientFrg();
+            case 2:
+                return new MyTaskFrg();
+            case 3:
+                return new PersonalFrg();
+            default:
+                return null;
         }
     }
 
-  @Override
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (isQuit == false) {
@@ -154,12 +178,29 @@ public class MainActivity extends BaseFragmentActivity {
                     }
                 };
                 timer.schedule(task, 2000);
-            }else{
+            } else {
                 moveTaskToBack(true);
                 AppManager.getAppManager().AppExit(this);
             }
 
         }
-      return true;
+        return true;
     }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == UIHelper.LOGIN_REQUEST_CODE) {
+                if (data.getBooleanExtra("isLogin", true)) {
+                    showFragment();
+                } else {
+                    currIndex = 0;
+                    group.check(R.id.foot_bar_home);
+                }
+            }
+        }
+    }
+
 }

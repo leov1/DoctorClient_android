@@ -3,6 +3,7 @@ package com.hxqydyl.app.ys.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,8 +33,9 @@ public class LoginActivity extends BaseTitleActivity implements View.OnClickList
     private EditText passwordEdit;
 
     private Button loginBtn;
-
+    private boolean isNeedCallback = false;
     private LoginNet loginNet = new LoginNet();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +45,7 @@ public class LoginActivity extends BaseTitleActivity implements View.OnClickList
     }
 
     private void initViews() {
+        isNeedCallback=getIntent().getBooleanExtra("isNeedCallBack",false);
         initViewOnBaseTitle(getResources().getString(R.string.login));
 
         addRegisterListener(this);
@@ -68,6 +71,7 @@ public class LoginActivity extends BaseTitleActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.back_img:
+                setLoginResult(LoginManager.isHasLogin());
                 finish();
                 break;
             case R.id.forget_btn:
@@ -92,6 +96,7 @@ public class LoginActivity extends BaseTitleActivity implements View.OnClickList
         if (doctorResult.getQuery().getSuccess().equals("1")) {
             SharedPreferences.getInstance().putString("doctorUuid", doctorResult.getServiceStaff().getDoctorUuid());
             UIHelper.ToastMessage(LoginActivity.this, "登陆成功");
+            setLoginResult(LoginManager.isHasLogin());
 
             finish();
         } else {
@@ -99,7 +104,13 @@ public class LoginActivity extends BaseTitleActivity implements View.OnClickList
         }
 
     }
-
+public void setLoginResult(boolean islogin){
+    if (isNeedCallback) {
+        Intent intent = new Intent();
+        intent.putExtra("isLogin", islogin);
+        setResult(Activity.RESULT_OK, intent);
+    }
+}
     @Override
     public void requestLoginNetFail(int statusCode) {
         dismissDialog();
@@ -115,5 +126,15 @@ public class LoginActivity extends BaseTitleActivity implements View.OnClickList
     protected void onDestroy() {
         removeRegisterListener(this);
         super.onDestroy();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            setLoginResult(LoginManager.isHasLogin());
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

@@ -1,5 +1,7 @@
 package com.hxqydyl.app.ys.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -15,15 +17,17 @@ import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.register.listener.RegisterSucListener;
 import com.hxqydyl.app.ys.activity.register.listener.RegisterSucMag;
 import com.hxqydyl.app.ys.http.NetRequestListener;
+import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.ui.swipebacklayout.SwipeBackActivity;
+import com.hxqydyl.app.ys.utils.LoginManager;
 import com.hxqydyl.app.ys.utils.Utils;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class BaseTitleActivity extends SwipeBackActivity implements NetRequestListener{
+public class BaseTitleActivity extends SwipeBackActivity implements NetRequestListener {
 
     protected final String HTTP_TASK_KEY = "HttpTaskKey_" + hashCode();
-
+    public LoginManager.OnLoginSuccess onLoginSuccess;
     private ImageView backImg;
     public TextView topTv;
 
@@ -61,13 +65,13 @@ public class BaseTitleActivity extends SwipeBackActivity implements NetRequestLi
         });
     }
 
-    public void setWebBackListener(final WebView webView){
+    public void setWebBackListener(final WebView webView) {
         backImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (webView.canGoBack()){
+                if (webView.canGoBack()) {
                     webView.goBack();
-                }else {
+                } else {
                     finish();
                 }
             }
@@ -75,26 +79,26 @@ public class BaseTitleActivity extends SwipeBackActivity implements NetRequestLi
 
     }
 
-    public void addRegisterListener(RegisterSucListener listener){
+    public void addRegisterListener(RegisterSucListener listener) {
         if (listener != null)
-        RegisterSucMag.getInstance().addRegisterSucListeners(listener);
+            RegisterSucMag.getInstance().addRegisterSucListeners(listener);
     }
 
-    public void removeRegisterListener(RegisterSucListener listener){
+    public void removeRegisterListener(RegisterSucListener listener) {
         if (listener != null)
-        RegisterSucMag.getInstance().removeRegisterSucListeners(listener);
+            RegisterSucMag.getInstance().removeRegisterSucListeners(listener);
     }
 
-    public void showDialog(String text){
-        pDialog = new SweetAlertDialog(this,SweetAlertDialog.PROGRESS_TYPE);
+    public void showDialog(String text) {
+        pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
         pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
         pDialog.setTitleText(text);
         pDialog.setCancelable(true);
         pDialog.show();
     }
 
-    public void dismissDialog(){
-        if (pDialog != null && pDialog.isShowing()){
+    public void dismissDialog() {
+        if (pDialog != null && pDialog.isShowing()) {
             pDialog.dismissWithAnimation();
         }
     }
@@ -112,10 +116,33 @@ public class BaseTitleActivity extends SwipeBackActivity implements NetRequestLi
     @Override
     public void onError(String url, Exception exception) {
         dismissDialog();
-        Toast.makeText(this,"服务器异常",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "服务器异常", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onProgress(String url, Float progress) {
+    }
+
+    public void getDoctorUuid(LoginManager.OnLoginSuccess onLoginSuccess) {
+        this.onLoginSuccess=onLoginSuccess;
+        if (TextUtils.isEmpty(LoginManager.getDoctorUuid())) {
+            UIHelper.showLoginForResult(this);
+        }else{
+            onLoginSuccess.onLoginSuccess(LoginManager.getDoctorUuid());
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == UIHelper.LOGIN_REQUEST_CODE) {
+                if (data.getBooleanExtra("isLogin",false)){
+                    onLoginSuccess.onLoginSuccess(LoginManager.getDoctorUuid());
+                }else{
+                    onLoginSuccess.onLoginfail();
+                }
+            }
+        }
     }
 }

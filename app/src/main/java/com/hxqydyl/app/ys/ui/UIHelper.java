@@ -56,4 +56,9 @@ public class UIHelper {
         context.startActivity(intent);
     }
 
+    public static void showLoginForResult(Activity context){
+        Intent intent = new Intent(context, LoginActivity.class);
+        intent.putExtra("isNeedCallBack",true);
+        context.startActivityForResult(intent,LOGIN_REQUEST_CODE);
+    }
 }
