@@ -9,6 +9,7 @@ import android.util.Log;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
+import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.Constants;
 import com.hxqydyl.app.ys.utils.LoginManager;
 
@@ -24,12 +25,16 @@ public class CommentWebActivity extends BaseWebActivity implements BaseWebActivi
 
     public static void toCommentWeb(String url, String title, Activity a, boolean isNeedLogin) {
         Intent intent = new Intent(a, CommentWebActivity.class);
-        if (!TextUtils.isEmpty(title)) {
-            intent.putExtra("title", title);
-        }
         intent.putExtra("isNeedLogin", isNeedLogin);
         intent.putExtra("url", url);
         a.startActivity(intent);
+    }
+
+    //
+    public static void toCommentWebForResult(String url,Activity activity,int resultCode){
+        Intent intent = new Intent(activity,CommentWebActivity.class);
+        intent.putExtra("url",url);
+        activity.startActivityForResult(intent, resultCode);
     }
 
     @Override

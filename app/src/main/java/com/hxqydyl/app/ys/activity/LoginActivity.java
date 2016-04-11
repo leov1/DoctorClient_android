@@ -43,7 +43,7 @@ public class LoginActivity extends BaseTitleActivity implements View.OnClickList
     }
 
     private void initViews() {
-        isNeedCallback=getIntent().getBooleanExtra("isNeedCallBack",false);
+        isNeedCallback = getIntent().getBooleanExtra("isNeedCallBack", false);
         initViewOnBaseTitle(getResources().getString(R.string.login));
 
         addRegisterListener(this);
@@ -102,13 +102,15 @@ public class LoginActivity extends BaseTitleActivity implements View.OnClickList
         }
 
     }
-public void setLoginResult(boolean islogin){
-    if (isNeedCallback) {
-        Intent intent = new Intent();
-        intent.putExtra("isLogin", islogin);
-        setResult(Activity.RESULT_OK, intent);
+
+    public void setLoginResult(boolean islogin) {
+        if (isNeedCallback) {
+            Intent intent = new Intent();
+            intent.putExtra("isLogin", islogin);
+            setResult(Activity.RESULT_OK, intent);
+        }
     }
-}
+
     @Override
     public void requestLoginNetFail(int statusCode) {
         dismissDialog();

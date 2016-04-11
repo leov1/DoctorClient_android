@@ -133,6 +133,8 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
         if (!TextUtils.isEmpty(doctorInfoCache)) {
             doctorInfoNew = JsonUtils.JsonDoctorInfoNew(StringUtils.cutoutBracketToString(doctorInfoCache)).getDoctorInfo();
             updateDoctorInfo(doctorInfoNew);
+        }else{
+            updateLinear(false);
         }
     }
 
@@ -247,6 +249,11 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
             doctorUuid = LoginManager.getDoctorUuid();
             gainDoctorInfoNet.gainDoctorInfo(doctorUuid);
         }else {
+            if(LoginManager.isQuit_home){
+                LoginManager.isQuit_home = false;
+                readHeaderInfoFromCache();
+                parseHeaderJSON();
+            }
             stopRefreshing();
         }
     }
@@ -257,7 +264,7 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
      * @param doctorInfo
      */
     private void updateDoctorInfo(DoctorInfoNew doctorInfo) {
-        updateLinear(LoginManager.isHasLogin());
+        updateLinear(true);
         if (!TextUtils.isEmpty(doctorInfo.getDoctorIcon())) {
             ImageLoader.getInstance().displayImage(doctorInfo.getDoctorIcon(), headImg, Utils.initImageLoader(R.mipmap.portrait_man, true));
         }

@@ -124,10 +124,6 @@ public class MainActivity extends BaseFragmentActivity {
     }
 
     private void showFragment() {
-        if (currIndex == 3 && !LoginManager.isHasLogin()) {
-            UIHelper.showLogin(MainActivity.this);
-            // return;
-        }
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Fragment fragment = fragmentManager.findFragmentByTag(fragmentTags.get(currIndex));
@@ -192,14 +188,21 @@ public class MainActivity extends BaseFragmentActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == UIHelper.LOGIN_REQUEST_CODE) {
-                if (data.getBooleanExtra("isLogin", true)) {
-                    showFragment();
-                } else {
+            switch (requestCode) {
+                case UIHelper.LOGIN_REQUEST_CODE:
+                    if (data.getBooleanExtra("isLogin", true)) {
+                        showFragment();
+                    } else {
+                        currIndex = 0;
+                        group.check(R.id.foot_bar_home);
+                    }
+                    break;
+                case UIHelper.LOGINOUT_REQUEST_CODE:
                     currIndex = 0;
                     group.check(R.id.foot_bar_home);
-                }
+                    break;
             }
+
         }
     }
 

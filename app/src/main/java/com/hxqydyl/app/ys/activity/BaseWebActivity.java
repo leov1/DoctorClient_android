@@ -1,5 +1,6 @@
 package com.hxqydyl.app.ys.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -16,6 +17,8 @@ import com.hxqydyl.app.ys.ui.ProgressWebView;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.LoginManager;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -113,7 +116,7 @@ public class BaseWebActivity extends BaseTitleActivity {
 
     private void SetJsBridge(String functionname, String parameters) {
         switch (functionname) {
-            /*case "setTitle":
+            case "setTitle":
                 try {
                     String title = URLDecoder.decode(parameters, "UTF-8");
                     if (title.length() > 10) {
@@ -124,7 +127,26 @@ public class BaseWebActivity extends BaseTitleActivity {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-                break;*/
+                break;
+            case "logout":
+                UIHelper.ToastMessage(this,"退出登陆");
+                LoginManager.quitLogin();
+                Intent intent = new Intent();
+                intent.putExtra("isLoginOut", true);
+                setResult(Activity.RESULT_OK, intent);
+                finish();
+                break;
+            case "fullPage":
+                String[] ps = new String[2];
+                ps = parameters.split("\\|");
+                String sourceUrl = ps[0];
+                String duration = ps[1];
+                intent = new Intent(this, VideoPlayActivity.class);
+                intent.putExtra("VideoUrl", sourceUrl);
+                intent.putExtra("VideoTitle", duration);
+//                startActivityForResult(intent, FULLPLAY);
+                startActivity(intent);
+                break;
 //            case "getFriendList":
 //                new ContactHelper().init(this, this);
 //                break;
@@ -152,17 +174,7 @@ public class BaseWebActivity extends BaseTitleActivity {
 //            case "returnIndexPage":
 //                returnIndexPage = true;
 //                break;
-            case "fullPage":
-                String[] ps = new String[2];
-                ps = parameters.split("\\|");
-                String sourceUrl = ps[0];
-                String duration = ps[1];
-                intent = new Intent(this, VideoPlayActivity.class);
-                intent.putExtra("VideoUrl", sourceUrl);
-                intent.putExtra("VideoTitle", duration);
-//                startActivityForResult(intent, FULLPLAY);
-                startActivity(intent);
-                break;
+
 //            case "openScan":
 //                Intent intent3 = new Intent();
 //                intent3.setClass(MainActivity.this, MipcaActivityCapture.class);

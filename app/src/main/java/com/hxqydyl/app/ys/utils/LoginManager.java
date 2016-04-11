@@ -1,16 +1,19 @@
 package com.hxqydyl.app.ys.utils;
 
-import android.app.Activity;
 import android.text.TextUtils;
 
 import com.hxqydyl.app.ys.bean.register.DoctorInfoNew;
 import com.hxqydyl.app.ys.http.JsonUtils;
-import com.hxqydyl.app.ys.ui.UIHelper;
 
 /**
  * Created by hxq on 2016/3/3.
  */
 public class LoginManager {
+
+    public static boolean isQuit_home = false;
+    public static boolean isQuit_myPatient = false;
+    public static boolean isQuit_myTask = false;
+    public static boolean isQuit_user = false;
 
     /**
      * 判断是否登陆
@@ -45,6 +48,10 @@ public class LoginManager {
     public static void quitLogin() {
         SharedPreferences.getInstance().putString("doctorUuid", "");
         SharedPreferences.getInstance().putString(SharedPreferences.HOME_DOCTOR_INFO_CACHE, "");
+        isQuit_home = true;
+        isQuit_myPatient = true;
+        isQuit_myTask = true;
+        isQuit_user=true;
     }
 
     /**
@@ -64,4 +71,5 @@ public class LoginManager {
         void onLoginSuccess(String doctorUuid);
         void onLoginfail();
     }
+
 }

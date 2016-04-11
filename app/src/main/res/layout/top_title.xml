@@ -30,7 +30,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="18dp"
         android:visibility="gone"
-        android:src="@drawable/btn_back" />
+        android:src="@mipmap/bg_setting_off" />
 
     <TextView
         android:id="@+id/right_txt_btn"

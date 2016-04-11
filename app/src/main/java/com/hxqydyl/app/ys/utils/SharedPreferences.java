@@ -14,7 +14,6 @@ public class SharedPreferences {
     public static final String HOME_VP_CACHE = "vpInfoCache";
     public static final String HOME_DOCTOR_INFO_CACHE = "doctorInfoCache";
 
-
     private static SharedPreferences instance = new SharedPreferences();
 
     public SharedPreferences() {
