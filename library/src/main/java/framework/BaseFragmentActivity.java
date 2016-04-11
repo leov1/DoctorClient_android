@@ -8,6 +8,8 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import common.AppManager;
+import framework.listener.RegisterSucListener;
+import framework.listener.RegisterSucMag;
 
 
 public abstract class BaseFragmentActivity extends FragmentActivity {
@@ -46,5 +48,15 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
 //        window.setFlags(
 //                WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION,
 //                WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+    }
+
+    public void addRegisterListener(RegisterSucListener listener){
+        if (listener != null)
+            RegisterSucMag.getInstance().addRegisterSucListeners(listener);
+    }
+
+    public void removeRegisterListener(RegisterSucListener listener){
+        if (listener != null)
+            RegisterSucMag.getInstance().removeRegisterSucListeners(listener);
     }
 }

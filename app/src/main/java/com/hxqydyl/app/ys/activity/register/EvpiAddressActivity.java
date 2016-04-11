@@ -11,7 +11,6 @@ import android.widget.EditText;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
-import com.hxqydyl.app.ys.activity.register.listener.RegisterSucListener;
 import com.hxqydyl.app.ys.bean.register.AddressParamBean;
 import com.hxqydyl.app.ys.bean.register.CityBean;
 import com.hxqydyl.app.ys.bean.register.CityResultBean;
@@ -34,12 +33,14 @@ import com.hxqydyl.app.ys.ui.pickerview.lib.OptionsPopupWindow;
 import java.util.ArrayList;
 import java.util.List;
 
+import framework.listener.RegisterSucListener;
+
 /**
  * 完善单位信息页面
  */
 public class EvpiAddressActivity extends BaseTitleActivity implements View.OnClickListener,OptionsPopupWindow.OnOptionsSelectListener,
         ProvinceNet.OnProvinceListener,HospitalNet.OnHospitalListener,RegionNet.OnRegionListener,CityNet.OnCityListener,
-        OfficeNet.OnOfficeListener,RegisterSucListener{
+        OfficeNet.OnOfficeListener,RegisterSucListener {
 
     private Button nextBtn;
     private ArrayList<String> optionsItems = new ArrayList<>();

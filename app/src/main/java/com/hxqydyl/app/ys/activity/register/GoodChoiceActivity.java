@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
-import com.hxqydyl.app.ys.activity.register.listener.RegisterSucListener;
 import com.hxqydyl.app.ys.adapter.TagsAdapter;
 import com.hxqydyl.app.ys.bean.register.AddressParamBean;
 import com.hxqydyl.app.ys.bean.register.RegisterFirst;
@@ -23,6 +22,8 @@ import com.hxqydyl.app.ys.utils.LoginManager;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import framework.listener.RegisterSucListener;
 
 /**
  * 选择擅长页

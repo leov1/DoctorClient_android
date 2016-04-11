@@ -1,14 +1,11 @@
 package com.hxqydyl.app.ys.activity.register;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
-import com.hxqydyl.app.ys.ui.swipebacklayout.SwipeBackActivity;
-
 /**
  * 注册协议
  */

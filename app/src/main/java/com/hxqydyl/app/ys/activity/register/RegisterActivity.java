@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
-import com.hxqydyl.app.ys.activity.register.listener.RegisterSucListener;
 import com.hxqydyl.app.ys.bean.register.CaptchaResult;
 import com.hxqydyl.app.ys.bean.register.RegisterFirst;
 import com.hxqydyl.app.ys.http.register.CaptchaNet;
@@ -23,12 +22,12 @@ import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.LoginManager;
 import com.hxqydyl.app.ys.utils.Validator;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
+import framework.listener.RegisterSucListener;
 
 /**
  * 注册页面
  */
-public class RegisterActivity extends BaseTitleActivity implements View.OnClickListener,CaptchaNet.OnCaptchaNetListener,RegisterFirstNet.OnRegisterFirstListener,RegisterSucListener{
+public class RegisterActivity extends BaseTitleActivity implements View.OnClickListener,CaptchaNet.OnCaptchaNetListener,RegisterFirstNet.OnRegisterFirstListener,RegisterSucListener {
 
     private TextView registerOrderBtn;
     private TextView loginBtn;

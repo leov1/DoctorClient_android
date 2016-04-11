@@ -12,15 +12,13 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.hxqydyl.app.ys.R;
-import com.hxqydyl.app.ys.activity.BaseWebActivity;
+import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.activity.CommentWebActivity;
 import com.hxqydyl.app.ys.activity.LoginActivity;
 import com.hxqydyl.app.ys.activity.clinic.ClinicActivity;
 import com.hxqydyl.app.ys.activity.follow.FollowMainActivity;
 import com.hxqydyl.app.ys.activity.reading.ReadingActivity;
-import com.hxqydyl.app.ys.activity.register.EvpiPhotoActivity;
 import com.hxqydyl.app.ys.activity.video.VideoActivity;
 import com.hxqydyl.app.ys.adapter.GalleryPagerAdapter;
 import com.hxqydyl.app.ys.adapter.LineGridViewAdapter;
@@ -51,12 +49,15 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
+import framework.BaseFragmentActivity;
+import framework.listener.RegisterSucListener;
+
 /**
  * 首页frg
  */
 public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGainDoctorInfoListener, View.OnClickListener
         , AdapterView.OnItemClickListener, QuitLoginNet.OnQuitLoginListener
-        , PagerNet.OnPagerNetListener {
+        , PagerNet.OnPagerNetListener,RegisterSucListener {
 
     private LinearLayout loginLiear;
     private LinearLayout noLoginLinear;
@@ -149,6 +150,7 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
     }
 
     private void initListeners() {
+        ((BaseFragmentActivity)getActivity()).addRegisterListener(this);
         gainDoctorInfoNet.setOnGainDoctorInfoListener(this);
         quitLoginNet.setListener(this);
         pagerNet.setPagerNetListener(this);
@@ -397,5 +399,15 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
     public void PagerNetFail(int statueCode) {
 
     }
-    
+
+    @Override
+    public void onRegisterSuc() {
+        startRefreshing();
+    }
+
+    @Override
+    public void onDestroy() {
+        ((BaseFragmentActivity)getActivity()).removeRegisterListener(this);
+        super.onDestroy();
+    }
 }

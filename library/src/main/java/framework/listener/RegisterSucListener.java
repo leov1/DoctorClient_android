@@ -1,4 +1,4 @@
-package com.hxqydyl.app.ys.activity.register.listener;
+package framework.listener;
 
 /**
  * Created by hxq on 2016/3/31.

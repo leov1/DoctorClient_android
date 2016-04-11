@@ -24,7 +24,6 @@ import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
-import com.hxqydyl.app.ys.activity.register.listener.RegisterSucListener;
 import com.hxqydyl.app.ys.bean.register.HeadIconResult;
 import com.hxqydyl.app.ys.bean.register.RegisterFirst;
 import com.hxqydyl.app.ys.http.register.HeadIconNet;
@@ -39,6 +38,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+
+import framework.listener.RegisterSucListener;
 
 /**
  * 完善姓名邮箱信息页面
@@ -314,7 +315,7 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
             return;
         }
         if (headIconResult.getQuery().getSuccess().equals("1")) {
-            String photoUrl = headIconResult.getSmallUrl();
+            String photoUrl = TextUtils.isEmpty(headIconResult.getSmallUrl())?headIconResult.getImageUrl():headIconResult.getSmallUrl();
             smallImage = TextUtils.isEmpty(headIconResult.getIcon()) ? headIconResult.getSmallImage() : headIconResult.getIcon();
             System.out.println("smallImage--->" + headIconResult.toString());
             Message msg = handler.obtainMessage();

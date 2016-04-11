@@ -10,15 +10,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
-import com.hxqydyl.app.ys.activity.register.listener.RegisterSucListener;
-import com.hxqydyl.app.ys.activity.register.listener.RegisterSucMag;
-import com.hxqydyl.app.ys.bean.register.DoctorInfo;
 import com.hxqydyl.app.ys.bean.register.DoctorResult;
 import com.hxqydyl.app.ys.http.login.LoginNet;
 import com.hxqydyl.app.ys.ui.UIHelper;
-import com.hxqydyl.app.ys.utils.Constants;
-import com.hxqydyl.app.ys.utils.LoginManager;
 import com.hxqydyl.app.ys.utils.SharedPreferences;
+
+import framework.listener.RegisterSucListener;
 
 /**
  * Created by hxq on 2016/2/25.

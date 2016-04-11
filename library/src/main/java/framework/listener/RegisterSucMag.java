@@ -1,6 +1,4 @@
-package com.hxqydyl.app.ys.activity.register.listener;
-
-import android.content.Context;
+package framework.listener;
 
 import java.util.ArrayList;
 

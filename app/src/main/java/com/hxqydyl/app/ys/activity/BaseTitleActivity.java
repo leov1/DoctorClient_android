@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -14,13 +12,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hxqydyl.app.ys.R;
-import com.hxqydyl.app.ys.activity.register.listener.RegisterSucListener;
-import com.hxqydyl.app.ys.activity.register.listener.RegisterSucMag;
 import com.hxqydyl.app.ys.http.NetRequestListener;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.ui.swipebacklayout.SwipeBackActivity;
 import com.hxqydyl.app.ys.utils.LoginManager;
-import com.hxqydyl.app.ys.utils.Utils;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -77,16 +72,6 @@ public class BaseTitleActivity extends SwipeBackActivity implements NetRequestLi
             }
         });
 
-    }
-
-    public void addRegisterListener(RegisterSucListener listener) {
-        if (listener != null)
-            RegisterSucMag.getInstance().addRegisterSucListeners(listener);
-    }
-
-    public void removeRegisterListener(RegisterSucListener listener) {
-        if (listener != null)
-            RegisterSucMag.getInstance().removeRegisterSucListeners(listener);
     }
 
     public void showDialog(String text) {

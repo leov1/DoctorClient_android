@@ -25,8 +25,6 @@ import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
-import com.hxqydyl.app.ys.activity.register.listener.RegisterSucListener;
-import com.hxqydyl.app.ys.activity.register.listener.RegisterSucMag;
 import com.hxqydyl.app.ys.adapter.EvpiPhotoAdapter;
 import com.hxqydyl.app.ys.adapter.ImagePagerAdapter;
 import com.hxqydyl.app.ys.bean.Query;
@@ -47,10 +45,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import framework.listener.RegisterSucListener;
+import framework.listener.RegisterSucMag;
+
 /**
  * 完善注册z照片信息
  */
-public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClickListener, OnSingleTapDismissBigPhotoListener, UploadIconsNet.OnUploadIconsListener, SaveUserIconNet.OnSaveUserIconListener {
+public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClickListener, OnSingleTapDismissBigPhotoListener,
+        UploadIconsNet.OnUploadIconsListener, SaveUserIconNet.OnSaveUserIconListener {
 
     private String takePictureUrl;
     private int addTakePicCount = 1;
