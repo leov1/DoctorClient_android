@@ -3,6 +3,7 @@ package com.hxqydyl.app.ys.activity.follow;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -18,6 +19,7 @@ import com.hxqydyl.app.ys.bean.follow.plan.Plan;
 import com.hxqydyl.app.ys.bean.follow.plan.PlanBaseInfo;
 import com.hxqydyl.app.ys.http.PatientGroupNet;
 import com.hxqydyl.app.ys.http.UrlConstants;
+import com.hxqydyl.app.ys.http.follow.CustomerNet;
 import com.hxqydyl.app.ys.http.follow.FollowApplyNet;
 import com.hxqydyl.app.ys.http.follow.FollowCallback;
 import com.hxqydyl.app.ys.http.follow.FollowPlanNet;
@@ -27,6 +29,8 @@ import com.hxqydyl.app.ys.utils.LoginManager;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
 
 /**
  * Created by wangchao36 on 16/3/23.
@@ -48,13 +52,15 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
     private List<PatientGroup> patientGroupList;
 
     private String applyUuid;
+    private String customerUuid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_follow_apply_ok);
         initViewOnBaseTitle("选择随访方案");
-        applyUuid = getIntent().getStringExtra("applyUuid");
+//        applyUuid = getIntent().getStringExtra("applyUuid");
+        customerUuid = getIntent().getStringExtra("customerUuid");
 
         setBackListener();
         initView();
@@ -89,6 +95,18 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
         llAddPlan.setOnClickListener(this);
         llAddGroup.setOnClickListener(this);
         btnApply.setOnClickListener(this);
+        lvPlan.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                planSelectAdapter.setSelect(position);
+            }
+        });
+        lvGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                patientGroupSelectAdapter.setSelect(position);
+            }
+        });
     }
 
     @Override
@@ -156,13 +174,38 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
 
     private void apply() {
         showDialog("正在提交");
-        FollowApplyNet.addVisitRecord(applyUuid, applyUuid, new FollowCallback(){
+        PlanBaseInfo plan = planList.get(planSelectAdapter.getSelect());
+        FollowApplyNet.addVisitRecord(plan.getVisitUuid(), customerUuid, new FollowCallback(){
+            @Override
+            public void onResult(String result) {
+                super.onResult(result);
+                updateCustomerGroup();
+            }
+
+            @Override
+            public void onError(Call call, Exception e) {
+                super.onError(call, e);
+                dismissDialog();
+                UIHelper.ToastMessage(FollowApplyOkActivity.this, "提交失败");
+            }
+        });
+    }
+
+    private void updateCustomerGroup() {
+        final PatientGroup pg = patientGroupList.get(patientGroupSelectAdapter.getSelect());
+        CustomerNet.updateCustomerGroup(pg.getId(), customerUuid, new FollowCallback(){
             @Override
             public void onResult(String result) {
                 super.onResult(result);
                 dismissDialog();
                 UIHelper.ToastMessage(FollowApplyOkActivity.this, "保存成功");
                 finish();
+            }
+            @Override
+            public void onError(Call call, Exception e) {
+                super.onError(call, e);
+                dismissDialog();
+                UIHelper.ToastMessage(FollowApplyOkActivity.this, "提交失败");
             }
         });
     }

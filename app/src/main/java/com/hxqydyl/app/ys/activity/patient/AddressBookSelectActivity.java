@@ -1,9 +1,11 @@
 package com.hxqydyl.app.ys.activity.patient;
 
+import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,6 +17,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import static android.Manifest.permission.READ_CONTACTS;
 
 import com.hp.hpl.sparta.Text;
 import com.hxqydyl.app.ys.R;
@@ -22,6 +25,7 @@ import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.adapter.AddressBookSelectAdapter;
 import com.hxqydyl.app.ys.bean.AddressBook;
 import com.hxqydyl.app.ys.ui.AssortView;
+import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.PinyinUtils;
 import com.hxqydyl.app.ys.utils.StringUtils;
 
@@ -127,7 +131,7 @@ public class AddressBookSelectActivity extends BaseTitleActivity
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "通讯录权限获取失败", Toast.LENGTH_SHORT);
+            UIHelper.ToastMessage(this, "通讯录权限获取失败");
         }
 
         //字母按键回调

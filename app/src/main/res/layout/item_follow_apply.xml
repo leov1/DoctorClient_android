@@ -39,8 +39,7 @@
                 android:layout_height="15dp"
                 android:layout_marginLeft="@dimen/space_10"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/head_name"
-                android:src="@mipmap/ic_launcher"/>
+                android:layout_toRightOf="@+id/head_name" />
 
             <TextView
                 android:id="@+id/tvAge"

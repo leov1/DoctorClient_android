@@ -14,7 +14,7 @@ public class UrlConstants {
      * 线上测试 isOnline = true,isTest = true;
      * 线上发布 isOnline = true,isTest = false;
      */
-    public static final boolean isOnline = false;//    是否是线上环境
+    public static final boolean isOnline = true;//    是否是线上环境
     public static final boolean isTest = true;//    是否是测试包
 
 

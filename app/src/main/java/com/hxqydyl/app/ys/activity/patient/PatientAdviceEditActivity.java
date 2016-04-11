@@ -24,12 +24,14 @@ import com.hxqydyl.app.ys.adapter.MedicineAdapter;
 import com.hxqydyl.app.ys.adapter.MedicineDosageAdapter;
 import com.hxqydyl.app.ys.adapter.PlanCheckSycleAdapter;
 import com.hxqydyl.app.ys.adapter.PlanSelfScaleAdapter;
+import com.hxqydyl.app.ys.bean.Advice;
 import com.hxqydyl.app.ys.bean.follow.plan.CheckSycle;
 import com.hxqydyl.app.ys.bean.follow.plan.HealthTips;
 import com.hxqydyl.app.ys.bean.follow.plan.Medicine;
 import com.hxqydyl.app.ys.bean.follow.plan.MedicineDosage;
 import com.hxqydyl.app.ys.bean.follow.plan.Plan;
 import com.hxqydyl.app.ys.bean.follow.plan.Scale;
+import com.hxqydyl.app.ys.http.PatientAdviceNet;
 import com.hxqydyl.app.ys.http.follow.FollowCallback;
 import com.hxqydyl.app.ys.http.follow.FollowPlanNet;
 import com.hxqydyl.app.ys.ui.UIHelper;
@@ -51,7 +53,6 @@ import ui.swipemenulistview.SwipeMenuListView;
  */
 public class PatientAdviceEditActivity extends BaseTitleActivity implements View.OnClickListener{
 
-    private EditText etTitle;
     private EditText etDrugTherapy; // 不良反应
     private EditText etSideEffects; //其他治疗
 
@@ -64,10 +65,8 @@ public class PatientAdviceEditActivity extends BaseTitleActivity implements View
 
     private Button btnSave;
 
-    private String from = null; // my\suggest
-    private Plan plan = null;
-
-    private FollowCallback updateFollowCallback;
+    private Advice advice = null;
+    private String customerUuid = null;
 
     private Handler handler = new Handler() {
         @Override
@@ -84,23 +83,16 @@ public class PatientAdviceEditActivity extends BaseTitleActivity implements View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_advice_edit);
         Intent intent = getIntent();
-        plan = (Plan) intent.getSerializableExtra("plan");
-        from = intent.getStringExtra("from");
-        if (plan != null) {
-            // 编辑
-            initViewOnBaseTitle("编辑方案");
-        } else {
-            initViewOnBaseTitle("新增方案");
-        }
+        customerUuid = intent.getStringExtra("customerUuid");
+        advice = (Advice) intent.getSerializableExtra("advice");
+        initViewOnBaseTitle("重要医嘱");
 
         initView();
         bindEvent();
-        initUpdateFollowCallback();
         handler.sendEmptyMessage(100);
     }
 
     private void initView() {
-        etTitle = (EditText) findViewById(R.id.etTitle);
         etDrugTherapy = (EditText) findViewById(R.id.etDrugTherapy);
         etSideEffects = (EditText) findViewById(R.id.etSideEffects);
 
@@ -137,11 +129,6 @@ public class PatientAdviceEditActivity extends BaseTitleActivity implements View
     }
 
     private void saveInfo() {
-        String title = etTitle.getText().toString();
-        if (StringUtils.isEmpty(title)) {
-            UIHelper.ToastMessage(this, "方案名称不能为空");
-            return;
-        }
 
         String drugTherapy = etDrugTherapy.getText().toString();
         if (StringUtils.isEmpty(drugTherapy)) {
@@ -183,17 +170,18 @@ public class PatientAdviceEditActivity extends BaseTitleActivity implements View
             mList.add(m);
         }
 
-        plan.setPreceptName(title);
-        plan.setDrugTherapy(drugTherapy);
-        plan.setSideEffects(sideEffects);
+        advice.setDrugReaction(drugTherapy);
+        advice.setCureNote(sideEffects);
 
-        plan.setMedicineList(mList);
+        advice.setMedicineList(mList);
         try {
-            if (StringUtils.isEmpty(plan.getVisitUuid())) {
-                //新建
-                FollowPlanNet.addVisitPrecept(plan, updateFollowCallback);
-            } else {
-            }
+            PatientAdviceNet.adviceSave(advice.toJson(customerUuid, "visitPreceptUuid"), new FollowCallback(){
+                @Override
+                public void onResponse(String response) {
+                    UIHelper.ToastMessage(PatientAdviceEditActivity.this, "保持成功");
+                    finish();
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
             UIHelper.ToastMessage(this, "提交失败");
@@ -201,35 +189,16 @@ public class PatientAdviceEditActivity extends BaseTitleActivity implements View
 
     }
 
-    private void initUpdateFollowCallback() {
-        updateFollowCallback = new FollowCallback(){
-            @Override
-            public void onResponse(String response) {
-                super.onResponse(response);
-                UIHelper.ToastMessage(PatientAdviceEditActivity.this, "保存成功");
-                finish();
-            }
-
-            @Override
-            public void onFail(String status, String msg) {
-                super.onFail(status, msg);
-                UIHelper.ToastMessage(PatientAdviceEditActivity.this, "保存失败");
-            }
-        };
-    }
-
     private void updateUIData() {
-        if (plan == null) {
+        if (advice == null) {
             UIHelper.ToastMessage(this, "数据加载失败");
+            return;
         }
-        if ("my".equals(from)) {
-            etTitle.setText(plan.getPreceptName());
-        }
-        etDrugTherapy.setText(plan.getDrugTherapy());
-        etSideEffects.setText(plan.getSideEffects());
+        etDrugTherapy.setText(advice.getDrugReaction());
+        etSideEffects.setText(advice.getCureNote());
 
         medicineList.clear();
-        medicineList.addAll(plan.getMedicineList());
+        medicineList.addAll(advice.getMedicineList());
 
         medicineAdapter.notifyDataSetChanged();
     }

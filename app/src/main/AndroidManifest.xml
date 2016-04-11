@@ -96,6 +96,10 @@
             android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activity.patient.PatientAdviceEditActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activity.patient.AddressBookSelectActivity"
             android:screenOrientation="portrait" />
         <activity

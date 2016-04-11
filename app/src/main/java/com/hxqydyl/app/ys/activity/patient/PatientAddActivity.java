@@ -20,6 +20,7 @@ import com.hxqydyl.app.ys.http.PatientGroupNet;
 import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.http.follow.CustomerNet;
 import com.hxqydyl.app.ys.http.follow.FollowCallback;
+import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.LoginManager;
 
 import java.util.ArrayList;
@@ -118,6 +119,7 @@ public class PatientAddActivity extends BaseTitleActivity implements View.OnClic
                 public void onFail(String status, String msg) {
                     super.onFail(status, msg);
                     dismissDialog();
+                    UIHelper.ToastMessage(PatientAddActivity.this, msg);
                 }
             });
         }

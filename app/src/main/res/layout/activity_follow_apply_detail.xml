@@ -25,7 +25,6 @@
                     android:id="@+id/head_img"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@mipmap/ic_launcher"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/space_20"
                     />
@@ -80,7 +79,7 @@
                         android:layout_marginTop="3dp"
                         android:layout_below="@+id/info_rl"
                         android:textSize="@dimen/text_size_16"
-                        android:text="问题：幻想初期，症状表现为..."
+                        android:text=""
                         />
                 </RelativeLayout>
             </RelativeLayout>
@@ -128,39 +127,39 @@
                     android:layout_height="1dp"
                     android:background="#e4e4e4"/>
 
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="18dp"
-                    android:layout_marginBottom="18dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    
-                    <ImageView
-                        android:src="@drawable/default_image"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp" />
+                <!--<LinearLayout-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:layout_marginLeft="20dp"-->
+                    <!--android:layout_marginRight="20dp"-->
+                    <!--android:layout_marginTop="18dp"-->
+                    <!--android:layout_marginBottom="18dp"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content">-->
+                    <!---->
+                    <!--<ImageView-->
+                        <!--android:src="@drawable/default_image"-->
+                        <!--android:layout_width="80dp"-->
+                        <!--android:layout_height="80dp" />-->
 
-                    <ImageView
-                        android:src="@drawable/default_image"
-                        android:layout_marginLeft="10dp"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp" />
+                    <!--<ImageView-->
+                        <!--android:src="@drawable/default_image"-->
+                        <!--android:layout_marginLeft="10dp"-->
+                        <!--android:layout_width="80dp"-->
+                        <!--android:layout_height="80dp" />-->
 
-                    <ImageView
-                        android:src="@drawable/default_image"
-                        android:layout_marginLeft="10dp"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp" />
+                    <!--<ImageView-->
+                        <!--android:src="@drawable/default_image"-->
+                        <!--android:layout_marginLeft="10dp"-->
+                        <!--android:layout_width="80dp"-->
+                        <!--android:layout_height="80dp" />-->
 
-                    <ImageView
-                        android:src="@drawable/default_image"
-                        android:layout_marginLeft="10dp"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp" />
+                    <!--<ImageView-->
+                        <!--android:src="@drawable/default_image"-->
+                        <!--android:layout_marginLeft="10dp"-->
+                        <!--android:layout_width="80dp"-->
+                        <!--android:layout_height="80dp" />-->
 
-                </LinearLayout>
+                <!--</LinearLayout>-->
 
             </LinearLayout>
 

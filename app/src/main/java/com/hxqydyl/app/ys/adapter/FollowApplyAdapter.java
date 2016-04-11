@@ -62,7 +62,7 @@ public class FollowApplyAdapter extends BaseAdapter{
         }
         FollowApply fa = list.get(position);
         holder.tvName.setText(fa.getRealName());
-        holder.tvAge.setText(fa.getAge() + "岁");
+        holder.tvAge.setText("年龄：" + fa.getAge() + "岁");
         holder.tvDay.setText(fa.getCreateTime());
         holder.tvQ.setText(fa.getIllnessDescription());
         if ("1".equals(fa.getSex())) {

@@ -48,4 +48,20 @@ public class CustomerNet {
                 .execute(callback);
     }
 
+    /**
+     * 修改患者所在分组
+     * @param groupId
+     * @param customerUuid
+     */
+    public static void updateCustomerGroup(String groupId, String customerUuid,
+                                           FollowCallback callback) {
+        OkHttpUtils.post().url(FollowApplyNet.baseURL
+                + "app/service/customer/1.0/updateCustomerGroup")
+                .addParams("doctorUuid", LoginManager.getDoctorUuid())
+                .addParams("groupId", groupId)
+                .addParams("customerUuid", customerUuid)
+                .build()
+                .execute(callback);
+    }
+
 }

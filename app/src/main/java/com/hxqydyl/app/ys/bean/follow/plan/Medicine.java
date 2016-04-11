@@ -72,7 +72,9 @@ public class Medicine implements Serializable {
         for (int i=0; i<jsonArray.length(); i++) {
             JSONObject obj = jsonArray.getJSONObject(i);
             Medicine m = new Medicine();
-            m.setUuid(obj.getString("uuid"));
+            try {
+                m.setUuid(obj.getString("uuid"));
+            }catch (JSONException e) {}
             m.setFood(obj.getString("food"));
             m.setName(obj.getString("medicineUuid"));
 

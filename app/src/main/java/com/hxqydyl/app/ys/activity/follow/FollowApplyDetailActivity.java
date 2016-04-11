@@ -86,12 +86,13 @@ public class FollowApplyDetailActivity extends BaseTitleActivity
                 break;
             case R.id.rl_patient:
                 Intent intent = new Intent(this, PatientInfoActivity.class);
-                intent.putExtra("patientId", 1);
+                intent.putExtra("patientId", fa.getCustomerUuid());
                 startActivity(intent);
                 break;
             case R.id.btnApply:
                 Intent okIntent = new Intent(this, FollowApplyOkActivity.class);
                 okIntent.putExtra("applyUuid", applyUuid);
+                okIntent.putExtra("customerUuid", fa.getCustomerUuid());
                 startActivity(okIntent);
                 break;
             case R.id.btnCancel:
@@ -101,8 +102,8 @@ public class FollowApplyDetailActivity extends BaseTitleActivity
     }
 
     private void getApplyDetail() {
-        showDialog("");
-        FollowApplyNet.getVisitApplyList(new FollowCallback(){
+        showDialog("正在加载");
+        FollowApplyNet.getApplyDetail(applyUuid, new FollowCallback(){
             @Override
             public void onResult(String result) {
                 super.onResult(result);
@@ -142,7 +143,7 @@ public class FollowApplyDetailActivity extends BaseTitleActivity
                     tvName.setText(fa.getRealName());
                     tvAge.setText(fa.getAge() + "岁");
                     tvQ.setText(fa.getIllnessDescription());
-                    tvContent.setText(fa.getDiagnose());
+                    tvContent.setText(fa.getSymptoms());
                     if ("1".equals(fa.getSex())) {
                         tvSex.setText("男");
                     } else {

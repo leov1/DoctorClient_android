@@ -16,6 +16,7 @@ import com.hxqydyl.app.ys.activity.case_report.AddCaseReportActivity;
 import com.hxqydyl.app.ys.activity.case_report.FollowUpFormActivity;
 import com.hxqydyl.app.ys.activity.case_report.InPatientCaseReportActivity;
 import com.hxqydyl.app.ys.activity.case_report.OutPatientCaseReportActivity;
+import com.hxqydyl.app.ys.activity.follow.FollowApplyOkActivity;
 import com.hxqydyl.app.ys.adapter.PatientTreatInfoAdapter;
 import com.hxqydyl.app.ys.bean.Patient;
 import com.hxqydyl.app.ys.bean.PatientTreatInfo;
@@ -34,6 +35,7 @@ public class PatientDetailsActivity extends BaseTitleActivity implements View.On
     public static final String KEY_PATIENT = "patient";
     public static final String KEY_TREAT_INFO = "treat_info";
     private static final int REQ_ADD_CASE_REPORT = 1;
+    private static final int REQ_ADD_FOLLOW_PLAN = 2;       //随访方案
     //    患者基本信息
     private PatientSimpleInfoViewHolder simpleInfoViewHolder;
 
@@ -116,6 +118,7 @@ public class PatientDetailsActivity extends BaseTitleActivity implements View.On
         });
 
         bAddCaseReport.setOnClickListener(this);
+        bSelectNewFollowUpForPatient.setOnClickListener(this);
 
         refreshTreatInfoList();
     }
@@ -162,6 +165,9 @@ public class PatientDetailsActivity extends BaseTitleActivity implements View.On
                 startActivityForResult(intent,REQ_ADD_CASE_REPORT);
                 break;
             case R.id.bSelectNewFollowUpForPatient:
+                intent = new Intent(this, FollowApplyOkActivity.class);
+                intent.putExtra("customerUuid", patient.getId());
+                startActivity(intent);
                 break;
         }
     }
@@ -181,6 +187,7 @@ public class PatientDetailsActivity extends BaseTitleActivity implements View.On
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQ_ADD_CASE_REPORT && resultCode == RESULT_OK){
             refreshTreatInfoList();
+
         }
     }
 }

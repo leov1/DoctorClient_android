@@ -5,10 +5,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.flyco.dialog.listener.OnOperItemClickL;
+import com.flyco.dialog.widget.NormalListDialog;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.activity.follow.PlanEditActivity;
@@ -17,11 +20,13 @@ import com.hxqydyl.app.ys.adapter.HealthTipsAdapter;
 import com.hxqydyl.app.ys.adapter.MedicineAdapter;
 import com.hxqydyl.app.ys.adapter.PlanCheckSycleAdapter;
 import com.hxqydyl.app.ys.adapter.PlanSelfScaleAdapter;
+import com.hxqydyl.app.ys.bean.Advice;
 import com.hxqydyl.app.ys.bean.follow.plan.CheckSycle;
 import com.hxqydyl.app.ys.bean.follow.plan.HealthTips;
 import com.hxqydyl.app.ys.bean.follow.plan.Medicine;
 import com.hxqydyl.app.ys.bean.follow.plan.Plan;
 import com.hxqydyl.app.ys.bean.follow.plan.Scale;
+import com.hxqydyl.app.ys.http.PatientAdviceNet;
 import com.hxqydyl.app.ys.http.follow.FollowApplyNet;
 import com.hxqydyl.app.ys.http.follow.FollowCallback;
 import com.hxqydyl.app.ys.http.follow.FollowPlanNet;
@@ -30,6 +35,7 @@ import com.hxqydyl.app.ys.ui.UIHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Call;
 import ui.swipemenulistview.SwipeMenuExpandableListView;
 import ui.swipemenulistview.SwipeMenuListView;
 
@@ -46,10 +52,8 @@ public class PatientAdviceInfoActivity extends BaseTitleActivity implements View
     private MedicineAdapter medicineAdapter;
     private List<Medicine> medicineList;        // 药品列表
 
-    private TextView tvEdit;
-
-    private String customerUuid = null;    //医嘱uuid
-    private Plan plan = null;
+    private String customerUuid = null;    //患者uuid
+    private Advice advice = null;
 
     private Handler handler = new Handler() {
         @Override
@@ -88,10 +92,6 @@ public class PatientAdviceInfoActivity extends BaseTitleActivity implements View
     }
 
     private void initView() {
-        tvEdit = (TextView) findViewById(R.id.right_txt_btn);
-        tvEdit.setText("编辑");
-        tvEdit.setVisibility(View.VISIBLE);
-        tvEdit.setOnClickListener(this);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvDrugTherapy = (TextView) findViewById(R.id.tvDrugTherapy);
         tvSideEffects = (TextView) findViewById(R.id.tvSideEffects);
@@ -105,111 +105,86 @@ public class PatientAdviceInfoActivity extends BaseTitleActivity implements View
     }
 
     private void bindEvent() {
+        tvTitle.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent();
         switch (v.getId()) {
-            case R.id.right_txt_btn:
-                intent.setClass(PatientAdviceInfoActivity.this, PatientAdviceEditActivity.class);
-                intent.putExtra("plan", plan);
-                startActivity(intent);
+            case R.id.tvTitle:
+                foodRelationDialog();
                 break;
         }
     }
 
+    private void foodRelationDialog() {
+        String[] items = {"维持原治疗", "调整治疗方案"};
+        final NormalListDialog dialog = new NormalListDialog(this, items);
+        dialog.title("用药指导")
+                .titleBgColor(getResources().getColor(R.color.color_home_topbar))
+                .layoutAnimation(null)
+                .show();
+        dialog.setOnOperItemClickL(new OnOperItemClickL() {
+            @Override
+            public void onOperItemClick(AdapterView<?> parent, View view, int position, long id) {
+                dialog.dismiss();
+                if (position == 1) {
+                    Intent intent = new Intent();
+                    intent.setClass(PatientAdviceInfoActivity.this, PatientAdviceEditActivity.class);
+                    intent.putExtra("advice", advice);
+                    intent.putExtra("customerUuid", customerUuid);
+                    startActivity(intent);
+                }
+            }
+        });
+    }
+
 
     private void visitPreceptDetail(String visitUuid) {
-        FollowPlanNet.visitPreceptDetail(visitUuid, new FollowCallback(){
+        PatientAdviceNet.adviceSearch(visitUuid, new FollowCallback(){
             @Override
             public void onResponse(String response) {
-                super.onResponse(response);
                 if (FollowApplyNet.myDev)
                     response = "{" +
-                        "  \"hepatic\" : \"1\"," +
-                        "  \"selfTest\" : [" +
-                        "    {" +
-                        "      \"description\" : \"\"," +
-                        "      \"id\" : \"0001\"," +
-                        "      \"thumb\" : \"\"," +
-                        "      \"digest\" : \"\"," +
-                        "      \"createDate\" : \"2015-11-24 20:09:56\"," +
-                        "      \"total\" : 0," +
-                        "      \"url\" : \"\"," +
-                        "      \"title\" : \"综合测试2\"," +
-                        "      \"self\" : \"0\"," +
-                        "      \"cover\" : \"\"," +
-                        "      \"integral\" : 0," +
-                        "      \"media\" : \"\"," +
-                        "      \"sort\" : 1," +
-                        "      \"parentId\" : \"00\"" +
-                        "    }" +
-                        "  ]," +
-                        "  \"period\" : \"6\"," +
-                        "  \"preceptName\" : \"方案名称\"," +
-                        "  \"query\" : {" +
-                        "    \"success\" : \"1\"," +
-                        "    \"message\" : \"操作成功\"" +
-                        "  }," +
-                        "  \"doctorAdvice\" : [" +
-                        "    {" +
-                        "      \"doctorName\" : \"李狗蛋\"," +
-                        "      \"productName\" : \"\"," +
-                        "      \"medicalRecordUuid\" : \"\"," +
-                        "      \"dosage\" : \"1|mg\"," +
-                        "      \"opeTime\" : \"2016-04-08 11:46:19\"," +
-                        "      \"serviceStaffUuid\" : \"ae0a8f2d76e3442981625ee96648b6eb\"," +
-                        "      \"visitRecordUuid\" : \"sitPrecept0000000343\"," +
-                        "      \"medicalDateBegin\" : null," +
-                        "      \"sortType\" : \"desc\"," +
-                        "      \"medicineUuid\" : \"也是名称\"," +
-                        "      \"uuid\" : \"ctorAdvice0000000368\"," +
-                        "      \"cureNote\" : \"\"," +
-                        "      \"customerUuid\" : \"\"," +
-                        "      \"delFlag\" : \"1\"," +
-                        "      \"type\" : \"0\"," +
-                        "      \"food\" : \"饭前服用\"," +
-                        "      \"state\" : \"\"," +
-                        "      \"sortName\" : \"uuid\"," +
-                        "      \"oper\" : \"\"," +
-                        "      \"unit\" : \"\"," +
-                        "      \"createTime\" : \"\"," +
-                        "      \"directions\" : \"早,中,晚\"," +
-                        "      \"frequency\" : \"1\"," +
-                        "      \"mapCondition\" : {" +
-                        "" +
-                        "      }," +
-                        "      \"customerName\" : \"\"," +
-                        "      \"medicalDateEnd\" : null" +
-                        "    }" +
-                        "  ]," +
-                        "  \"electrocardiogram\" : \"5\"," +
-                        "  \"weight\" : \"4\"," +
-                        "  \"drugTherapy\" : \"药物不良咋处理\"," +
-                        "  \"sideEffects\" : \"其他治疗也行\"," +
-                        "  \"otherMap\" : [" +
-                        "" +
-                        "  ]," +
-                        "  \"visitUuid\" : \"sitPrecept0000000343\"," +
-                        "  }";
-                plan = Plan.parseDetailJson(response);
+                            "  \"drugReaction\" : \"你\"," +
+                            "  \"cureNote\" : \"你\"," +
+                            "  \"child\" : [" +
+                            "    {" +
+                            "      \"medicineUuid\" : \"\"," +
+                            "      \"directions\" : \"早\"," +
+                            "      \"dosage\" : \"5|mg\"," +
+                            "      \"frequency\" : \"1\"," +
+                            "      \"unit\" : \"\"," +
+                            "      \"food\" : \"饭前服用\"" +
+                            "    }" +
+                            "  ]," +
+                            "  \"uuid\" : \"1ff22cc9fe064bc9a1a7afb7b1e24619\"" +
+                            "}";
+                advice = Advice.parseDetailJson(response);
                 dismissDialog();
                 handler.sendEmptyMessage(100);
+            }
+
+            @Override
+            public void onError(Call call, Exception e) {
+                super.onError(call, e);
+                UIHelper.ToastMessage(PatientAdviceInfoActivity.this, "数据加载失败");
+                dismissDialog();
+                onResponse("t");
             }
         });
     }
 
     private void updateUIData() {
-        if (plan == null) {
+        if (advice == null) {
             UIHelper.ToastMessage(this, "数据加载失败");
+            return;
         }
-        tvTitle.setText(plan.getPreceptName());
-        tvDrugTherapy.setText(plan.getDrugTherapy());
-        tvSideEffects.setText(plan.getSideEffects());
+        tvDrugTherapy.setText(advice.getDrugReaction());
+        tvSideEffects.setText(advice.getCureNote());
 
         medicineList.clear();
-        medicineList.addAll(plan.getMedicineList());
+        medicineList.addAll(advice.getMedicineList());
 
         medicineAdapter.notifyDataSetChanged();
     }

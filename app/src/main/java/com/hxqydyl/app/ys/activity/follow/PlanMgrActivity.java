@@ -178,7 +178,7 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
             @Override
             public void onResult(String result) {
                 super.onResult(result);
-                result = "[" +
+                if (FollowApplyNet.myDev) result = "[" +
                         "{" +
                         "\"visitUuid\": \"0000\"," +
                         "\"preceptName\": \"建议方案\"," +
@@ -204,6 +204,7 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
                 super.onResponse(response);
                 myPlanList.remove(position);
                 adapter.notifyDataSetChanged();
+                UIHelper.ToastMessage(PlanMgrActivity.this, "删除成功");
             }
 
             @Override
@@ -213,6 +214,7 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
                     myPlanList.remove(position);
                     adapter.notifyDataSetChanged();
                 }
+                UIHelper.ToastMessage(PlanMgrActivity.this, msg);
             }
         });
     }

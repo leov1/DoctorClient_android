@@ -21,37 +21,36 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp">
                 <TextView
-                    android:text="方案名称："
+                    android:text="用药指导："
                     android:gravity="center_vertical|right"
-                    android:textSize="@dimen/text_size_18"
+                    android:textSize="@dimen/text_size_16"
                     android:layout_marginLeft="@dimen/space_20"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent" />
-                <EditText
+                <TextView
                     android:id="@+id/etTitle"
-                    android:hint="方案名称"
+                    android:hint="调整治疗方案"
                     android:textSize="@dimen/text_size_16"
                     android:background="@color/transparent"
                     android:textColor="#747474"
                     android:layout_width="match_parent"
                     android:layout_weight="1"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical" />
             </LinearLayout>
             <LinearLayout
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/space_20"
-                android:paddingRight="@dimen/space_20"
+                android:orientation="horizontal"
                 android:layout_marginTop="1dp"
                 android:background="@drawable/bg_plan_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:text="其他治疗"
-                    android:textColor="#696969"
-                    android:gravity="center_vertical|left"
+                    android:text="其他治疗："
                     android:textSize="@dimen/text_size_16"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp" />
+                    android:gravity="center_vertical|right"
+                    android:layout_marginLeft="@dimen/space_20"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
                 <EditText
                     android:id="@+id/etSideEffects"
                     android:hint="请输入其他治疗"
@@ -60,6 +59,8 @@
                     android:textColor="#696969"
                     android:background="@color/transparent"
                     android:layout_marginTop="@dimen/space_10"
+                    android:layout_marginRight="@dimen/space_10"
+                    android:layout_marginBottom="@dimen/space_10"
                     android:layout_width="match_parent"
                     android:layout_height="100dp" />
             </LinearLayout>

@@ -43,6 +43,7 @@ public class FollowApply {
     private String imgUrl;
     private String createTime;
     private String illnessDescription;
+    private String symptoms;    //症状
 
     private String ifStart;
     private String imgs;// null,
@@ -68,6 +69,14 @@ public class FollowApply {
 
     public static List<FollowApply> parseList(String string) {
         return JSONArray.parseArray(string, FollowApply.class);
+    }
+
+    public String getSymptoms() {
+        return symptoms;
+    }
+
+    public void setSymptoms(String symptoms) {
+        this.symptoms = symptoms;
     }
 
     public String getDoctorUuid() {

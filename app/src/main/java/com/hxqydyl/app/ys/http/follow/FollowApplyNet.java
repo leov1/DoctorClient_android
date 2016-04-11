@@ -16,8 +16,8 @@ import com.zhy.http.okhttp.OkHttpUtils;
 public class FollowApplyNet {
 
 //    public static String baseURL = "http://101.201.154.86:8080/";
-    public static String baseURL = "http://172.168.1.233/";
-//    public static String baseURL = UrlConstants.BASE_IP + ":" + UrlConstants.BASE_PORT + "/";
+//    public static String baseURL = "http://172.168.1.233/";
+    public static String baseURL = UrlConstants.BASE_IP + ":" + UrlConstants.BASE_PORT + "/";
     public static boolean myDev = false;
 
     /**
@@ -38,7 +38,7 @@ public class FollowApplyNet {
      * @param callback
      */
     public static void getApplyDetail(String applyUuid, FollowCallback callback) {
-        OkHttpUtils.get().url(baseURL + "app/pub/doctor/getApplyDetail")
+        OkHttpUtils.get().url(baseURL + "app/pub/doctor/1.0/getApplyDetail")
                 .addParams("applyUuid", applyUuid)
                 .build()
                 .execute(callback);
@@ -51,9 +51,9 @@ public class FollowApplyNet {
      * @param visitPreceptUuid 随访方案的uuid
      */
     public static void addVisitRecord(String visitUuid, String visitPreceptUuid, FollowCallback callback) {
-        OkHttpUtils.post().url(baseURL + "app/pub/doctor/1.0/addVisitRecord")
-                .addParams("visitUuid", "visitUuid")
-                .addParams("visitPreceptUuid", "visitPreceptUuid")
+        OkHttpUtils.get().url(baseURL + "app/pub/doctor/1.0/addVisitRecord")
+                .addParams("visitUuid", visitUuid)
+                .addParams("visitPreceptUuid", visitPreceptUuid)
                 .build()
                 .execute(callback);
     }
