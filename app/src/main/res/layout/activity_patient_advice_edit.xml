@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_f7f7f7"
+    android:orientation="vertical">
+
+    <include layout="@layout/top_title"></include>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:background="@drawable/bg_plan_item"
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+                <TextView
+                    android:text="方案名称："
+                    android:gravity="center_vertical|right"
+                    android:textSize="@dimen/text_size_18"
+                    android:layout_marginLeft="@dimen/space_20"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+                <EditText
+                    android:id="@+id/etTitle"
+                    android:hint="方案名称"
+                    android:textSize="@dimen/text_size_16"
+                    android:background="@color/transparent"
+                    android:textColor="#747474"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/space_20"
+                android:paddingRight="@dimen/space_20"
+                android:layout_marginTop="1dp"
+                android:background="@drawable/bg_plan_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="其他治疗"
+                    android:textColor="#696969"
+                    android:gravity="center_vertical|left"
+                    android:textSize="@dimen/text_size_16"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp" />
+                <EditText
+                    android:id="@+id/etSideEffects"
+                    android:hint="请输入其他治疗"
+                    android:gravity="top|left"
+                    android:textSize="@dimen/text_size_16"
+                    android:textColor="#696969"
+                    android:background="@color/transparent"
+                    android:layout_marginTop="@dimen/space_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp" />
+            </LinearLayout>
+
+
+            <com.hxqydyl.app.ys.ui.scrollviewandgridview.MyScrollListView
+                android:id="@+id/lvMedicine"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:id="@+id/llAddMedicine"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_plan_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="添加其他药物信息"
+                    android:drawablePadding="10dp"
+                    android:layout_marginLeft="@dimen/space_25"
+                    android:textSize="@dimen/text_size_16"
+                    android:drawableLeft="@mipmap/ic_add_patient_group"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/space_20"
+                android:paddingRight="@dimen/space_20"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_plan_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="药物不良反应处理"
+                    android:textColor="#696969"
+                    android:gravity="center_vertical|left"
+                    android:textSize="@dimen/text_size_16"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp" />
+                <EditText
+                    android:id="@+id/etDrugTherapy"
+                    android:hint="请输入药物不良反应处理方案"
+                    android:gravity="top|left"
+                    android:textSize="@dimen/text_size_16"
+                    android:textColor="#696969"
+                    android:background="@color/transparent"
+                    android:layout_marginTop="@dimen/space_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="@string/save"
+        style="@style/btn_blue"
+        android:textColor="@color/white"
+        android:layout_gravity="bottom" />
+
+</LinearLayout>

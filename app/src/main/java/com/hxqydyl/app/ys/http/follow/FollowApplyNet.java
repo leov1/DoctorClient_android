@@ -1,5 +1,6 @@
 package com.hxqydyl.app.ys.http.follow;
 
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.LoginManager;
 import com.zhy.http.okhttp.OkHttpUtils;
 
@@ -14,8 +15,10 @@ import com.zhy.http.okhttp.OkHttpUtils;
  */
 public class FollowApplyNet {
 
-    public static String baseURL = "http://101.201.154.86:8080/";
-    public static String docUUID = "35223f71d7bc4484bc3a677b35b5f07b";
+//    public static String baseURL = "http://101.201.154.86:8080/";
+    public static String baseURL = "http://172.168.1.233/";
+//    public static String baseURL = UrlConstants.BASE_IP + ":" + UrlConstants.BASE_PORT + "/";
+    public static boolean myDev = false;
 
     /**
      * 随访申请列表
@@ -48,7 +51,7 @@ public class FollowApplyNet {
      * @param visitPreceptUuid 随访方案的uuid
      */
     public static void addVisitRecord(String visitUuid, String visitPreceptUuid, FollowCallback callback) {
-        OkHttpUtils.get().url(baseURL + "app/pub/doctor/addVisitRecord")
+        OkHttpUtils.post().url(baseURL + "app/pub/doctor/1.0/addVisitRecord")
                 .addParams("visitUuid", "visitUuid")
                 .addParams("visitPreceptUuid", "visitPreceptUuid")
                 .build()
@@ -59,16 +62,14 @@ public class FollowApplyNet {
      * 医生拒绝关联患者
      *
      * @param applyUuid    随访申请的uuid
-     * @param customerUuid 患者的uuid
      * @param refuseReason 拒绝理由
      * @param callback
      */
-    public static void refuseVivistApply(String applyUuid, String customerUuid, String refuseReason,
+    public static void refuseVivistApply(String applyUuid, String refuseReason,
                                   FollowCallback callback) {
-        OkHttpUtils.get().url(baseURL + "app/pub/doctor/refuseVivistApply")
-                .addParams("applyUuid", "applyUuid")
-                .addParams("customerUuid", "customerUuid")
-                .addParams("refuseReason", "refuseReason")
+        OkHttpUtils.post().url(baseURL + "app/public/refuseapply/1.0/refuseVivistApply")
+                .addParams("applyUuid", applyUuid)
+                .addParams("refuseReason", refuseReason)
                 .build()
                 .execute(callback);
     }

@@ -20,6 +20,7 @@ import com.hxqydyl.app.ys.activity.LoginActivity;
 import com.hxqydyl.app.ys.activity.clinic.ClinicActivity;
 import com.hxqydyl.app.ys.activity.follow.FollowMainActivity;
 import com.hxqydyl.app.ys.activity.reading.ReadingActivity;
+import com.hxqydyl.app.ys.activity.register.EvpiPhotoActivity;
 import com.hxqydyl.app.ys.activity.video.VideoActivity;
 import com.hxqydyl.app.ys.adapter.GalleryPagerAdapter;
 import com.hxqydyl.app.ys.adapter.LineGridViewAdapter;
@@ -217,7 +218,9 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        startRefreshing();
+        if (!hidden){
+            startRefreshing();
+        }
     }
 
     private void startRefreshing() {
@@ -311,6 +314,7 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
                 break;
             case R.id.register_btn:
                 UIHelper.showRegister(getActivity());
+             //   startActivity(new Intent(this.getActivity(), EvpiPhotoActivity.class));
                 break;
             case R.id.head_img:
                 quitLogin();

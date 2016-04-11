@@ -10,6 +10,10 @@ import android.widget.Button;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.adapter.ChoiceScaleAdapter;
+import com.hxqydyl.app.ys.bean.follow.plan.Scale;
+import com.hxqydyl.app.ys.http.follow.FollowApplyNet;
+import com.hxqydyl.app.ys.http.follow.FollowCallback;
+import com.hxqydyl.app.ys.http.follow.FollowPlanNet;
 import com.hxqydyl.app.ys.ui.scrollviewandgridview.MyScrollListView;
 
 import java.util.ArrayList;
@@ -18,14 +22,14 @@ import java.util.List;
 /**
  * 自评量表选择页面
  */
-public class ChoiceSelfActivity extends BaseTitleActivity implements View.OnClickListener {
+public class    ChoiceSelfActivity extends BaseTitleActivity implements View.OnClickListener {
 
     private MyScrollListView listView;
     private ChoiceScaleAdapter adapter;
     private Button btnOk;
 
-    private List<String> list;
-    private ArrayList<String> selectList;
+    private ArrayList<Scale> list;
+    private ArrayList<Scale> selectList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +38,11 @@ public class ChoiceSelfActivity extends BaseTitleActivity implements View.OnClic
         initViewOnBaseTitle("自评量表选择");
         initViews();
         initListeners();
+        selectPreceptDetail();
     }
 
     private void initListeners() {
+        setBackListener();
         btnOk.setOnClickListener(this);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -57,11 +63,6 @@ public class ChoiceSelfActivity extends BaseTitleActivity implements View.OnClic
         listView = (MyScrollListView) findViewById(R.id.list_view);
         list = new ArrayList<>();
         selectList = new ArrayList<>();
-        list.add("SDS（抑郁自评量表）1");
-        list.add("SDS（抑郁自评量表）2");
-        list.add("SDS（抑郁自评量表）3");
-        list.add("SDS（抑郁自评量表）4");
-        list.add("SDS（抑郁自评量表）5");
         adapter = new ChoiceScaleAdapter(this, list);
         listView.setAdapter(adapter);
         btnOk = (Button) findViewById(R.id.btnOk);
@@ -75,10 +76,38 @@ public class ChoiceSelfActivity extends BaseTitleActivity implements View.OnClic
                     return;
                 }
                 Intent resultIntent = new Intent();
-                resultIntent.putStringArrayListExtra("list", selectList);
+                resultIntent.putExtra("list", selectList);
                 setResult(1, resultIntent);
                 finish();
                 break;
         }
+    }
+
+    private void selectPreceptDetail() {
+        FollowPlanNet.selectPreceptDetail("0", new FollowCallback(){
+            @Override
+            public void onResponse(String response) {
+                super.onResponse(response);
+                if (FollowApplyNet.myDev)
+                    response = "[" +
+                        "{" +
+                        "        \"id\": \"0000\", " +
+                        "        \"title\": \"综合测试\", " +
+                        "        \"digest\": \"本测验适用对象包括初中生至成人(16岁以上)...\", " +
+                        "        \"self\": \"0\"" +
+                        "    }," +
+                        "{" +
+                        "        \"id\": \"0000\", " +
+                        "        \"title\": \"综合测试\", " +
+                        "        \"digest\": \"本测验适用对象包括初中生至成人(16岁以上)...\", " +
+                        "        \"self\": \"0\"" +
+                        "    }" +
+                        "]";
+                List<Scale> tmp = Scale.parse(response);
+                list.clear();
+                list.addAll(tmp);
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 }

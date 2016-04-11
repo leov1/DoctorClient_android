@@ -54,7 +54,7 @@ public class MeasureFormRecord extends FollowUpFormOneRecord{
         this.retDescription = retDescription;
     }
 
-    class Type{
+    public static class Type{
         public static final int SELF = 1;  // 自评
         public static final int DOCTOR = 2; // 医评
     }

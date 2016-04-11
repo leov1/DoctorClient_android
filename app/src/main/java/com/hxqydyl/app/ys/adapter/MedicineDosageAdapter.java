@@ -1,15 +1,22 @@
 package com.hxqydyl.app.ys.adapter;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.flyco.dialog.listener.OnOperItemClickL;
+import com.flyco.dialog.widget.NormalListDialog;
 import com.hxqydyl.app.ys.R;
+import com.hxqydyl.app.ys.bean.follow.plan.Medicine;
 import com.hxqydyl.app.ys.bean.follow.plan.MedicineDosage;
 
 import java.util.List;
@@ -22,10 +29,18 @@ public class MedicineDosageAdapter extends BaseAdapter{
 
     private Context context;
     private List<MedicineDosage> list;
+    private ListView listView;
+    private MedicineAdapter medicineAdapter;
+    private boolean isEdit;
 
-    public MedicineDosageAdapter(Context context, List<MedicineDosage> list){
+    public MedicineDosageAdapter(Context context, List<MedicineDosage> list,
+                                 ListView listView, MedicineAdapter medicineAdapter,
+                                 boolean isEdit){
         this.context = context;
         this.list = list;
+        this.listView = listView;
+        this.medicineAdapter = medicineAdapter;
+        this.isEdit = isEdit;
     }
     @Override
     public int getCount() {
@@ -34,7 +49,7 @@ public class MedicineDosageAdapter extends BaseAdapter{
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return list.get(position);
     }
 
     @Override
@@ -42,9 +57,16 @@ public class MedicineDosageAdapter extends BaseAdapter{
         return 0;
     }
 
+    public void notifyDataSetChanged(boolean updateData) {
+        if (updateData) {
+            medicineAdapter.notifyDataSetChanged(true);
+        }
+        super.notifyDataSetChanged();
+    }
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;
+        final MedicineDosage md = list.get(position);
         if (convertView == null){
             convertView = LayoutInflater.from(context).inflate(R.layout.item_medicine_dosage, parent, false);
             holder = new ViewHolder();
@@ -52,35 +74,65 @@ public class MedicineDosageAdapter extends BaseAdapter{
             holder.etSize = (EditText) convertView.findViewById(R.id.etSize);
             holder.tvUnit = (TextView) convertView.findViewById(R.id.tvUnit);
             holder.ibBtn = (ImageButton) convertView.findViewById(R.id.ibBtn);
+
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        final MedicineDosage md = list.get(position);
-        holder.etDay.setText(String.valueOf(md.getDay()));
-        holder.etSize.setText(String.valueOf(md.getSize()));
+        holder.etDay.setText(md.getDay());
+        holder.etSize.setText(md.getSize());
         holder.tvUnit.setText(md.getUnit());
-        if (position == list.size() -1) {
-            holder.ibBtn.setImageDrawable(convertView.getResources().getDrawable(R.mipmap.tianjiayongliang));
-            holder.ibBtn.setOnClickListener(new View.OnClickListener() {
+        if (isEdit) {
+            holder.etDay.setEnabled(true);
+            holder.etSize.setEnabled(true);
+            holder.tvUnit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    list.add(new MedicineDosage());
-                    MedicineDosageAdapter.this.notifyDataSetChanged();
+                    unitDialog(holder.tvUnit);
                 }
             });
+            if (position == list.size() - 1) {
+                holder.ibBtn.setImageDrawable(convertView.getResources().getDrawable(R.mipmap.tianjiayongliang));
+                holder.ibBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        list.add(new MedicineDosage("", "", "mg"));
+                        MedicineDosageAdapter.this.notifyDataSetChanged(true);
+                    }
+                });
+            } else {
+                holder.ibBtn.setImageDrawable(convertView.getResources().getDrawable(R.mipmap.shanchuyongliang));
+                holder.ibBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        list.remove(position);
+                        MedicineDosageAdapter.this.notifyDataSetChanged();
+                    }
+                });
+            }
         } else {
-            holder.ibBtn.setImageDrawable(convertView.getResources().getDrawable(R.mipmap.shanchuyongliang));
-            holder.ibBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    list.remove(position);
-                    MedicineDosageAdapter.this.notifyDataSetChanged();
-                }
-            });
+            holder.etDay.setEnabled(false);
+            holder.etSize.setEnabled(false);
+            holder.ibBtn.setVisibility(View.GONE);
         }
 
         return convertView;
+    }
+
+    private void unitDialog(final TextView v) {
+        final String[] unitArr = {"mg", "ml", "粒", "袋"};
+        final NormalListDialog dialog = new NormalListDialog(context, unitArr);
+        dialog.title("用量单位")
+                .titleBgColor(context.getResources().getColor(R.color.color_home_topbar))
+                .layoutAnimation(null)
+                .show();
+        dialog.setOnOperItemClickL(new OnOperItemClickL() {
+            @Override
+            public void onOperItemClick(AdapterView<?> parent, View view, int position, long id) {
+                v.setText(unitArr[position]);
+                dialog.dismiss();
+            }
+        });
     }
 
     public final class ViewHolder {

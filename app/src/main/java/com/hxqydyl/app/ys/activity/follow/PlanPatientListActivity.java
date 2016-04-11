@@ -13,25 +13,28 @@ import com.hxqydyl.app.ys.adapter.FollowApplyAdapter;
 import com.hxqydyl.app.ys.bean.follow.FollowApply;
 import com.hxqydyl.app.ys.http.follow.FollowApplyNet;
 import com.hxqydyl.app.ys.http.follow.FollowCallback;
+import com.hxqydyl.app.ys.http.follow.FollowPlanNet;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 随访申请
+ * 关联的患者
  */
-public class FollowApplyActivity extends BaseTitleActivity
+public class PlanPatientListActivity extends BaseTitleActivity
         implements View.OnClickListener, AdapterView.OnItemClickListener{
 
     private ListView listView;
     private FollowApplyAdapter adapter;
     private List<FollowApply> list;
+    private String preceptUuid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_follow_apply);
-
+        Intent intent = getIntent();
+        preceptUuid = intent.getStringExtra("preceptUuid");
         initViews();
         initListeners();
     }
@@ -43,7 +46,7 @@ public class FollowApplyActivity extends BaseTitleActivity
     }
 
     private void initViews() {
-        initViewOnBaseTitle("随访申请");
+        initViewOnBaseTitle("关联的患者");
         listView = (ListView) findViewById(R.id.list_view);
         list = new ArrayList<>();
         adapter = new FollowApplyAdapter(this, list);
@@ -52,12 +55,12 @@ public class FollowApplyActivity extends BaseTitleActivity
     }
 
     private void initListeners() {
-        setBackListener();
+        setBackListener(this);
     }
 
     private void getVisitApplyList() {
         showDialog("");
-        FollowApplyNet.getVisitApplyList(new FollowCallback(){
+        FollowPlanNet.getCustomerVisitRecordByUuid(preceptUuid, new FollowCallback(){
             @Override
             public void onResult(String result) {
                 super.onResult(result);
@@ -83,7 +86,7 @@ public class FollowApplyActivity extends BaseTitleActivity
                     list.addAll(tmp);
                     adapter.notifyDataSetChanged();
                 } else {
-                    Toast.makeText(FollowApplyActivity.this, "没有数据", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PlanPatientListActivity.this, "没有数据", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -103,6 +106,6 @@ public class FollowApplyActivity extends BaseTitleActivity
         Intent intent = new Intent(this, FollowApplyDetailActivity.class);
         intent.putExtra("applyUuid", list.get(position).getApplyUuid());
         intent.putExtra("avatar", list.get(position).getImgUrl());
-        startActivity(intent);
+        //startActivity(intent);
     }
 }

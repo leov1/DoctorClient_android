@@ -27,10 +27,10 @@
                     android:layout_marginLeft="@dimen/space_20"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent" />
-                <EditText
-                    android:id="@+id/etTitle"
-                    android:hint="方案名称"
+                <TextView
+                    android:id="@+id/tvTitle"
                     android:textSize="@dimen/text_size_16"
+                    android:gravity="center_vertical"
                     android:background="@color/transparent"
                     android:textColor="#747474"
                     android:layout_width="match_parent"
@@ -43,23 +43,6 @@
                 android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-
-            <LinearLayout
-                android:id="@+id/llAddMedicine"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/bg_plan_item"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:text="添加其他药物信息"
-                    android:drawablePadding="10dp"
-                    android:layout_marginLeft="@dimen/space_25"
-                    android:textSize="@dimen/text_size_16"
-                    android:drawableLeft="@mipmap/ic_add_patient_group"
-                    android:gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="45dp" />
-            </LinearLayout>
 
             <LinearLayout
                 android:orientation="vertical"
@@ -76,9 +59,8 @@
                     android:textSize="@dimen/text_size_16"
                     android:layout_width="match_parent"
                     android:layout_height="45dp" />
-                <EditText
-                    android:id="@+id/etDrugTherapy"
-                    android:hint="请输入药物不良反应处理方案"
+                <TextView
+                    android:id="@+id/tvDrugTherapy"
                     android:gravity="top|left"
                     android:textSize="@dimen/text_size_16"
                     android:textColor="#696969"
@@ -103,9 +85,8 @@
                     android:textSize="@dimen/text_size_16"
                     android:layout_width="match_parent"
                     android:layout_height="45dp" />
-                <EditText
-                    android:id="@+id/etSideEffects"
-                    android:hint="请输入其他治疗"
+                <TextView
+                    android:id="@+id/tvSideEffects"
                     android:gravity="top|left"
                     android:textSize="@dimen/text_size_16"
                     android:textColor="#696969"
@@ -126,7 +107,7 @@
                     style="@style/plan_cycle_left_title"/>
                 <TextView
                     android:id="@+id/tvFollowCycle"
-                    android:text="1周"
+                    android:text=""
                     style="@style/plan_cycle_right_title" />
             </LinearLayout>
 
@@ -141,7 +122,7 @@
                     style="@style/plan_cycle_left_title"/>
                 <TextView
                     android:id="@+id/tvWeightCycle"
-                    android:text="1周"
+                    android:text=""
                     style="@style/plan_cycle_right_title" />
             </LinearLayout>
 
@@ -156,7 +137,7 @@
                     style="@style/plan_cycle_left_title"/>
                 <TextView
                     android:id="@+id/tvEcgCycle"
-                    android:text="1周"
+                    android:text=""
                     style="@style/plan_cycle_right_title" />
             </LinearLayout>
 
@@ -171,7 +152,7 @@
                     style="@style/plan_cycle_left_title"/>
                 <TextView
                     android:id="@+id/tvBloodCycle"
-                    android:text="1周"
+                    android:text=""
                     style="@style/plan_cycle_right_title" />
             </LinearLayout>
 
@@ -186,7 +167,7 @@
                     style="@style/plan_cycle_left_title"/>
                 <TextView
                     android:id="@+id/tvLiverCycle"
-                    android:text="1周"
+                    android:text=""
                     style="@style/plan_cycle_right_title" />
             </LinearLayout>
 
@@ -197,23 +178,6 @@
                 android:dividerHeight="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-
-            <LinearLayout
-                android:id="@+id/llAddOtherSycle"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/bg_plan_item"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:text="添加其他检查周期"
-                    android:drawablePadding="10dp"
-                    android:layout_marginLeft="@dimen/space_25"
-                    android:textSize="@dimen/text_size_16"
-                    android:drawableLeft="@mipmap/ic_add_patient_group"
-                    android:gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="45dp" />
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_marginTop="10dp"
@@ -284,6 +248,7 @@
                 android:text="健康小贴士"
                 android:gravity="center_vertical"
                 android:textSize="@dimen/text_size_16"
+                android:background="@drawable/bg_plan_item"
                 android:layout_marginLeft="@dimen/space_25"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/space_40" />
@@ -296,34 +261,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <LinearLayout
-                android:id="@+id/llAddTips"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="60dp"
+            <TextView
+                android:id="@+id/tvPatientList"
+                android:text="已关联患者"
+                android:visibility="gone"
                 android:background="@drawable/bg_plan_item"
+                android:layout_marginTop="@dimen/space_15"
+                android:paddingRight="@dimen/space_20"
+                android:drawableRight="@mipmap/icon_right_arrow"
+                android:layout_marginLeft="@dimen/space_25"
+                android:textSize="@dimen/text_size_16"
+                android:gravity="center_vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:text="添加其他健康小贴士"
-                    android:drawablePadding="10dp"
-                    android:layout_marginLeft="@dimen/space_25"
-                    android:textSize="@dimen/text_size_16"
-                    android:drawableLeft="@mipmap/ic_add_patient_group"
-                    android:gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="45dp" />
-
-            </LinearLayout>
+                android:layout_height="50dp" />
         </LinearLayout>
     </ScrollView>
-    <Button
-        android:id="@+id/btnSave"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="@string/save"
-        style="@style/btn_blue"
-        android:textColor="@color/white"
-        android:layout_gravity="bottom" />
 
 </LinearLayout>

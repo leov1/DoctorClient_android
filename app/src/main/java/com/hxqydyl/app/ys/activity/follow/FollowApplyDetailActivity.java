@@ -18,6 +18,7 @@ import com.hxqydyl.app.ys.adapter.FollowApplyAdapter;
 import com.hxqydyl.app.ys.bean.follow.FollowApply;
 import com.hxqydyl.app.ys.http.follow.FollowApplyNet;
 import com.hxqydyl.app.ys.http.follow.FollowCallback;
+import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.DialogUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -74,6 +75,7 @@ public class FollowApplyDetailActivity extends BaseTitleActivity
         setBackListener(this);
         rlPatient.setOnClickListener(this);
         btnApply.setOnClickListener(this);
+        btnCancel.setOnClickListener(this);
     }
 
     @Override
@@ -89,6 +91,7 @@ public class FollowApplyDetailActivity extends BaseTitleActivity
                 break;
             case R.id.btnApply:
                 Intent okIntent = new Intent(this, FollowApplyOkActivity.class);
+                okIntent.putExtra("applyUuid", applyUuid);
                 startActivity(okIntent);
                 break;
             case R.id.btnCancel:
@@ -103,7 +106,8 @@ public class FollowApplyDetailActivity extends BaseTitleActivity
             @Override
             public void onResult(String result) {
                 super.onResult(result);
-                result = "[" +
+                if (FollowApplyNet.myDev)
+                    result = "[" +
                         "{" +
                         "\"ifStart\": null," +
                         "\"applyUuid\": \"2\"," +
@@ -157,11 +161,11 @@ public class FollowApplyDetailActivity extends BaseTitleActivity
         DialogUtils.showSignleEditTextDialog(this, new DialogUtils.SaveTextListener() {
             @Override
             public boolean save(String text) {
-                FollowApplyNet.refuseVivistApply(fa.getApplyUuid(),
-                        fa.getCustomerUuid(), text, new FollowCallback(){
+                FollowApplyNet.refuseVivistApply(fa.getApplyUuid(), text, new FollowCallback(){
                             @Override
                             public void onResult(String result) {
                                 super.onResult(result);
+                                UIHelper.ToastMessage(FollowApplyDetailActivity.this, "已拒绝");
                                 finish();
                             }
                         });

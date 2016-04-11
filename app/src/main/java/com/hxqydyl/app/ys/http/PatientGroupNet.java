@@ -74,14 +74,16 @@ public class PatientGroupNet extends BaseNet {
      * @param groupId      移向的分组id
      * @param customerUuid 患者id
      */
-    public void movePatientToOtherGroup(final String groupId, final String customerUuid) {
+    public void movePatientToOtherGroup(final String groupId, final String customerUuid,final String doctorUuid) {
         final String shortUrl = UrlConstants.MOVE_PATIENT_TO_OTHER_GROUP;
         String version = "1.0";
         OkHttpUtils
                 .post()
+                .addHeader("Accept","application/json")
                 .url(UrlConstants.getWholeApiUrl(shortUrl, version))
                 .addParams("groupId", groupId)
                 .addParams("customerUuid", customerUuid)
+                .addParams("doctorUuid",doctorUuid)
                 .build()
                 .execute(new Callback<Query>() {
 

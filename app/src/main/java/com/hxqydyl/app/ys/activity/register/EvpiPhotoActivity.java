@@ -50,12 +50,12 @@ import java.util.List;
 /**
  * 完善注册z照片信息
  */
-public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClickListener,OnSingleTapDismissBigPhotoListener,UploadIconsNet.OnUploadIconsListener ,SaveUserIconNet.OnSaveUserIconListener{
+public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClickListener, OnSingleTapDismissBigPhotoListener, UploadIconsNet.OnUploadIconsListener, SaveUserIconNet.OnSaveUserIconListener {
 
     private String takePictureUrl;
     private int addTakePicCount = 1;
     private Intent intent;
-    private int NONE = 0,TAKE_PICTURE = 1, LOCAL_PICTURE = 2;
+    private int NONE = 0, TAKE_PICTURE = 1, LOCAL_PICTURE = 2;
     private final int SHOW_TAKE_PICTURE = 9;
     private final int SHOW_LOCAL_PICTURE = 10;
     private List<String> uploadImgUrlList = new ArrayList<String>();
@@ -68,7 +68,7 @@ public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClick
     private EvpiPhotoAdapter adapter;
 
     private Animation get_photo_layout_out_from_up, get_photo_layout_in_from_down;
-    private RelativeLayout edit_photo_fullscreen_layout,display_big_image_layout,edit_photo_outer_layout;
+    private RelativeLayout edit_photo_fullscreen_layout, display_big_image_layout, edit_photo_outer_layout;
     private TextView take_picture;
     private TextView select_local_picture;
     private TextView cancel;
@@ -114,7 +114,7 @@ public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClick
         delete_image = (ImageView) findViewById(R.id.delete_image);
 
         gridView = (MyGridView) findViewById(R.id.gridview);
-        adapter = new EvpiPhotoAdapter(this,tempSelectBitmap);
+        adapter = new EvpiPhotoAdapter(this, tempSelectBitmap);
         gridView.setAdapter(adapter);
     }
 
@@ -129,9 +129,9 @@ public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClick
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position == tempSelectBitmap.size()) {
-                    if(position==5){
-                        UIHelper.ToastMessage(EvpiPhotoActivity.this,"对不起，图片只能添加5张");
-return;
+                    if (position == 5) {
+                        UIHelper.ToastMessage(EvpiPhotoActivity.this, "对不起，图片只能添加5张");
+                        return;
                     }
                     edit_photo_fullscreen_layout.setVisibility(View.VISIBLE);
                     get_photo_layout_in_from_down = AnimationUtils.loadAnimation(EvpiPhotoActivity.this, R.anim.search_layout_in_from_down);
@@ -147,7 +147,7 @@ return;
 
     public void showImageViewPager(int position, final List<String> localUrlList) {
         List<String> urlList;
-            urlList = localUrlList;
+        urlList = localUrlList;
         Log.d("gaolei", "urlList.toString()------------------" + urlList.toString());
         display_big_image_layout.setVisibility(View.VISIBLE);
         imagePagerAdapter = new ImagePagerAdapter(getSupportFragmentManager(), urlList);
@@ -172,10 +172,10 @@ return;
                 // TODO Auto-generated method stub
             }
         });
-            image_viewpager.setCurrentItem(position);
-            delete_image.setVisibility(View.VISIBLE);
-            position_in_total.setText((position+1) + "/" + urlList.size());
-            isBigImageShow = true;
+        image_viewpager.setCurrentItem(position);
+        delete_image.setVisibility(View.VISIBLE);
+        position_in_total.setText((position + 1) + "/" + urlList.size());
+        isBigImageShow = true;
 
         com.hxqydyl.app.ys.ui.imageDisplayFragment.PhotoViewAttacher.setOnSingleTapToPhotoViewListener(this);
     }
@@ -315,8 +315,8 @@ return;
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         super.onKeyDown(keyCode, event);
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0){
-           if(isBigImageShow){
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            if (isBigImageShow) {
                 hideDisplayBigImageLayout();
                 return false;
             }
@@ -328,9 +328,9 @@ return;
     /**
      * 上传图片，然后在注册
      */
-    private void uploadIcoms(){
+    private void uploadIcoms() {
         if (uploadImgUrlList.size() == 0) {
-            UIHelper.ToastMessage(EvpiPhotoActivity.this,"请上传图片");
+            UIHelper.ToastMessage(EvpiPhotoActivity.this, "请上传图片");
             return;
         }
         showDialog("请稍等...");
@@ -343,27 +343,27 @@ return;
         if (iconBeans == null) return;
 
         saveUserIconNet.saveUserIcon(LoginManager.getDoctorUuid(), StringUtils.listToString(uploadImgUrlList, ','));
- //       UIHelper.ToastMessage(EvpiPhotoActivity.this,query.getMessage());
+        //       UIHelper.ToastMessage(EvpiPhotoActivity.this,query.getMessage());
     }
 
     @Override
     public void requestUploadIconsFail() {
-            dismissDialog();
+        dismissDialog();
     }
 
     @Override
     public void requestSaveIconSuc(Query query) {
         dismissDialog();
-        if(query == null){
-            UIHelper.ToastMessage(EvpiPhotoActivity.this,"请求出错");
+        if (query == null) {
+            UIHelper.ToastMessage(EvpiPhotoActivity.this, "请求出错");
             return;
         }
-        if (query.getSuccess().equals("1")){
-            UIHelper.ToastMessage(EvpiPhotoActivity.this,"注册成功");
+        if (query.getSuccess().equals("1")) {
+            UIHelper.ToastMessage(EvpiPhotoActivity.this, "注册成功");
             removeBeforViews();
             finish();
-        }else{
-            UIHelper.ToastMessage(EvpiPhotoActivity.this,query.getMessage());
+        } else {
+            UIHelper.ToastMessage(EvpiPhotoActivity.this, query.getMessage());
         }
 
     }
@@ -371,17 +371,17 @@ return;
     /**
      * 观察者移除之前页面
      */
-    private void removeBeforViews(){
+    private void removeBeforViews() {
         ArrayList<RegisterSucListener> registerSucListeners = RegisterSucMag.getInstance().downloadListeners;
-        if (registerSucListeners == null || registerSucListeners.size() == 0)return;
-        for (int i = 0;i<registerSucListeners.size();i++){
+        if (registerSucListeners == null || registerSucListeners.size() == 0) return;
+        for (int i = 0; i < registerSucListeners.size(); i++) {
             registerSucListeners.get(i).onRegisterSuc();
         }
     }
 
     @Override
     public void requestSaveIconFail() {
-      dismissDialog();
+        dismissDialog();
     }
 
 }

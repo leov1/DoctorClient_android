@@ -14,7 +14,9 @@ public class FollowCallback extends StringCallback {
 
     @Override
     public void onError(Call call, Exception e) {
-
+        Log.e("xx", e.getMessage());
+        e.printStackTrace();
+        onFail("999999", "");
     }
 
     @Override

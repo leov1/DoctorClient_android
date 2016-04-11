@@ -51,7 +51,7 @@ public class PlanMgrAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null){
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_article,parent,false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_article,parent, false);
         }
 
         TextView name_tv = BaseViewHolder.get(convertView,R.id.name_tv);

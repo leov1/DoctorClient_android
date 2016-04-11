@@ -3,12 +3,17 @@ package com.hxqydyl.app.ys.bean.follow.plan;
 import com.alibaba.fastjson.JSONArray;
 import com.hxqydyl.app.ys.utils.StringUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by wangchao36 on 16/4/4.
  */
-public class Scale {
+public class Scale implements Serializable {
 
     private String id;
     private String title;
@@ -17,6 +22,22 @@ public class Scale {
 
     public static List<Scale> parse(String string) {
         return JSONArray.parseArray(string, Scale.class);
+    }
+
+    public static ArrayList<Scale> parse(org.json.JSONArray jsonArray) throws JSONException {
+        ArrayList<Scale> list = new ArrayList<>();
+        if (jsonArray == null) return list;
+        if (jsonArray == null) return list;
+        for (int i=0; i<jsonArray.length(); i++) {
+            JSONObject obj = jsonArray.getJSONObject(i);
+            Scale s = new Scale();
+            s.setId(obj.getString("id"));
+            s.setTitle(obj.getString("title"));
+            s.setDigest(obj.getString("digest"));
+            s.setSelf(obj.getString("self"));
+            list.add(s);
+        }
+        return list;
     }
 
     public static String parseIdStr(List<Scale> list) {

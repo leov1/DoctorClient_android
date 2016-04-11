@@ -8,10 +8,14 @@ import android.widget.ListView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+import com.hxqydyl.app.ys.activity.patient.PatientDetailsActivity;
 import com.hxqydyl.app.ys.adapter.IllnessChangeRecordAdapter;
+import com.hxqydyl.app.ys.bean.Patient;
 import com.hxqydyl.app.ys.bean.followupform.IllnessChangeRecord;
+import com.hxqydyl.app.ys.http.CaseReportNet;
 import com.hxqydyl.app.ys.utils.InjectId;
 import com.hxqydyl.app.ys.utils.InjectUtils;
+import com.hxqydyl.app.ys.utils.LoginManager;
 
 import java.util.ArrayList;
 
@@ -24,9 +28,17 @@ public class IllnessChangeRecordActivity extends BaseTitleActivity implements Vi
     private IllnessChangeRecordAdapter illnessChangeAdapter;
     private ArrayList<IllnessChangeRecord> changeRecords = new ArrayList<IllnessChangeRecord>();
 
+    private CaseReportNet caseReportNet;
+    private Patient patient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        patient = (Patient) getIntent().getSerializableExtra(PatientDetailsActivity.KEY_PATIENT);
+        if(patient == null){
+            finish();
+            return;
+        }
         setContentView(R.layout.activity_illness_change_record);
 
         initViewOnBaseTitle(getString(R.string.illness_change));
@@ -34,7 +46,7 @@ public class IllnessChangeRecordActivity extends BaseTitleActivity implements Vi
 
         InjectUtils.injectView(this);
 
-        initTestData();
+//        initTestData();
         illnessChangeAdapter = new IllnessChangeRecordAdapter(this, changeRecords);
         lvIllnessChangeRecord.setAdapter(illnessChangeAdapter);
         lvIllnessChangeRecord.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -43,11 +55,13 @@ public class IllnessChangeRecordActivity extends BaseTitleActivity implements Vi
                 IllnessChangeRecord record = (IllnessChangeRecord) parent.getItemAtPosition(position);
                 if(record!=null){
                     Intent intent = new Intent(IllnessChangeRecordActivity.this,IllnessChangeDetalsActivity.class);
-                    intent.putExtra("illness_change_record",record);
+                    intent.putExtra(IllnessChangeDetalsActivity.KEY_ILLNESS_CHANGE_RECORD,record);
                     startActivity(intent);
                 }
             }
         });
+        caseReportNet = new CaseReportNet(this);
+        caseReportNet.getIllnessChangeRecordHistory(LoginManager.getDoctorUuid(),patient.getId());
     }
 
     private void initTestData() {
@@ -71,6 +85,9 @@ public class IllnessChangeRecordActivity extends BaseTitleActivity implements Vi
     @Override
     public void onResponse(String url, Object result) {
         super.onResponse(url, result);
+        changeRecords.clear();
+        changeRecords.addAll((ArrayList<IllnessChangeRecord>)result);
+        illnessChangeAdapter.notifyDataSetChanged();
     }
 
     @Override

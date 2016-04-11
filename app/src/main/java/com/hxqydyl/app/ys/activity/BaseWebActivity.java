@@ -1,11 +1,11 @@
 package com.hxqydyl.app.ys.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -16,8 +16,6 @@ import com.hxqydyl.app.ys.ui.ProgressWebView;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.LoginManager;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -65,9 +63,17 @@ public class BaseWebActivity extends BaseTitleActivity {
         webSettings.setAppCacheEnabled(true);
         webSettings.setJavaScriptEnabled(true);
         webView.setWebViewClient(webViewClient);
-//        webView.setWebChromeClient(mChromeClient);
+        webView.setWebChromeClient(mChromeClient);
 //        webView.addJavascriptInterface(this, CLIENT_INTERFACE_NAME);
     }
+
+    public WebChromeClient mChromeClient = new WebChromeClient(){
+        @Override
+        public void onReceivedTitle(WebView view, String title) {
+            super.onReceivedTitle(view, title);
+            topTv.setText(title);
+        }
+    };
 
     public WebViewClient webViewClient = new WebViewClient() {
         @Override
@@ -82,7 +88,6 @@ public class BaseWebActivity extends BaseTitleActivity {
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             webView.loadUrl("javascript:gm.user.setDoctor('" + LoginManager.getDoctorUuid() + "')");
-
         }
 
         @Override
@@ -108,7 +113,7 @@ public class BaseWebActivity extends BaseTitleActivity {
 
     private void SetJsBridge(String functionname, String parameters) {
         switch (functionname) {
-            case "setTitle":
+            /*case "setTitle":
                 try {
                     String title = URLDecoder.decode(parameters, "UTF-8");
                     if (title.length() > 10) {
@@ -119,7 +124,7 @@ public class BaseWebActivity extends BaseTitleActivity {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-                break;
+                break;*/
 //            case "getFriendList":
 //                new ContactHelper().init(this, this);
 //                break;

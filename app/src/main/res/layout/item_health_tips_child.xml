@@ -6,28 +6,45 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:padding="@dimen/space_10"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
             android:text="推送时间"
-            android:paddingLeft="15dp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="center_vertical" />
+            android:gravity="center_vertical|left"
+            android:paddingLeft="15dp"
+            android:textSize="@dimen/text_size_16" />
         <LinearLayout
             android:layout_weight="1"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp">
-            <EditText
-                android:id="@+id/etDay"
-                android:text="第2天"
-                android:background="@color/transparent"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp" />
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="第"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+                <EditText
+                    android:id="@+id/etDay"
+                    android:text="1"
+                    android:maxLength="3"
+                    android:background="@color/transparent"
+                    android:gravity="center"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp" />
+                <TextView
+                    android:text="天"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
             <TextView
                 android:text="注：推送时间从随访方案关联随访患者后开始计算"
                 android:textSize="@dimen/text_size_14"
@@ -44,6 +61,7 @@
             android:text="饮食指导"
             android:gravity="center_vertical"
             android:paddingLeft="15dp"
+            android:textSize="@dimen/text_size_16"
             android:layout_width="match_parent"
             android:layout_height="40dp" />
         <EditText
@@ -52,7 +70,8 @@
             android:paddingRight="@dimen/space_15"
             android:background="@color/transparent"
             android:layout_width="match_parent"
-            android:layout_height="100dp" />
+            android:layout_height="100dp"
+            android:gravity="left|top" />
     </LinearLayout>
 
     <LinearLayout
@@ -64,14 +83,16 @@
             android:gravity="center_vertical"
             android:paddingLeft="15dp"
             android:layout_width="match_parent"
-            android:layout_height="40dp" />
+            android:layout_height="40dp"
+            android:textSize="@dimen/text_size_16" />
         <EditText
             android:id="@+id/etSport"
             android:paddingLeft="@dimen/space_15"
             android:paddingRight="@dimen/space_15"
             android:background="@color/transparent"
             android:layout_width="match_parent"
-            android:layout_height="100dp" />
+            android:layout_height="100dp"
+            android:gravity="left|top"/>
     </LinearLayout>
 
     <LinearLayout
@@ -83,14 +104,16 @@
             android:gravity="center_vertical"
             android:paddingLeft="15dp"
             android:layout_width="match_parent"
-            android:layout_height="40dp" />
+            android:layout_height="40dp"
+            android:textSize="@dimen/text_size_16" />
         <EditText
             android:id="@+id/etSleep"
             android:paddingLeft="@dimen/space_15"
             android:paddingRight="@dimen/space_15"
             android:background="@color/transparent"
             android:layout_width="match_parent"
-            android:layout_height="100dp" />
+            android:layout_height="100dp"
+            android:gravity="left|top" />
     </LinearLayout>
 
     <LinearLayout
@@ -102,14 +125,16 @@
             android:gravity="center_vertical"
             android:paddingLeft="15dp"
             android:layout_width="match_parent"
-            android:layout_height="40dp" />
+            android:layout_height="40dp"
+            android:textSize="@dimen/text_size_16" />
         <EditText
             android:id="@+id/etOther"
             android:paddingLeft="@dimen/space_15"
             android:paddingRight="@dimen/space_15"
             android:background="@color/transparent"
             android:layout_width="match_parent"
-            android:layout_height="100dp" />
+            android:layout_height="100dp"
+            android:gravity="left|top" />
     </LinearLayout>
             
 </LinearLayout>
