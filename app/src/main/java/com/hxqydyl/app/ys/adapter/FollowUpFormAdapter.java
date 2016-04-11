@@ -178,9 +178,9 @@ public class FollowUpFormAdapter extends BaseExpandableListAdapter {
         MeasureFormRecordViewHolder viewHolder = new MeasureFormRecordViewHolder();
         InjectUtils.injectView(viewHolder,llFormMeasure);
         viewHolder.tvName.setText(record.getName());
-        viewHolder.tvScore.setText(record.getScore());
-        viewHolder.tvResult.setText(record.getResult());
-        viewHolder.tvResultDescription.setText(record.getRetDescription());
+        viewHolder.tvScore.setText(String.format(context.getString(R.string.score_xx),record.getScore()));
+        viewHolder.tvResult.setText(String.format(context.getString(R.string.result_xx),record.getResult()));
+        viewHolder.tvResultDescription.setText(String.format(context.getString(R.string.result_description_xx),record.getRetDescription()));
     }
 
     private void bindEatMedData(EatMedRecord record, LinearLayout llEatMedRecord) {

@@ -22,13 +22,11 @@
 
                 <TextView
                     android:id="@+id/tvChangeName"
-                    style="@style/follow_up_form_left"
-                    android:text="@string/illness_change" />
+                    style="@style/follow_up_form_left" />
 
                 <TextView
                     android:id="@+id/tvChangeStatus"
-                    style="@style/follow_up_form_right"
-                    android:text="好转" />
+                    style="@style/follow_up_form_right" />
             </TableRow>
 
             <View style="@style/divider_line" />
@@ -39,8 +37,7 @@
 
                 <TextView
                     android:id="@+id/tvChangeDescriptionTitle"
-                    style="@style/follow_up_form_right"
-                    android:text="病情变化描述" />
+                    style="@style/follow_up_form_right" />
             </TableRow>
 
             <TableRow android:background="@color/color_f7f7f7">
@@ -58,8 +55,7 @@
                     android:id="@+id/tvChangeDescription"
                     style="@style/follow_up_form_right"
                     android:paddingBottom="@dimen/space_10"
-                    android:paddingTop="@dimen/space_10"
-                    android:text="病情变化描述详情" />
+                    android:paddingTop="@dimen/space_10" />
             </TableRow>
 
             <View style="@style/divider_line" />
@@ -79,15 +75,13 @@
 
                 <TextView
                     android:id="@+id/tvOtherChangeTitle"
-                    style="@style/follow_up_form_left"
-                    android:text="其他情况" />
+                    style="@style/follow_up_form_left" />
 
                 <TextView
                     android:id="@+id/tvOtherChangeDescription"
                     style="@style/follow_up_form_right"
                     android:paddingBottom="@dimen/space_10"
-                    android:paddingTop="@dimen/space_10"
-                    android:text="况描述详情其他情况描述详情" />
+                    android:paddingTop="@dimen/space_10" />
             </TableRow>
 
             <View style="@style/divider_line" />

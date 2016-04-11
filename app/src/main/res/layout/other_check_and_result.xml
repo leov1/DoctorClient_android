@@ -20,8 +20,7 @@
 
             <TextView
                 android:id="@+id/tvCheckName"
-                style="@style/follow_up_form_right"
-                android:text="肾功能检查" />
+                style="@style/follow_up_form_right" />
         </TableRow>
 
         <View style="@style/divider_line" />
@@ -44,8 +43,7 @@
                     android:id="@+id/tvCheckResultText"
                     style="@style/follow_up_form_right"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="肾功能检查" />
+                    android:layout_height="wrap_content" />
 
                 <View
                     android:id="@+id/lineBelowRetText"
@@ -55,11 +53,11 @@
                     android:id="@+id/checkResultPic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/space_10"
+                    android:numColumns="3"
                     android:paddingBottom="@dimen/space_10"
-                    android:paddingRight="@dimen/space_25"
                     android:paddingLeft="@dimen/space_25"
-                    android:numColumns="3">
+                    android:paddingRight="@dimen/space_25"
+                    android:paddingTop="@dimen/space_10">
 
                 </com.hxqydyl.app.ys.ui.fullshowview.FullShowGridView>
             </LinearLayout>

@@ -48,7 +48,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="70dp"
-                        android:text="张鲁"
+
                         android:textColor="@color/color_4b4b4b"
                         android:textSize="@dimen/text_size_14" />
                 </LinearLayout>
@@ -159,8 +159,7 @@
 
                         <TextView
                             android:id="@+id/tvTreatmentTime"
-                            style="@style/add_case_report_right"
-                            android:text="2016-03-25" />
+                            style="@style/add_case_report_right" />
                     </TableRow>
 
                     <TableRow
@@ -173,8 +172,7 @@
 
                         <TextView
                             android:id="@+id/tvBeInHospitalTime"
-                            style="@style/add_case_report_right"
-                            android:text="2016-03-25" />
+                            style="@style/add_case_report_right" />
                     </TableRow>
 
                     <TableRow>
@@ -198,8 +196,7 @@
 
                         <TextView
                             android:id="@+id/tvOutHospitalTime"
-                            style="@style/add_case_report_right"
-                            android:text="2016-03-25" />
+                            style="@style/add_case_report_right" />
 
                     </TableRow>
 
@@ -224,8 +221,7 @@
 
                         <EditText
                             android:id="@+id/etTreatmentHospital"
-                            style="@style/add_case_report_right"
-                            android:text="北京301医院" />
+                            style="@style/add_case_report_right" />
                     </TableRow>
 
                     <TableRow>
@@ -243,12 +239,11 @@
 
                         <TextView
                             style="@style/add_case_report_left"
-                            android:text="@string/treatment_time" />
+                            android:text="@string/doctor" />
 
                         <EditText
                             android:id="@+id/etDoctor"
-                            style="@style/add_case_report_right"
-                            android:text="金子正" />
+                            style="@style/add_case_report_right" />
                     </TableRow>
 
                     <TableRow>

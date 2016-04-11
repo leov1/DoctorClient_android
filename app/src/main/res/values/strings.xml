@@ -175,4 +175,7 @@
     <string name="confirm_delete_this_patient">您是否要删除患者：%s？患者将不再收到您的随访相关消息。</string>
     <string name="confirm">确认</string>
     <string name="age_xx">年龄：%s岁</string>
+    <string name="score_xx">分数：%s</string>
+    <string name="result_xx">测试结果：%s</string>
+    <string name="result_description_xx">结果说明：%s</string>
 </resources>

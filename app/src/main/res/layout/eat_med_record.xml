@@ -21,8 +21,7 @@
             <TextView
                 android:id="@+id/tvMedName"
                 style="@style/follow_up_form_right"
-                android:background="@color/color_f5fafd"
-                android:text="阿司匹林" />
+                android:background="@color/color_f5fafd" />
         </TableRow>
 
         <View style="@style/divider_line" />
@@ -36,8 +35,7 @@
             <TextView
                 android:id="@+id/tvEatTime"
                 style="@style/follow_up_form_right"
-                android:background="@color/white"
-                android:text="2016/03/20 至 2016/03/21" />
+                android:background="@color/white" />
         </TableRow>
 
         <View style="@style/divider_line" />
@@ -51,8 +49,7 @@
             <TextView
                 android:id="@+id/tvSingleAmount"
                 style="@style/follow_up_form_right"
-                android:background="@color/white"
-                android:text="0.5mg" />
+                android:background="@color/white" />
         </TableRow>
 
         <View style="@style/divider_line" />
@@ -66,8 +63,7 @@
             <TextView
                 android:id="@+id/tvRate"
                 style="@style/follow_up_form_right"
-                android:background="@color/white"
-                android:text="0.5mg" />
+                android:background="@color/white" />
         </TableRow>
 
         <View style="@style/divider_line" />
@@ -81,8 +77,7 @@
             <TextView
                 android:id="@+id/tvEatMethod"
                 style="@style/follow_up_form_right"
-                android:background="@color/white"
-                android:text="口服" />
+                android:background="@color/white" />
         </TableRow>
 
         <View style="@style/divider_line" />

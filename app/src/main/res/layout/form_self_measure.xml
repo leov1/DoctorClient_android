@@ -16,7 +16,6 @@
             android:id="@+id/tvName"
             style="@style/measure_result"
             android:minHeight="@dimen/space_40"
-            android:text="SDS(抑郁自评量表)"
             android:textSize="@dimen/text_size_16" />
 
         <View
