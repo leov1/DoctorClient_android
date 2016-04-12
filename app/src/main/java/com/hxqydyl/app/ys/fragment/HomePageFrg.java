@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
@@ -33,6 +34,7 @@ import com.hxqydyl.app.ys.ui.CircleImageView;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.ui.library.PullToRefreshBase;
 import com.hxqydyl.app.ys.ui.library.PullToRefreshListView;
+import com.hxqydyl.app.ys.ui.library.PullToRefreshScrollView;
 import com.hxqydyl.app.ys.ui.linegridview.LineGridView;
 import com.hxqydyl.app.ys.ui.loopviewpager.AutoLoopViewPager;
 import com.hxqydyl.app.ys.ui.viewpagerindicator.CirclePageIndicator;
@@ -85,11 +87,10 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
     private QuitLoginNet quitLoginNet;
     private PagerNet pagerNet;
 
-    private View mHeader;
-    private ListView listView;
+    private ScrollView scrollView;
     private Intent intent;
 
-    private PullToRefreshListView pullToRefreshListView;
+    private PullToRefreshScrollView pullToRefreshListView;
     private Handler mHandler = new Handler();
 
     public HomePageFrg() {
@@ -158,9 +159,9 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
         registerBtn.setOnClickListener(this);
         headImg.setOnClickListener(this);
         backImg.setOnClickListener(this);
-        pullToRefreshListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
+        pullToRefreshListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ScrollView>() {
             @Override
-            public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+            public void onRefresh(PullToRefreshBase<ScrollView> refreshView) {
                 mHandler.postDelayed(new Runnable() {
 
                     @Override
@@ -171,33 +172,32 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
                 }, 200);
             }
         });
-
     }
 
     private void initHeadView() {
-        mHeader = View.inflate(this.getActivity(), R.layout.home_header, null);
-        noLoginLinear = (LinearLayout) mHeader.findViewById(R.id.not_login_linear);
-        loginLiear = (LinearLayout) mHeader.findViewById(R.id.login_linear);
+
+        noLoginLinear = (LinearLayout) view.findViewById(R.id.not_login_linear);
+        loginLiear = (LinearLayout) view.findViewById(R.id.login_linear);
         //已经登陆
 
-        headImg = (CircleImageView) mHeader.findViewById(R.id.head_img);
-        headName = (TextView) mHeader.findViewById(R.id.head_name);
-        suffererNum = (TextView) mHeader.findViewById(R.id.sufferer_num);
-        followNum = (TextView) mHeader.findViewById(R.id.follow_num);
-        income = (TextView) mHeader.findViewById(R.id.income);
+        headImg = (CircleImageView) view.findViewById(R.id.head_img);
+        headName = (TextView) view.findViewById(R.id.head_name);
+        suffererNum = (TextView) view.findViewById(R.id.sufferer_num);
+        followNum = (TextView) view.findViewById(R.id.follow_num);
+        income = (TextView) view.findViewById(R.id.income);
 
-        loginBtn = (TextView) mHeader.findViewById(R.id.login_btn);
-        registerBtn = (TextView) mHeader.findViewById(R.id.register_btn);
+        loginBtn = (TextView) view.findViewById(R.id.login_btn);
+        registerBtn = (TextView) view.findViewById(R.id.register_btn);
 
-        lineGridView = (LineGridView) mHeader.findViewById(R.id.home_gridview);
+        lineGridView = (LineGridView) view.findViewById(R.id.home_gridview);
         lineGridViewAdapter = new LineGridViewAdapter(this.getContext());
         lineGridView.setAdapter(lineGridViewAdapter);
+        //防止gridview和scrollview抢焦点
+        lineGridView.setFocusable(false);
 
-        pager = (AutoLoopViewPager) mHeader.findViewById(R.id.pager);
-        indicator = (CirclePageIndicator) mHeader.findViewById(R.id.indicator);
+        pager = (AutoLoopViewPager) view.findViewById(R.id.pager);
+        indicator = (CirclePageIndicator) view.findViewById(R.id.indicator);
 
-        listView.addHeaderView(mHeader);
-        listView.setAdapter(null);
     }
 
     private void initViews() {
@@ -209,10 +209,9 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
         quitLoginNet = new QuitLoginNet();
         pagerNet = new PagerNet();
 
-        pullToRefreshListView = (PullToRefreshListView) view.findViewById(R.id.list_view);
-        listView = pullToRefreshListView.getRefreshableView();
-        listView.setHeaderDividersEnabled(false);
-        pullToRefreshListView.setMode(PullToRefreshBase.Mode.PULL_DOWN_TO_REFRESH);
+        pullToRefreshListView = (PullToRefreshScrollView) view.findViewById(R.id.list_view);
+        scrollView = pullToRefreshListView.getRefreshableView();
+        pullToRefreshListView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
 
     }
 
