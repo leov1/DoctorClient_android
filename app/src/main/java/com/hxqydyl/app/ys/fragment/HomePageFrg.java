@@ -315,8 +315,7 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.login_btn:
-                intent = new Intent(getActivity(), LoginActivity.class);
-                startActivityForResult(intent,LOGIN_STATE);
+                UIHelper.showLoginForResult(getActivity());
                 break;
             case R.id.register_btn:
                 UIHelper.showRegister(getActivity());
@@ -333,9 +332,7 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
     private int LOGIN_STATE = 0;
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == LOGIN_STATE){
             startRefreshing();
-        }
     }
 
     /**

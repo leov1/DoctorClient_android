@@ -54,7 +54,7 @@ public class BaseWebActivity extends BaseTitleActivity {
         if (getIntent().hasExtra("beanPath")){
             beanPath=getIntent().getStringExtra("beanPath");
         }
-        initViewOnBaseTitle("阅读");
+        initViewOnBaseTitle("加载中...");
         webView = (ProgressWebView) findViewById(R.id.webview);
         initWebSetting();
     }

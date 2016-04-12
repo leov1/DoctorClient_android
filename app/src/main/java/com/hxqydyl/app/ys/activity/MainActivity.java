@@ -191,7 +191,11 @@ public class MainActivity extends BaseFragmentActivity {
             switch (requestCode) {
                 case UIHelper.LOGIN_REQUEST_CODE:
                     if (data.getBooleanExtra("isLogin", true)) {
+
                         showFragment();
+                        if (currIndex==0){
+                            fragmentManager.findFragmentByTag(fragmentTags.get(0)).onActivityResult(requestCode,resultCode,data);
+                        }
                     } else {
                         if (currIndex == 0){
                             fragmentManager.findFragmentByTag(fragmentTags.get(0)).onHiddenChanged(false);
