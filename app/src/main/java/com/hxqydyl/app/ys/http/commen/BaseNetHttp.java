@@ -48,6 +48,7 @@ public class BaseNetHttp {
     public <T> void toGet(final RequestModel<T> requestModel) {
         GetBuilder getBuilder = OkHttpUtils.get().url("");
         try {
+            if (requestModel.getMaps()!=null)
             addParams(requestModel.getMaps(), getBuilder);
         } catch (Exception e) {
             requestModel.getOnResumeListener().onFail("请求map转换失败");

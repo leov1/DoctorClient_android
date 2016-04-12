@@ -159,5 +159,7 @@ public class UrlConstants {
     public static String CURPAGE = "/html/user/personal_curpage.shtml";
     //退出登陆
     public static String USER_SETTING = "/html/user/set.shtml";
+    //版本更新
+    public static String UPDATE = "/version/app/1";
 
 }
