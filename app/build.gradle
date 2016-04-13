@@ -23,7 +23,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile project(':library')
-    compile 'com.android.support:appcompat-v7:24.0.0-alpha1'
+    compile 'com.android.support:appcompat-v7:23.0.0-alpha1'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.squareup.haha:haha:2.0.2'
@@ -36,5 +36,5 @@ dependencies {
     compile 'com.daimajia.swipelayout:library:1.2.0@aar'
     compile 'com.flyco.dialog:FlycoDialog_Lib:1.2.6@aar'
     compile 'com.nineoldandroids:library:2.4.0'
-  //  compile 'com.zhy:okhttputils:2.3.8'
+    compile 'com.zhy:okhttputils:2.3.8'
 }

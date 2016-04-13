@@ -21,7 +21,6 @@ public class CommentWebActivity extends BaseWebActivity implements BaseWebActivi
         if (!TextUtils.isEmpty(title)) {
             intent.putExtra("title", title);
         }
-        intent.putExtra("beanPath", LoginOutJsBean.getPackgeName("LoginOutJsBean"));
         intent.putExtra("isNeedLogin", isNeedLogin);
         intent.putExtra("url", url);
         a.startActivity(intent);

@@ -20,6 +20,7 @@ import com.hxqydyl.app.ys.utils.LoginManager;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+
 import org.w3c.dom.Text;
 
 import java.lang.reflect.Method;
@@ -35,7 +36,8 @@ public class BaseWebActivity extends BaseTitleActivity {
     private boolean isNeedLogin = false;
     private OnLoginSuccess onLoginSuccess;
     private Intent intent;
- private String beanPath;
+    private String beanPath;
+
     public void setIsNeedLogin(boolean isNeedLogin, OnLoginSuccess onLoginSuccess) {
         this.isNeedLogin = isNeedLogin;
         this.onLoginSuccess = onLoginSuccess;
@@ -51,10 +53,10 @@ public class BaseWebActivity extends BaseTitleActivity {
     }
 
     private void initViews() {
-        if (getIntent().hasExtra("beanPath")){
-            beanPath=getIntent().getStringExtra("beanPath");
+        if (getIntent().hasExtra("beanPath")) {
+            beanPath = getIntent().getStringExtra("beanPath");
         }
-        initViewOnBaseTitle("阅读");
+        initViewOnBaseTitle("加载中...");
         webView = (ProgressWebView) findViewById(R.id.webview);
         initWebSetting();
     }
@@ -115,8 +117,8 @@ public class BaseWebActivity extends BaseTitleActivity {
                     paramater = paramater.substring(1);
                 }
                 SetJsBridge(functionname, paramater);
-                if (!TextUtils.isEmpty(beanPath)){
-                    DoJsBean(functionname,paramater,beanPath);
+                if (!TextUtils.isEmpty(beanPath)) {
+                    DoJsBean(functionname, paramater, beanPath);
                 }
                 return true;
             }
@@ -155,7 +157,7 @@ public class BaseWebActivity extends BaseTitleActivity {
                 }
                 break;
             case "logout":
-                UIHelper.ToastMessage(this,"退出登陆");
+                UIHelper.ToastMessage(this, "退出登陆");
                 LoginManager.quitLogin();
                 Intent intent = new Intent();
                 intent.putExtra("isLoginOut", true);

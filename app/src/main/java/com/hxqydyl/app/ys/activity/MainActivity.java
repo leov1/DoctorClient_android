@@ -19,6 +19,7 @@ import com.hxqydyl.app.ys.fragment.MyTaskFrg;
 import com.hxqydyl.app.ys.fragment.PersonalFrg;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.LoginManager;
+import com.hxqydyl.app.ys.utils.Update;
 
 import common.AppManager;
 import framework.BaseFragmentActivity;
@@ -49,6 +50,7 @@ public class MainActivity extends BaseFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         fragmentManager = getSupportFragmentManager();
         if (savedInstanceState == null) {
             initData();
@@ -56,6 +58,7 @@ public class MainActivity extends BaseFragmentActivity {
         } else {
             initFromSavedInstantsState(savedInstanceState);
         }
+        Update.getIncetence(this).cheackIsUp();
     }
 
     @Override
@@ -164,6 +167,7 @@ public class MainActivity extends BaseFragmentActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (isQuit == false) {
+                Update.clearUpdate();
                 isQuit = true;
                 UIHelper.ToastMessage(this, R.string.press_back);
                 TimerTask task = null;
@@ -191,7 +195,11 @@ public class MainActivity extends BaseFragmentActivity {
             switch (requestCode) {
                 case UIHelper.LOGIN_REQUEST_CODE:
                     if (data.getBooleanExtra("isLogin", true)) {
+
                         showFragment();
+                        if (currIndex==0){
+                            fragmentManager.findFragmentByTag(fragmentTags.get(0)).onActivityResult(requestCode,resultCode,data);
+                        }
                     } else {
                         if (currIndex == 0){
                             fragmentManager.findFragmentByTag(fragmentTags.get(0)).onHiddenChanged(false);

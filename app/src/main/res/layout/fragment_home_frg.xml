@@ -5,7 +5,7 @@
 
     <include layout="@layout/top_title"></include>
 
-    <com.hxqydyl.app.ys.ui.library.PullToRefreshListView
+    <com.hxqydyl.app.ys.ui.library.PullToRefreshScrollView
         xmlns:ptr="http://schemas.android.com/apk/res-auto"
         android:id="@+id/list_view"
         android:layout_width="match_parent"
@@ -20,7 +20,10 @@
         ptr:ptrAnimationStyle="flip"
         ptr:ptrDrawable="@drawable/default_ptr_flip"
         ptr:ptrHeaderBackground="@null"
-        ptr:ptrHeaderTextColor="@color/text_color_black" ></com.hxqydyl.app.ys.ui.library.PullToRefreshListView>
+        ptr:ptrHeaderTextColor="@color/text_color_black" >
+
+        <include layout="@layout/home_header"></include>
+    </com.hxqydyl.app.ys.ui.library.PullToRefreshScrollView>
 
 </LinearLayout>
 

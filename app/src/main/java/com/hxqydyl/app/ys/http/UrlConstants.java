@@ -14,7 +14,7 @@ public class UrlConstants {
      * 线上测试 isOnline = true,isTest = true;
      * 线上发布 isOnline = true,isTest = false;
      */
-    public static final boolean isOnline = true;//    是否是线上环境
+    public static final boolean isOnline = false;//    是否是线上环境
     public static final boolean isTest = true;//    是否是测试包
 
 
@@ -159,5 +159,7 @@ public class UrlConstants {
     public static String CURPAGE = "/html/user/personal_curpage.shtml";
     //退出登陆
     public static String USER_SETTING = "/html/user/set.shtml";
+    //版本更新
+    public static String UPDATE = "/version/app/1";
 
 }

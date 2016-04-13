@@ -38,8 +38,7 @@
             <TextView
                 android:id="@+id/tvOccurrTime"
                 style="@style/follow_up_form_right"
-                android:layout_height="@dimen/space_40"
-                android:text="2016/03/26" />
+                android:layout_height="@dimen/space_40" />
         </TableRow>
 
 
@@ -55,8 +54,7 @@
             <TextView
                 android:id="@+id/tvDurationTime"
                 style="@style/follow_up_form_right"
-                android:layout_height="@dimen/space_40"
-                android:text="12个月零1天" />
+                android:layout_height="@dimen/space_40" />
         </TableRow>
 
         <View style="@style/divider_line" />
@@ -74,9 +72,8 @@
                 android:id="@+id/tvSymptomsDes"
                 style="@style/follow_up_form_right"
                 android:minHeight="@dimen/space_40"
-                android:paddingTop="@dimen/space_10"
                 android:paddingBottom="@dimen/space_10"
-                android:text="症状描述症状描述症状描述症状描述症状描述症状描述症状描述症状描述症状描述症状描述症状描述症状描述症状描述症状描述症状描述" />
+                android:paddingTop="@dimen/space_10" />
         </TableRow>
 
 
@@ -97,9 +94,8 @@
                 style="@style/follow_up_form_right"
                 android:layout_height="wrap_content"
                 android:minHeight="@dimen/space_40"
-                android:paddingTop="@dimen/space_10"
                 android:paddingBottom="@dimen/space_10"
-                android:text="变的很严重严重变的很严重严重变的很严重严重变的很严重严重变的很严重严重变的很严重严重变的很严重严重变的很严重严重变的很严重严重变的很严重严重变的很严重严重" />
+                android:paddingTop="@dimen/space_10" />
         </TableRow>
 
 

@@ -41,6 +41,7 @@ public class MassActivity extends BaseTitleActivity implements View.OnClickListe
     }
 
     private void initListener() {
+        setBackListener();
         btn_send.setOnClickListener(this);
         btn_choice_patient.setOnClickListener(this);
     }

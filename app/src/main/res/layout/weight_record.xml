@@ -31,7 +31,6 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:minHeight="@dimen/space_40"
-                    android:text="60"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_15" />
 
