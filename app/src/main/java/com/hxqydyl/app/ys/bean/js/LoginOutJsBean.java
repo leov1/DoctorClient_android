@@ -2,6 +2,7 @@ package com.hxqydyl.app.ys.bean.js;
 
 import android.support.v4.app.FragmentActivity;
 
+import com.hxqydyl.app.ys.activity.BaseWebActivity;
 import com.hxqydyl.app.ys.ui.UIHelper;
 
 /**
@@ -9,11 +10,12 @@ import com.hxqydyl.app.ys.ui.UIHelper;
  * //本类只是示例
  */
 public class LoginOutJsBean extends BaseJsBean {
+
+
     @Override
-    public void doJs(FragmentActivity activity, String functionname,String  parameters ){
+    public void doJs(BaseWebActivity activity, String functionname, String parameters) {
         if (functionname.equals("logout")) {
             UIHelper.ToastMessage(activity, "点击了logout");
         }
     }
-
 }

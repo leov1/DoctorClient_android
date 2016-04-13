@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -55,7 +56,10 @@ public class Update {
                 Gson gson = new Gson();
                 AppVersion version = gson.fromJson(response, AppVersion.class);
                 try {
-                    if (!version.getVersion().equals(getVersionName(context))) {
+                    if (TextUtils.isEmpty(version.getVersion()))
+                        return;
+                    float f=Float.parseFloat(version.getVersion());
+                    if (f!=getVersionName(context)) {
                         showUpdataDialog(context, version.getUrl(), "检测到有新的版本，是否更新");
                     }
                 } catch (Exception e) {
@@ -140,10 +144,11 @@ public class Update {
     }
 
     //获取versionname
-    private String getVersionName(Context context) throws Exception {
+    private float getVersionName(Context context) throws Exception {
         PackageManager packageManager = context.getPackageManager();
         PackageInfo packInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
-        return packInfo.versionName;
+        float v=Float.parseFloat(packInfo.versionName);
+        return v;
     }
 public static  void clearUpdate(){
     update=null;
