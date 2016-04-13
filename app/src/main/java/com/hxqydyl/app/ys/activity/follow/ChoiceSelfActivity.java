@@ -84,7 +84,7 @@ public class    ChoiceSelfActivity extends BaseTitleActivity implements View.OnC
     }
 
     private void selectPreceptDetail() {
-        FollowPlanNet.selectPreceptDetail("0", new FollowCallback(){
+        FollowPlanNet.selectPreceptDetail("0", new FollowCallback(this){
             @Override
             public void onResponse(String response) {
                 super.onResponse(response);

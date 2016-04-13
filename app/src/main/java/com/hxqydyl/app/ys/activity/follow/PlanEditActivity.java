@@ -392,7 +392,9 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
             ht.setOther(vh.etOther.getText().toString());
             htList.add(ht);
         }
-
+        if (plan == null) {
+            plan = new Plan();
+        }
         plan.setPreceptName(title);
         plan.setDrugTherapy(drugTherapy);
         plan.setSideEffects(sideEffects);
@@ -423,7 +425,7 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
     }
 
     private void initUpdateFollowCallback() {
-        updateFollowCallback = new FollowCallback(){
+        updateFollowCallback = new FollowCallback(this){
             @Override
             public void onResponse(String response) {
                 super.onResponse(response);

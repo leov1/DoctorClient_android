@@ -1,8 +1,11 @@
 package com.hxqydyl.app.ys.http.follow;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSONObject;
+import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+import com.hxqydyl.app.ys.ui.UIHelper;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import okhttp3.Call;
@@ -12,10 +15,17 @@ import okhttp3.Call;
  */
 public class FollowCallback extends StringCallback {
 
+    private BaseTitleActivity baseTitleActivity;
+
+    public FollowCallback(BaseTitleActivity baseTitleActivity) {
+        this.baseTitleActivity = baseTitleActivity;
+    }
+
     @Override
     public void onError(Call call, Exception e) {
         Log.e("xx", e.getMessage());
         e.printStackTrace();
+        baseTitleActivity.dismissDialog();
         onFail("999999", "");
     }
 
@@ -30,6 +40,8 @@ public class FollowCallback extends StringCallback {
         } else {
             String msg = queryObj.getString("message");
             Log.e("doctorClient", msg);
+            UIHelper.ToastMessage(baseTitleActivity, msg);
+            baseTitleActivity.dismissDialog();
             onFail(status, msg);
         }
     }

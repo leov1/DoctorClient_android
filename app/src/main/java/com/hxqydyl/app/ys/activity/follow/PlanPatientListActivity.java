@@ -60,7 +60,7 @@ public class PlanPatientListActivity extends BaseTitleActivity
 
     private void getVisitApplyList() {
         showDialog("");
-        FollowPlanNet.getCustomerVisitRecordByUuid(preceptUuid, new FollowCallback(){
+        FollowPlanNet.getCustomerVisitRecordByUuid(preceptUuid, new FollowCallback(this){
             @Override
             public void onResult(String result) {
                 super.onResult(result);

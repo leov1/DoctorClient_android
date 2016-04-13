@@ -40,6 +40,7 @@ public class FollowApplyNet {
     public static void getApplyDetail(String applyUuid, FollowCallback callback) {
         OkHttpUtils.get().url(baseURL + "app/pub/doctor/1.0/getApplyDetail")
                 .addParams("applyUuid", applyUuid)
+                .addParams("doctorUuid", LoginManager.getDoctorUuid())
                 .build()
                 .execute(callback);
     }
@@ -54,6 +55,7 @@ public class FollowApplyNet {
         OkHttpUtils.get().url(baseURL + "app/pub/doctor/1.0/addVisitRecord")
                 .addParams("visitUuid", visitUuid)
                 .addParams("visitPreceptUuid", visitPreceptUuid)
+                .addParams("doctorUuid", LoginManager.getDoctorUuid())
                 .build()
                 .execute(callback);
     }
@@ -70,6 +72,18 @@ public class FollowApplyNet {
         OkHttpUtils.post().url(baseURL + "app/public/refuseapply/1.0/refuseVivistApply")
                 .addParams("applyUuid", applyUuid)
                 .addParams("refuseReason", refuseReason)
+                .addParams("doctorUuid", LoginManager.getDoctorUuid())
+                .build()
+                .execute(callback);
+    }
+
+    /**
+     * 待处理随访任务-查询列表
+     * @param callback
+     */
+    public static void getProcessedVisitList(FollowCallback callback) {
+        OkHttpUtils.get().url(baseURL + "app/pub/doctor/1.0/getProcessedVisitList")
+                .addParams("doctorUuid", LoginManager.getDoctorUuid())
                 .build()
                 .execute(callback);
     }

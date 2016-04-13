@@ -103,7 +103,7 @@ public class FollowApplyDetailActivity extends BaseTitleActivity
 
     private void getApplyDetail() {
         showDialog("正在加载");
-        FollowApplyNet.getApplyDetail(applyUuid, new FollowCallback(){
+        FollowApplyNet.getApplyDetail(applyUuid, new FollowCallback(this){
             @Override
             public void onResult(String result) {
                 super.onResult(result);
@@ -155,6 +155,14 @@ public class FollowApplyDetailActivity extends BaseTitleActivity
                     finish();
                 }
             }
+
+            @Override
+            public void onFail(String status, String msg) {
+                super.onFail(status, msg);
+                if ("0".equals(status)) {
+                    finish();
+                }
+            }
         });
     }
 
@@ -162,7 +170,7 @@ public class FollowApplyDetailActivity extends BaseTitleActivity
         DialogUtils.showSignleEditTextDialog(this, new DialogUtils.SaveTextListener() {
             @Override
             public boolean save(String text) {
-                FollowApplyNet.refuseVivistApply(fa.getApplyUuid(), text, new FollowCallback(){
+                FollowApplyNet.refuseVivistApply(fa.getApplyUuid(), text, new FollowCallback(FollowApplyDetailActivity.this){
                             @Override
                             public void onResult(String result) {
                                 super.onResult(result);

@@ -138,7 +138,7 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
     }
 
     private void getMyVisitPreceptList() {
-        FollowPlanNet.getMyVisitPreceptList(new FollowCallback(){
+        FollowPlanNet.getMyVisitPreceptList(new FollowCallback(this){
             @Override
             public void onResult(String result) {
                 super.onResult(result);
@@ -175,7 +175,7 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
     private void apply() {
         showDialog("正在提交");
         PlanBaseInfo plan = planList.get(planSelectAdapter.getSelect());
-        FollowApplyNet.addVisitRecord(plan.getVisitUuid(), customerUuid, new FollowCallback(){
+        FollowApplyNet.addVisitRecord(plan.getVisitUuid(), customerUuid, new FollowCallback(this){
             @Override
             public void onResult(String result) {
                 super.onResult(result);
@@ -193,7 +193,7 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
 
     private void updateCustomerGroup() {
         final PatientGroup pg = patientGroupList.get(patientGroupSelectAdapter.getSelect());
-        CustomerNet.updateCustomerGroup(pg.getId(), customerUuid, new FollowCallback(){
+        CustomerNet.updateCustomerGroup(pg.getId(), customerUuid, new FollowCallback(this){
             @Override
             public void onResult(String result) {
                 super.onResult(result);

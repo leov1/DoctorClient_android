@@ -207,7 +207,7 @@ public class PlanInfoActivity extends BaseTitleActivity implements View.OnClickL
 
 
     private void visitPreceptDetail(String visitUuid) {
-        FollowPlanNet.visitPreceptDetail(visitUuid, new FollowCallback(){
+        FollowPlanNet.visitPreceptDetail(visitUuid, new FollowCallback(this){
             @Override
             public void onResponse(String response) {
                 super.onResponse(response);

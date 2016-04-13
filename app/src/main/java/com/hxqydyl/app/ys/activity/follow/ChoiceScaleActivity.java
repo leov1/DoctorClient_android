@@ -85,7 +85,7 @@ public class ChoiceScaleActivity extends BaseTitleActivity implements View.OnCli
     }
 
     private void selectPreceptDetail() {
-        FollowPlanNet.selectPreceptDetail("1", new FollowCallback(){
+        FollowPlanNet.selectPreceptDetail("1", new FollowCallback(this){
             @Override
             public void onResponse(String response) {
                 super.onResponse(response);

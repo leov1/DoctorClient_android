@@ -57,7 +57,7 @@ public class FollowApplyActivity extends BaseTitleActivity
 
     private void getVisitApplyList() {
         showDialog("");
-        FollowApplyNet.getVisitApplyList(new FollowCallback(){
+        FollowApplyNet.getVisitApplyList(new FollowCallback(this){
             @Override
             public void onResult(String result) {
                 super.onResult(result);

@@ -175,7 +175,7 @@ public class PatientAdviceEditActivity extends BaseTitleActivity implements View
 
         advice.setMedicineList(mList);
         try {
-            PatientAdviceNet.adviceSave(advice.toJson(customerUuid, "visitPreceptUuid"), new FollowCallback(){
+            PatientAdviceNet.adviceSave(advice.toJson(customerUuid, "visitPreceptUuid"), new FollowCallback(this){
                 @Override
                 public void onResponse(String response) {
                     UIHelper.ToastMessage(PatientAdviceEditActivity.this, "保持成功");

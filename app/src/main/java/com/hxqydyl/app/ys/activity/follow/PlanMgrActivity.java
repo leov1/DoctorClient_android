@@ -143,7 +143,7 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
     }
 
     private void getMyVisitPreceptList() {
-        FollowPlanNet.getMyVisitPreceptList(new FollowCallback(){
+        FollowPlanNet.getMyVisitPreceptList(new FollowCallback(this){
             @Override
             public void onResult(String result) {
                 super.onResult(result);
@@ -174,7 +174,7 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
 
 
     private void getRecommendVisitpreceptByDoctorid() {
-        FollowPlanNet.getRecommendVisitpreceptByDoctorid(new FollowCallback(){
+        FollowPlanNet.getRecommendVisitpreceptByDoctorid(new FollowCallback(this){
             @Override
             public void onResult(String result) {
                 super.onResult(result);
@@ -198,7 +198,7 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
 
     private void delPreceptDetail(final int position) {
         Plan plan = myPlanList.get(position);
-        FollowPlanNet.delPreceptDetail(plan.getVisitUuid(), new FollowCallback(){
+        FollowPlanNet.delPreceptDetail(plan.getVisitUuid(), new FollowCallback(this){
             @Override
             public void onResponse(String response) {
                 super.onResponse(response);

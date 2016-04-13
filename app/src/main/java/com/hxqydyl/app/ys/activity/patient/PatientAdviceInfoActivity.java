@@ -141,7 +141,7 @@ public class PatientAdviceInfoActivity extends BaseTitleActivity implements View
 
 
     private void visitPreceptDetail(String visitUuid) {
-        PatientAdviceNet.adviceSearch(visitUuid, new FollowCallback(){
+        PatientAdviceNet.adviceSearch(visitUuid, new FollowCallback(this){
             @Override
             public void onResponse(String response) {
                 if (FollowApplyNet.myDev)

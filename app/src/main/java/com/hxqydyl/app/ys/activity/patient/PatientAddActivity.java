@@ -14,6 +14,7 @@ import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.NormalListDialog;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+import com.hxqydyl.app.ys.activity.follow.FollowMainActivity;
 import com.hxqydyl.app.ys.bean.AddressBook;
 import com.hxqydyl.app.ys.bean.PatientGroup;
 import com.hxqydyl.app.ys.http.PatientGroupNet;
@@ -108,7 +109,7 @@ public class PatientAddActivity extends BaseTitleActivity implements View.OnClic
             etPhone.setText(ab.getPhone());
             etRealName.setText(ab.getName());
             showDialog("");
-            CustomerNet.getCustomerByMobile(ab.getPhone(), new FollowCallback(){
+            CustomerNet.getCustomerByMobile(ab.getPhone(), new FollowCallback(this){
                 @Override
                 public void onResult(String result) {
                     super.onResult(result);
@@ -146,10 +147,11 @@ public class PatientAddActivity extends BaseTitleActivity implements View.OnClic
             Toast.makeText(PatientAddActivity.this, "请选择分组", Toast.LENGTH_SHORT).show();
             return;
         }
-        CustomerNet.addCustomer(name, mobile, selectGroupId, diagnosis, new FollowCallback(){
+        CustomerNet.addCustomer(name, mobile, selectGroupId, diagnosis, new FollowCallback(this){
             @Override
             public void onResult(String result) {
                 Toast.makeText(PatientAddActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
+                setResult(RESULT_OK);
                 finish();
             }
         });

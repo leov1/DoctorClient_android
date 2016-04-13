@@ -160,7 +160,7 @@ public class FollowMainActivity extends BaseTitleActivity implements View.OnClic
                 break;
             case R.id.right_img:    //添加患者
                 Intent patientAddIntent = new Intent(FollowMainActivity.this, PatientAddActivity.class);
-                startActivity(patientAddIntent);
+                startActivityForResult(patientAddIntent, REQ_MANAGE_PATIENT_GROUP);
                 break;
             case R.id.rl_apply://随访申请
                 Intent applyIntent = new Intent(FollowMainActivity.this, FollowApplyActivity.class);
