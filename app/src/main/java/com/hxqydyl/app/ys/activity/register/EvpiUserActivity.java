@@ -254,6 +254,8 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
             return;
         }
         if (resultCode == Activity.RESULT_OK) {
+            if (intent == null || "".equals(intent))
+                return;
             this.intent = intent;
             handler.sendEmptyMessage(UPLOAD_LOCAL_PICTURE);
         }

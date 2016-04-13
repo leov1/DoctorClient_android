@@ -17,9 +17,9 @@ public class UIHelper {
 	public final static String TAG = "UIHelper";
 
 	public final static int RESULT_OK = 0x00;
-	public final static int REQUEST_CODE = 0x01;
-    public final static int LOGIN_REQUEST_CODE = 0x02;
-    public final static int LOGINOUT_REQUEST_CODE = 0x03;
+	public final static int REQUEST_CODE = 0x99;
+    public final static int LOGIN_REQUEST_CODE = 0x98;
+    public final static int LOGINOUT_REQUEST_CODE = 0x97;
 
 	public static void ToastMessage(Context cont, String msg) {
         if(cont == null || msg == null) {

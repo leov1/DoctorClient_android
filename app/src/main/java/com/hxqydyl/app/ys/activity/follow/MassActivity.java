@@ -47,6 +47,7 @@ public class MassActivity extends BaseTitleActivity implements View.OnClickListe
     }
 
     private void initViews() {
+        initViewOnBaseTitle("群发通知");
         sendMsgToPaNet = new SendMsgToPaNet();
         sendMsgToPaNet.setListener(this);
 
