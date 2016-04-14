@@ -192,10 +192,10 @@ public class BaseWebActivity extends BaseTitleActivity {
 //                Intent intent = new Intent(this, ContactListActivity.class);
 //                startActivityForResult(intent, CONTRACTCODE);
 //                break;
-//            case "takephoto":
+            case "takephoto":
 //                ll_popup.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.activity_translate_in));
 //                pop.showAtLocation(parentView, Gravity.BOTTOM, 0, 0);
-//                break;
+                break;
 //            case "saveImage":
 //                new RemoteImageHelper().downloadImage2local(this, parameters, this);
 //                break;

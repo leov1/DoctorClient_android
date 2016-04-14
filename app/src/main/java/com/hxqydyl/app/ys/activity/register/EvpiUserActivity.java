@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -66,7 +67,7 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
     private final int UPLOAD_LOCAL_PICTURE = 5;
     private final int SAVE_PHOTO_IMAGE = 6;
     File sdcardDir = Environment.getExternalStorageDirectory();
-    private String photo_path = sdcardDir.getPath() + "/Gosu/cache/photoes/";
+    private String photo_path = sdcardDir.getPath() + "/hxq/cache/photoes/";
     private String photo_take_file_path = photo_path + "temp.png";
     private String fileString;//base64位图片
 
@@ -193,10 +194,10 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
         nick = text_nick.getText().toString();
         email = text_email.getText().toString();
 
-        if (TextUtils.isEmpty(smallImage)) {
+      /*  if (TextUtils.isEmpty(smallImage)) {
             UIHelper.ToastMessage(EvpiUserActivity.this, "请上传头像");
             return;
-        }
+        }*/
 
         if (TextUtils.isEmpty(nick)) {
             UIHelper.ToastMessage(EvpiUserActivity.this, "姓名不能为空");
@@ -232,9 +233,16 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
             case R.id.select_local_picture:
                 edit_photo_fullscreen_layout.setVisibility(View.GONE);
                 intent = new Intent();
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                        "image/*");
+                if (Build.VERSION.SDK_INT< Build.VERSION_CODES.KITKAT){
+
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                            "image/*");
+                }else{
+                    intent.setAction(Intent.ACTION_PICK);
+                    intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                            "image/*");
+                }
                 startActivityForResult(intent, LOCAL_PICTURE);
                 break;
 

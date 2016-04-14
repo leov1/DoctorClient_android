@@ -18,6 +18,7 @@ import com.hxqydyl.app.ys.activity.CommentWebActivity;
 import com.hxqydyl.app.ys.activity.LoginActivity;
 import com.hxqydyl.app.ys.activity.follow.FollowMainActivity;
 import com.hxqydyl.app.ys.activity.reading.ReadingActivity;
+import com.hxqydyl.app.ys.activity.register.EvpiPhotoActivity;
 import com.hxqydyl.app.ys.adapter.GalleryPagerAdapter;
 import com.hxqydyl.app.ys.adapter.LineGridViewAdapter;
 import com.hxqydyl.app.ys.bean.Query;
@@ -261,6 +262,7 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
      */
     private void updateDoctorInfo(DoctorInfoNew doctorInfo) {
         updateLinear(true);
+        System.out.println("doctorInfo--->"+doctorInfo);
         if (!TextUtils.isEmpty(doctorInfo.getDoctorIcon())) {
             ImageLoader.getInstance().displayImage(doctorInfo.getDoctorIcon(), headImg, Utils.initImageLoader(R.mipmap.portrait_man, true));
         }
@@ -296,8 +298,10 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
         stopRefreshing();
         if (doctorResultNew == null) return;
         if (doctorResultNew.getQuery().getSuccess().equals("1")) {
-            updateDoctorInfo(doctorResultNew.getDoctorInfo());
-            SharedPreferences.getInstance().putString(SharedPreferences.HOME_DOCTOR_INFO_CACHE, str);
+            if (doctorResultNew.getDoctorInfo() != null){
+                updateDoctorInfo(doctorResultNew.getDoctorInfo());
+                SharedPreferences.getInstance().putString(SharedPreferences.HOME_DOCTOR_INFO_CACHE, str);
+            }
         } else {
             UIHelper.ToastMessage(getActivity(), doctorResultNew.getQuery().getMessage());
         }
@@ -317,10 +321,11 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
                 UIHelper.showLoginForResult(getActivity());
                 break;
             case R.id.register_btn:
-                UIHelper.showRegister(getActivity());
+               UIHelper.showRegister(getActivity());
+              // startActivity(new Intent(getActivity(), EvpiPhotoActivity.class));
                 break;
             case R.id.head_img:
-                quitLogin();
+           //     quitLogin();
                 break;
             case R.id.back_img:
                 CommentWebActivity.toCommentWeb(UrlConstants.getWholeApiUrl(UrlConstants.CURPAGE),null,getActivity(),true);

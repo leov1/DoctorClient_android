@@ -4,6 +4,7 @@ import com.hxqydyl.app.ys.bean.Query;
 import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.http.UrlConstants;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.builder.PostFormBuilder;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONException;
@@ -27,12 +28,12 @@ public class SaveUserIconNet {
     }
 
     public void saveUserIcon(String doctorUuid,String userIconList){
-        System.out.println("response---->"+userIconList);
+        System.out.println("response---->" + userIconList);
         OkHttpUtils.get()
                 .url(UrlConstants.getWholeApiUrl(UrlConstants.SAVE_USER_ICON_LIST))
                 .addParams("doctorUuid",doctorUuid)
                 .addParams("userIconList",userIconList)
-                .build().execute(new StringCallback() {
+                .build().writeTimeOut(60000).readTimeOut(60000).connTimeOut(60000).execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e) {
                 System.out.println("onError---->");

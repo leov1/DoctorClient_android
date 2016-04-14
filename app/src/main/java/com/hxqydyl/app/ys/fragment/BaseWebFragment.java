@@ -38,13 +38,13 @@ public class BaseWebFragment extends BaseFragment {
     public ProgressWebView webView;
     private boolean isCustom = false;
     private DoJsBridge doJsBridge;
-    private boolean isNeedLogin=false;
+    private boolean isNeedLogin = false;
 
     public void setIsNeedLogin(boolean isNeedLogin) {
         this.isNeedLogin = isNeedLogin;
     }
 
-    public void setCustomInterceptor( DoJsBridge doJsBridge) {
+    public void setCustomInterceptor(DoJsBridge doJsBridge) {
         isCustom = true;
         this.doJsBridge = doJsBridge;
     }
@@ -85,7 +85,7 @@ public class BaseWebFragment extends BaseFragment {
     public WebViewClient webViewClient = new WebViewClient() {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            if (isNeedLogin&&TextUtils.isEmpty(LoginManager.getDoctorUuid())){
+            if (isNeedLogin && TextUtils.isEmpty(LoginManager.getDoctorUuid())) {
                 UIHelper.showLogin(getActivity());
             }
             super.onPageStarted(view, url, favicon);
@@ -137,6 +137,10 @@ public class BaseWebFragment extends BaseFragment {
                     e.printStackTrace();
                 }
                 break;
+//            case "takephoto":
+//                ll_popup.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.activity_translate_in));
+//                pop.showAtLocation(parentView, Gravity.BOTTOM, 0, 0);
+//                break;
 //            case "getFriendList":
 //                new ContactHelper().init(this, this);
 //                break;
@@ -153,10 +157,6 @@ public class BaseWebFragment extends BaseFragment {
 //            case "openContacts":
 //                Intent intent = new Intent(this, ContactListActivity.class);
 //                startActivityForResult(intent, CONTRACTCODE);
-//                break;
-//            case "takephoto":
-//                ll_popup.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.activity_translate_in));
-//                pop.showAtLocation(parentView, Gravity.BOTTOM, 0, 0);
 //                break;
 //            case "saveImage":
 //                new RemoteImageHelper().downloadImage2local(this, parameters, this);

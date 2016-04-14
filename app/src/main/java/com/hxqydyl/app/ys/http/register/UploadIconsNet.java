@@ -45,7 +45,7 @@ public class UploadIconsNet {
             postFormBuilder = postFormBuilder.addFile("files", "take_pic" + i + ".png", new File(imgUris.get(i)));
         }
 
-        postFormBuilder.build()
+        postFormBuilder.build().writeTimeOut(60000).readTimeOut(60000).connTimeOut(60000)
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e) {

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -191,8 +192,15 @@ public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClick
                 break;
             case R.id.take_picture:
                 edit_photo_fullscreen_layout.setVisibility(View.GONE);
+                File path = new File(photo_path);
+                if (!path.mkdirs()) {
+                    path.mkdir();
+                }
+
                 takePictureUrl = photo_path + "take_pic" + addTakePicCount + ".png";
+
                 File file = new File(takePictureUrl);
+
                 if (file.exists()) {
                     if (file.exists()) {
                         file.delete();
@@ -206,9 +214,17 @@ public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClick
             case R.id.select_local_picture:
                 edit_photo_fullscreen_layout.setVisibility(View.GONE);
                 intent = new Intent();
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                        "image/*");
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                            "image/*");
+                } else {
+                    intent.setAction(Intent.ACTION_PICK);
+                    intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                            "image/*");
+                }
+
                 startActivityForResult(intent, LOCAL_PICTURE);
                 break;
             case R.id.delete_image:
@@ -268,6 +284,7 @@ public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClick
                     Cursor cursor = cursorLoader.loadInBackground();
                     cursor.moveToFirst();
                     String photo_local_file_path = cursor.getString(cursor.getColumnIndex(pojo[0]));
+
                     Bitmap bitmap2 = UploadPhotoUtil.getInstance()
                             .trasformToZoomBitmapAndLessMemory(photo_local_file_path);
                     ImageItem takePhoto1 = new ImageItem();
