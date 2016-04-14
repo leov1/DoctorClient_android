@@ -1,13 +1,19 @@
 package com.hxqydyl.app.ys.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -88,6 +94,21 @@ public class BaseTitleActivity extends SwipeBackActivity implements NetRequestLi
         }
     }
 
+    public void hideInput() {
+        WindowManager.LayoutParams params = getWindow().getAttributes();
+        if (params.softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE) {
+            // 隐藏软键盘
+            getWindow().setSoftInputMode(
+                    WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+            params.softInputMode = WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN;
+        }
+    }
+
+    public void showInput(View v) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(v, InputMethodManager.SHOW_FORCED);
+    }
+
     @Override
     public void onSend(String url) {
         showDialog("加载中");
@@ -109,12 +130,51 @@ public class BaseTitleActivity extends SwipeBackActivity implements NetRequestLi
     }
 
     public void getDoctorUuid(LoginManager.OnLoginSuccess onLoginSuccess) {
-        this.onLoginSuccess=onLoginSuccess;
+        this.onLoginSuccess = onLoginSuccess;
         if (TextUtils.isEmpty(LoginManager.getDoctorUuid())) {
             UIHelper.showLoginForResult(this);
-        }else{
+        } else {
             onLoginSuccess.onLoginSuccess(LoginManager.getDoctorUuid());
         }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (isShouldHideInput(v, ev)) {
+
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+            return super.dispatchTouchEvent(ev);
+        }
+        // 必不可少，否则所有的组件都不会有TouchEvent了
+        if (getWindow().superDispatchTouchEvent(ev)) {
+            return true;
+        }
+        return onTouchEvent(ev);
+    }
+    public  boolean isShouldHideInput(View v, MotionEvent event) {
+        if (v != null && (v instanceof EditText)) {
+            int[] leftTop = { 0, 0 };
+            //获取输入框当前的location位置
+            v.getLocationInWindow(leftTop);
+            int left = leftTop[0];
+            int top = leftTop[1];
+            int bottom = top + v.getHeight();
+            int right = left + v.getWidth();
+            if (event.getX() > left && event.getX() < right
+                    && event.getY() > top && event.getY() < bottom) {
+                // 点击的是输入框区域，保留点击EditText的事件
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -122,9 +182,9 @@ public class BaseTitleActivity extends SwipeBackActivity implements NetRequestLi
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == UIHelper.LOGIN_REQUEST_CODE) {
-                if (data.getBooleanExtra("isLogin",false)){
+                if (data.getBooleanExtra("isLogin", false)) {
                     onLoginSuccess.onLoginSuccess(LoginManager.getDoctorUuid());
-                }else{
+                } else {
                     onLoginSuccess.onLoginfail();
                 }
             }

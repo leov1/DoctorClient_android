@@ -1,133 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:clickable="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <include layout="@layout/top_title"></include>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background_color"
-        android:fitsSystemWindows="true"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:paddingLeft="@dimen/space_30"
-        android:paddingRight="@dimen/space_30">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/img_margin_top"
-            android:src="@mipmap/ic_logo" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/tv_margin_top"
-            android:text="@string/register"
-            android:textColor="@color/login_text_color"
-            android:textSize="@dimen/text_size_22" />
-
-        <EditText
-            android:id="@+id/mobile_edit"
-            style="@style/edit_blue"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginTop="@dimen/space_26"
-            android:hint="@string/phone"
-            android:inputType="number"
-            android:maxLength="11"
-            android:paddingLeft="@dimen/space_15" />
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginTop="@dimen/space_20"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:background="@color/background_color"
+            android:fitsSystemWindows="true"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/space_30"
+            android:paddingRight="@dimen/space_30">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/img_margin_top"
+                android:src="@mipmap/ic_logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/tv_margin_top"
+                android:text="@string/register"
+                android:textColor="@color/login_text_color"
+                android:textSize="@dimen/text_size_22" />
 
             <EditText
-                android:id="@+id/captcha_edit"
+                android:id="@+id/mobile_edit"
                 style="@style/edit_blue"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="6"
-                android:hint="@string/code"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="@dimen/space_26"
+                android:hint="@string/phone"
                 android:inputType="number"
+                android:maxLength="11"
                 android:paddingLeft="@dimen/space_15" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="@dimen/space_20"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/captcha_edit"
+                    style="@style/edit_blue"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="6"
+                    android:hint="@string/code"
+                    android:inputType="number"
+                    android:paddingLeft="@dimen/space_15" />
+
+
+                <Button
+                    android:id="@+id/btn_code"
+                    style="@style/btn_blue"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="7dp"
+                    android:layout_weight="4"
+                    android:text="@string/phone_code" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/password_edit"
+                style="@style/edit_blue"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="@dimen/space_20"
+                android:digits="0123456789abcdefghigklmnopqrstuvwxyz"
+                android:hint="@string/register_password"
+                android:paddingLeft="@dimen/space_15"
+                android:password="true" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_8">
+
+                <TextView
+                    android:id="@+id/login_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:padding="@dimen/space_8"
+                    android:text="@string/register_login"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/text_size_15" />
+            </RelativeLayout>
 
             <Button
-                android:id="@+id/btn_code"
+                android:id="@+id/next_btn"
                 style="@style/btn_blue"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="7dp"
-                android:layout_weight="4"
-                android:text="@string/phone_code"
-                />
+                android:layout_marginTop="@dimen/space_25"
+                android:text="@string/next" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/checkbox_agree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/check_box_bg"
+                    android:checked="true"
+                    android:paddingLeft="5dp"
+                    android:text="@string/register_agree"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/textview_register_order"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/register_order"
+                    android:textColor="#ff788c"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
         </LinearLayout>
-
-        <EditText
-            android:id="@+id/password_edit"
-            style="@style/edit_blue"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginTop="@dimen/space_20"
-            android:hint="@string/register_password"
-            android:password="true"
-            android:digits="0123456789abcdefghigklmnopqrstuvwxyz"
-            android:paddingLeft="@dimen/space_15" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_8">
-
-            <TextView
-                android:id="@+id/login_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:padding="@dimen/space_8"
-                android:text="@string/register_login"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/text_size_15" />
-        </RelativeLayout>
-
-        <Button
-            style="@style/btn_blue"
-            android:id="@+id/next_btn"
-            android:layout_marginTop="@dimen/space_25"
-            android:text="@string/next"
-            />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:orientation="horizontal">
-
-            <CheckBox
-                android:id="@+id/checkbox_agree"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:button="@drawable/check_box_bg"
-                android:checked="true"
-                android:paddingLeft="5dp"
-                android:text="@string/register_agree"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/textview_register_order"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/register_order"
-                android:textColor="#ff788c"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-    </LinearLayout>
+    </ScrollView>
 </LinearLayout>

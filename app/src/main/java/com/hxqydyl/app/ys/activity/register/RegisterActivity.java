@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
@@ -27,7 +29,7 @@ import framework.listener.RegisterSucListener;
 /**
  * 注册页面
  */
-public class RegisterActivity extends BaseTitleActivity implements View.OnClickListener,CaptchaNet.OnCaptchaNetListener,RegisterFirstNet.OnRegisterFirstListener,RegisterSucListener {
+public class RegisterActivity extends BaseTitleActivity implements View.OnClickListener, CaptchaNet.OnCaptchaNetListener, RegisterFirstNet.OnRegisterFirstListener, RegisterSucListener {
 
     private TextView registerOrderBtn;
     private TextView loginBtn;
@@ -37,7 +39,6 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
     private EditText mobileEdit;//手机号
     private EditText passwordEdit;//密码
     private CheckBox agreeCheckBox;
-
     private String captcha = "";//验证码
     private String mobile = "";//手机号
     private String password = "";//密码
@@ -66,13 +67,15 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
                 default:
                     break;
             }
-        };
+        }
+
+        ;
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
         initViews();
         initListeners();
     }
@@ -111,12 +114,12 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         String isCan = "";
-      switch (v.getId()){
-          case R.id.textview_register_order:
-              intent = new Intent(this,RegisterOrderActivity.class);
-              startActivity(intent);
-              break;
-          case R.id.next_btn://下一步
+        switch (v.getId()) {
+            case R.id.textview_register_order:
+                intent = new Intent(this, RegisterOrderActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.next_btn://下一步
 //              String isPass = validateInfo();
 //              if (TextUtils.isEmpty(isPass)){
 //                 intent = new Intent(this,EvpiUserActivity.class);
@@ -124,37 +127,37 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
 //              }else{
 //                  UIHelper.ToastMessage(this,isPass);
 //              }
-              isCan = validateInfo();
-              if (TextUtils.isEmpty(isCan)){
-                  registerOne();
-              }else {
-                  UIHelper.ToastMessage(this,isCan);
-              }
-              break;
-          case R.id.btn_code://获取验证码
-              isCan = validateMobile();
-              if (TextUtils.isEmpty(isCan)) {
-                  obtainCaptcha();
-              }else {
-                  UIHelper.ToastMessage(this,isCan);
-              }
-              break;
-          case R.id.login_btn:
-              UIHelper.showLogin(RegisterActivity.this);
-              finish();
-              break;
-          case R.id.back_img:
-              finish();
-              break;
-      }
+                isCan = validateInfo();
+                if (TextUtils.isEmpty(isCan)) {
+                    registerOne();
+                } else {
+                    UIHelper.ToastMessage(this, isCan);
+                }
+                break;
+            case R.id.btn_code://获取验证码
+                isCan = validateMobile();
+                if (TextUtils.isEmpty(isCan)) {
+                    obtainCaptcha();
+                } else {
+                    UIHelper.ToastMessage(this, isCan);
+                }
+                break;
+            case R.id.login_btn:
+                UIHelper.showLogin(RegisterActivity.this);
+                finish();
+                break;
+            case R.id.back_img:
+                finish();
+                break;
+        }
     }
 
     /**
      * 获取验证码网络请求
      */
-    private void obtainCaptcha(){
-        if (!TextUtils.isEmpty(validateMobile())){
-            UIHelper.ToastMessage(RegisterActivity.this,validateMobile());
+    private void obtainCaptcha() {
+        if (!TextUtils.isEmpty(validateMobile())) {
+            UIHelper.ToastMessage(RegisterActivity.this, validateMobile());
             return;
         }
         codeBtn.setEnabled(false);
@@ -166,17 +169,17 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
     /**
      * 注册请求
      */
-    private void registerOne(){
-       showDialog("请稍等...");
-       registerFirstNet.registerFirst(mobile, password, captcha);
+    private void registerOne() {
+        showDialog("请稍等...");
+        registerFirstNet.registerFirst(mobile, password, captcha);
     }
 
     /**
      * 验证输入内容
      */
-    private String validateInfo(){
+    private String validateInfo() {
         String isMobile = validateMobile();
-        if(!TextUtils.isEmpty(isMobile)) return isMobile;
+        if (!TextUtils.isEmpty(isMobile)) return isMobile;
 
         captcha = captchaEdit.getText().toString();
         if (TextUtils.isEmpty(captcha)) return "验证码不能为空";
@@ -191,9 +194,10 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
 
     /**
      * 验证输入的手机号码
+     *
      * @return
      */
-    private String validateMobile(){
+    private String validateMobile() {
         mobile = mobileEdit.getText().toString();
         if (TextUtils.isEmpty(mobile)) return "手机号码不能为空";
         if (!Validator.isMobile(mobile)) return "手机号码格式不正确";
@@ -203,7 +207,7 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
     @Override
     public void requestCaptchaNetSuc(CaptchaResult captchaResult) {
         dismissDialog();
-        System.out.println("captcha--->"+captchaResult.toString());
+        System.out.println("captcha--->" + captchaResult.toString());
     }
 
     @Override
@@ -216,9 +220,9 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
     public void requestRegisterFirstNetSuccess(RegisterFirst registerFirst) {
         dismissDialog();
         UIHelper.ToastMessage(RegisterActivity.this, registerFirst.getQuery().getMessage());
-        if (registerFirst.getQuery().getSuccess().equals("1")){
+        if (registerFirst.getQuery().getSuccess().equals("1")) {
             LoginManager.setDoctorUuid(registerFirst.getDoctorUuid());
-            intent = new Intent(this,EvpiUserActivity.class);
+            intent = new Intent(this, EvpiUserActivity.class);
             startActivity(intent);
         }
     }
@@ -227,6 +231,11 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
     public void requestRegisterFirstNetFail() {
         dismissDialog();
         UIHelper.ToastMessage(RegisterActivity.this, "请求出错");
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return super.onTouchEvent(event);
     }
 
     @Override
