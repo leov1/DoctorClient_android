@@ -14,7 +14,7 @@ public class UrlConstants {
      * 线上测试 isOnline = true,isTest = true;
      * 线上发布 isOnline = true,isTest = false;
      */
-    public static final boolean isOnline = false;//    是否是线上环境
+    public static final boolean isOnline = true;//    是否是线上环境
     public static final boolean isTest = true;//    是否是测试包
 
 
@@ -62,7 +62,7 @@ public class UrlConstants {
     //    获取所有的患者与分组信息 (版本号)
     public static final String GET_ALL_PATIENT_AND_GROUP_INFO = "/app/service/customer/%s/getGroupAndCustomer";
     // 删除患者 (版本号)
-    public static final String DELETE_PATIENT = "/app/pub/doctor/%s/deleteCustomerByCostomerUuidAndGid";
+    public static final String DELETE_PATIENT = "/app/service/customer/%s/deleteCustomerByCostomerUuidAndGid";
     //    修改患者所在的分组(版本号)
     public static final String MOVE_PATIENT_TO_OTHER_GROUP = "/app/service/customer/%s/updateCustomerGroup";
     //    获取所有的患者分组(版本号)
