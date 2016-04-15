@@ -200,8 +200,12 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
     private String validateMobile() {
         mobile = mobileEdit.getText().toString();
         if (TextUtils.isEmpty(mobile)) return "手机号码不能为空";
-        if (!Validator.isMobile(mobile)) return "手机号码格式不正确";
+        if (isMobile(mobile)) return "手机号码格式不正确";
         return "";
+    }
+
+    private boolean isMobile(String str){
+        return str.length() < 11;
     }
 
     @Override

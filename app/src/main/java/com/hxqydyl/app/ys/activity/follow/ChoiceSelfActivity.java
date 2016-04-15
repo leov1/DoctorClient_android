@@ -16,6 +16,8 @@ import com.hxqydyl.app.ys.http.follow.FollowCallback;
 import com.hxqydyl.app.ys.http.follow.FollowPlanNet;
 import com.hxqydyl.app.ys.ui.scrollviewandgridview.MyScrollListView;
 
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,6 +90,7 @@ public class    ChoiceSelfActivity extends BaseTitleActivity implements View.OnC
             @Override
             public void onResponse(String response) {
                 super.onResponse(response);
+                System.out.println("response--->"+response);
                 if (FollowApplyNet.myDev)
                     response = "[" +
                         "{" +
@@ -103,10 +106,16 @@ public class    ChoiceSelfActivity extends BaseTitleActivity implements View.OnC
                         "        \"self\": \"0\"" +
                         "    }" +
                         "]";
-                List<Scale> tmp = Scale.parse(response);
-                list.clear();
-                list.addAll(tmp);
-                adapter.notifyDataSetChanged();
+                List<Scale> tmp = null;
+                try {
+                    tmp = Scale.parse(response);
+                    list.clear();
+                    list.addAll(tmp);
+                    adapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
         });
     }

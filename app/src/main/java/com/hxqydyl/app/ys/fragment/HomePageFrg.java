@@ -392,6 +392,9 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
         if (pageIconResult.getQuery().getSuccess().equals("1")) {
             pageIconBeans = pageIconResult.getPageIconBeans();
             galleryAdapter.update(pageIconBeans);
+            pager.setAdapter(galleryAdapter);
+            indicator.setViewPager(pager);
+            indicator.setPadding(5, 5, 10, 5);
             SharedPreferences.getInstance().putString(SharedPreferences.HOME_VP_CACHE, str);
             System.out.println("img--->" + pageIconBeans.toString());
         }

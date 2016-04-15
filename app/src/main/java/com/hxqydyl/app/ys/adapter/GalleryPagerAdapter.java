@@ -71,18 +71,6 @@ public class GalleryPagerAdapter extends PagerAdapter {
             return item;
         }
 
-//
-//        final int pos = position;
-//        item.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(HouseDetailActivity.this, ImageGalleryActivity.class);
-//                intent.putStringArrayListExtra("images", (ArrayList<String>) imageList);
-//                intent.putExtra("position", pos);
-//                startActivity(intent);
-//            }
-//        });
-
         return null;
     }
 

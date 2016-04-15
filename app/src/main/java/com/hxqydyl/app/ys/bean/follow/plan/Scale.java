@@ -1,5 +1,7 @@
 package com.hxqydyl.app.ys.bean.follow.plan;
 
+import android.text.TextUtils;
+
 import com.alibaba.fastjson.JSONArray;
 import com.hxqydyl.app.ys.utils.StringUtils;
 
@@ -20,13 +22,19 @@ public class Scale implements Serializable {
     private String digest;
     private String self;        //self：0——患者自评，1——医生评测
 
-    public static List<Scale> parse(String string) {
-        return JSONArray.parseArray(string, Scale.class);
+    public static List<Scale> parse(String string) throws JSONException {
+        List<Scale> list = new ArrayList<>();
+        if (TextUtils.isEmpty(string)) return list;
+        JSONObject js = new JSONObject(string);
+        if (js.has("relist")){
+            org.json.JSONArray relist = js.getJSONArray("relist");
+            list = parse(relist);
+        }
+        return list;
     }
 
     public static ArrayList<Scale> parse(org.json.JSONArray jsonArray) throws JSONException {
         ArrayList<Scale> list = new ArrayList<>();
-        if (jsonArray == null) return list;
         if (jsonArray == null) return list;
         for (int i=0; i<jsonArray.length(); i++) {
             JSONObject obj = jsonArray.getJSONObject(i);

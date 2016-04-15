@@ -17,6 +17,8 @@ import com.hxqydyl.app.ys.http.follow.FollowCallback;
 import com.hxqydyl.app.ys.http.follow.FollowPlanNet;
 import com.hxqydyl.app.ys.ui.scrollviewandgridview.MyScrollListView;
 
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,10 +106,16 @@ public class ChoiceScaleActivity extends BaseTitleActivity implements View.OnCli
                         "        \"self\": \"0\"" +
                         "    }" +
                         "]";
-                List<Scale> tmp = Scale.parse(response);
-                list.clear();
-                list.addAll(tmp);
-                adapter.notifyDataSetChanged();
+                List<Scale> tmp = null;
+                try {
+                    tmp = Scale.parse(response);
+                    list.clear();
+                    list.addAll(tmp);
+                    adapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
         });
     }

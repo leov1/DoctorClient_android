@@ -17,7 +17,7 @@ public class UrlConstants {
 
 
     //    内网开发ip
-    public static final String BASE_IP_DEVELOP = "http://172.168.1.53";
+    public static final String BASE_IP_DEVELOP = "http://172.168.1.9";
     //    内网开发端口
     public static final String BASE_PORT_DEVELOP = "8080";
     //    内网测试ip
