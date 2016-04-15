@@ -57,6 +57,9 @@ public class UrlConstants {
     //上传图片
     public static final String UPLOAD_PIC = "/app/support/common/uploadimg";
 
+    // 与患者沟通跳转的H5地址
+    public static final String COMMUNICATE_WITH_PATIENT_H5 = "/html/task/consultation_page.shtml?customerUuid=%s";
+
     //    获取所有的患者与分组信息 (版本号)
     public static final String GET_ALL_PATIENT_AND_GROUP_INFO = "/app/service/customer/%s/getGroupAndCustomer";
     // 删除患者 (版本号)

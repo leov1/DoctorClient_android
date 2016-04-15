@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+import com.hxqydyl.app.ys.activity.CommentWebActivity;
 import com.hxqydyl.app.ys.activity.case_report.AddCaseReportActivity;
 import com.hxqydyl.app.ys.activity.case_report.FollowUpFormActivity;
 import com.hxqydyl.app.ys.activity.case_report.InPatientCaseReportActivity;
@@ -46,7 +47,7 @@ public class PatientDetailsActivity extends BaseTitleActivity implements View.On
     private ArrayList<PatientTreatInfo> patientTreatInfoArrayList = new ArrayList<PatientTreatInfo>();
 
     //    给患者添加治疗信息
-    @InjectId(id = R.id.lvPatientTreatInfo)
+    @InjectId(id = R.id.bCommunicateWithPatient)
     private Button bCommunicateWithPatient;
     @InjectId(id = R.id.bAddCaseReport)
     private Button bAddCaseReport;
@@ -119,6 +120,7 @@ public class PatientDetailsActivity extends BaseTitleActivity implements View.On
 
         bAddCaseReport.setOnClickListener(this);
         bSelectNewFollowUpForPatient.setOnClickListener(this);
+        bCommunicateWithPatient.setOnClickListener(this);
 
         refreshTreatInfoList();
     }
@@ -158,6 +160,7 @@ public class PatientDetailsActivity extends BaseTitleActivity implements View.On
                 this.finish();
                 break;
             case R.id.bCommunicateWithPatient:
+                CommentWebActivity.toCommentWeb(UrlConstants.getWholeApiUrl(UrlConstants.COMMUNICATE_WITH_PATIENT_H5,patient.getId()),"",this,true);
                 break;
             case R.id.bAddCaseReport:
                 intent = new Intent(this, AddCaseReportActivity.class);
