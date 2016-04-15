@@ -22,15 +22,8 @@ public class Scale implements Serializable {
     private String digest;
     private String self;        //self：0——患者自评，1——医生评测
 
-    public static List<Scale> parse(String string) throws JSONException {
-        List<Scale> list = new ArrayList<>();
-        if (TextUtils.isEmpty(string)) return list;
-        JSONObject js = new JSONObject(string);
-        if (js.has("relist")){
-            org.json.JSONArray relist = js.getJSONArray("relist");
-            list = parse(relist);
-        }
-        return list;
+    public static List<Scale> parse(String string) {
+        return JSONArray.parseArray(string, Scale.class);
     }
 
     public static ArrayList<Scale> parse(org.json.JSONArray jsonArray) throws JSONException {
