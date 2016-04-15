@@ -173,6 +173,14 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
     }
 
     private void apply() {
+        if (planSelectAdapter.getSelect() < 0) {
+            UIHelper.ToastMessage(this, "请选择方案");
+            return;
+        }
+        if (patientGroupSelectAdapter.getSelect() < 0) {
+            UIHelper.ToastMessage(this, "请选择分组");
+            return;
+        }
         showDialog("正在提交");
         PlanBaseInfo plan = planList.get(planSelectAdapter.getSelect());
         FollowApplyNet.addVisitRecord(plan.getVisitUuid(), customerUuid, new FollowCallback(this){
