@@ -18,6 +18,7 @@ import com.hxqydyl.app.ys.bean.follow.FollowApply;
 import com.hxqydyl.app.ys.bean.follow.FollowTask;
 import com.hxqydyl.app.ys.http.follow.FollowApplyNet;
 import com.hxqydyl.app.ys.http.follow.FollowCallback;
+import com.hxqydyl.app.ys.ui.UIHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +82,12 @@ public class FollowTaskActivity extends BaseTitleActivity
         showDialog("加载中");
         FollowApplyNet.getProcessedVisitList(new FollowCallback(this){
             @Override
+            public void onFail(String status, String msg) {
+                super.onFail(status, msg);
+                UIHelper.ToastMessage(FollowTaskActivity.this,msg);
+            }
+
+            @Override
             public void onResult(String result) {
                 super.onResult(result);
                 dismissDialog();
@@ -100,14 +107,19 @@ public class FollowTaskActivity extends BaseTitleActivity
                             "]";
 
                 dismissDialog();
-                List<FollowTask> tmp = FollowTask.parseList(result);
-                if (tmp.size() > 0) {
-                    list.clear();
-                    list.addAll(tmp);
-                    adapter.notifyDataSetChanged();
-                } else {
-                    Toast.makeText(FollowTaskActivity.this, "没有数据", Toast.LENGTH_SHORT).show();
+                try{
+                    List<FollowTask> tmp = FollowTask.parseList(result);
+                    if (tmp.size() > 0) {
+                        list.clear();
+                        list.addAll(tmp);
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(FollowTaskActivity.this, "没有数据", Toast.LENGTH_SHORT).show();
+                    }
+                }catch (Exception e){
+                    onFail("","解析出错啦，再刷新一次吧");
                 }
+
             }
 
             @Override

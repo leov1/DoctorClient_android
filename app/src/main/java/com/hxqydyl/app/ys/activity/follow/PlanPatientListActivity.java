@@ -14,6 +14,7 @@ import com.hxqydyl.app.ys.bean.follow.FollowApply;
 import com.hxqydyl.app.ys.http.follow.FollowApplyNet;
 import com.hxqydyl.app.ys.http.follow.FollowCallback;
 import com.hxqydyl.app.ys.http.follow.FollowPlanNet;
+import com.hxqydyl.app.ys.ui.UIHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +63,12 @@ public class PlanPatientListActivity extends BaseTitleActivity
         showDialog("");
         FollowPlanNet.getCustomerVisitRecordByUuid(preceptUuid, new FollowCallback(this){
             @Override
+            public void onFail(String status, String msg) {
+                super.onFail(status, msg);
+                UIHelper.ToastMessage(PlanPatientListActivity.this,msg);
+            }
+
+            @Override
             public void onResult(String result) {
                 super.onResult(result);
                 if (FollowApplyNet.myDev)
@@ -80,14 +87,17 @@ public class PlanPatientListActivity extends BaseTitleActivity
                         "]";
 
                 dismissDialog();
-                List<FollowApply> tmp = FollowApply.parseList(result);
-                if (tmp.size() > 0) {
-                    list.clear();
-                    list.addAll(tmp);
-                    adapter.notifyDataSetChanged();
-                } else {
-                    Toast.makeText(PlanPatientListActivity.this, "没有数据", Toast.LENGTH_SHORT).show();
+                try{List<FollowApply> tmp = FollowApply.parseList(result);
+                    if (tmp.size() > 0) {
+                        list.clear();
+                        list.addAll(tmp);
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(PlanPatientListActivity.this, "没有数据", Toast.LENGTH_SHORT).show();
+                    }}catch (Exception e){
+                    onFail("","解析出错");
                 }
+
             }
         });
     }

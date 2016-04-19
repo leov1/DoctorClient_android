@@ -89,9 +89,14 @@ public class    ChoiceSelfActivity extends BaseTitleActivity implements View.OnC
     private void selectPreceptDetail() {
         FollowPlanNet.selectPreceptDetail("0", new FollowCallback(this){
             @Override
-            public void onResult(String response) {
-                super.onResult(response);
-                System.out.println("response--->"+response);
+            public void onFail(String status, String msg) {
+                super.onFail(status, msg);
+                UIHelper.ToastMessage(ChoiceSelfActivity.this,msg);
+            }
+
+            @Override
+            public void onResponse(String response) {
+                super.onResponse(response);
                 if (FollowApplyNet.myDev)
                     response = "[" +
                         "{" +
@@ -107,14 +112,20 @@ public class    ChoiceSelfActivity extends BaseTitleActivity implements View.OnC
                         "        \"self\": \"0\"" +
                         "    }" +
                         "]";
-                List<Scale> tmp = Scale.parse(response);
-                if (tmp == null || tmp.size() == 0) {
-                    UIHelper.ToastMessage(ChoiceSelfActivity.this, "内容为空");
-                    return;
+                try{
+                    List<Scale> tmp = Scale.parse(response);
+                    if (tmp == null || tmp.size() == 0) {
+                        UIHelper.ToastMessage(ChoiceSelfActivity.this, "内容为空");
+                        return;
+                    }
+                    list.clear();
+                    list.addAll(tmp);
+                    adapter.notifyDataSetChanged();
+                }catch (Exception e){
+                    onFail("999","解析异常");
                 }
-                list.clear();
-                list.addAll(tmp);
-                adapter.notifyDataSetChanged();
+
+
             }
         });
     }

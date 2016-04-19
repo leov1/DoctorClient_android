@@ -310,19 +310,25 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 10) {
-            if (resultCode == 1) {
-                List<Scale> list = (List<Scale>)data.getSerializableExtra("list");
-                selfScaleList.clear();
-                selfScaleList.addAll(list);
-                selfScaleAdapter.notifyDataSetChanged();
-            } else if(resultCode == 2) {
-                List<Scale> list = (List<Scale>)data.getSerializableExtra("list");
-                doctorScaleList.clear();
-                doctorScaleList.addAll(list);
-                doctorScaleAdapter.notifyDataSetChanged();
+        try{
+            if (requestCode == 10) {
+                if (resultCode == 1) {
+                    List<Scale> list = (List<Scale>)data.getSerializableExtra("list");
+                    selfScaleList.clear();
+                    selfScaleList.addAll(list);
+                    selfScaleAdapter.notifyDataSetChanged();
+                } else if(resultCode == 2) {
+                    List<Scale> list = (List<Scale>)data.getSerializableExtra("list");
+                    doctorScaleList.clear();
+                    doctorScaleList.addAll(list);
+                    doctorScaleAdapter.notifyDataSetChanged();
+                }
             }
+        }catch (Exception e){
+            e.printStackTrace();
+            UIHelper.ToastMessage(PlanEditActivity.this,"解析出错啦，刷新下会有意外惊喜");
         }
+
     }
 
     private void saveInfo() {

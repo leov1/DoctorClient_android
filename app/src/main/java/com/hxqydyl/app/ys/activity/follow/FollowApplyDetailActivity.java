@@ -137,28 +137,34 @@ public class FollowApplyDetailActivity extends BaseTitleActivity
                         "]";
 
                 dismissDialog();
-                List<FollowApply> tmp = FollowApply.parseList(result);
-                if (tmp.size() > 0) {
-                    fa = tmp.get(0);
-                    tvName.setText(fa.getRealName());
-                    tvAge.setText(fa.getAge() + "岁");
-                    tvQ.setText(fa.getIllnessDescription());
-                    tvContent.setText(fa.getSymptoms());
-                    if ("1".equals(fa.getSex())) {
-                        tvSex.setText("男");
+                try{
+                    List<FollowApply> tmp = FollowApply.parseList(result);
+                    if (tmp.size() > 0) {
+                        fa = tmp.get(0);
+                        tvName.setText(fa.getRealName());
+                        tvAge.setText(fa.getAge() + "岁");
+                        tvQ.setText(fa.getIllnessDescription());
+                        tvContent.setText(fa.getSymptoms());
+                        if ("1".equals(fa.getSex())) {
+                            tvSex.setText("男");
+                        } else {
+                            tvSex.setText("女");
+                        }
+                        ImageLoader.getInstance().displayImage(avatar, ivAvatar);
                     } else {
-                        tvSex.setText("女");
+                        Toast.makeText(FollowApplyDetailActivity.this, "没有数据", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
-                    ImageLoader.getInstance().displayImage(avatar, ivAvatar);
-                } else {
-                    Toast.makeText(FollowApplyDetailActivity.this, "没有数据", Toast.LENGTH_SHORT).show();
-                    finish();
+                }catch (Exception e){
+                    onFail("","解析出错啦，刷新一下再试一次吧");
                 }
+
             }
 
             @Override
             public void onFail(String status, String msg) {
                 super.onFail(status, msg);
+                UIHelper.ToastMessage(FollowApplyDetailActivity.this,msg);
                 if ("0".equals(status)) {
                     finish();
                 }

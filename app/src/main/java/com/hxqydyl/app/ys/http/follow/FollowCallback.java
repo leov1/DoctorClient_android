@@ -26,24 +26,26 @@ public class FollowCallback extends StringCallback {
         Log.e("xx", e.getMessage());
         e.printStackTrace();
         baseTitleActivity.dismissDialog();
-        onFail("999999", "");
+        onFail("999999", "请求出错啦，重新刷新下吧");
     }
 
     @Override
     public void onResponse(String response) {
-        JSONObject object = JSONObject.parseObject(response);
-        JSONObject queryObj = object.getJSONObject("query");
-        String status = queryObj.getString("success");
-        if ("1".equals(status)) {
-            String relList = object.getString("relist");
-            onResult(relList);
-        } else {
-            String msg = queryObj.getString("message");
-            Log.e("doctorClient", msg);
-            UIHelper.ToastMessage(baseTitleActivity, msg);
-            baseTitleActivity.dismissDialog();
-            onFail(status, msg);
-        }
+        try{  JSONObject object = JSONObject.parseObject(response);
+            JSONObject queryObj = object.getJSONObject("query");
+            String status = queryObj.getString("success");
+            if ("1".equals(status)) {
+                String relList = object.getString("relist");
+                onResult(relList);
+            } else {
+                String msg = queryObj.getString("message");
+                Log.e("doctorClient", msg);
+                UIHelper.ToastMessage(baseTitleActivity, msg);
+                baseTitleActivity.dismissDialog();
+                onFail(status, msg);
+            }}catch (Exception e){
+            onFail("999999", "解析出错啦，重新刷新下吧");        }
+
     }
 
     public void onResult(String result) {

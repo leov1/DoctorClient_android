@@ -138,25 +138,36 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
     }
 
     private void getMyVisitPreceptList() {
-        FollowPlanNet.getMyVisitPreceptList(new FollowCallback(this){
+        FollowPlanNet.getMyVisitPreceptList(new FollowCallback(this) {
+            @Override
+            public void onFail(String status, String msg) {
+                super.onFail(status, msg);
+                UIHelper.ToastMessage(FollowApplyOkActivity.this, msg);
+            }
+
             @Override
             public void onResult(String result) {
                 super.onResult(result);
                 if (FollowApplyNet.myDev)
                     result = "[" +
-                        "{" +
-                        "\"visitUuid\": \"0000\"," +
-                        "\"preceptName\": \"推荐你就选我呗\"," +
-                        "\"doctorUuid\": \"4c61df50ebb34b7bac8339f605f2c218\"," +
-                        "\"num\": \"1\"" +
-                        "}" +
-                        "]";
-                List<PlanBaseInfo> tmp = PlanBaseInfo.parseList(result);
-                if (tmp.size() > 0) {
-                    planList.clear();
-                    planList.addAll(tmp);
-                    planSelectAdapter.notifyDataSetChanged();
+                            "{" +
+                            "\"visitUuid\": \"0000\"," +
+                            "\"preceptName\": \"推荐你就选我呗\"," +
+                            "\"doctorUuid\": \"4c61df50ebb34b7bac8339f605f2c218\"," +
+                            "\"num\": \"1\"" +
+                            "}" +
+                            "]";
+                try {
+                    List<PlanBaseInfo> tmp = PlanBaseInfo.parseList(result);
+                    if (tmp.size() > 0) {
+                        planList.clear();
+                        planList.addAll(tmp);
+                        planSelectAdapter.notifyDataSetChanged();
+                    }
+                } catch (Exception e) {
+                    onFail("","解析出错啦，刷新下就好啦");
                 }
+
             }
         });
     }

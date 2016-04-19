@@ -31,7 +31,7 @@ import ui.swipemenulistview.SwipeMenuListView;
 /**
  * 随访方案管理页面
  */
-public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickListener{
+public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickListener {
 
     private SwipeMenuListView swipeMenuListView;
     private PlanMgrAdapter adapter;
@@ -125,7 +125,7 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.back_img:
                 finish();
                 break;
@@ -143,38 +143,55 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
     }
 
     private void getMyVisitPreceptList() {
-        FollowPlanNet.getMyVisitPreceptList(new FollowCallback(this){
+        FollowPlanNet.getMyVisitPreceptList(new FollowCallback(this) {
+            @Override
+            public void onFail(String status, String msg) {
+                super.onFail(status, msg);
+                UIHelper.ToastMessage(PlanMgrActivity.this, msg);
+            }
+
             @Override
             public void onResult(String result) {
                 super.onResult(result);
                 if (FollowApplyNet.myDev)
                     result = "[" +
-                        "{" +
-                        "\"visitUuid\": \"0000\"," +
-                        "\"preceptName\": \"我的方案\"," +
-                        "\"doctorUuid\": \"4c61df50ebb34b7bac8339f605f2c218\"," +
-                        "\"num\": \"1\"" +
-                        "}," +
-                        "{" +
-                        "\"visitUuid\": \"0000\"," +
-                        "\"preceptName\": \"我的方案\"," +
-                        "\"doctorUuid\": \"4c61df50ebb34b7bac8339f605f2c218\"," +
-                        "\"num\": \"1\"" +
-                        "}" +
-                        "]";
-                List<Plan> tmp = Plan.parseList2(result);
-                if (tmp.size() > 0) {
-                    myPlanList.clear();
-                    myPlanList.addAll(tmp);
-                    adapter.notifyDataSetChanged();
+                            "{" +
+                            "\"visitUuid\": \"0000\"," +
+                            "\"preceptName\": \"我的方案\"," +
+                            "\"doctorUuid\": \"4c61df50ebb34b7bac8339f605f2c218\"," +
+                            "\"num\": \"1\"" +
+                            "}," +
+                            "{" +
+                            "\"visitUuid\": \"0000\"," +
+                            "\"preceptName\": \"我的方案\"," +
+                            "\"doctorUuid\": \"4c61df50ebb34b7bac8339f605f2c218\"," +
+                            "\"num\": \"1\"" +
+                            "}" +
+                            "]";
+                try {
+                    List<Plan> tmp = Plan.parseList2(result);
+                    if (tmp.size() > 0) {
+                        myPlanList.clear();
+                        myPlanList.addAll(tmp);
+                        adapter.notifyDataSetChanged();
+                    }
+                } catch (Exception e) {
+                    onFail("", "解析出错啦，刷新下试试吧");
                 }
+
             }
         });
     }
 
 
     private void getRecommendVisitpreceptByDoctorid() {
-        FollowPlanNet.getRecommendVisitpreceptByDoctorid(new FollowCallback(this){
+        FollowPlanNet.getRecommendVisitpreceptByDoctorid(new FollowCallback(this) {
+            @Override
+            public void onFail(String status, String msg) {
+                super.onFail(status, msg);
+                UIHelper.ToastMessage(PlanMgrActivity.this,msg);
+            }
+
             @Override
             public void onResult(String result) {
                 super.onResult(result);
@@ -186,19 +203,22 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
                         "\"num\": \"1\"" +
                         "}" +
                         "]";
-                List<Plan> tmp = Plan.parseList2(result);
-                if (tmp.size() > 0) {
-                    suggestPlanList.clear();
-                    suggestPlanList.addAll(tmp);
-                    suggestPlanAdapter.notifyDataSetChanged();
+                try{List<Plan> tmp = Plan.parseList2(result);
+                    if (tmp.size() > 0) {
+                        suggestPlanList.clear();
+                        suggestPlanList.addAll(tmp);
+                        suggestPlanAdapter.notifyDataSetChanged();
+                    }}catch (Exception e){
+                    onFail("","解析错误");
                 }
+
             }
         });
     }
 
     private void delPreceptDetail(final int position) {
         Plan plan = myPlanList.get(position);
-        FollowPlanNet.delPreceptDetail(plan.getVisitUuid(), new FollowCallback(this){
+        FollowPlanNet.delPreceptDetail(plan.getVisitUuid(), new FollowCallback(this) {
             @Override
             public void onResponse(String response) {
                 super.onResponse(response);

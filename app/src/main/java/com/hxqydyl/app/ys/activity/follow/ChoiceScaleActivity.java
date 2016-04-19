@@ -90,6 +90,12 @@ public class ChoiceScaleActivity extends BaseTitleActivity implements View.OnCli
     private void selectPreceptDetail() {
         FollowPlanNet.selectPreceptDetail("1", new FollowCallback(this){
             @Override
+            public void onFail(String status, String msg) {
+                super.onFail(status, msg);
+                UIHelper.ToastMessage(ChoiceScaleActivity.this,msg);
+            }
+
+            @Override
             public void onResult(String response) {
                 super.onResult(response);
                 if (FollowApplyNet.myDev)
@@ -107,15 +113,21 @@ public class ChoiceScaleActivity extends BaseTitleActivity implements View.OnCli
                         "        \"self\": \"0\"" +
                         "    }" +
                         "]";
-
-                List<Scale> tmp = Scale.parse(response);
-                if (tmp == null || tmp.size() == 0) {
-                    UIHelper.ToastMessage(ChoiceScaleActivity.this, "内容为空");
-                    return;
+                try{
+                    List<Scale> tmp = Scale.parse(response);
+                    if (tmp == null || tmp.size() == 0) {
+                        UIHelper.ToastMessage(ChoiceScaleActivity.this, "内容为空");
+                        return;
+                    }
+                    list.clear();
+                    list.addAll(tmp);
+                    adapter.notifyDataSetChanged();
+                }catch (Exception e){
+                    onFail("9999","解析异常");
                 }
-                list.clear();
-                list.addAll(tmp);
-                adapter.notifyDataSetChanged();
+
+
+
             }
         });
     }

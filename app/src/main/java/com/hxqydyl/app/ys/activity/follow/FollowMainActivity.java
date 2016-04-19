@@ -20,6 +20,7 @@ import com.hxqydyl.app.ys.bean.PatientGroup;
 import com.hxqydyl.app.ys.http.PatientGroupNet;
 import com.hxqydyl.app.ys.http.PatientNet;
 import com.hxqydyl.app.ys.http.UrlConstants;
+import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.ui.fullshowview.FullShowExpandableListView;
 import com.hxqydyl.app.ys.utils.DialogUtils;
 import com.hxqydyl.app.ys.utils.LoginManager;
@@ -193,8 +194,13 @@ public class FollowMainActivity extends BaseTitleActivity implements View.OnClic
         super.onResponse(url, result);
         if(url.endsWith(UrlConstants.GET_ALL_PATIENT_AND_GROUP_INFO)) {
             patientGroups.clear();
-            patientGroups.addAll((ArrayList<PatientGroup>) result);
-            patientListAdapter.notifyDataSetChanged();
+            try{
+                patientGroups.addAll((ArrayList<PatientGroup>) result);
+                patientListAdapter.notifyDataSetChanged();
+            }catch (Exception e){
+                UIHelper.ToastMessage(FollowMainActivity.this,"解析出错啦，请重新试一下");
+            }
+
         }else if(url.endsWith(UrlConstants.DELETE_PATIENT)){
             patientGroupNet.getAllPatientGroupAndPatient(LoginManager.getDoctorUuid());
         }else if(url.endsWith(UrlConstants.MOVE_PATIENT_TO_OTHER_GROUP)){

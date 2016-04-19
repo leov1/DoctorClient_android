@@ -209,6 +209,12 @@ public class PlanInfoActivity extends BaseTitleActivity implements View.OnClickL
     private void visitPreceptDetail(String visitUuid) {
         FollowPlanNet.visitPreceptDetail(visitUuid, new FollowCallback(this){
             @Override
+            public void onFail(String status, String msg) {
+                super.onFail(status, msg);
+                UIHelper.ToastMessage(PlanInfoActivity.this,msg);
+            }
+
+            @Override
             public void onResponse(String response) {
                 super.onResponse(response);
                 if (FollowApplyNet.myDev)
@@ -315,9 +321,14 @@ public class PlanInfoActivity extends BaseTitleActivity implements View.OnClickL
                         "  \"bloodRoutine\" : \"2\"," +
                         "  \"healthGuide\" : [" +
                         "  ] }";
-                plan = Plan.parseDetailJson(response);
-                dismissDialog();
-                handler.sendEmptyMessage(100);
+                try{
+                    plan = Plan.parseDetailJson(response);
+                    dismissDialog();
+                    handler.sendEmptyMessage(100);
+                }catch (Exception e){
+                    onFail("","解析出错了，刷新下有意外惊喜呦");
+                }
+
             }
         });
     }
