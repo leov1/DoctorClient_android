@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -107,7 +106,7 @@ public class AddCaseReportActivity extends BaseTitleActivity implements View.OnC
 
         InjectUtils.injectView(this);
 
-        tvPatientName.setText(patient.getName());
+        tvPatientName.setText(patient.getRealName());
 
         setCaseReportType(currentCaseType);
         tvOutPatient.setOnClickListener(this);

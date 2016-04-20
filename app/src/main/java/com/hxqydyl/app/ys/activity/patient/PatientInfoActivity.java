@@ -1,6 +1,5 @@
 package com.hxqydyl.app.ys.activity.patient;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -85,15 +84,15 @@ public class PatientInfoActivity extends BaseTitleActivity implements View.OnCli
 
 
     private void initViewData() {
-        tvPhoneNumber.setText(patient.getPhoneNumber());
-        tvNick.setText(patient.getNick());
-        tvName.setText(patient.getName());
+        tvPhoneNumber.setText(patient.getMobile());
+        tvNick.setText(patient.getNickname());
+        tvName.setText(patient.getRealName());
         tvSex.setText(patient.getSex());
         tvBirthday.setText(patient.getBirthday());
-        tvCard.setText(patient.getCard());
+        tvCard.setText(patient.getCertCode());
         tvEmail.setText(patient.getEmail());
-        tvMarriage.setText(patient.getMarriage());
-        tvVocation.setText(patient.getVocation());
+        tvMarriage.setText(patient.getMarryState());
+        tvVocation.setText(patient.getIndustry());
         tvAddress.setText(patient.getAddress());
         tvDiseaseProcess.setText(patient.getDiseaseProcess());
         tvFirstSeeDoctorTime.setText(patient.getFirstSeeDoctorTime());

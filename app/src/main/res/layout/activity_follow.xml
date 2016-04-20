@@ -31,7 +31,7 @@
                     android:src="@mipmap/icon_follow_up_patient_apply" />
 
                 <TextView
-                    style="@style/follow_text_20"
+                    style="@style/follow_text_16"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/space_10"
                     android:layout_toRightOf="@id/imge1"
@@ -50,7 +50,7 @@
                 android:id="@+id/rl_mgr"
                 android:layout_width="match_parent"
                 android:layout_height="60dip"
-                android:layout_marginTop="@dimen/space_10"
+                android:layout_marginTop="@dimen/space_6"
                 android:background="@color/white">
 
                 <ImageView
@@ -62,7 +62,7 @@
                     android:src="@mipmap/icon_follow_up_plan_manage" />
 
                 <TextView
-                    style="@style/follow_text_20"
+                    style="@style/follow_text_16"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/space_10"
                     android:layout_toRightOf="@id/imge2"
@@ -81,7 +81,7 @@
                 android:id="@+id/rl_follow_task"
                 android:layout_width="match_parent"
                 android:layout_height="60dip"
-                android:layout_marginTop="@dimen/space_10"
+                android:layout_marginTop="@dimen/space_6"
                 android:background="@color/white">
 
                 <ImageView
@@ -93,7 +93,7 @@
                     android:src="@mipmap/icon_pending_follow_up" />
 
                 <TextView
-                    style="@style/follow_text_20"
+                    style="@style/follow_text_16"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/space_10"
                     android:layout_toRightOf="@id/imge3"
@@ -112,7 +112,7 @@
                 android:id="@+id/rl_patient"
                 android:layout_width="match_parent"
                 android:layout_height="60dip"
-                android:layout_marginTop="@dimen/space_10"
+                android:layout_marginTop="@dimen/space_6"
                 android:background="@color/white">
 
                 <ImageView
@@ -124,7 +124,7 @@
                     android:src="@mipmap/icon_follow_up_patient" />
 
                 <TextView
-                    style="@style/follow_text_20"
+                    style="@style/follow_text_16"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/space_10"
                     android:layout_toRightOf="@id/imge4"
@@ -158,7 +158,7 @@
                 android:id="@+id/rl_notice"
                 android:layout_width="match_parent"
                 android:layout_height="60dip"
-                android:layout_marginTop="@dimen/space_10"
+                android:layout_marginTop="@dimen/space_6"
                 android:background="@color/white">
 
                 <ImageView
@@ -170,7 +170,7 @@
                     android:src="@mipmap/icon_group_message" />
 
                 <TextView
-                    style="@style/follow_text_20"
+                    style="@style/follow_text_16"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/space_10"
                     android:layout_toRightOf="@id/imge5"
@@ -189,7 +189,7 @@
                 android:id="@+id/rl_articl"
                 android:layout_width="match_parent"
                 android:layout_height="60dip"
-                android:layout_marginTop="@dimen/space_10"
+                android:layout_marginTop="@dimen/space_6"
                 android:background="@color/white">
 
                 <ImageView
@@ -201,7 +201,7 @@
                     android:src="@mipmap/icon_patient_education" />
 
                 <TextView
-                    style="@style/follow_text_20"
+                    style="@style/follow_text_16"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/space_10"
                     android:layout_toRightOf="@id/imge6"

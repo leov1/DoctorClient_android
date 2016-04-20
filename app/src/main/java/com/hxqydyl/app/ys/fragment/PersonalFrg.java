@@ -19,7 +19,7 @@ public class PersonalFrg extends BaseWebFragment implements BaseWebFragment.DoJs
         initViewOnBaseTitle("个人中心", view);
         setCustomInterceptor(this);
         rightImg.setVisibility(View.VISIBLE);
-        webView.loadUrl(UrlConstants.getWholeApiUrl(UrlConstants.USER_INFO) + LoginManager.getDoctorUuid());
+        webView.getRefreshableView().loadUrl(UrlConstants.getWholeApiUrl(UrlConstants.USER_INFO) + LoginManager.getDoctorUuid());
         rightImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -33,7 +33,7 @@ public class PersonalFrg extends BaseWebFragment implements BaseWebFragment.DoJs
         super.onHiddenChanged(hidden);
         if (!hidden && LoginManager.isQuit_user){
             LoginManager.isQuit_user = false;
-            webView.loadUrl(UrlConstants.getWholeApiUrl(UrlConstants.USER_INFO) + LoginManager.getDoctorUuid());
+            webView.getRefreshableView().loadUrl(UrlConstants.getWholeApiUrl(UrlConstants.USER_INFO) + LoginManager.getDoctorUuid());
         }
     }
 

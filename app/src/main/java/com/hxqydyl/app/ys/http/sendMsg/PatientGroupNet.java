@@ -29,7 +29,7 @@ public class PatientGroupNet {
 
     public void getPatientGroup(String doctorUuid) {
         OkHttpUtils.get().url(UrlConstants.getWholeApiUrl(UrlConstants.GET_PATIENT_GROUP))
-                .addParams("doctorUuid", "6d3f252bc13e432f9fdc8a81a2ff425a")
+                .addParams("doctorUuid", doctorUuid)
                 .build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e) {

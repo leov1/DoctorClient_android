@@ -1,7 +1,5 @@
 package com.hxqydyl.app.ys.http;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.hxqydyl.app.ys.bean.Patient;
 import com.hxqydyl.app.ys.bean.PatientGroup;
@@ -298,7 +296,7 @@ public class PatientGroupNet extends BaseNet {
             patient.setId(obj.optString("customerUuid"));
             patient.setAge(obj.optString("age"));
             patient.setSex(obj.optString("sex"));
-            patient.setName(obj.optString("customerName"));
+            patient.setRealName(obj.optString("customerName"));
             patient.setDescription(obj.optString("customerMessage"));
             return patient;
         } else {

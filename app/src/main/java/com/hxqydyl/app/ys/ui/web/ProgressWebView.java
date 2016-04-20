@@ -1,4 +1,4 @@
-package com.hxqydyl.app.ys.ui;
+package com.hxqydyl.app.ys.ui.web;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -27,22 +27,9 @@ public class ProgressWebView extends WebView{
         progressbar.setLayoutParams(new AbsoluteLayout.LayoutParams(AbsoluteLayout.LayoutParams.MATCH_PARENT, 8, 0, 0));
         progressbar.setProgressDrawable(getResources().getDrawable(R.drawable.wevbview_progressbar));
         addView(progressbar);
-        setWebChromeClient(new WebChromeClient());
+        setWebChromeClient(new ProgressWebClient(progressbar));
     }
 
-    public class WebChromeClient extends android.webkit.WebChromeClient {
-        @Override
-        public void onProgressChanged(WebView view, int newProgress) {
-            if (newProgress == 100) {
-                progressbar.setVisibility(GONE);
-            } else {
-                if (progressbar.getVisibility() == GONE)
-                    progressbar.setVisibility(VISIBLE);
-                progressbar.setProgress(newProgress);
-            }
-            super.onProgressChanged(view, newProgress);
-        }
-    }
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         LayoutParams lp = (LayoutParams) progressbar.getLayoutParams();

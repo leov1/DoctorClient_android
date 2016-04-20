@@ -6,9 +6,9 @@
 
     <include layout="@layout/top_title"></include>
 
-    <com.hxqydyl.app.ys.ui.ProgressWebView
+    <com.hxqydyl.app.ys.ui.library.RefreshProgressWebView
         android:id="@+id/webview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></com.hxqydyl.app.ys.ui.ProgressWebView>
+        android:layout_height="match_parent"></com.hxqydyl.app.ys.ui.library.RefreshProgressWebView>
 
 </LinearLayout>

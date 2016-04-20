@@ -10,11 +10,9 @@ import android.widget.Toast;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.activity.case_report.FollowUpFormActivity;
-import com.hxqydyl.app.ys.adapter.FollowApplyAdapter;
 import com.hxqydyl.app.ys.adapter.FollowTaskAdapter;
 import com.hxqydyl.app.ys.bean.Patient;
 import com.hxqydyl.app.ys.bean.PatientTreatInfo;
-import com.hxqydyl.app.ys.bean.follow.FollowApply;
 import com.hxqydyl.app.ys.bean.follow.FollowTask;
 import com.hxqydyl.app.ys.http.follow.FollowApplyNet;
 import com.hxqydyl.app.ys.http.follow.FollowCallback;
@@ -66,7 +64,7 @@ public class FollowTaskActivity extends BaseTitleActivity
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         FollowTask task = list.get(position);
         Patient p = new Patient();
-        p.setName(task.getRealName());
+        p.setRealName(task.getRealName());
         p.setId(task.getCustomerUuid());
 
         PatientTreatInfo pti = new PatientTreatInfo();

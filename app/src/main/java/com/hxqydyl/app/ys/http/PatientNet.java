@@ -62,15 +62,15 @@ public class PatientNet extends BaseNet {
     private Patient jsonToPatient(JSONObject jsonObject) throws Exception{
         Patient patient = new Patient();
         if(jsonObject!=null){
-            patient.setPhoneNumber(jsonObject.optString("mobile")); //手机
-            patient.setNick(jsonObject.optString("nickName"));//昵称
-            patient.setName(jsonObject.optString("customerName"));//名字
+            patient.setMobile(jsonObject.optString("mobile")); //手机
+            patient.setNickname(jsonObject.optString("nickName"));//昵称
+            patient.setRealName(jsonObject.optString("customerName"));//名字
             patient.setSex("1".equals(jsonObject.optString("sex"))?"男":"女");//性别 “1”男，“2”女
             patient.setBirthday(jsonObject.optString("birthday"));//生日
-            patient.setCard(jsonObject.optString("certCode"));//身份证
+            patient.setCertCode(jsonObject.optString("certCode"));//身份证
             patient.setEmail(jsonObject.optString("email"));//email
-            patient.setMarriage(jsonObject.optString("marryState"));//婚姻
-            patient.setVocation(jsonObject.optString("industry"));//职业
+            patient.setMarryState(jsonObject.optString("marryState"));//婚姻
+            patient.setIndustry(jsonObject.optString("industry"));//职业
             patient.setAddress(jsonObject.optString("city"));//地址
             patient.setDiseaseProcess(jsonObject.optString("diseaseTime"));//病程
             patient.setFirstSeeDoctorTime(jsonObject.optString("firstDiagnosis"));//首次就诊时间

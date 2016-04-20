@@ -2,22 +2,18 @@ package com.hxqydyl.app.ys.fragment;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebResourceError;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.hxqydyl.app.ys.R;
-import com.hxqydyl.app.ys.ui.ProgressWebView;
+import com.hxqydyl.app.ys.ui.library.RefreshProgressWebView;
+import com.hxqydyl.app.ys.ui.web.ProgressWebView;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.LoginManager;
 
@@ -35,7 +31,7 @@ import java.util.regex.Pattern;
 public class BaseWebFragment extends BaseFragment {
 
     public View view;
-    public ProgressWebView webView;
+    public RefreshProgressWebView webView;
     private boolean isCustom = false;
     private DoJsBridge doJsBridge;
     private boolean isNeedLogin = false;
@@ -63,13 +59,13 @@ public class BaseWebFragment extends BaseFragment {
     }
 
     private void initViews() {
-        webView = (ProgressWebView) view.findViewById(R.id.webview);
+        webView = (RefreshProgressWebView) view.findViewById(R.id.webview);
         initWebSetting();
     }
 
 
     private void initWebSetting() {
-        WebSettings webSettings = webView.getSettings();
+        WebSettings webSettings = webView.getRefreshableView().getSettings();
         webSettings.setDomStorageEnabled(true);
         webSettings.setAppCacheMaxSize(1024 * 1024 * 8);
         String appCachePath = this.getActivity().getApplicationContext().getCacheDir().getAbsolutePath();
@@ -77,7 +73,7 @@ public class BaseWebFragment extends BaseFragment {
         webSettings.setAllowFileAccess(true);
         webSettings.setAppCacheEnabled(true);
         webSettings.setJavaScriptEnabled(true);
-        webView.setWebViewClient(webViewClient);
+        webView.getRefreshableView().setWebViewClient(webViewClient);
 //        webView.setWebChromeClient(mChromeClient);
 //        webView.addJavascriptInterface(this, CLIENT_INTERFACE_NAME);
     }
@@ -94,7 +90,7 @@ public class BaseWebFragment extends BaseFragment {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            webView.loadUrl("javascript:gm.user.setDoctor('" + LoginManager.getDoctorUuid() + "')");
+            webView.getRefreshableView().loadUrl("javascript:gm.user.setDoctor('" + LoginManager.getDoctorUuid() + "')");
         }
 
         @Override

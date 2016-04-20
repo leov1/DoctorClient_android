@@ -7,14 +7,16 @@ import java.util.ArrayList;
  * Created by white_ash on 2016/3/20.
  */
 public class Patient extends BaseBean implements Serializable {
+    //患者id
+    public String customerUuid;
     //    头像
-    private String portrait;
+    private String customerImg;
     //    电话
-    private String phoneNumber;
+    private String mobile;
     //    昵称
-    private String nick;
+    private String nickname;
     //    姓名
-    private String name;
+    private String realName;
     //    年龄
     private String age;
     //    性别
@@ -24,13 +26,13 @@ public class Patient extends BaseBean implements Serializable {
     //    生日
     private String birthday;
     //    身份证号
-    private String card;
+    private String certCode;
     //    email地址
     private String email;
     //    婚姻情况
-    private String marriage;
+    private String marryState;
     //    职业
-    private String vocation;
+    private String industry;
     //    地址
     private String address;
     //    病程
@@ -49,39 +51,77 @@ public class Patient extends BaseBean implements Serializable {
     private String useCondition;
     //    病情描述
     private String description;
+    //群组患者
+    private String customerName;
+    //患者提问
+    private String customerMessage;
+    //关系时间
+    private String applyTime;
+
+    public String getApplyTime() {
+        return applyTime;
+    }
+
+    public void setApplyTime(String applyTime) {
+        this.applyTime = applyTime;
+    }
+
+    public String getCustomerMessage() {
+        return customerMessage;
+    }
+
+    public void setCustomerMessage(String customerMessage) {
+        this.customerMessage = customerMessage;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getCustomerUuid() {
+        return customerUuid;
+    }
+
+    public void setCustomerUuid(String customerUuid) {
+        this.customerUuid = customerUuid;
+    }
 
     private ArrayList<PatientTreatInfo> patientTreatInfos = new ArrayList<PatientTreatInfo>();
 
-    public String getPortrait() {
-        return portrait;
+    public String getCustomerImg() {
+        return customerImg;
     }
 
-    public void setPortrait(String portrait) {
-        this.portrait = portrait;
+    public void setCustomerImg(String customerImg) {
+        this.customerImg = customerImg;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
-    public String getNick() {
-        return nick;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setNick(String nick) {
-        this.nick = nick;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
-    public String getName() {
-        return name;
+    public String getRealName() {
+        return realName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 
     public String getSex() {
@@ -100,12 +140,12 @@ public class Patient extends BaseBean implements Serializable {
         this.birthday = birthday;
     }
 
-    public String getCard() {
-        return card;
+    public String getCertCode() {
+        return certCode;
     }
 
-    public void setCard(String card) {
-        this.card = card;
+    public void setCertCode(String certCode) {
+        this.certCode = certCode;
     }
 
     public String getEmail() {
@@ -116,20 +156,20 @@ public class Patient extends BaseBean implements Serializable {
         this.email = email;
     }
 
-    public String getMarriage() {
-        return marriage;
+    public String getMarryState() {
+        return marryState;
     }
 
-    public void setMarriage(String marriage) {
-        this.marriage = marriage;
+    public void setMarryState(String marryState) {
+        this.marryState = marryState;
     }
 
-    public String getVocation() {
-        return vocation;
+    public String getIndustry() {
+        return industry;
     }
 
-    public void setVocation(String vocation) {
-        this.vocation = vocation;
+    public void setIndustry(String industry) {
+        this.industry = industry;
     }
 
     public String getAddress() {

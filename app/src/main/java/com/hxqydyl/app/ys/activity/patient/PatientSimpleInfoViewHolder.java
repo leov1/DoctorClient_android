@@ -2,7 +2,6 @@ package com.hxqydyl.app.ys.activity.patient;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -50,8 +49,8 @@ public class PatientSimpleInfoViewHolder {
 
     public void setPatient(Patient patient) {
         if (patient != null) {
-            ImageLoader.getInstance().displayImage(patient.getPortrait(), ivPatientPortrait, options);
-            tvPatientName.setText(patient.getName());
+            ImageLoader.getInstance().displayImage(patient.getCustomerImg(), ivPatientPortrait, options);
+            tvPatientName.setText(patient.getRealName());
             if ("女".equals(patient.getSex())) {
                 ivSexFlag.setImageResource(R.mipmap.icon_woman_flag);
             } else {

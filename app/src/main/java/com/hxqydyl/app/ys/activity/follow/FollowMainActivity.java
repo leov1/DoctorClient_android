@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.hxqydyl.app.ys.R;
-import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+import com.hxqydyl.app.ys.activity.BaseRequstActivity;
 import com.hxqydyl.app.ys.activity.CommentWebActivity;
 import com.hxqydyl.app.ys.activity.patient.PatientAddActivity;
 import com.hxqydyl.app.ys.activity.patient.PatientDetailsActivity;
@@ -17,24 +17,25 @@ import com.hxqydyl.app.ys.activity.patient_group.PatientGroupSelectActivity;
 import com.hxqydyl.app.ys.adapter.PatientListAdapter;
 import com.hxqydyl.app.ys.bean.Patient;
 import com.hxqydyl.app.ys.bean.PatientGroup;
-import com.hxqydyl.app.ys.http.PatientGroupNet;
-import com.hxqydyl.app.ys.http.PatientNet;
+import com.hxqydyl.app.ys.bean.response.BaseResponse;
+import com.hxqydyl.app.ys.bean.response.PatientGroupResponse;
 import com.hxqydyl.app.ys.http.UrlConstants;
-import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.ui.fullshowview.FullShowExpandableListView;
 import com.hxqydyl.app.ys.utils.DialogUtils;
 import com.hxqydyl.app.ys.utils.LoginManager;
+import com.xus.http.httplib.model.PostPrams;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * 随访主页
  */
-public class FollowMainActivity extends BaseTitleActivity implements View.OnClickListener ,DialogUtils.DeleteListener{
+public class FollowMainActivity extends BaseRequstActivity implements View.OnClickListener, DialogUtils.DeleteListener, PatientListAdapter.OnChildClickListener,ExpandableListView.OnGroupExpandListener {
 
-    private static final int REQ_MANAGE_PATIENT_GROUP = 1 ;
+    private static final int REQ_MANAGE_PATIENT_GROUP = 1;
     private static final int REQ_MOVE_TO_OTHER_GROUP = 2;
-    private ImageView addBtn;
+    private ImageView addBtn;//添加患者
     private RelativeLayout applyBtn;
     private RelativeLayout mgrBtn;
     private ImageView ivManagePatientGroup;
@@ -46,8 +47,6 @@ public class FollowMainActivity extends BaseTitleActivity implements View.OnClic
     private ArrayList<PatientGroup> patientGroups = new ArrayList<PatientGroup>();
     private PatientListAdapter patientListAdapter;
 
-    private PatientGroupNet patientGroupNet;
-    private PatientNet patientNet;
 
     private Patient curOperatePatient;
     private String groupId;
@@ -55,74 +54,39 @@ public class FollowMainActivity extends BaseTitleActivity implements View.OnClic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_follow);
-//        initListData();
         initViews();
         patientListAdapter = new PatientListAdapter(this, patientGroups);
         elvPatientList.setGroupIndicator(null);
         elvPatientList.setAdapter(patientListAdapter);
         initListeners();
+        getPatientGroup();
 
-        patientNet = new PatientNet(this);
-        patientGroupNet = new PatientGroupNet(this);
-        patientGroupNet.getAllPatientGroupAndPatient(LoginManager.getDoctorUuid());
     }
 
-    private PatientListAdapter.OnChildClickListener onChildClickListener = new PatientListAdapter.OnChildClickListener() {
-        @Override
-        public void onChildClick(int groupPosition, int childPosition) {
-            Intent intent = new Intent(FollowMainActivity.this, PatientDetailsActivity.class);
-            Patient patient = (Patient) patientListAdapter.getChild(groupPosition, childPosition);
-            intent.putExtra(PatientDetailsActivity.KEY_PATIENT, patient);
-            startActivity(intent);
-        }
-
-        @Override
-        public void onMenuClick(int groupPosition, int childPosition, int menu) {
-            curOperatePatient = (Patient) patientListAdapter.getChild(groupPosition, childPosition);
-            switch(menu){
-                case PatientListAdapter.MOVE:
-                    Intent intent = new Intent(FollowMainActivity.this, PatientGroupSelectActivity.class);
-                    intent.putExtra(PatientGroupManageActivity.GROUPS_INFO_KEY,patientGroups);
-                    startActivityForResult(intent,REQ_MOVE_TO_OTHER_GROUP);
-                    break;
-                case PatientListAdapter.DELETE:
-                    PatientGroup patientGroup = (PatientGroup) patientListAdapter.getGroup(groupPosition);
-                    groupId = patientGroup.getId();
-                    DialogUtils.showDeleteDialog(FollowMainActivity.this,FollowMainActivity.this,String.format(getString(R.string.confirm_delete_this_patient),curOperatePatient.getName()));
-                    break;
-            }
-
-
-        }
-    };
-
-    private void initListData() {
-        for (int i = 0; i < 5; i++) {
-            PatientGroup patientGroup = new PatientGroup();
-            patientGroup.setId(i + "");
-            patientGroup.setGroupName("group " + i);
-            for (int j = 0; j < i; j++) {
-                Patient patient = new Patient();
-                patient.setId("" + i + j);
-                patient.setName("组" + i + "病人" + j);
-                patient.setAge("年龄：" + j + "岁");
-                patient.setSex("女");
-                patient.setFollowTime("2016-03-21");
-                patient.setDescription("问题：天天吃不下饭，没有精神，头晕目眩。当看到美女时，两眼会放光，其他时间都无精打采");
-                patientGroup.addPatient(patient);
-            }
-            patientGroups.add(patientGroup);
-        }
+    //获取患者列表
+    public void getPatientGroup() {
+        toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), PatientGroupResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_ALL_PATIENT_AND_GROUP_INFO, "1.0"), "正在获取患者列表");
     }
+
+    //移动患者到其他组
+    public void movePatientToOtherGroup(String groupId, String customerUuid, String doctorUuid) {
+        PostPrams postPrams = toPostParams(toParamsBaen("groupId", groupId), toParamsBaen("customerUuid", customerUuid), toParamsBaen("doctorUuid", doctorUuid));
+        toNomalNet(postPrams, BaseResponse.class, 2, UrlConstants.getWholeApiUrl(UrlConstants.MOVE_PATIENT_TO_OTHER_GROUP, "1.0"), "正在移动患者");
+    }
+
+    //删除患者
+    public void deletePatient(String groupId, String customerUuid) {
+        PostPrams postPrams = toPostParams(toParamsBaen("groupId", groupId), toParamsBaen("customerUuid", customerUuid));
+        toNomalNet(postPrams, BaseResponse.class, 2, UrlConstants.getWholeApiUrl(UrlConstants.MOVE_PATIENT_TO_OTHER_GROUP, "1.0"), "正在删除患者");
+    }
+
 
     private void initViews() {
         initViewOnBaseTitle("随访");
         addBtn = (ImageView) findViewById(R.id.right_img);
         addBtn.setVisibility(View.VISIBLE);
         addBtn.setImageDrawable(getResources().getDrawable(R.mipmap.btn_add_white));
-
         applyBtn = (RelativeLayout) findViewById(R.id.rl_apply);
         mgrBtn = (RelativeLayout) findViewById(R.id.rl_mgr);
         ivManagePatientGroup = (ImageView) findViewById(R.id.ivManagePatientGroup);
@@ -141,18 +105,9 @@ public class FollowMainActivity extends BaseTitleActivity implements View.OnClic
         articeBtn.setOnClickListener(this);
         ivManagePatientGroup.setOnClickListener(this);
         followTaskBtn.setOnClickListener(this);
-        elvPatientList.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                if (lastExpandGroupPosition >= 0 && lastExpandGroupPosition != groupPosition) {
-                    elvPatientList.collapseGroup(lastExpandGroupPosition);
-                }
-                lastExpandGroupPosition = groupPosition;
-            }
-        });
-        patientListAdapter.setOnClildClickListener(onChildClickListener);
+        elvPatientList.setOnGroupExpandListener(this);
+        patientListAdapter.setOnClildClickListener(this);
     }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -179,7 +134,7 @@ public class FollowMainActivity extends BaseTitleActivity implements View.OnClic
                 CommentWebActivity.toCommentWeb(UrlConstants.getWholeApiUrl(UrlConstants.PATIENT_EDUCATION), null, FollowMainActivity.this, false);
                 break;
             case R.id.ivManagePatientGroup:
-                Intent groupManageIntent = new Intent(FollowMainActivity.this,PatientGroupManageActivity.class);
+                Intent groupManageIntent = new Intent(FollowMainActivity.this, PatientGroupManageActivity.class);
                 startActivityForResult(groupManageIntent, REQ_MANAGE_PATIENT_GROUP);
                 break;
             case R.id.rl_follow_task:
@@ -189,45 +144,91 @@ public class FollowMainActivity extends BaseTitleActivity implements View.OnClic
         }
     }
 
-    @Override
-    public void onResponse(String url, Object result) {
-        super.onResponse(url, result);
-        if(url.endsWith(UrlConstants.GET_ALL_PATIENT_AND_GROUP_INFO)) {
-            patientGroups.clear();
-            try{
-                patientGroups.addAll((ArrayList<PatientGroup>) result);
-                patientListAdapter.notifyDataSetChanged();
-            }catch (Exception e){
-                UIHelper.ToastMessage(FollowMainActivity.this,"解析出错啦，请重新试一下");
-            }
-
-        }else if(url.endsWith(UrlConstants.DELETE_PATIENT)){
-            patientGroupNet.getAllPatientGroupAndPatient(LoginManager.getDoctorUuid());
-        }else if(url.endsWith(UrlConstants.MOVE_PATIENT_TO_OTHER_GROUP)){
-            patientGroupNet.getAllPatientGroupAndPatient(LoginManager.getDoctorUuid());
-        }
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQ_MANAGE_PATIENT_GROUP && resultCode == RESULT_OK){
-            patientGroupNet.getAllPatientGroupAndPatient(LoginManager.getDoctorUuid());
-        }else if(requestCode == REQ_MOVE_TO_OTHER_GROUP && resultCode == RESULT_OK){
-            PatientGroup group = (PatientGroup) data.getSerializableExtra(PatientGroupManageActivity.GROUPS_INFO_KEY);
-            if(group != null && curOperatePatient!=null){
-                patientGroupNet.movePatientToOtherGroup(group.getId(),curOperatePatient.getId(),LoginManager.getDoctorUuid());
-            }
+        if (resultCode!=RESULT_OK){
+            return;
+        }
+        switch (requestCode){
+            case REQ_MANAGE_PATIENT_GROUP:
+                getPatientGroup();
+                break;
+            case REQ_MOVE_TO_OTHER_GROUP:
+                if (data.hasExtra(PatientGroupManageActivity.GROUPS_INFO_KEY)){
+                    PatientGroup group = (PatientGroup) data.getSerializableExtra(PatientGroupManageActivity.GROUPS_INFO_KEY);
+                    if (group != null && curOperatePatient != null) {
+                        movePatientToOtherGroup(group.getGroupId(), curOperatePatient.getCustomerUuid(), LoginManager.getDoctorUuid());
+                    }
+                }
+                break;
         }
     }
 
     @Override
     public void onConfirmDelete() {
-        patientNet.deletePatient(curOperatePatient.getId(),groupId);
+        deletePatient(curOperatePatient.getCustomerUuid(), groupId);
     }
 
     @Override
     public void onCancelDelete() {
 
+    }
+
+    @Override
+    public void onSuccessToBean(Object bean, int flag) {
+        switch (flag) {
+            case 1://获取患者列表返回
+                PatientGroupResponse p = (PatientGroupResponse) bean;
+                if (p.getRelist() != null && p.getRelist().size() > 0) {
+                    patientGroups.clear();
+                    patientGroups.addAll(p.getRelist());
+                    patientListAdapter.notifyDataSetChanged();
+                }
+                break;
+            case 2://移动患者分组返回
+                getPatientGroup();
+                break;
+            case 3://删除患者
+                getPatientGroup();
+                break;
+        }
+    }
+
+//点击患者
+    @Override
+    public void onChildClick(int groupPosition, int childPosition) {
+        Intent intent = new Intent(FollowMainActivity.this, PatientDetailsActivity.class);
+        Patient patient = (Patient) patientListAdapter.getChild(groupPosition, childPosition);
+        intent.putExtra(PatientDetailsActivity.KEY_PATIENT, patient);
+        startActivity(intent);
+    }
+
+    //患者列表菜单
+    @Override
+    public void onMenuClick(int groupPosition, int childPosition, int menu) {
+        curOperatePatient = (Patient) patientListAdapter.getChild(groupPosition, childPosition);
+        switch (menu) {
+            case PatientListAdapter.MOVE:
+                Intent intent = new Intent(FollowMainActivity.this, PatientGroupSelectActivity.class);
+                intent.putExtra(PatientGroupManageActivity.GROUPS_INFO_KEY, patientGroups);
+                startActivityForResult(intent, REQ_MOVE_TO_OTHER_GROUP);
+                break;
+            case PatientListAdapter.DELETE:
+                PatientGroup patientGroup = (PatientGroup) patientListAdapter.getGroup(groupPosition);
+                groupId = patientGroup.getGroupId();
+                DialogUtils.showDeleteDialog(FollowMainActivity.this, FollowMainActivity.this, String.format(getString(R.string.confirm_delete_this_patient), curOperatePatient.getRealName()));
+                break;
+        }
+    }
+
+//分组展开
+    @Override
+    public void onGroupExpand(int groupPosition) {
+        if (lastExpandGroupPosition >= 0 && lastExpandGroupPosition != groupPosition) {
+            elvPatientList.collapseGroup(lastExpandGroupPosition);
+        }
+        lastExpandGroupPosition = groupPosition;
     }
 }

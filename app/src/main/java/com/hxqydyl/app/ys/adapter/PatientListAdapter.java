@@ -4,13 +4,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.hxqydyl.app.ys.R;
@@ -71,7 +71,7 @@ public class PatientListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return patientGroups.get(groupPosition).getPatients().size();
+        return patientGroups.get(groupPosition).getCustomers().size();
     }
 
     @Override
@@ -81,7 +81,7 @@ public class PatientListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return patientGroups.get(groupPosition).getPatients().get(childPosition);
+        return patientGroups.get(groupPosition).getCustomers().get(childPosition);
     }
 
     @Override
@@ -101,6 +101,7 @@ public class PatientListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.patient_list_group_item, null);
         }
@@ -112,7 +113,7 @@ public class PatientListAdapter extends BaseExpandableListAdapter {
         }
         final PatientGroup patientGroup = (PatientGroup) getGroup(groupPosition);
         TextView tvGroupName = BaseViewHolder.get(convertView, R.id.tvGroupName);
-        tvGroupName.setText(patientGroup.getGroupName());
+        tvGroupName.setText(patientGroup.getGroupName() + "");
         TextView tvMemberNum = BaseViewHolder.get(convertView, R.id.tvMemberNum);
         tvMemberNum.setText(String.format(context.getString(R.string.member_num_format), getChildrenCount(groupPosition)));
         return convertView;
@@ -125,42 +126,68 @@ public class PatientListAdapter extends BaseExpandableListAdapter {
         }
         final Patient patient = (Patient) getChild(groupPosition, childPosition);
         ImageView ivPatientPortrait = BaseViewHolder.get(convertView, R.id.ivPatientPortrait);
-        ImageLoader.getInstance().displayImage(patient.getPortrait(), ivPatientPortrait, options);
+        ImageLoader.getInstance().displayImage(patient.getCustomerImg(), ivPatientPortrait, options);
+
         TextView tvPatientName = BaseViewHolder.get(convertView, R.id.tvPatientName);
-        tvPatientName.setText(patient.getName());
+        tvPatientName.setText(patient.getCustomerName());
+
         ImageView ivSexFlag = BaseViewHolder.get(convertView, R.id.ivSexFlag);
-        if ("女".equals(patient.getSex())) {
-            ivSexFlag.setImageResource(R.mipmap.icon_woman_flag);
+        if (TextUtils.isEmpty(patient.getSex())) {
+            ivSexFlag.setVisibility(View.GONE);
         } else {
-            ivSexFlag.setImageResource(R.mipmap.icon_man_flag);
+            ivSexFlag.setVisibility(View.VISIBLE);
+            if ("女".equals(patient.getSex())) {
+                ivSexFlag.setImageResource(R.mipmap.icon_woman_flag);
+            } else {
+                ivSexFlag.setImageResource(R.mipmap.icon_man_flag);
+            }
         }
+
         TextView tvPatientAge = BaseViewHolder.get(convertView, R.id.tvPatientAge);
-        tvPatientAge.setText(String.format(context.getString(R.string.age_xx),patient.getAge()));
+        if (TextUtils.isEmpty(patient.getAge())) {
+            tvPatientAge.setVisibility(View.GONE);
+        } else {
+            tvPatientAge.setText(String.format(context.getString(R.string.age_xx), patient.getAge()));
+            tvPatientAge.setVisibility(View.VISIBLE);
+        }
+
         TextView tvPatientFollowTime = BaseViewHolder.get(convertView, R.id.tvPatientFollowTime);
-        tvPatientFollowTime.setText(patient.getFollowTime());
+
+        if (TextUtils.isEmpty(patient.getApplyTime())) {
+            tvPatientFollowTime.setVisibility(View.GONE);
+        } else {
+            tvPatientFollowTime.setText(patient.getApplyTime());
+            tvPatientFollowTime.setVisibility(View.VISIBLE);
+        }
         TextView tvDescription = BaseViewHolder.get(convertView, R.id.tvDescription);
-        tvDescription.setText(patient.getDescription());
-        ImageView ivMoveToOtherGroup = BaseViewHolder.get(convertView,R.id.ivMoveToOtherGroup);
-        ivMoveToOtherGroup.setOnClickListener(new View.OnClickListener(){
+
+        if (TextUtils.isEmpty(patient.getCustomerMessage())) {
+            tvDescription.setVisibility(View.GONE);
+        } else {
+            tvDescription.setVisibility(View.VISIBLE);
+            tvDescription.setText("问题："+patient.getCustomerMessage());
+        }
+        ImageView ivMoveToOtherGroup = BaseViewHolder.get(convertView, R.id.ivMoveToOtherGroup);
+        ivMoveToOtherGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(listener!=null){
-                    listener.onMenuClick(groupPosition,childPosition,MOVE);
+                if (listener != null) {
+                    listener.onMenuClick(groupPosition, childPosition, MOVE);
                 }
             }
         });
-        ImageView ivDeletePatient = BaseViewHolder.get(convertView,R.id.ivDeletePatient);
-        ivDeletePatient.setOnClickListener(new View.OnClickListener(){
+        ImageView ivDeletePatient = BaseViewHolder.get(convertView, R.id.ivDeletePatient);
+        ivDeletePatient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(listener!=null){
-                    listener.onMenuClick(groupPosition,childPosition,DELETE);
+                if (listener != null) {
+                    listener.onMenuClick(groupPosition, childPosition, DELETE);
                 }
             }
         });
         final SwipeLayout swipeLayout = BaseViewHolder.get(convertView, R.id.swipLayout);
         swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
-        swipeLayout.addDrag(SwipeLayout.DragEdge.Right,BaseViewHolder.get(convertView,R.id.llSwipMenu));
+        swipeLayout.addDrag(SwipeLayout.DragEdge.Right, BaseViewHolder.get(convertView, R.id.llSwipMenu));
         swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
             @Override
             public void onStartOpen(SwipeLayout layout) {
@@ -197,9 +224,9 @@ public class PatientListAdapter extends BaseExpandableListAdapter {
         swipeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isClick){
-                    if(listener!=null){
-                        listener.onChildClick(groupPosition,childPosition);
+                if (isClick) {
+                    if (listener != null) {
+                        listener.onChildClick(groupPosition, childPosition);
                     }
                 }
             }
@@ -215,6 +242,13 @@ public class PatientListAdapter extends BaseExpandableListAdapter {
 
     public interface OnChildClickListener {
         void onChildClick(int groupPosition, int childPosition);
-        void onMenuClick(int groupPosition,int childPosition,int menu);
+
+        void onMenuClick(int groupPosition, int childPosition, int menu);
     }
+
+    public class GroupViewHolder {
+
+    }
+
+
 }

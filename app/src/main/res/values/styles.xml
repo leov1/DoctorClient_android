@@ -132,7 +132,12 @@
 		<item name="android:textColor">@color/text_color_black</item>
 		<item name="android:textSize">@dimen/text_size_20</item>
 	</style>
-
+	<style name="follow_text_16">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:textColor">@color/text_color_black</item>
+		<item name="android:textSize">@dimen/text_size_16</item>
+	</style>
 	<style name="patient_info_left">
 		<item name="android:textSize">@dimen/text_size_15</item>
 		<item name="android:paddingTop">@dimen/space_10</item>

@@ -8,7 +8,17 @@ import java.util.ArrayList;
  */
 public class PatientGroup extends BaseBean implements Serializable {
     private String groupName;
-    private ArrayList<Patient> patients = new ArrayList<Patient>();
+    private String groupId;
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
+    private ArrayList<Patient> customers = new ArrayList<Patient>();
 
     public PatientGroup() {
     }
@@ -25,15 +35,15 @@ public class PatientGroup extends BaseBean implements Serializable {
         this.groupName = groupName;
     }
 
-    public ArrayList<Patient> getPatients() {
-        return patients;
+    public ArrayList<Patient> getCustomers() {
+        return customers;
     }
 
     public void addPatient(Patient patient) {
-        patients.add(patient);
+        customers.add(patient);
     }
 
     public void removePatient(Patient patient) {
-        patients.remove(patient);
+        customers.remove(patient);
     }
 }

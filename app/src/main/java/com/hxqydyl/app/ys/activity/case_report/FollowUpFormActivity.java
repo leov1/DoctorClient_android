@@ -61,7 +61,7 @@ public class FollowUpFormActivity extends BaseTitleActivity implements View.OnCl
         }
         setContentView(R.layout.activity_follow_up_form);
 
-        initViewOnBaseTitle(String.format(getString(R.string.follow_up_form_title),patient.getName()));
+        initViewOnBaseTitle(String.format(getString(R.string.follow_up_form_title),patient.getRealName()));
         setBackListener(this);
 
         simpleInfoViewHolder = new PatientSimpleInfoViewHolder(this);
