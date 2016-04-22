@@ -6,14 +6,17 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <!--在SDCard中创建与删除文件权限-->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <!--往SDCard写入数据权限-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--从SDCard读取数据权限-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <uses-permission-sdk-23 android:name="android.permission.READ_CONTACTS" />
 
@@ -92,7 +95,7 @@
         <activity android:name=".activity.follow.FollowApplyOkActivity" />
         <activity android:name=".activity.follow.PlanMgrActivity" />
         <activity android:name=".activity.patient_group.PatientGroupManageActivity" />
-        <activity android:name=".activity.video.VideoPlayActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".ui.videoplay_lib.JCFullScreenActivity" />
         <activity
             android:name=".activity.patient.PatientAddActivity"
             android:windowSoftInputMode="stateHidden"
@@ -142,6 +145,22 @@
             android:name=".activity.patient_group.PatientGroupSelectActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".activity.follow.PatientSelectActivity"></activity>
+        <activity
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:name="galleryfinal.wq.photo.MediaChoseActivity"
+            android:theme="@style/AppBaseThemeLib"
+            android:label="@string/title_activity_media_chose" >
+        </activity>
+        <activity
+            android:screenOrientation="portrait"
+            android:name="galleryfinal.wq.photo.CropImageActivity"
+            android:label="@string/title_activity_crop_image" >
+        </activity>
+        <activity android:name="galleryfinal.yalantis.ucrop.UCropActivity"
+            android:theme="@style/AppBaseThemeLib"
+            android:screenOrientation="portrait"
+            ></activity>
     </application>
 
 </manifest>

@@ -13,15 +13,14 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.hxqydyl.app.ys.R;
-import com.hxqydyl.app.ys.activity.video.VideoPlayActivity;
 import com.hxqydyl.app.ys.ui.ProgressWebView;
 import com.hxqydyl.app.ys.ui.UIHelper;
+import com.hxqydyl.app.ys.ui.videoplay_lib.JCFullScreenActivity;
 import com.hxqydyl.app.ys.utils.LoginManager;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
-import org.w3c.dom.Text;
 
 import java.lang.reflect.Method;
 import java.util.regex.Matcher;
@@ -169,11 +168,14 @@ public class BaseWebActivity extends BaseTitleActivity {
                 ps = parameters.split("\\|");
                 String sourceUrl = ps[0];
                 String duration = ps[1];
-                intent = new Intent(this, VideoPlayActivity.class);
-                intent.putExtra("VideoUrl", sourceUrl);
-                intent.putExtra("VideoTitle", duration);
+                JCFullScreenActivity.toActivity(this,
+                        "http://gslb.miaopai.com/stream/ed5HCfnhovu3tyIQAiv60Q__.mp4",
+                        "嫂子躺下");
+//                intent = new Intent(this, VideoPlayActivity.class);
+//                intent.putExtra("VideoUrl", sourceUrl);
+//                intent.putExtra("VideoTitle", duration);
 //                startActivityForResult(intent, FULLPLAY);
-                startActivity(intent);
+//                startActivity(intent);
                 break;
 //            case "getFriendList":
 //                new ContactHelper().init(this, this);

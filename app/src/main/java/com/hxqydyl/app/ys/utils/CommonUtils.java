@@ -77,7 +77,7 @@ public class CommonUtils {
 		// TODO Auto-generated method stub
 		int version = 0;
 		try {
-			version = Integer.valueOf(android.os.Build.VERSION.SDK);
+			version = Integer.valueOf(android.os.Build.VERSION.SDK_INT);
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		}

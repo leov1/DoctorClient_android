@@ -88,18 +88,24 @@ public class LoginActivity extends BaseTitleActivity implements View.OnClickList
 
     @Override
     public void requestLoginNetSuccess(DoctorResult doctorResult) {
-        System.out.println("doctorinfo--->" + doctorResult);
-        dismissDialog();
-        if (doctorResult == null) return;
-        if (doctorResult.getQuery().getSuccess().equals("1")) {
-            SharedPreferences.getInstance().putString("doctorUuid", doctorResult.getServiceStaff().getDoctorUuid());
-            UIHelper.ToastMessage(LoginActivity.this, "登陆成功");
-            setLoginResult(LoginManager.isHasLogin());
+        try {
+            System.out.println("doctorinfo--->" + doctorResult);
+            dismissDialog();
+            if (doctorResult == null) return;
+            if (doctorResult.getQuery().getSuccess().equals("1")) {
+                SharedPreferences.getInstance().putString("doctorUuid", doctorResult.getServiceStaff().getDoctorUuid());
+                UIHelper.ToastMessage(LoginActivity.this, "登陆成功");
+                setLoginResult(LoginManager.isHasLogin());
 
-            finish();
-        } else {
-            UIHelper.ToastMessage(LoginActivity.this, doctorResult.getQuery().getMessage());
+                finish();
+            } else {
+                UIHelper.ToastMessage(LoginActivity.this, doctorResult.getQuery().getMessage());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            UIHelper.ToastMessage(LoginActivity.this, "登陆失败");
         }
+
 
     }
 

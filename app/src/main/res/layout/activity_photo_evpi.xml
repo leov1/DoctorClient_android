@@ -1,61 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
-    <LinearLayout
+    android:orientation="vertical">
+
+    <include layout="@layout/top_title"></include>
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <include layout="@layout/top_title"></include>
-
-        <RelativeLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="30dp">
 
-            <ScrollView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="30dp">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <LinearLayout
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/evip_remark"
+                    android:textColor="@color/text_color_black"
+                    android:textSize="@dimen/text_size_18" />
+
+                <com.hxqydyl.app.ys.ui.scrollviewandgridview.MyGridView
+                    android:id="@+id/gridview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_marginTop="@dimen/text_size_20"
+                    android:listSelector="@android:color/transparent"
+                    android:numColumns="3"
+                    android:verticalSpacing="@dimen/space_15"></com.hxqydyl.app.ys.ui.scrollviewandgridview.MyGridView>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/evip_remark"
-                        android:textColor="@color/text_color_black"
-                        android:textSize="@dimen/text_size_18" />
+            </LinearLayout>
+        </ScrollView>
 
-                    <com.hxqydyl.app.ys.ui.scrollviewandgridview.MyGridView
-                        android:id="@+id/gridview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:numColumns="3"
-                        android:layout_marginTop="@dimen/text_size_20"
-                        android:verticalSpacing="@dimen/space_15"
-                        android:listSelector="@android:color/transparent"
-                        ></com.hxqydyl.app.ys.ui.scrollviewandgridview.MyGridView>
+        <Button
+            android:id="@+id/register_btn"
+            style="@style/btn_blue"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="30dp"
+            android:text="@string/register" />
 
-                </LinearLayout>
-            </ScrollView>
+        <include layout="@layout/photo_fullscreen_layout"></include>
 
-            <Button
-                android:id="@+id/register_btn"
-                style="@style/btn_blue"
-                android:layout_alignParentBottom="true"
-                android:layout_margin="30dp"
-                android:text="@string/register" />
+    </RelativeLayout>
 
-            <include layout="@layout/photo_fullscreen_layout"></include>
-
-        </RelativeLayout>
-
-    </LinearLayout>
-    <include layout="@layout/display_big_image_layout"></include>
-</RelativeLayout>
+</LinearLayout>
 

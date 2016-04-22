@@ -2,10 +2,8 @@ package com.hxqydyl.app.ys.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -19,7 +17,6 @@ import com.hxqydyl.app.ys.ui.viewpagerindicator.CirclePageIndicator;
 import com.hxqydyl.app.ys.utils.SharedPreferences;
 
 import java.util.Timer;
-import java.util.TimerTask;
 
 import framework.BaseFragmentActivity;
 

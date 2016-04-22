@@ -42,6 +42,14 @@ public class LoginManager {
         SharedPreferences.getInstance().putString("doctorUuid", doctorUuid);
     }
 
+    public static void setRegisterUuid(String doctorUuid){
+        SharedPreferences.getInstance().putString("registerUuid", doctorUuid);
+    }
+
+    public static String getRegisterUuid() {
+        return SharedPreferences.getInstance().getString("registerUuid", "");
+    }
+
     /**
      * 退出登陆时，清空
      */

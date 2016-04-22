@@ -13,7 +13,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -190,4 +189,5 @@ public class BaseTitleActivity extends SwipeBackActivity implements NetRequestLi
             }
         }
     }
+
 }
