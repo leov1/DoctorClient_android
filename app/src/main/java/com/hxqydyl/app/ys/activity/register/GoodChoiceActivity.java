@@ -136,7 +136,7 @@ public class GoodChoiceActivity extends BaseTitleActivity implements View.OnClic
 
                 String selectStr = listToString(tvSelectedList,',');
 
-                addressParamBean.setDoctorUuid(LoginManager.getDoctorUuid());
+                addressParamBean.setDoctorUuid(LoginManager.getRegisterUuid());
                 addressParamBean.setSpeciality(selectStr);
                 goodTagNet.obtainTagResult(addressParamBean);
 

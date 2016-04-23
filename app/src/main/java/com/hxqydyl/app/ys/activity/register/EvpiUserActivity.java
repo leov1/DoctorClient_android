@@ -1,26 +1,23 @@
 package com.hxqydyl.app.ys.activity.register;
 
-import android.app.Activity;
+import android.Manifest;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.MediaStore;
-import android.support.v4.content.CursorLoader;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
@@ -36,11 +33,13 @@ import com.hxqydyl.app.ys.utils.LoginManager;
 import com.hxqydyl.app.ys.utils.Utils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import framework.listener.RegisterSucListener;
+import galleryfinal.wq.photo.widget.PickConfig;
+import galleryfinal.yalantis.ucrop.UCrop;
 
 /**
  * 完善姓名邮箱信息页面
@@ -48,27 +47,19 @@ import framework.listener.RegisterSucListener;
 public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, HeadIconNet.OnHeadIconNetListener
         , RegisterSecNet.OnRegisterSecListener, RegisterSucListener {
 
+    private static final int CODE_FOR_WRITE_PERMISSION = 1119;
     private Button nextBtn;
     private CircleImageView image_upload;
     private TextView text_head;
     private EditText text_nick;
     private EditText text_email;
-    private TextView take_picture;
-    private TextView select_local_picture;
     private RadioGroup genderGroup;
     private RadioButton femaleRadioButton, maleRadioButton;
 
-    private RelativeLayout edit_photo_fullscreen_layout, edit_photo_outer_layout;
-    private Animation get_photo_layout_out_from_up, get_photo_layout_in_from_down;
     private Intent intent;
-    private final int NONE = 0, TAKE_PICTURE = 1, LOCAL_PICTURE = 2;
     private final int SHOW_UPDATE_PHOTO = 3;
-    private final int UPLOAD_TAKE_PICTURE = 4;
     private final int UPLOAD_LOCAL_PICTURE = 5;
     private final int SAVE_PHOTO_IMAGE = 6;
-    File sdcardDir = Environment.getExternalStorageDirectory();
-    private String photo_path = sdcardDir.getPath() + "/hxq/cache/photoes/";
-    private String photo_take_file_path = photo_path + "temp.png";
     private String fileString;//base64位图片
 
     private HeadIconNet headIconNet;
@@ -96,29 +87,9 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
                     break;
                 case UPLOAD_LOCAL_PICTURE:
                     Log.d("gaolei", " case UPLOAD_LOCAL_PICTURE:------------------");
-                    Uri uri = intent.getData();
-
-                    try {
-                        String[] pojo = {MediaStore.Images.Media.DATA};
-                        // The method managedQuery(Uri, String[], String, String[],
-                        // String) from the type Activity is deprecated
-                        // android用CursorLoader代替
-
-                        CursorLoader cursorLoader = new CursorLoader(EvpiUserActivity.this, uri, pojo, null, null, null);
-                        Cursor cursor = cursorLoader.loadInBackground();
-                        cursor.moveToFirst();
-                        String photo_local_file_path = cursor.getString(cursor.getColumnIndex(pojo[0]));
-                        uploadUserPhotoNew(photo_local_file_path);
-
-                        Log.d("gaolei", "uri.getPath()------------------" + uri.getPath());
-
-                    } catch (Exception e) {
-                    }
-                    break;
-                case UPLOAD_TAKE_PICTURE:
-                    Log.d("gaolei", " case UPLOAD_TAKE_PICTURE:------------------");
-                    Log.d("gaolei", "photo_take_file_path------------------" + photo_take_file_path);
-                    uploadUserPhotoNew(photo_take_file_path);
+                    ArrayList<String> paths = intent.getStringArrayListExtra("data");
+                    uploadUserPhotoNew(paths.get(0));
+                    Log.d("gaolei", "uri.getPath()------------------" + paths.get(0));
                     break;
                 case SAVE_PHOTO_IMAGE:
                     Log.d("gaolei", " case SAVE_PHOTO_IMAGE:------------------");
@@ -145,7 +116,7 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
         registerSecNet = new RegisterSecNet();
         registerSecNet.setListener(this);
 
-        doctorUUid = LoginManager.getDoctorUuid();
+        doctorUUid = LoginManager.getRegisterUuid();
 
     }
 
@@ -159,22 +130,16 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
         text_nick = (EditText) findViewById(R.id.text_nick);
         text_email = (EditText) findViewById(R.id.text_email);
 
-        take_picture = (TextView) findViewById(R.id.take_picture);
-        select_local_picture = (TextView) findViewById(R.id.select_local_picture);
-
         genderGroup = (RadioGroup) findViewById(R.id.genderGroup);
         maleRadioButton = (RadioButton) findViewById(R.id.maleButton);
         femaleRadioButton = (RadioButton) findViewById(R.id.femaleButton);
 
-        edit_photo_fullscreen_layout = (RelativeLayout) findViewById(R.id.edit_photo_fullscreen_layout);
-        edit_photo_outer_layout = (RelativeLayout) findViewById(R.id.edit_photo_outer_layout);
     }
 
     private void initListeners() {
         setBackListener(this);
         nextBtn.setOnClickListener(this);
-        take_picture.setOnClickListener(this);
-        select_local_picture.setOnClickListener(this);
+        image_upload.setOnClickListener(this);
         genderGroup.setOnCheckedChangeListener(this);
     }
 
@@ -218,34 +183,9 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
 
                 loadNext();
                 break;
-            case R.id.take_picture:
-                edit_photo_fullscreen_layout.setVisibility(View.GONE);
-                File file = new File(photo_take_file_path);
-                if (file.exists()) {
-                    if (file.exists()) {
-                        file.delete();
-                    }
-                }
-                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-                startActivityForResult(intent, TAKE_PICTURE);
+            case R.id.image_upload:
+                access();
                 break;
-            case R.id.select_local_picture:
-                edit_photo_fullscreen_layout.setVisibility(View.GONE);
-                intent = new Intent();
-                if (Build.VERSION.SDK_INT< Build.VERSION_CODES.KITKAT){
-
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
-                    intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                            "image/*");
-                }else{
-                    intent.setAction(Intent.ACTION_PICK);
-                    intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                            "image/*");
-                }
-                startActivityForResult(intent, LOCAL_PICTURE);
-                break;
-
             case R.id.back_img:
                 finish();
                 break;
@@ -255,15 +195,8 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         //为什么不在这处理图片呢？因为处理图片比较耗时，如果在这里处理图片，从图库或者拍照Activity时会不流畅，很卡卡卡，试试就知道了
-        if (resultCode == NONE)
-            return;
-        if (requestCode == TAKE_PICTURE) {
-            handler.sendEmptyMessage(UPLOAD_TAKE_PICTURE);
-            return;
-        }
-        if (resultCode == Activity.RESULT_OK) {
-            if (intent == null || "".equals(intent))
-                return;
+        if (resultCode == RESULT_OK && requestCode == PickConfig.PICK_REQUEST_CODE) {
+            //在data中返回 选择的图片列表
             this.intent = intent;
             handler.sendEmptyMessage(UPLOAD_LOCAL_PICTURE);
         }
@@ -287,35 +220,50 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
         }.start();
     }
 
-    public void showEditPhotoLayout(View view) {
-        edit_photo_fullscreen_layout.setVisibility(View.VISIBLE);
-        get_photo_layout_in_from_down = AnimationUtils.loadAnimation(
-                this, R.anim.search_layout_in_from_down);
-        edit_photo_outer_layout.startAnimation(get_photo_layout_in_from_down);
+    private void access() {
+
+        int hasWriteContactsPermission = 0;
+        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
+            hasWriteContactsPermission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(EvpiUserActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        CODE_FOR_WRITE_PERMISSION);
+
+                return;
+            }
+        }
+        showEditPhotoLayout();
     }
 
-    public void hideEditPhotoLayout(View view) {
-        get_photo_layout_out_from_up = AnimationUtils.loadAnimation(
-                this, R.anim.search_layout_out_from_up);
-        edit_photo_outer_layout.startAnimation(get_photo_layout_out_from_up);
-        get_photo_layout_out_from_up
-                .setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationEnd(Animation arg0) {
-                        // TODO Auto-generated method stub
-                        edit_photo_fullscreen_layout.setVisibility(View.GONE);
-                    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == CODE_FOR_WRITE_PERMISSION) {
+            if (permissions[0].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //用户同意使用write
+                showEditPhotoLayout();
+            } else {
+                //用户不同意，自行处理即可
+                // finish();
+            }
+        }
+    }
 
-                    @Override
-                    public void onAnimationRepeat(Animation arg0) {
-                        // TODO Auto-generated method stub
-                    }
-
-                    @Override
-                    public void onAnimationStart(Animation arg0) {
-                        // TODO Auto-generated method stub
-                    }
-                });
+    public void showEditPhotoLayout() {
+        UCrop.Options options = new UCrop.Options();
+        options.setCompressionFormat(Bitmap.CompressFormat.JPEG);
+        options.setCompressionQuality(90);
+        new PickConfig.Builder(EvpiUserActivity.this)
+                .isneedcrop(false)
+                .actionBarcolor(Color.parseColor("#1F80B8"))
+                .statusBarcolor(Color.parseColor("#FFFFFF"))
+                .isneedcamera(true)
+                .isSqureCrop(false)
+                .setUropOptions(options)
+                .maxPickSize(Integer.parseInt("5"))
+                .spanCount(Integer.parseInt("3"))
+                .pickMode(PickConfig.MODE_SINGLE_PICK).build();
     }
 
     @Override
@@ -325,7 +273,7 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
             return;
         }
         if (headIconResult.getQuery().getSuccess().equals("1")) {
-            String photoUrl = TextUtils.isEmpty(headIconResult.getSmallUrl())?headIconResult.getImageUrl():headIconResult.getSmallUrl();
+            String photoUrl = TextUtils.isEmpty(headIconResult.getSmallUrl()) ? headIconResult.getImageUrl() : headIconResult.getSmallUrl();
             smallImage = TextUtils.isEmpty(headIconResult.getIcon()) ? headIconResult.getSmallImage() : headIconResult.getIcon();
             System.out.println("smallImage--->" + headIconResult.toString());
             Message msg = handler.obtainMessage();
@@ -346,7 +294,7 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
     @Override
     public void requestRegisterSecSuc(RegisterFirst registerFirst) {
         if (registerFirst == null) {
-            UIHelper.ToastMessage(EvpiUserActivity.this, "请求出错");
+            UIHelper.ToastMessage(EvpiUserActivity.this, "服务器请求出错!");
             return;
         }
         if (registerFirst.getQuery().getSuccess().equals("1")) {
@@ -359,7 +307,7 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
 
     @Override
     public void requestRegisterSecFail() {
-        UIHelper.ToastMessage(EvpiUserActivity.this, "请求失败");
+        UIHelper.ToastMessage(EvpiUserActivity.this, "服务器请求出错!");
     }
 
     @Override

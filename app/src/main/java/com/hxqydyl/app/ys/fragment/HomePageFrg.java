@@ -9,16 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.CommentWebActivity;
-import com.hxqydyl.app.ys.activity.LoginActivity;
 import com.hxqydyl.app.ys.activity.follow.FollowMainActivity;
 import com.hxqydyl.app.ys.activity.reading.ReadingActivity;
-import com.hxqydyl.app.ys.activity.register.EvpiPhotoActivity;
 import com.hxqydyl.app.ys.adapter.GalleryPagerAdapter;
 import com.hxqydyl.app.ys.adapter.LineGridViewAdapter;
 import com.hxqydyl.app.ys.bean.Query;
@@ -34,7 +31,6 @@ import com.hxqydyl.app.ys.http.login.QuitLoginNet;
 import com.hxqydyl.app.ys.ui.CircleImageView;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.ui.library.PullToRefreshBase;
-import com.hxqydyl.app.ys.ui.library.PullToRefreshListView;
 import com.hxqydyl.app.ys.ui.library.PullToRefreshScrollView;
 import com.hxqydyl.app.ys.ui.linegridview.LineGridView;
 import com.hxqydyl.app.ys.ui.loopviewpager.AutoLoopViewPager;
@@ -322,7 +318,7 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
                 break;
             case R.id.register_btn:
                UIHelper.showRegister(getActivity());
-              // startActivity(new Intent(getActivity(), EvpiPhotoActivity.class));
+             //startActivity(new Intent(getActivity(), EvpiPhotoActivity.class));
                 break;
             case R.id.head_img:
            //     quitLogin();

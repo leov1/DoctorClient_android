@@ -6,10 +6,6 @@
 
     <include layout="@layout/top_title"></include>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -29,7 +25,6 @@
                     android:id="@+id/image_upload"
                     android:layout_width="130dp"
                     android:layout_height="130dp"
-                    android:onClick="showEditPhotoLayout"
                     android:layout_centerHorizontal="true"
                     android:src="@mipmap/upload_photo" />
 
@@ -109,14 +104,4 @@
                 android:text="@string/next" />
         </LinearLayout>
 
-        <include layout="@layout/photo_fullscreen_layout"></include>
-
-      <!--  <include
-            android:id="@+id/uploading_photo_progress"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            layout="@layout/progress_layout"
-            android:clickable="true"
-            android:visibility="gone" />-->
-    </RelativeLayout>
 </LinearLayout>

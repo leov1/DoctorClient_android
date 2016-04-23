@@ -19,7 +19,7 @@ public class UrlConstants {
     //    内网开发ip
     public static final String BASE_IP_DEVELOP = "http://172.168.1.9";
     //    内网开发端口
-    public static final String BASE_PORT_DEVELOP = "8080";
+    public static final String BASE_PORT_DEVELOP = "";
     //    内网测试ip
     public static final String BASE_IP_TEST = "http://192.168.1.38";
     //    内网测试端口
@@ -29,9 +29,9 @@ public class UrlConstants {
     //    线上测试端口
     public static final String BASE_PORT_ONLINE_TEST = "8080";
     //    线上发布ip
-    public static final String BASE_IP_ONLINE_REALEASE = "";
+    public static final String BASE_IP_ONLINE_REALEASE = /*"http://admin.hxqydyl.com";*/"101.201.154.86";
     //    线上发布端口
-    public static final String BASE_PORT_ONLINE_REALEASE = "";
+    public static final String BASE_PORT_ONLINE_REALEASE = "8080";
 
     //    ip地址
     public static final String BASE_IP = isOnline ? (isTest ? BASE_IP_ONLINE_TEST : BASE_IP_ONLINE_REALEASE) : (isTest ? BASE_IP_TEST : BASE_IP_DEVELOP);

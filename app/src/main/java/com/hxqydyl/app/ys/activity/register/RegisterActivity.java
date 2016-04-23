@@ -1,7 +1,6 @@
 package com.hxqydyl.app.ys.activity.register;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
@@ -182,7 +180,7 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
         if (!TextUtils.isEmpty(isMobile)) return isMobile;
 
         captcha = captchaEdit.getText().toString();
-        if (TextUtils.isEmpty(captcha)) return "验证码不能为空";
+//        if (TextUtils.isEmpty(captcha)) return "验证码不能为空";
 
         password = passwordEdit.getText().toString();
         if (TextUtils.isEmpty(password)) return "密码不能为空";
@@ -225,7 +223,7 @@ public class RegisterActivity extends BaseTitleActivity implements View.OnClickL
         dismissDialog();
         UIHelper.ToastMessage(RegisterActivity.this, registerFirst.getQuery().getMessage());
         if (registerFirst.getQuery().getSuccess().equals("1")) {
-            LoginManager.setDoctorUuid(registerFirst.getDoctorUuid());
+            LoginManager.setRegisterUuid(registerFirst.getDoctorUuid());
             intent = new Intent(this, EvpiUserActivity.class);
             startActivity(intent);
         }

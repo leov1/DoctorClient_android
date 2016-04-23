@@ -101,7 +101,7 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
                 Intent intent = new Intent(PlanMgrActivity.this, PlanInfoActivity.class);
                 intent.putExtra("visitUuid", suggestPlanList.get(position).getVisitUuid());
                 intent.putExtra("from", "suggest");
-                intent.putExtra("preceptName", myPlanList.get(position).getPreceptName());
+                intent.putExtra("preceptName", suggestPlanList.get(position).getPreceptName());
                 startActivity(intent);
             }
         });
