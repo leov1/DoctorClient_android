@@ -170,6 +170,7 @@ public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClick
         }
         if (query.getSuccess().equals("1")) {
             UIHelper.ToastMessage(EvpiPhotoActivity.this, "注册成功");
+            LoginManager.setDoctorUuid(LoginManager.getRegisterUuid());
             removeBeforViews();
             finish();
         } else {
