@@ -2,6 +2,7 @@ package com.hxqydyl.app.ys.activity.patient;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONObject;
 import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.NormalListDialog;
 import com.hxqydyl.app.ys.R;
@@ -23,6 +25,7 @@ import com.hxqydyl.app.ys.http.follow.CustomerNet;
 import com.hxqydyl.app.ys.http.follow.FollowCallback;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.LoginManager;
+import com.hxqydyl.app.ys.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,10 +112,30 @@ public class PatientAddActivity extends BaseTitleActivity implements View.OnClic
             etPhone.setText(ab.getPhone());
             etRealName.setText(ab.getName());
             showDialog("");
-            CustomerNet.getCustomerByMobile(ab.getPhone(), new FollowCallback(this){
+            CustomerNet.getCustomerByMobile(ab.getPhone(), new FollowCallback(this) {
                 @Override
-                public void onResult(String result) {
-                    super.onResult(result);
+                public void onResponse(String response) {
+                    if (StringUtils.isEmpty(response)) {
+                        UIHelper.ToastMessage(PatientAddActivity.this, "没有数据");
+                        return;
+                    }
+                    try {
+                        JSONObject object = JSONObject.parseObject(response);
+                        JSONObject queryObj = object.getJSONObject("query");
+                        String status = queryObj.getString("success");
+                        if ("1".equals(status)) {
+                            String name = object.getString("name");
+                            etRealName.setText(name);
+                        } else {
+                            String msg = queryObj.getString("message");
+                            Log.e("doctorClient", msg);
+                            UIHelper.ToastMessage(PatientAddActivity.this, msg);
+                            PatientAddActivity.this.dismissDialog();
+                            onFail(status, msg);
+                        }
+                    } catch (Exception e) {
+                        onFail("999999", "解析出错啦，重新刷新下吧");
+                    }
 
                 }
 
@@ -139,21 +162,37 @@ public class PatientAddActivity extends BaseTitleActivity implements View.OnClic
     }
 
     public void savePatient() {
-        String mobile = etPhone.getText().toString();
-        String name = etRealName.getText().toString();
-        String diagnosis = etDiagnosis.getText().toString();
+        final String mobile = etPhone.getText().toString();
+        final String name = etRealName.getText().toString();
+        final String diagnosis = etDiagnosis.getText().toString();
 
         if (selectGroupId == null) {
             Toast.makeText(PatientAddActivity.this, "请选择分组", Toast.LENGTH_SHORT).show();
             return;
         }
-        CustomerNet.addCustomer(name, mobile, selectGroupId, diagnosis, new FollowCallback(this){
+        CustomerNet.getCustomerByMobile(mobile, new FollowCallback(this) {
             @Override
             public void onResult(String result) {
-                Toast.makeText(PatientAddActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
-                setResult(RESULT_OK);
-                finish();
+                super.onResult(result);
+                CustomerNet.addCustomer(name, mobile, selectGroupId, diagnosis,
+                        new FollowCallback(PatientAddActivity.this) {
+                            @Override
+                            public void onResult(String result) {
+                                Toast.makeText(PatientAddActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
+                                setResult(RESULT_OK);
+                                finish();
+                            }
+                        });
+            }
+
+            @Override
+            public void onFail(String status, String msg) {
+                super.onFail(status, msg);
+                dismissDialog();
+                Toast.makeText(PatientAddActivity.this, msg, Toast.LENGTH_SHORT).show();
             }
         });
+
     }
+
 }
