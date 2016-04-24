@@ -170,7 +170,8 @@ public class PatientDetailsActivity extends BaseTitleActivity implements View.On
             case R.id.bSelectNewFollowUpForPatient:
                 intent = new Intent(this, FollowApplyOkActivity.class);
                 intent.putExtra("customerUuid", patient.getId());
-                startActivity(intent);
+                intent.putExtra("type", "updateVisitRecord");
+                startActivityForResult(intent, REQ_ADD_FOLLOW_PLAN);
                 break;
         }
     }
@@ -190,7 +191,8 @@ public class PatientDetailsActivity extends BaseTitleActivity implements View.On
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQ_ADD_CASE_REPORT && resultCode == RESULT_OK){
             refreshTreatInfoList();
-
+        }else if(requestCode == REQ_ADD_CASE_REPORT && resultCode == RESULT_OK){
+            refreshTreatInfoList();
         }
     }
 }

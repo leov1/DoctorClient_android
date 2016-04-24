@@ -36,7 +36,8 @@ public class FollowCallback extends StringCallback {
             UIHelper.ToastMessage(baseTitleActivity, "没有数据");
             return;
         }
-        try{  JSONObject object = JSONObject.parseObject(response);
+        try {
+            JSONObject object = JSONObject.parseObject(response);
             JSONObject queryObj = object.getJSONObject("query");
             String status = queryObj.getString("success");
             if ("1".equals(status)) {
@@ -48,8 +49,10 @@ public class FollowCallback extends StringCallback {
                 UIHelper.ToastMessage(baseTitleActivity, msg);
                 baseTitleActivity.dismissDialog();
                 onFail(status, msg);
-            }}catch (Exception e){
-            onFail("999999", "解析出错啦，重新刷新下吧");        }
+            }
+        } catch (Exception e) {
+            onFail("999999", "解析出错啦，重新刷新下吧");
+        }
 
     }
 
