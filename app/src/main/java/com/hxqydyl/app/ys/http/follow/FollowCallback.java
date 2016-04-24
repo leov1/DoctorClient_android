@@ -6,6 +6,7 @@ import android.util.Log;
 import com.alibaba.fastjson.JSONObject;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.ui.UIHelper;
+import com.hxqydyl.app.ys.utils.StringUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import okhttp3.Call;
@@ -31,6 +32,10 @@ public class FollowCallback extends StringCallback {
 
     @Override
     public void onResponse(String response) {
+        if (StringUtils.isEmpty(response)) {
+            UIHelper.ToastMessage(baseTitleActivity, "没有数据");
+            return;
+        }
         try{  JSONObject object = JSONObject.parseObject(response);
             JSONObject queryObj = object.getJSONObject("query");
             String status = queryObj.getString("success");

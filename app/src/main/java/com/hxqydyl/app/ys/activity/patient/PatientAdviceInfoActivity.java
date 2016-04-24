@@ -31,6 +31,7 @@ import com.hxqydyl.app.ys.http.follow.FollowApplyNet;
 import com.hxqydyl.app.ys.http.follow.FollowCallback;
 import com.hxqydyl.app.ys.http.follow.FollowPlanNet;
 import com.hxqydyl.app.ys.ui.UIHelper;
+import com.hxqydyl.app.ys.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -160,6 +161,10 @@ public class PatientAdviceInfoActivity extends BaseTitleActivity implements View
                             "  ]," +
                             "  \"uuid\" : \"1ff22cc9fe064bc9a1a7afb7b1e24619\"" +
                             "}";
+                if (StringUtils.isEmpty(response)) {
+                    UIHelper.ToastMessage(PatientAdviceInfoActivity.this, "没有数据");
+                    return;
+                }
                 advice = Advice.parseDetailJson(response);
                 dismissDialog();
                 handler.sendEmptyMessage(100);
