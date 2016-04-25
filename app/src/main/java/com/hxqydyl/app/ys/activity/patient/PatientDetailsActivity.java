@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
@@ -38,16 +39,24 @@ public class PatientDetailsActivity extends BaseTitleActivity implements View.On
     private static final int REQ_ADD_FOLLOW_PLAN = 2;       //随访方案
     //    患者基本信息
     private PatientSimpleInfoViewHolder simpleInfoViewHolder;
-    //    给患者添加治疗信息
-    private Button bCommunicateWithPatient;
-    private Button bAddCaseReport;
-    private Button bSelectNewFollowUpForPatient;
-    private TextView right_txt_btn;
 
     //    患者治疗信息
+    @InjectId(id = R.id.lvPatientTreatInfo)
     private ListView lvPatientTreatInfo;
     private PatientTreatInfoAdapter patientTreatInfoAdapter;
     private ArrayList<PatientTreatInfo> patientTreatInfoArrayList = new ArrayList<PatientTreatInfo>();
+
+    //    给患者添加治疗信息
+    @InjectId(id = R.id.bCommunicateWithPatient)
+    private Button bCommunicateWithPatient;
+    @InjectId(id = R.id.bAddCaseReport)
+    private Button bAddCaseReport;
+    @InjectId(id = R.id.bSelectNewFollowUpForPatient)
+    private Button bSelectNewFollowUpForPatient;
+
+    @InjectId(id = R.id.right_txt_btn)
+    private TextView right_txt_btn;
+
     private CaseReportNet caseReportNet;
     private Patient patient;
 
@@ -62,8 +71,8 @@ public class PatientDetailsActivity extends BaseTitleActivity implements View.On
             finish();
             return;
         }
-        if (!TextUtils.isEmpty(patient.getRealName())) {
-            initViewTitle(patient.getRealName());
+        if (!TextUtils.isEmpty(patient.getName())) {
+            initViewTitle(patient.getName());
         }else{
             initViewTitle("患者详情");
         }
@@ -75,7 +84,7 @@ public class PatientDetailsActivity extends BaseTitleActivity implements View.On
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PatientDetailsActivity.this, PatientInfoActivity.class);
-                intent.putExtra("patientId",patient.getCustomerUuid());
+                intent.putExtra("patientId",patient.getId());
                 startActivity(intent);
             }
         });
@@ -115,23 +124,12 @@ public class PatientDetailsActivity extends BaseTitleActivity implements View.On
 
         refreshTreatInfoList();
     }
-public void initView(){
-    lvPatientTreatInfo=(ListView)findViewById(R.id.lvPatientTreatInfo);
-    bCommunicateWithPatient=(Button)findViewById(R.id.bCommunicateWithPatient);
-    bAddCaseReport=(Button)findViewById(R.id.bAddCaseReport);
-    bSelectNewFollowUpForPatient=(Button)findViewById(R.id.bSelectNewFollowUpForPatient);
-    right_txt_btn=(TextView)findViewById(R.id.right_txt_btn);
-}
-
-
-
-
 
     private void refreshTreatInfoList(){
         if(caseReportNet == null){
             caseReportNet = new CaseReportNet(this);
         }
-        caseReportNet.getAllTreatInfoRecordOfPatient(patient.getCustomerUuid(), LoginManager.getDoctorUuid());
+        caseReportNet.getAllTreatInfoRecordOfPatient(patient.getId(), LoginManager.getDoctorUuid());
     }
 
     private void initViewTitle(String title) {
@@ -162,7 +160,7 @@ public void initView(){
                 this.finish();
                 break;
             case R.id.bCommunicateWithPatient:
-                CommentWebActivity.toCommentWeb(UrlConstants.getWholeApiUrl(UrlConstants.COMMUNICATE_WITH_PATIENT_H5,patient.getCustomerUuid()),"",this,true);
+                CommentWebActivity.toCommentWeb(UrlConstants.getWholeApiUrl(UrlConstants.COMMUNICATE_WITH_PATIENT_H5,patient.getId()),"",this,true);
                 break;
             case R.id.bAddCaseReport:
                 intent = new Intent(this, AddCaseReportActivity.class);
@@ -171,8 +169,9 @@ public void initView(){
                 break;
             case R.id.bSelectNewFollowUpForPatient:
                 intent = new Intent(this, FollowApplyOkActivity.class);
-                intent.putExtra("customerUuid", patient.getCustomerUuid());
-                startActivity(intent);
+                intent.putExtra("customerUuid", patient.getId());
+                intent.putExtra("type", "updateVisitRecord");
+                startActivityForResult(intent, REQ_ADD_FOLLOW_PLAN);
                 break;
         }
     }
@@ -192,7 +191,8 @@ public void initView(){
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQ_ADD_CASE_REPORT && resultCode == RESULT_OK){
             refreshTreatInfoList();
-
+        }else if(requestCode == REQ_ADD_CASE_REPORT && resultCode == RESULT_OK){
+            refreshTreatInfoList();
         }
     }
 }

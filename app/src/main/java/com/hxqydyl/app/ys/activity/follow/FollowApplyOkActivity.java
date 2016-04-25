@@ -2,6 +2,7 @@ package com.hxqydyl.app.ys.activity.follow;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -9,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONObject;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.adapter.PatientGroupSelectAdapter;
@@ -26,6 +28,7 @@ import com.hxqydyl.app.ys.http.follow.FollowPlanNet;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.DialogUtils;
 import com.hxqydyl.app.ys.utils.LoginManager;
+import com.hxqydyl.app.ys.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +43,7 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
 
     private LinearLayout llAddPlan;
     private LinearLayout llAddGroup;
+    private LinearLayout llGroupArea;
     private Button btnApply;
     private ListView lvPlan;
     private ListView lvGroup;
@@ -53,6 +57,7 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
 
     private String applyUuid;
     private String customerUuid;
+    private String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +66,7 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
         initViewOnBaseTitle("选择随访方案");
 //        applyUuid = getIntent().getStringExtra("applyUuid");
         customerUuid = getIntent().getStringExtra("customerUuid");
+        type = getIntent().getStringExtra("type");
 
         setBackListener();
         initView();
@@ -77,6 +83,7 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
     private void initView() {
         llAddPlan = (LinearLayout) findViewById(R.id.llAddPlan);
         llAddGroup = (LinearLayout) findViewById(R.id.llAddGroup);
+        llGroupArea = (LinearLayout) findViewById(R.id.llGroupArea);
         lvPlan = (ListView) findViewById(R.id.lvPlan);
         lvGroup = (ListView) findViewById(R.id.lvGroup);
         btnApply = (Button) findViewById(R.id.btnApply);
@@ -89,6 +96,9 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
         patientGroupSelectAdapter = new PatientGroupSelectAdapter(this, patientGroupList);
         lvGroup.setAdapter(patientGroupSelectAdapter);
         patientGroupNet = new PatientGroupNet(this);
+        if ("updateVisitRecord".equals(type)) {
+            llGroupArea.setVisibility(View.GONE);
+        }
     }
 
     private void initEvent() {
@@ -120,7 +130,12 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
                 startActivityForResult(planIntent, 0);
                 break;
             case R.id.btnApply:
-                apply();
+                if ("updateVisitRecord".equals(type)) {
+                    applyUpdate();
+                } else {
+                    apply();
+                }
+
                 break;
         }
     }
@@ -183,6 +198,42 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
         }
     }
 
+    private void applyUpdate() {
+        if (planSelectAdapter.getSelect() < 0) {
+            UIHelper.ToastMessage(this, "请选择方案");
+            return;
+        }
+        showDialog("正在提交");
+        PlanBaseInfo plan = planList.get(planSelectAdapter.getSelect());
+        FollowApplyNet.updateVisitRecord(customerUuid, plan.getVisitUuid(), new FollowCallback(this){
+            @Override
+            public void onResponse(String response) {
+                if (StringUtils.isEmpty(response)) {
+                    UIHelper.ToastMessage(FollowApplyOkActivity.this, "没有数据");
+                    return;
+                }
+                try {
+                    JSONObject object = JSONObject.parseObject(response);
+                    String message = object.getString("message");
+                    String value = object.getString("value");
+                    UIHelper.ToastMessage(FollowApplyOkActivity.this, message);
+                    if ("true".equals(value)) {
+                        setResult(RESULT_OK);
+                        finish();
+                    }
+                } catch (Exception e) {
+                    onFail("999999", "解析出错啦，重新刷新下吧");
+                }
+            }
+
+            @Override
+            public void onError(Call call, Exception e) {
+                super.onError(call, e);
+                dismissDialog();
+                UIHelper.ToastMessage(FollowApplyOkActivity.this, "提交失败");
+            }
+        });
+    }
     private void apply() {
         if (planSelectAdapter.getSelect() < 0) {
             UIHelper.ToastMessage(this, "请选择方案");
@@ -194,7 +245,7 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
         }
         showDialog("正在提交");
         PlanBaseInfo plan = planList.get(planSelectAdapter.getSelect());
-        FollowApplyNet.addVisitRecord(plan.getVisitUuid(), customerUuid, new FollowCallback(this){
+        FollowApplyNet.addVisitRecord(customerUuid, plan.getVisitUuid(), new FollowCallback(this){
             @Override
             public void onResult(String result) {
                 super.onResult(result);
@@ -228,4 +279,6 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
             }
         });
     }
+
+
 }

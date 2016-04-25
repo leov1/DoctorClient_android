@@ -60,6 +60,15 @@ public class FollowApplyNet {
                 .execute(callback);
     }
 
+    public static void updateVisitRecord(String customerUuid, String visitPreceptUuid, FollowCallback callback) {
+        OkHttpUtils.post().url(baseURL + "app/pub/doctor/1.0/updateVisitRecord")
+                .addParams("customerUuid", customerUuid)
+                .addParams("visitPreceptUuid", visitPreceptUuid)
+                .addParams("doctorUuid", LoginManager.getDoctorUuid())
+                .build()
+                .execute(callback);
+    }
+
     /**
      * 医生拒绝关联患者
      *
