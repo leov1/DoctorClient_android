@@ -23,6 +23,7 @@ import com.hxqydyl.app.ys.adapter.PlanCheckSycleAdapter;
 import com.hxqydyl.app.ys.adapter.PlanSelfScaleAdapter;
 import com.hxqydyl.app.ys.bean.follow.plan.CheckSycle;
 import com.hxqydyl.app.ys.bean.follow.plan.HealthTips;
+import com.hxqydyl.app.ys.bean.follow.plan.ImportantAdviceChild;
 import com.hxqydyl.app.ys.bean.follow.plan.Medicine;
 import com.hxqydyl.app.ys.bean.follow.plan.Plan;
 import com.hxqydyl.app.ys.bean.follow.plan.Scale;
@@ -63,7 +64,7 @@ public class PlanInfoActivity extends BaseTitleActivity implements View.OnClickL
 
     private ListView lvMedicine;
     private MedicineAdapter medicineAdapter;
-    private List<Medicine> medicineList;        // 药品列表
+    private List<ImportantAdviceChild> medicineList;        // 药品列表
 
     private SwipeMenuListView lvOtherSycle;
     private PlanCheckSycleAdapter planCheckSycleAdapter;
@@ -156,7 +157,7 @@ public class PlanInfoActivity extends BaseTitleActivity implements View.OnClickL
         lvOtherSycle.setAdapter(planCheckSycleAdapter);
 
         medicineList = new ArrayList<>();
-        medicineList.add(new Medicine());
+        medicineList.add(new ImportantAdviceChild());
         medicineAdapter = new MedicineAdapter(this, medicineList, lvMedicine, false);
         lvMedicine.setAdapter(medicineAdapter);
 

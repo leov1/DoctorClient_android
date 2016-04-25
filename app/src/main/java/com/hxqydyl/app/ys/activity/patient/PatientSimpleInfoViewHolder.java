@@ -2,6 +2,7 @@ package com.hxqydyl.app.ys.activity.patient;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,17 +22,11 @@ import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 public class PatientSimpleInfoViewHolder {
     private DisplayImageOptions options;
     public View wholeView;
-    @InjectId(id = R.id.ivPatientPortrait)
     public ImageView ivPatientPortrait;
-    @InjectId(id = R.id.tvPatientName)
     public TextView tvPatientName;
-    @InjectId(id = R.id.ivSexFlag)
     public ImageView ivSexFlag;
-    @InjectId(id = R.id.tvPatientAge)
     public TextView tvPatientAge;
-    @InjectId(id = R.id.tvPatientFollowTime)
     public TextView tvPatientFollowTime;
-    @InjectId(id = R.id.tvDescription)
     public TextView tvDescription;
 
     public PatientSimpleInfoViewHolder(Activity activity) {
@@ -45,20 +40,33 @@ public class PatientSimpleInfoViewHolder {
                 .showImageForEmptyUri(R.mipmap.portrait_man)
                 .showImageOnFail(R.mipmap.portrait_man)
                 .build();
+        ivPatientPortrait = (ImageView) activity.findViewById(R.id.ivPatientPortrait);
+        tvPatientName = (TextView) activity.findViewById(R.id.tvPatientName);
+        ivSexFlag = (ImageView) activity.findViewById(R.id.ivSexFlag);
+        tvPatientAge = (TextView) activity.findViewById(R.id.tvPatientAge);
+        tvPatientFollowTime = (TextView) activity.findViewById(R.id.tvPatientFollowTime);
+        tvDescription = (TextView) activity.findViewById(R.id.tvDescription);
+
+
     }
 
     public void setPatient(Patient patient) {
         if (patient != null) {
             ImageLoader.getInstance().displayImage(patient.getCustomerImg(), ivPatientPortrait, options);
-            tvPatientName.setText(patient.getRealName());
-            if ("女".equals(patient.getSex())) {
-                ivSexFlag.setImageResource(R.mipmap.icon_woman_flag);
+            tvPatientName.setText(patient.getCustomerName());
+            if (TextUtils.isEmpty(patient.getSex())) {
+                ivSexFlag.setVisibility(View.GONE);
             } else {
-                ivSexFlag.setImageResource(R.mipmap.icon_man_flag);
+                if ("女".equals(patient.getSex())) {
+                    ivSexFlag.setImageResource(R.mipmap.icon_woman_flag);
+                } else {
+                    ivSexFlag.setImageResource(R.mipmap.icon_man_flag);
+                }
+                ivSexFlag.setVisibility(View.VISIBLE);
             }
-            tvPatientAge.setText(patient.getAge());
-            tvPatientFollowTime.setText(patient.getFollowTime());
-            tvDescription.setText(patient.getDescription());
+            tvPatientAge.setText(TextUtils.isEmpty(patient.getAge()) ? "" : patient.getAge());
+            tvPatientFollowTime.setText(TextUtils.isEmpty(patient.getFollowTime()) ? "" : patient.getFollowTime());
+            tvDescription.setText(TextUtils.isEmpty(patient.getCustomerMessage()) ? "" : patient.getCustomerMessage());
         }
     }
 

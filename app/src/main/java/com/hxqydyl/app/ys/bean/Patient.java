@@ -1,5 +1,7 @@
 package com.hxqydyl.app.ys.bean;
 
+import android.text.TextUtils;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -57,6 +59,24 @@ public class Patient extends BaseBean implements Serializable {
     private String customerMessage;
     //关系时间
     private String applyTime;
+    //患者描述
+    private String illnessDescription;
+
+    @Override
+    public String getId() {
+        if (!TextUtils.isEmpty(customerUuid)){
+            return customerUuid;
+        }
+        return super.getId();
+    }
+
+    public String getIllnessDescription() {
+        return illnessDescription;
+    }
+
+    public void setIllnessDescription(String illnessDescription) {
+        this.illnessDescription = illnessDescription;
+    }
 
     public String getApplyTime() {
         return applyTime;

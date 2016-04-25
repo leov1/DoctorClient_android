@@ -6,44 +6,36 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.BaseExpandableListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.NormalListDialog;
 import com.hxqydyl.app.ys.R;
-import com.hxqydyl.app.ys.activity.BaseTitleActivity;
-import com.hxqydyl.app.ys.activity.follow.PlanEditActivity;
-import com.hxqydyl.app.ys.activity.follow.PlanPatientListActivity;
-import com.hxqydyl.app.ys.adapter.HealthTipsAdapter;
+import com.hxqydyl.app.ys.activity.BaseRequstActivity;
 import com.hxqydyl.app.ys.adapter.MedicineAdapter;
-import com.hxqydyl.app.ys.adapter.PlanCheckSycleAdapter;
-import com.hxqydyl.app.ys.adapter.PlanSelfScaleAdapter;
 import com.hxqydyl.app.ys.bean.Advice;
-import com.hxqydyl.app.ys.bean.follow.plan.CheckSycle;
-import com.hxqydyl.app.ys.bean.follow.plan.HealthTips;
+import com.hxqydyl.app.ys.bean.follow.plan.ImportantAdvice;
+import com.hxqydyl.app.ys.bean.follow.plan.ImportantAdviceChild;
 import com.hxqydyl.app.ys.bean.follow.plan.Medicine;
-import com.hxqydyl.app.ys.bean.follow.plan.Plan;
-import com.hxqydyl.app.ys.bean.follow.plan.Scale;
+import com.hxqydyl.app.ys.bean.response.ImportantAdviceResponse;
 import com.hxqydyl.app.ys.http.PatientAdviceNet;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.http.follow.FollowApplyNet;
 import com.hxqydyl.app.ys.http.follow.FollowCallback;
-import com.hxqydyl.app.ys.http.follow.FollowPlanNet;
 import com.hxqydyl.app.ys.ui.UIHelper;
-import com.hxqydyl.app.ys.utils.StringUtils;
+import com.hxqydyl.app.ys.utils.LoginManager;
+import com.xus.http.httplib.model.GetParams;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
-import ui.swipemenulistview.SwipeMenuExpandableListView;
-import ui.swipemenulistview.SwipeMenuListView;
 
 /**
  * 医嘱
  */
-public class PatientAdviceInfoActivity extends BaseTitleActivity implements View.OnClickListener{
+public class PatientAdviceInfoActivity extends BaseRequstActivity implements View.OnClickListener {
 
     private TextView tvTitle;
     private TextView tvDrugTherapy; // 不良反应
@@ -51,11 +43,11 @@ public class PatientAdviceInfoActivity extends BaseTitleActivity implements View
 
     private ListView lvMedicine;
     private MedicineAdapter medicineAdapter;
-    private List<Medicine> medicineList;        // 药品列表
+    private List<ImportantAdviceChild> medicineList;        // 药品列表
 
     private String customerUuid = null;    //患者uuid
-    private Advice advice = null;
-
+    //    private Advice advice = null;
+    private ImportantAdvice advice = null;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -86,7 +78,6 @@ public class PatientAdviceInfoActivity extends BaseTitleActivity implements View
         new Thread(new Runnable() {
             @Override
             public void run() {
-                showDialog("加载中");
                 visitPreceptDetail(customerUuid);
             }
         }).run();
@@ -96,11 +87,8 @@ public class PatientAdviceInfoActivity extends BaseTitleActivity implements View
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvDrugTherapy = (TextView) findViewById(R.id.tvDrugTherapy);
         tvSideEffects = (TextView) findViewById(R.id.tvSideEffects);
-
         lvMedicine = (ListView) findViewById(R.id.lvMedicine);
-
         medicineList = new ArrayList<>();
-        medicineList.add(new Medicine());
         medicineAdapter = new MedicineAdapter(this, medicineList, lvMedicine, false);
         lvMedicine.setAdapter(medicineAdapter);
     }
@@ -142,42 +130,51 @@ public class PatientAdviceInfoActivity extends BaseTitleActivity implements View
 
 
     private void visitPreceptDetail(String visitUuid) {
-        PatientAdviceNet.adviceSearch(visitUuid, new FollowCallback(this){
-            @Override
-            public void onResponse(String response) {
-                if (FollowApplyNet.myDev)
-                    response = "{" +
-                            "  \"drugReaction\" : \"你\"," +
-                            "  \"cureNote\" : \"你\"," +
-                            "  \"child\" : [" +
-                            "    {" +
-                            "      \"medicineUuid\" : \"\"," +
-                            "      \"directions\" : \"早\"," +
-                            "      \"dosage\" : \"5|mg\"," +
-                            "      \"frequency\" : \"1\"," +
-                            "      \"unit\" : \"\"," +
-                            "      \"food\" : \"饭前服用\"" +
-                            "    }" +
-                            "  ]," +
-                            "  \"uuid\" : \"1ff22cc9fe064bc9a1a7afb7b1e24619\"" +
-                            "}";
-                if (StringUtils.isEmpty(response)) {
-                    UIHelper.ToastMessage(PatientAdviceInfoActivity.this, "没有数据");
-                    return;
-                }
-                advice = Advice.parseDetailJson(response);
-                dismissDialog();
-                handler.sendEmptyMessage(100);
-            }
+        GetParams getParams = new GetParams();
+        getParams.addHeader("Accept", "application/json");
+//        String uri="http://172.168.1.53/mobile/doctor/visit/advice/2.0/search/bbeee6220c404708a9c23eb7e5122f27/9ee56d1310b54baa97f5a8abbe85a0b1";
+//        toNomalNet(getParams, ImportantAdviceResponse.class, 1, uri, "正在获取医嘱");
 
-            @Override
-            public void onError(Call call, Exception e) {
-                super.onError(call, e);
-                UIHelper.ToastMessage(PatientAdviceInfoActivity.this, "数据加载失败");
-                dismissDialog();
-                onResponse("t");
-            }
-        });
+        toNomalNetStringBack(getParams, 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_ADVICE_SEARCH, "1.0", LoginManager.getDoctorUuid(), visitUuid), "正在获取医嘱");
+
+//        PatientAdviceNet.adviceSearch(visitUuid, new FollowCallback(this) {
+//            @Override
+//            public void onResponse(String response) {
+//                if (FollowApplyNet.myDev)
+//                    response = "{" +
+//                            "  \"drugReaction\" : \"你\"," +
+//                            "  \"cureNote\" : \"你\"," +
+//                            "  \"child\" : [" +
+//                            "    {" +
+//                            "      \"medicineUuid\" : \"\"," +
+//                            "      \"directions\" : \"早\"," +
+//                            "      \"dosage\" : \"5|mg\"," +
+//                            "      \"frequency\" : \"1\"," +
+//                            "      \"unit\" : \"\"," +
+//                            "      \"food\" : \"饭前服用\"" +
+//                            "    }" +
+//                            "  ]," +
+//                            "  \"uuid\" : \"1ff22cc9fe064bc9a1a7afb7b1e24619\"" +
+//                            "}";
+//                advice = Advice.parseDetailJson(response);
+//                dismissDialog();
+//                handler.sendEmptyMessage(100);
+//            }
+//
+//            @Override
+//            public void onError(Call call, Exception e) {
+//                super.onError(call, e);
+//                UIHelper.ToastMessage(PatientAdviceInfoActivity.this, "数据加载失败");
+//                dismissDialog();
+//                onResponse("t");
+//            }
+//        });
+    }
+
+    @Override
+    public void onSuccessToString(String json, int flag) {
+        advice = gson.fromJson(json, ImportantAdvice.class);
+        handler.sendEmptyMessage(100);
     }
 
     private void updateUIData() {
@@ -189,7 +186,7 @@ public class PatientAdviceInfoActivity extends BaseTitleActivity implements View
         tvSideEffects.setText(advice.getCureNote());
 
         medicineList.clear();
-        medicineList.addAll(advice.getMedicineList());
+        medicineList.addAll(advice.getChild());
 
         medicineAdapter.notifyDataSetChanged();
     }

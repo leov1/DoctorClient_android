@@ -4,44 +4,45 @@ package com.hxqydyl.app.ys.bean.followupform;
  * Created by white_ash on 2016/3/27.
  */
 public class BadReactionRecord extends FollowUpFormOneRecord{
+
 //    开始时间
-    private String firstTime;
+    private String occurrenceTime;
 //    持续时间
-    private String durationTime;
+    private String dosageTime;
 //    症状描述
-    private String symptomsDecription;
+    private String frequency;
 //    影响
-    private String effect;
+    private String impact;
 
-    public String getFirstTime() {
-        return firstTime;
+    public String getOccurrenceTime() {
+        return occurrenceTime;
     }
 
-    public void setFirstTime(String firstTime) {
-        this.firstTime = firstTime;
+    public void setOccurrenceTime(String occurrenceTime) {
+        this.occurrenceTime = occurrenceTime;
     }
 
-    public String getDurationTime() {
-        return durationTime;
+    public String getDosageTime() {
+        return dosageTime;
     }
 
-    public void setDurationTime(String durationTime) {
-        this.durationTime = durationTime;
+    public void setDosageTime(String dosageTime) {
+        this.dosageTime = dosageTime;
     }
 
-    public String getSymptomsDecription() {
-        return symptomsDecription;
+    public String getFrequency() {
+        return frequency;
     }
 
-    public void setSymptomsDecription(String symptomsDecription) {
-        this.symptomsDecription = symptomsDecription;
+    public void setFrequency(String frequency) {
+        this.frequency = frequency;
     }
 
-    public String getEffect() {
-        return effect;
+    public String getImpact() {
+        return impact;
     }
 
-    public void setEffect(String effect) {
-        this.effect = effect;
+    public void setImpact(String impact) {
+        this.impact = impact;
     }
 }

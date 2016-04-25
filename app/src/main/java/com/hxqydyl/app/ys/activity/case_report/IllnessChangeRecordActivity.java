@@ -22,80 +22,68 @@ import java.util.ArrayList;
 /**
  * Created by white_ash on 2016/4/6.
  */
-public class IllnessChangeRecordActivity extends BaseTitleActivity implements View.OnClickListener {
-    @InjectId(id = R.id.lvIllnessChangeRecord)
+public class IllnessChangeRecordActivity extends BaseTitleActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
     private ListView lvIllnessChangeRecord;
     private IllnessChangeRecordAdapter illnessChangeAdapter;
     private ArrayList<IllnessChangeRecord> changeRecords = new ArrayList<IllnessChangeRecord>();
-
     private CaseReportNet caseReportNet;
     private Patient patient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        init();
+        setContentView(R.layout.activity_illness_change_record);
+        initView();
+
+        caseReportNet = new CaseReportNet(this);
+        caseReportNet.getIllnessChangeRecordHistory(LoginManager.getDoctorUuid(), patient.getCustomerUuid());
+    }
+
+    private void init() {
         patient = (Patient) getIntent().getSerializableExtra(PatientDetailsActivity.KEY_PATIENT);
-        if(patient == null){
+        if (patient == null) {
             finish();
             return;
         }
-        setContentView(R.layout.activity_illness_change_record);
-
-        initViewOnBaseTitle(getString(R.string.illness_change));
-        setBackListener(this);
-
-        InjectUtils.injectView(this);
-
-//        initTestData();
-        illnessChangeAdapter = new IllnessChangeRecordAdapter(this, changeRecords);
-        lvIllnessChangeRecord.setAdapter(illnessChangeAdapter);
-        lvIllnessChangeRecord.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                IllnessChangeRecord record = (IllnessChangeRecord) parent.getItemAtPosition(position);
-                if(record!=null){
-                    Intent intent = new Intent(IllnessChangeRecordActivity.this,IllnessChangeDetalsActivity.class);
-                    intent.putExtra(IllnessChangeDetalsActivity.KEY_ILLNESS_CHANGE_RECORD,record);
-                    startActivity(intent);
-                }
-            }
-        });
-        caseReportNet = new CaseReportNet(this);
-        caseReportNet.getIllnessChangeRecordHistory(LoginManager.getDoctorUuid(),patient.getId());
     }
 
-    private void initTestData() {
-        IllnessChangeRecord record = new IllnessChangeRecord();
-        record.setStatus("无效");
-        record.setDescription("吃了药睡不着，数羊数到1000只也睡不着");
-        record.setTime("2016-03-21");
-        changeRecords.add(record);
-        record = new IllnessChangeRecord();
-        record.setStatus("好转");
-        record.setDescription("数羊数羊数到1001只的时候，我好像快睡着了");
-        record.setTime("2016-03-21");
-        changeRecords.add(record);
-        record = new IllnessChangeRecord();
-        record.setStatus("痊愈");
-        record.setDescription("第1005只，第1006只..... 第10001只，第10002只......");
-        record.setTime("2016-03-21");
-        changeRecords.add(record);
+    private void initView() {
+        initViewOnBaseTitle(getString(R.string.illness_change));
+        lvIllnessChangeRecord = (ListView) findViewById(R.id.lvIllnessChangeRecord);
+        illnessChangeAdapter = new IllnessChangeRecordAdapter(this, changeRecords);
+        lvIllnessChangeRecord.setAdapter(illnessChangeAdapter);
+    }
+
+    private void initListener() {
+        setBackListener(this);
+        lvIllnessChangeRecord.setOnItemClickListener(this);
     }
 
     @Override
     public void onResponse(String url, Object result) {
         super.onResponse(url, result);
         changeRecords.clear();
-        changeRecords.addAll((ArrayList<IllnessChangeRecord>)result);
+        changeRecords.addAll((ArrayList<IllnessChangeRecord>) result);
         illnessChangeAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()){
+        switch (v.getId()) {
             case R.id.back_img:
                 finish();
                 break;
+        }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        IllnessChangeRecord record = (IllnessChangeRecord) parent.getItemAtPosition(position);
+        if (record != null) {
+            Intent intent = new Intent(IllnessChangeRecordActivity.this, IllnessChangeDetalsActivity.class);
+            intent.putExtra(IllnessChangeDetalsActivity.KEY_ILLNESS_CHANGE_RECORD, record);
+            startActivity(intent);
         }
     }
 }

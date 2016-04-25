@@ -370,9 +370,9 @@ public class CaseReportNet extends BaseNet {
 
     private MeasureFormRecord jsonToMeasureFormRecord(int type,JSONObject jsonObject) throws Exception{
         MeasureFormRecord record = new MeasureFormRecord();
-        record.setName(jsonObject.optString("subject"));
-        record.setResult(jsonObject.optString("analys"));
-        record.setRetDescription(jsonObject.optString("resultId"));
+        record.setSubject(jsonObject.optString("subject"));
+        record.setAnalys(jsonObject.optString("analys"));
+        record.setResultId(jsonObject.optString("resultId"));
         record.setScore(jsonObject.optString("score"));
         record.setType(type);
         return record;
@@ -380,20 +380,20 @@ public class CaseReportNet extends BaseNet {
 
     private BadReactionRecord jsonToBadReactionRecord(JSONObject json) throws Exception {
         BadReactionRecord record = new BadReactionRecord();
-        record.setFirstTime(json.optString("occurrenceTime"));
-        record.setDurationTime(json.optString("dosageTime"));
-        record.setEffect(json.optString("impact"));
-        record.setSymptomsDecription(json.optString("frequency"));
+        record.setOccurrenceTime(json.optString("occurrenceTime"));
+        record.setDosageTime(json.optString("dosageTime"));
+        record.setImpact(json.optString("impact"));
+        record.setFrequency(json.optString("frequency"));
         return record;
     }
 
     private EatMedRecord jsonToEatMedRecord(JSONObject json) throws Exception {
         EatMedRecord record = new EatMedRecord();
-        record.setMedName(json.optString("productName"));
-        record.setStartTime(json.optString("medicalDateBegin"));
-        record.setEndTime(json.optString("medicalDateEnd"));
-        record.setEatMethod(json.optString("directions"));
-        record.setRate(json.optString("frequency"));
+        record.setProductName(json.optString("productName"));
+        record.setMedicalDateBegin(json.optString("medicalDateBegin"));
+        record.setMedicalDateEnd(json.optString("medicalDateEnd"));
+        record.setDirections(json.optString("directions"));
+        record.setFrequency(json.optString("frequency"));
         record.setSingleAmount(json.optString("dosage") + json.optString("unit"));
         return record;
     }
@@ -575,7 +575,7 @@ public class CaseReportNet extends BaseNet {
                 treatInfo.setUnread(true);
             }
         }
-        treatInfo.setTime(jsonObject.optString("dt"));
+        treatInfo.setDt(jsonObject.optString("dt"));
         return treatInfo;
     }
 

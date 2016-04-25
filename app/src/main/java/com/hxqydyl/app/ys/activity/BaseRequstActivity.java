@@ -32,10 +32,10 @@ public class BaseRequstActivity<T> extends BaseTitleActivity implements HttpUtil
             dismissDialog();
             if (map.get("IsString").equals("false")) {
                 BaseResponse t = (BaseResponse) gson.fromJson(s, aClass);
-                if ((!TextUtils.isEmpty(t.value) && t.equals("true")) || (t.query != null && !TextUtils.isEmpty(t.query.success) && t.query.success.equals("1"))) {
+                if (t.code==200 || (t.query != null && !TextUtils.isEmpty(t.query.success) && t.query.success.equals("1"))||(t.value!=null&&t.value.equals("true"))) {
                     onSuccessToBean(t, i);
-                } else if (!TextUtils.isEmpty(t.value) && t.equals("false") && !TextUtils.isEmpty(t.mesage)) {
-                    UIHelper.ToastMessage(this, t.mesage);
+                } else if (t.code!=200 && !TextUtils.isEmpty(t.message)) {
+                    UIHelper.ToastMessage(this, t.message);
                 } else if (t.query != null && !TextUtils.isEmpty(t.query.message)) {
                     UIHelper.ToastMessage(this, t.query.message);
                 } else {
@@ -74,7 +74,10 @@ public class BaseRequstActivity<T> extends BaseTitleActivity implements HttpUtil
      *               <p>
      *               onSuccessString中回调
      */
-    public void toNomalNetStringBack(BaseParams params, int flag, String url) {
+    public void toNomalNetStringBack(BaseParams params, int flag, String url,String showdialog) {
+        if (!TextUtils.isEmpty(showdialog)){
+            showDialog(showdialog);
+        }
         Map<String, String> map = new HashMap<>();
         map.put("IsString", "true");
         if (params instanceof GetParams) {

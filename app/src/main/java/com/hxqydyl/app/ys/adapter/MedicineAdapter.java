@@ -2,6 +2,7 @@ package com.hxqydyl.app.ys.adapter;
 
 import android.content.Context;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,8 @@ import android.widget.TextView;
 import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.NormalListDialog;
 import com.hxqydyl.app.ys.R;
+import com.hxqydyl.app.ys.bean.follow.plan.ImportantAdvice;
+import com.hxqydyl.app.ys.bean.follow.plan.ImportantAdviceChild;
 import com.hxqydyl.app.ys.bean.follow.plan.Medicine;
 import com.hxqydyl.app.ys.bean.follow.plan.MedicineDosage;
 import com.hxqydyl.app.ys.utils.StringUtils;
@@ -33,18 +36,19 @@ import java.util.Map;
 public class MedicineAdapter extends BaseAdapter {
 
     private Context context;
-    private List<Medicine> list;
+    private List<ImportantAdviceChild> list;
     private ListView listView;
     private boolean isEdit;
     private StringBuffer uuidDeleteSb;
 
-    public MedicineAdapter(Context context, List<Medicine> list, ListView listView, boolean isEdit){
+    public MedicineAdapter(Context context, List<ImportantAdviceChild> list, ListView listView, boolean isEdit) {
         this.context = context;
         this.list = list;
         this.listView = listView;
         this.isEdit = isEdit;
         uuidDeleteSb = new StringBuffer();
     }
+
     @Override
     public int getCount() {
         return list.size();
@@ -57,22 +61,22 @@ public class MedicineAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     public void notifyDataSetChanged(boolean updateData) {
         if (updateData && isEdit) {
             for (int i = 0; i < listView.getChildCount() && i < list.size(); i++) {
                 ViewHolder vh = (ViewHolder) listView.getChildAt(i).getTag();
-                Medicine m = list.get(i);
-                m.setName(vh.etName.getText().toString());
+                ImportantAdviceChild m = list.get(i);
+                m.setMedicineUuid(vh.etName.getText().toString());
 
-                ArrayList<MedicineDosage> mdList = m.getMdList();
+                List<MedicineDosage> mdList = m.getMd();
                 if (mdList == null) {
                     mdList = new ArrayList<>();
-                    m.setMdList(mdList);
+                    m.setMd(mdList);
                 }
-                for (int j=0; j < vh.lvDosage.getChildCount() && i < mdList.size(); j++) {
+                for (int j = 0; j < vh.lvDosage.getChildCount() && i < mdList.size(); j++) {
                     MedicineDosageAdapter.ViewHolder mdVh =
                             (MedicineDosageAdapter.ViewHolder) vh.lvDosage.getChildAt(j).getTag();
                     MedicineDosage md = mdList.get(j);
@@ -89,8 +93,9 @@ public class MedicineAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;
-        final Medicine m = list.get(position);
-        if (convertView == null){
+        final ImportantAdviceChild m = list.get(position);
+        m.initDate();
+        if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_medicine, null);
             holder = new ViewHolder();
             holder.etName = (EditText) convertView.findViewById(R.id.etName);
@@ -105,18 +110,15 @@ public class MedicineAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.etName.setText(m.getName());
+        holder.etName.setText(m.getMedicineUuid());
         holder.tvFoodRelation.setText(m.getFood());
-        timeSelected(holder.tvTimeMorning, m.isTimeMorning());
-        timeSelected(holder.tvTimeNoon, m.isTimeNoon());
-        timeSelected(holder.tvTimeNight, m.isTimeNight());
-
-        ArrayList<MedicineDosage> mdList = m.getMdList();
-        MedicineDosageAdapter adapter;
-        if (mdList == null) {
-            mdList = new ArrayList<>();
-            m.setMdList(mdList);
+        if (!TextUtils.isEmpty(m.getDirections())) {
+            timeSelected(holder.tvTimeMorning, m.isTimeMorning(),holder);
+            timeSelected(holder.tvTimeNoon, m.isTimeNoon(),holder);
+            timeSelected(holder.tvTimeNight, m.isTimeNight(),holder);
         }
+        List<MedicineDosage> mdList = m.getMd();
+        MedicineDosageAdapter adapter;
         if (mdList.size() == 0) {
             mdList.add(new MedicineDosage("", "", "mg"));
         }
@@ -125,16 +127,16 @@ public class MedicineAdapter extends BaseAdapter {
         if (isEdit) {
             holder.etName.setEnabled(true);
             holder.ibDelete.setVisibility(View.VISIBLE);
-            setTimeClick(holder.tvTimeMorning, m);
-            setTimeClick(holder.tvTimeNoon, m);
-            setTimeClick(holder.tvTimeNight, m);
+            setTimeClick(holder.tvTimeMorning, m,holder);
+            setTimeClick(holder.tvTimeNoon, m,holder);
+            setTimeClick(holder.tvTimeNight, m,holder);
             holder.ibDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Medicine m = list.get(position);
-                    if (StringUtils.isNotEmpty(m.getUuid())) {
+                    ImportantAdviceChild m = list.get(position);
+                    if (StringUtils.isNotEmpty(m.getMedicineUuid())) {
                         if (uuidDeleteSb.length() > 0) uuidDeleteSb.append(",");
-                        uuidDeleteSb.append(m.getUuid());
+                        uuidDeleteSb.append(m.getMedicineUuid());
                     }
                     list.remove(position);
                     MedicineAdapter.this.notifyDataSetChanged(true);
@@ -143,7 +145,7 @@ public class MedicineAdapter extends BaseAdapter {
             holder.tvFoodRelation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    foodRelationDialog((TextView)v, m);
+                    foodRelationDialog((TextView) v, m);
                 }
             });
         } else {
@@ -153,7 +155,7 @@ public class MedicineAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private void foodRelationDialog(final TextView v, final Medicine m) {
+    private void foodRelationDialog(final TextView v, final ImportantAdviceChild m) {
         final NormalListDialog dialog = new NormalListDialog(context, Medicine.items);
         dialog.title("请选择与食物的关系")
                 .titleBgColor(context.getResources().getColor(R.color.color_home_topbar))
@@ -169,7 +171,7 @@ public class MedicineAdapter extends BaseAdapter {
         });
     }
 
-    private void timeSelected(TextView tv, boolean bool) {
+    private void timeSelected(TextView tv, boolean bool,ViewHolder vh) {
         if (bool) {
             tv.setTextColor(context.getResources().getColor(R.color.white));
             tv.setBackgroundResource(R.drawable.btn_bg_selecter);
@@ -177,13 +179,27 @@ public class MedicineAdapter extends BaseAdapter {
             tv.setTextColor(context.getResources().getColor(R.color.black));
             tv.setBackgroundResource(R.drawable.btn_medicine_time);
         }
+        String text = tv.getText().toString();
+
+        switch (text) {
+            case "早":
+                vh.boolTimeMorning=bool;
+                break;
+            case "中":
+                vh.boolTimeNoon=bool;
+
+                break;
+            case "晚":
+                vh.boolTimeNight=bool;
+                break;
+        }
     }
 
-    private void setTimeClick(final TextView tv, final Medicine m) {
+    private void setTimeClick(final TextView tv, final ImportantAdviceChild m,final  ViewHolder vh) {
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TextView tv = (TextView)v;
+                TextView tv = (TextView) v;
                 String text = tv.getText().toString();
                 boolean bool = false;
                 switch (text) {
@@ -194,13 +210,14 @@ public class MedicineAdapter extends BaseAdapter {
                     case "中":
                         m.setTimeNoon(!m.isTimeNoon());
                         bool = m.isTimeNoon();
+
                         break;
                     case "晚":
                         m.setTimeNight(!m.isTimeNight());
                         bool = m.isTimeNight();
                         break;
                 }
-                timeSelected(tv, bool);
+                timeSelected(tv, bool,vh);
             }
         });
     }

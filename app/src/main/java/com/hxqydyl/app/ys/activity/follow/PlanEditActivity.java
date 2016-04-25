@@ -24,6 +24,8 @@ import com.hxqydyl.app.ys.adapter.PlanCheckSycleAdapter;
 import com.hxqydyl.app.ys.adapter.PlanSelfScaleAdapter;
 import com.hxqydyl.app.ys.bean.follow.plan.CheckSycle;
 import com.hxqydyl.app.ys.bean.follow.plan.HealthTips;
+import com.hxqydyl.app.ys.bean.follow.plan.ImportantAdvice;
+import com.hxqydyl.app.ys.bean.follow.plan.ImportantAdviceChild;
 import com.hxqydyl.app.ys.bean.follow.plan.Medicine;
 import com.hxqydyl.app.ys.bean.follow.plan.MedicineDosage;
 import com.hxqydyl.app.ys.bean.follow.plan.Plan;
@@ -47,7 +49,7 @@ import ui.swipemenulistview.SwipeMenuListView;
  * Created by wangchao36 on 16/3/22.
  * 编辑随访方案
  */
-public class PlanEditActivity extends BaseTitleActivity implements View.OnClickListener{
+public class PlanEditActivity extends BaseTitleActivity implements View.OnClickListener {
 
     private EditText etTitle;
     private EditText etDrugTherapy; // 不良反应
@@ -68,7 +70,7 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
 
     private ListView lvMedicine;
     private MedicineAdapter medicineAdapter;
-    private ArrayList<Medicine> medicineList;        // 药品列表
+    private ArrayList<ImportantAdviceChild> medicineList;        // 药品列表
 
     private SwipeMenuListView lvOtherSycle;
     private PlanCheckSycleAdapter planCheckSycleAdapter;
@@ -154,7 +156,7 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
         lvOtherSycle.setAdapter(planCheckSycleAdapter);
 
         medicineList = new ArrayList<>();
-        medicineList.add(new Medicine());
+        medicineList.add(new ImportantAdviceChild());
         medicineAdapter = new MedicineAdapter(this, medicineList, lvMedicine, true);
         lvMedicine.setAdapter(medicineAdapter);
 
@@ -172,7 +174,7 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
         healthTipsAdapter = new HealthTipsAdapter(this, healthTipsList, elvHealthTips);
         elvHealthTips.setAdapter(healthTipsAdapter);
         llAddTips = (LinearLayout) findViewById(R.id.llAddTips);
-        for(int i = 0; i < healthTipsAdapter.getGroupCount(); i++){
+        for (int i = 0; i < healthTipsAdapter.getGroupCount(); i++) {
             elvHealthTips.expandGroup(i);
         }
         btnSave = (Button) findViewById(R.id.btnSave);
@@ -280,12 +282,12 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
             case R.id.llAddTips:
                 healthTipsList.add(new HealthTips());
                 healthTipsAdapter.notifyDataSetChanged(true);
-                for(int i = 0; i < healthTipsAdapter.getGroupCount(); i++){
+                for (int i = 0; i < healthTipsAdapter.getGroupCount(); i++) {
                     elvHealthTips.expandGroup(i);
                 }
                 break;
             case R.id.llAddMedicine:
-                medicineList.add(new Medicine());
+                medicineList.add(new ImportantAdviceChild());
                 medicineAdapter.notifyDataSetChanged(true);
                 break;
             case R.id.llAddOtherSycle:
@@ -310,23 +312,23 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        try{
+        try {
             if (requestCode == 10) {
                 if (resultCode == 1) {
-                    List<Scale> list = (List<Scale>)data.getSerializableExtra("list");
+                    List<Scale> list = (List<Scale>) data.getSerializableExtra("list");
                     selfScaleList.clear();
                     selfScaleList.addAll(list);
                     selfScaleAdapter.notifyDataSetChanged();
-                } else if(resultCode == 2) {
-                    List<Scale> list = (List<Scale>)data.getSerializableExtra("list");
+                } else if (resultCode == 2) {
+                    List<Scale> list = (List<Scale>) data.getSerializableExtra("list");
                     doctorScaleList.clear();
                     doctorScaleList.addAll(list);
                     doctorScaleAdapter.notifyDataSetChanged();
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            UIHelper.ToastMessage(PlanEditActivity.this,"解析出错啦，刷新下会有意外惊喜");
+            UIHelper.ToastMessage(PlanEditActivity.this, "解析出错啦，刷新下会有意外惊喜");
         }
 
     }
@@ -354,11 +356,11 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
             return;
         }
 
-        ArrayList<Medicine> mList = new ArrayList<>();
-        for (int i=0; i < lvMedicine.getChildCount(); i++) {
+        ArrayList<ImportantAdviceChild> mList = new ArrayList<>();
+        for (int i = 0; i < lvMedicine.getChildCount(); i++) {
             MedicineAdapter.ViewHolder vh = (MedicineAdapter.ViewHolder) lvMedicine.getChildAt(i).getTag();
-            Medicine m = new Medicine();
-            m.setName(vh.etName.getText().toString());
+            ImportantAdviceChild m = new ImportantAdviceChild();
+            m.setMedicineUuid(vh.etName.getText().toString());
             m.setFood(vh.tvFoodRelation.getText().toString());
             m.setTimeNoon(vh.boolTimeNoon);
             m.setTimeNight(vh.boolTimeNight);
@@ -366,7 +368,7 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
 
             ListView lvDosage = vh.lvDosage;
             ArrayList<MedicineDosage> mdList = new ArrayList<>();
-            for (int j=0; j < lvDosage.getChildCount(); j++) {
+            for (int j = 0; j < lvDosage.getChildCount(); j++) {
                 MedicineDosageAdapter.ViewHolder mdVh = (MedicineDosageAdapter.ViewHolder) lvDosage.getChildAt(j).getTag();
                 MedicineDosage md = new MedicineDosage();
                 md.setDay(mdVh.etDay.getText().toString());
@@ -374,12 +376,12 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
                 md.setUnit(mdVh.tvUnit.getText().toString());
                 mdList.add(md);
             }
-            m.setMdList(mdList);
+            m.setMd(mdList);
             mList.add(m);
         }
 
         ArrayList<CheckSycle> csList = new ArrayList<>();
-        for (int i=0; i < lvOtherSycle.getChildCount(); i++) {
+        for (int i = 0; i < lvOtherSycle.getChildCount(); i++) {
             PlanCheckSycleAdapter.ViewHolder vh = (PlanCheckSycleAdapter.ViewHolder) lvOtherSycle.getChildAt(i).getTag();
             CheckSycle cs = new CheckSycle();
             cs.setName(vh.tvName.getText().toString());
@@ -388,7 +390,7 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
         }
 
         ArrayList<HealthTips> htList = new ArrayList<>();
-        for (int i=1; i < elvHealthTips.getChildCount(); i+=2) {
+        for (int i = 1; i < elvHealthTips.getChildCount(); i += 2) {
             HealthTipsAdapter.ChildViewHolder vh = (HealthTipsAdapter.ChildViewHolder) elvHealthTips.getChildAt(i).getTag();
             HealthTips ht = new HealthTips();
             ht.setDay(vh.etDay.getText().toString());
@@ -431,7 +433,7 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
     }
 
     private void initUpdateFollowCallback() {
-        updateFollowCallback = new FollowCallback(this){
+        updateFollowCallback = new FollowCallback(this) {
             @Override
             public void onResponse(String response) {
                 super.onResponse(response);
@@ -446,7 +448,6 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
             }
         };
     }
-
 
 
     private String cycleNum(TextView tv) {

@@ -28,7 +28,7 @@ public class Plan extends PlanBaseInfo implements Serializable {
     private String hepatic;         //肝功能周期
     private String weight;  //
 
-    private ArrayList<Medicine> medicineList;        //药品信息
+    private ArrayList<ImportantAdviceChild> medicineList;        //药品信息
     private ArrayList<CheckSycle> otherCheckSycle;   //其他自定义随访周期
     private ArrayList<Scale> selfTestList;   //自评量表
     private ArrayList<Scale> doctorTestList; //医评量表
@@ -73,7 +73,7 @@ public class Plan extends PlanBaseInfo implements Serializable {
             plan.setSelfTestList(Scale.parse(jsonObject.optJSONArray("selfTest")));
             plan.setDoctorTestList(Scale.parse(jsonObject.optJSONArray("doctorTest")));
             plan.setOtherCheckSycle(CheckSycle.parse(jsonObject.optJSONArray("otherMap")));
-            plan.setMedicineList(Medicine.parse(jsonObject.optJSONArray("doctorAdvice")));
+//            plan.setMedicineList(Medicine.parse(jsonObject.optJSONArray("doctorAdvice")));
             plan.setHealthTipsList(HealthTips.parse(jsonObject.optJSONArray("healthGuide")));
             return plan;
         } catch (Exception e) {
@@ -82,7 +82,7 @@ public class Plan extends PlanBaseInfo implements Serializable {
         }
     }
 
-    public void setMedicineList(ArrayList<Medicine> medicineList) {
+    public void setMedicineList(ArrayList<ImportantAdviceChild> medicineList) {
         this.medicineList = medicineList;
     }
 
@@ -118,7 +118,7 @@ public class Plan extends PlanBaseInfo implements Serializable {
         return otherCheckSycle;
     }
 
-    public List<Medicine> getMedicineList() {
+    public List<ImportantAdviceChild> getMedicineList() {
         return medicineList;
     }
 

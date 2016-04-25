@@ -168,29 +168,29 @@ public class FollowUpFormAdapter extends BaseExpandableListAdapter {
     private void bindBadReactionData(BadReactionRecord record, LinearLayout llBadReactionRecord) {
         BadReactionRecordViewHolder viewHolder = new BadReactionRecordViewHolder();
         InjectUtils.injectView(viewHolder,llBadReactionRecord);
-        viewHolder.tvOccurrTime.setText(record.getFirstTime());
-        viewHolder.tvDurationTime.setText(record.getDurationTime());
-        viewHolder.tvSymptomsDes.setText(record.getSymptomsDecription());
-        viewHolder.tvEffect.setText(record.getEffect());
+        viewHolder.tvOccurrTime.setText(record.getOccurrenceTime());
+        viewHolder.tvDurationTime.setText(record.getDosageTime());
+        viewHolder.tvSymptomsDes.setText(record.getFrequency());
+        viewHolder.tvEffect.setText(record.getImpact());
     }
 
     private void bindFormMeasureData(MeasureFormRecord record, LinearLayout llFormMeasure) {
         MeasureFormRecordViewHolder viewHolder = new MeasureFormRecordViewHolder();
         InjectUtils.injectView(viewHolder,llFormMeasure);
-        viewHolder.tvName.setText(record.getName());
+        viewHolder.tvName.setText(record.getSubject());
         viewHolder.tvScore.setText(String.format(context.getString(R.string.score_xx),record.getScore()));
-        viewHolder.tvResult.setText(String.format(context.getString(R.string.result_xx),record.getResult()));
-        viewHolder.tvResultDescription.setText(String.format(context.getString(R.string.result_description_xx),record.getRetDescription()));
+        viewHolder.tvResult.setText(String.format(context.getString(R.string.result_xx),record.getAnalys()));
+        viewHolder.tvResultDescription.setText(String.format(context.getString(R.string.result_description_xx),record.getResultId()));
     }
 
     private void bindEatMedData(EatMedRecord record, LinearLayout llEatMedRecord) {
         EatMedRecordViewHolder viewHolder = new EatMedRecordViewHolder();
         InjectUtils.injectView(viewHolder,llEatMedRecord);
-        viewHolder.tvMedName.setText(record.getMedName());
-        viewHolder.tvEatTime.setText(record.getStartTime() + "至" + record.getEndTime());
+        viewHolder.tvMedName.setText(record.getProductName());
+        viewHolder.tvEatTime.setText(record.getMedicalDateBegin() + "至" + record.getMedicalDateEnd());
         viewHolder.tvSingleAmount.setText(record.getSingleAmount());
-        viewHolder.tvRate.setText(record.getRate());
-        viewHolder.tvEatMethod.setText(record.getEatMethod());
+        viewHolder.tvRate.setText(record.getFrequency());
+        viewHolder.tvEatMethod.setText(record.getDirections());
     }
 
     private void bindOtherCheckAndResultData(OtherCheckRecord record, LinearLayout llOtherCheckAndResult) {

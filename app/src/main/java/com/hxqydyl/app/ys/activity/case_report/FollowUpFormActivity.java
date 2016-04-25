@@ -7,232 +7,241 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 
 import com.hxqydyl.app.ys.R;
-import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+import com.hxqydyl.app.ys.activity.BaseRequstActivity;
 import com.hxqydyl.app.ys.activity.patient.PatientAdviceInfoActivity;
 import com.hxqydyl.app.ys.activity.patient.PatientDetailsActivity;
 import com.hxqydyl.app.ys.activity.patient.PatientSimpleInfoViewHolder;
 import com.hxqydyl.app.ys.adapter.FollowUpFormAdapter;
-import com.hxqydyl.app.ys.bean.FollowUpForm;
 import com.hxqydyl.app.ys.bean.Patient;
 import com.hxqydyl.app.ys.bean.PatientTreatInfo;
 import com.hxqydyl.app.ys.bean.Pic;
-import com.hxqydyl.app.ys.bean.followupform.BadReactionRecord;
+import com.hxqydyl.app.ys.bean.follow.CheckResult;
+import com.hxqydyl.app.ys.bean.follow.VisitRecord;
 import com.hxqydyl.app.ys.bean.followupform.EatMedRecord;
 import com.hxqydyl.app.ys.bean.followupform.FollowUpFormGroup;
-import com.hxqydyl.app.ys.bean.followupform.FollowUpFormOneRecord;
 import com.hxqydyl.app.ys.bean.followupform.IllnessChange;
 import com.hxqydyl.app.ys.bean.followupform.MeasureFormRecord;
 import com.hxqydyl.app.ys.bean.followupform.OtherCheckRecord;
 import com.hxqydyl.app.ys.bean.followupform.WeightRecord;
-import com.hxqydyl.app.ys.http.CaseReportNet;
+import com.hxqydyl.app.ys.bean.response.FollowUpFormResponse;
 import com.hxqydyl.app.ys.http.UrlConstants;
-import com.hxqydyl.app.ys.utils.InjectId;
-import com.hxqydyl.app.ys.utils.InjectUtils;
+import com.hxqydyl.app.ys.ui.UIHelper;
+import com.xus.http.httplib.model.GetParams;
 
 import java.util.ArrayList;
 
 /**
  * Created by white_ash on 2016/3/23.
  */
-public class FollowUpFormActivity extends BaseTitleActivity implements View.OnClickListener, FollowUpFormAdapter.SeeHistoryButtonListener {
-    private PatientSimpleInfoViewHolder simpleInfoViewHolder;
-    @InjectId(id = R.id.lvForm)
+public class FollowUpFormActivity extends BaseRequstActivity implements View.OnClickListener, FollowUpFormAdapter.SeeHistoryButtonListener, ExpandableListView.OnGroupExpandListener {
     private ExpandableListView lvForm;
+    private Button bDoctorAdvice;
+    private PatientSimpleInfoViewHolder simpleInfoViewHolder;
     private ArrayList<FollowUpFormGroup> formList = new ArrayList<FollowUpFormGroup>();
     private FollowUpFormAdapter followUpFormAdapter;
     private int curExpandGroup = -1;
-
-    @InjectId(id = R.id.bDoctorAdvice)
-    private Button bDoctorAdvice;
-
-    private CaseReportNet caseReportNet;
-
     private PatientTreatInfo treatInfo;
     private Patient patient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_follow_up_form);
+        init();
+        initView();
+        initListener();
+        getFollowUpFormDetails();
+    }
+
+    private void init() {
         treatInfo = (PatientTreatInfo) getIntent().getSerializableExtra(PatientDetailsActivity.KEY_TREAT_INFO);
         patient = (Patient) getIntent().getSerializableExtra(PatientDetailsActivity.KEY_PATIENT);
-        if(treatInfo ==null || patient==null){
+        if (treatInfo == null || patient == null) {
             finish();
             return;
         }
-        setContentView(R.layout.activity_follow_up_form);
-
-        initViewOnBaseTitle(String.format(getString(R.string.follow_up_form_title),patient.getRealName()));
-        setBackListener(this);
-
-        simpleInfoViewHolder = new PatientSimpleInfoViewHolder(this);
-        InjectUtils.injectView(this);
-        followUpFormAdapter = new FollowUpFormAdapter(this,formList,this);
-        lvForm.setAdapter(followUpFormAdapter);
-        lvForm.setGroupIndicator(null);
-
-        lvForm.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                if(curExpandGroup >=0 && curExpandGroup!=groupPosition){
-                    lvForm.collapseGroup(curExpandGroup);
-                }
-                curExpandGroup = groupPosition;
-            }
-        });
-
-        bDoctorAdvice.setOnClickListener(this);
-//        initTestData();
-        caseReportNet = new CaseReportNet(this);
-        caseReportNet.getFollowUpFormDetails(treatInfo.getId());
     }
 
-    private void initTestData() {
-        for(int i=0;i<6;i++){
-            FollowUpFormGroup group = new FollowUpFormGroup(i+1);
-            FollowUpFormOneRecord record = null;
-            switch(group.getFormGroupType()){
-                case FollowUpFormGroup.Type.ILLNESS_CHANGE:
-                    record = new IllnessChange();
-                    ((IllnessChange)record).setType(IllnessChange.Type.ILL);
-                    ((IllnessChange)record).setStatus(IllnessChange.Status.INVALID);
-                    ((IllnessChange)record).setDescription("病情变化描述详情");
-                    group.addRecord(record);
-                    record = new IllnessChange();
-                    ((IllnessChange)record).setType(IllnessChange.Type.SLEEP);
-                    ((IllnessChange)record).setStatus(IllnessChange.Status.BETTER);
-                    ((IllnessChange)record).setDescription("病情变化描述详情");
-                    group.addRecord(record);
-                    record = new IllnessChange();
-                    ((IllnessChange)record).setType(IllnessChange.Type.FOOD);
-                    ((IllnessChange)record).setStatus(IllnessChange.Status.BEST);
-                    ((IllnessChange)record).setDescription("病情变化描述详情");
-                    group.addRecord(record);
-                    record = new IllnessChange();
-                    ((IllnessChange)record).setType(IllnessChange.Type.OTHER);
-                    ((IllnessChange)record).setDescription("病情变化描述详情");
-                    group.addRecord(record);
-                    record = new IllnessChange();
-                    ((IllnessChange)record).setType(IllnessChange.Type.SEE_HISTORY_BUTTON);
-                    group.addRecord(record);
-                    break;
-                case FollowUpFormGroup.Type.WEIGHT_RECORD:
-                    record = new WeightRecord();
-                    ((WeightRecord)record).setWeight("60");
-                    group.addRecord(record);
-                    break;
-                case FollowUpFormGroup.Type.OTHER_CHECK_RECORD:
-                    record = new OtherCheckRecord();
-                    ((OtherCheckRecord)record).setName("肾功能检查");
-                    ((OtherCheckRecord)record).getResult().setText("正常");
-                    Pic pic = new Pic(Pic.Source.WEB);
-                    pic.setThumbUrl("http://b.hiphotos.baidu.com/image/h%3D200/sign=fd93c2465cb5c9ea7df304e3e539b622/9c16fdfaaf51f3de7d874d2993eef01f3a297942.jpg");
-                    ((OtherCheckRecord)record).getResult().addPic(pic);
-                    group.addRecord(record);
-                    record = new OtherCheckRecord();
-                    ((OtherCheckRecord)record).setName("肝功能检查");
-                    pic = new Pic(Pic.Source.WEB);
-                    pic.setThumbUrl("http://b.hiphotos.baidu.com/image/h%3D200/sign=fd93c2465cb5c9ea7df304e3e539b622/9c16fdfaaf51f3de7d874d2993eef01f3a297942.jpg");
-                    ((OtherCheckRecord)record).getResult().addPic(pic);
-                    pic = new Pic(Pic.Source.WEB);
-                    pic.setThumbUrl("http://b.hiphotos.baidu.com/image/h%3D200/sign=fd93c2465cb5c9ea7df304e3e539b622/9c16fdfaaf51f3de7d874d2993eef01f3a297942.jpg");
-                    ((OtherCheckRecord)record).getResult().addPic(pic);
-                    group.addRecord(record);
-                    record = new OtherCheckRecord();
-                    ((OtherCheckRecord)record).setName("xx检查");
-                    group.addRecord(record);
-                    record = new OtherCheckRecord();
-                    ((OtherCheckRecord)record).setName("xx检查");
-                    ((OtherCheckRecord)record).getResult().setText("一切都好");
-                    group.addRecord(record);
-                    break;
-                case FollowUpFormGroup.Type.EAT_MED_RECORD:
-                    record = new EatMedRecord();
-                    ((EatMedRecord)record).setMedName("阿司匹林");
-                    ((EatMedRecord)record).setStartTime("2016-03-20");
-                    ((EatMedRecord)record).setEndTime("2013-03-21");
-                    ((EatMedRecord)record).setSingleAmount("0.5mg");
-                    ((EatMedRecord)record).setRate("1天3次");
-                    ((EatMedRecord)record).setEatMethod("口服");
-                    group.addRecord(record);
-                    record = new EatMedRecord();
-                    ((EatMedRecord)record).setMedName("阿司匹林速溶片");
-                    ((EatMedRecord)record).setStartTime("2013-03-24");
-                    ((EatMedRecord)record).setEndTime("2016-03-21");
-                    ((EatMedRecord)record).setSingleAmount("0.3mg");
-                    ((EatMedRecord)record).setRate("1天2次");
-                    ((EatMedRecord)record).setEatMethod("口服");
-                    group.addRecord(record);
-                    record = new BadReactionRecord();
-                    ((BadReactionRecord)record).setFirstTime("2016-03-20");
-                    ((BadReactionRecord)record).setDurationTime("2小时");
-                    ((BadReactionRecord)record).setSymptomsDecription("肚子痛");
-                    ((BadReactionRecord)record).setEffect("不想吃饭。不想上街。不想睡觉。什么都不想干。只想死。");
-                    group.addRecord(record);
-                    break;
-                case FollowUpFormGroup.Type.MEASURE_SELF_RECORD:
-                    record = new MeasureFormRecord();
-                    ((MeasureFormRecord)record).setName("SDS(抑郁自评量表)");
-                    ((MeasureFormRecord)record).setScore("3分");
-                    ((MeasureFormRecord)record).setResult("正常");
-                    ((MeasureFormRecord)record).setRetDescription("自评描述自评描述自评描述自评描述自评描述自评描述自评描述自评描述自评描述自评描述");
-                    group.addRecord(record);
-                    record = new MeasureFormRecord();
-                    ((MeasureFormRecord)record).setName("LSR(生活满意度自评量表)");
-                    ((MeasureFormRecord)record).setScore("5分");
-                    ((MeasureFormRecord)record).setResult("不正常");
-                    ((MeasureFormRecord)record).setRetDescription("生活满意度生活满意度生活满意度生活满意度生活满意度评描述");
-                    group.addRecord(record);
-                    break;
-                case FollowUpFormGroup.Type.DOC_MEASURE_RECORD:
-                    record = new MeasureFormRecord();
-                    ((MeasureFormRecord)record).setName("SDS(抑郁医评量表)");
-                    ((MeasureFormRecord)record).setScore("3分");
-                    ((MeasureFormRecord)record).setResult("正常");
-                    ((MeasureFormRecord)record).setRetDescription("医评描述自评描述");
-                    group.addRecord(record);
-                    record = new MeasureFormRecord();
-                    ((MeasureFormRecord)record).setName("LSR(生活满意度医评量表)");
-                    ((MeasureFormRecord)record).setScore("3分");
-                    ((MeasureFormRecord)record).setResult("正常");
-                    ((MeasureFormRecord)record).setRetDescription("医评描述自评描述医评描述自评描述医评描述自评描述医评描述自评描述医评描述自评描述医评描述自评描述");
-                    group.addRecord(record);
-                    break;
-            }
-            formList.add(group);
-        }
+    private void initView() {
+        lvForm = (ExpandableListView) findViewById(R.id.lvForm);
+        bDoctorAdvice = (Button) findViewById(R.id.bDoctorAdvice);
+        simpleInfoViewHolder = new PatientSimpleInfoViewHolder(this);
+        initViewOnBaseTitle(String.format(getString(R.string.follow_up_form_title), patient.getCustomerName()));
+        followUpFormAdapter = new FollowUpFormAdapter(this, formList, this);
+        lvForm.setAdapter(followUpFormAdapter);
+        lvForm.setGroupIndicator(null);
+    }
+
+    private void initListener() {
+        lvForm.setOnGroupExpandListener(this);
+        bDoctorAdvice.setOnClickListener(this);
+        setBackListener(this);
+    }
+
+    private void getFollowUpFormDetails() {
+        toNomalNet(new GetParams(), FollowUpFormResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_FOLLOW_UP_FORM_DETAILS, "1.0", treatInfo.getId()), "正在获取获取随访表单详情");
     }
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()){
+        switch (v.getId()) {
             case R.id.back_img:
                 finish();
                 break;
             case R.id.bDoctorAdvice:
-                Intent intent = new Intent(this,PatientAdviceInfoActivity.class);
-                intent.putExtra("customerUuid",patient.getId());
+                Intent intent = new Intent(this, PatientAdviceInfoActivity.class);
+                intent.putExtra("customerUuid", patient.getCustomerUuid());
                 startActivity(intent);
                 break;
         }
     }
 
     @Override
-    public void onResponse(String url, Object result) {
-        super.onResponse(url, result);
-        if(url.endsWith(UrlConstants.GET_FOLLOW_UP_FORM_DETAILS)){
-            FollowUpForm form = (FollowUpForm) result;
-            if(form!=null){
-                formList.clear();
-                formList.addAll(form.getRecordGroups());
-                followUpFormAdapter.notifyDataSetChanged();
+    public void onButtonClick() {
+        Intent intent = new Intent(this, IllnessChangeRecordActivity.class);
+        intent.putExtra(PatientDetailsActivity.KEY_PATIENT, patient);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onSuccessToBean(Object bean, int flag) {
+        FollowUpFormResponse FollowUpFormResponse = (FollowUpFormResponse) bean;
+        ArrayList<FollowUpFormGroup> list = toformList(FollowUpFormResponse);
+        if (list != null && list.size() > 0) {
+            formList.clear();
+            formList.addAll(list);
+            followUpFormAdapter.notifyDataSetChanged();
+        }else{
+            UIHelper.ToastMessage(this,"该表单暂无数据");
+        }
+    }
+
+    //将数据转换成界面处理的list
+    public ArrayList<FollowUpFormGroup> toformList(FollowUpFormResponse followUpFormResponse) {
+
+        ArrayList<FollowUpFormGroup> formList = new ArrayList<>();
+        if (followUpFormResponse.getVisitRecord() == null) {
+            return formList;
+        }
+        FollowUpFormGroup bqbh = new FollowUpFormGroup();
+        bqbh.setFormGroupType(FollowUpFormGroup.Type.ILLNESS_CHANGE);
+        FollowUpFormGroup tzjl = new FollowUpFormGroup();
+        tzjl.setFormGroupType(FollowUpFormGroup.Type.WEIGHT_RECORD);
+        FollowUpFormGroup jcjg = new FollowUpFormGroup();
+        jcjg.setFormGroupType(FollowUpFormGroup.Type.OTHER_CHECK_RECORD);
+        FollowUpFormGroup fyjl = new FollowUpFormGroup();
+        fyjl.setFormGroupType(FollowUpFormGroup.Type.EAT_MED_RECORD);
+        FollowUpFormGroup zplb = new FollowUpFormGroup();
+        zplb.setFormGroupType(FollowUpFormGroup.Type.MEASURE_SELF_RECORD);
+        FollowUpFormGroup yplb = new FollowUpFormGroup();
+        yplb.setFormGroupType(FollowUpFormGroup.Type.DOC_MEASURE_RECORD);
+        //病情变化中的病情变化
+        if (followUpFormResponse.getVisitRecord().getIllnessRecord() != null) {
+            VisitRecord.IllnessRecord record = followUpFormResponse.getVisitRecord().getIllnessRecord();
+            IllnessChange change = new IllnessChange();
+            change.setType(IllnessChange.Type.ILL);
+            change.setDescription(record.getNewCondition());
+            getStatus(change, record.getNewCondition());
+            bqbh.addRecord(change);
+        }
+        //进食情况
+        if (followUpFormResponse.getVisitRecord().getEat() != null) {
+            VisitRecord.SleepOrEat eat = followUpFormResponse.getVisitRecord().getEat();
+            IllnessChange change = new IllnessChange();
+
+            getStatus(change, eat.getState());
+            change.setDescription(eat.getResult());
+            change.setType(IllnessChange.Type.FOOD);
+            bqbh.addRecord(change);
+        }
+        //其他情况
+        if (followUpFormResponse.getVisitRecord().getOther() != null) {
+            VisitRecord.Other other = followUpFormResponse.getVisitRecord().getOther();
+            IllnessChange change = new IllnessChange();
+            change.setDescription(other.getResult());
+            change.setType(IllnessChange.Type.OTHER);
+            bqbh.addRecord(change);
+        }
+        if (bqbh.getRecords().size() > 0)
+            formList.add(bqbh);
+        //体重记录
+        if (followUpFormResponse.getVisitRecord().getWeight() != null) {
+            VisitRecord.Weight weight = followUpFormResponse.getVisitRecord().getWeight();
+            WeightRecord change = new WeightRecord();
+            change.setWeight(weight.getResult());
+            tzjl.addRecord(change);
+        }
+        if (tzjl.getRecords().size() > 0)
+            formList.add(tzjl);
+        //检查结果
+        if (followUpFormResponse.getVisitRecord().getCheckResult() != null && followUpFormResponse.getVisitRecord().getCheckResult().size() > 0) {
+            for (CheckResult result : followUpFormResponse.getVisitRecord().getCheckResult()) {
+                OtherCheckRecord record = new OtherCheckRecord();
+                record.setId(result.getUuid());
+                record.setName(result.getName());
+                record.getResult().setText(result.getResult());
+                if (result.getImgs() != null && result.getImgs().size() > 0) {
+                    for (String s : result.getImgs()) {
+                        Pic pic = new Pic();
+                        pic.setThumbUrl(s);
+                        pic.setUrl(s);
+                        record.getResult().addPic(pic);
+                    }
+                }
+                jcjg.addRecord(record);
             }
+        }
+        if (jcjg.getRecords().size() > 0)
+            formList.add(jcjg);
+        //服药记录
+        if (followUpFormResponse.getVisitRecord().getDoctorAdvice() != null && followUpFormResponse.getVisitRecord().getDoctorAdvice().size() > 0) {
+            for (EatMedRecord record : followUpFormResponse.getVisitRecord().getDoctorAdvice()) {
+                fyjl.addRecord(record);
+            }
+        }
+        //不良反应
+        if (followUpFormResponse.getVisitRecord().getDrugReaction() != null) {
+            fyjl.addRecord(followUpFormResponse.getVisitRecord().getDrugReaction());
+        }
+        if (fyjl.getRecords().size() > 0)
+            formList.add(fyjl);
+        //自评量表
+        if (followUpFormResponse.query.selfList != null && followUpFormResponse.query.selfList.size() > 0) {
+            for (MeasureFormRecord record : followUpFormResponse.query.selfList) {
+                zplb.addRecord(record);
+            }
+        }
+        if (zplb.getRecords().size() > 0)
+            formList.add(zplb);
+        //医评量表
+        if (followUpFormResponse.query.doctorList != null && followUpFormResponse.query.doctorList.size() > 0) {
+            for (MeasureFormRecord record : followUpFormResponse.query.doctorList) {
+                yplb.addRecord(record);
+            }
+        }
+        if (yplb.getRecords().size() > 0)
+            formList.add(yplb);
+        return formList;
+    }
+
+    //数据处理
+    public void getStatus(IllnessChange change, String s) {
+        if ("无效".equals(s)) {
+            change.setStatus(IllnessChange.Status.INVALID);
+        } else if ("好转".equals(s)) {
+            change.setStatus(IllnessChange.Status.BETTER);
+        } else if ("痊愈".equals(s)) {
+            change.setStatus(IllnessChange.Status.BEST);
+        } else {
+            change.setStatus(IllnessChange.Status.INVALID);
         }
     }
 
     @Override
-    public void onButtonClick() {
-        Intent intent = new Intent(this, IllnessChangeRecordActivity.class);
-        intent.putExtra(PatientDetailsActivity.KEY_PATIENT,patient);
-        startActivity(intent);
+    public void onGroupExpand(int groupPosition) {
+        if (curExpandGroup >= 0 && curExpandGroup != groupPosition) {
+            lvForm.collapseGroup(curExpandGroup);
+        }
+        curExpandGroup = groupPosition;
     }
 }

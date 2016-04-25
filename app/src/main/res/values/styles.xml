@@ -182,11 +182,10 @@
 
     <!--药品-->
     <style name="medicine_left_title">
-        <item name="android:paddingLeft">25dp</item>
-        <item name="android:gravity">center_vertical</item>
+        <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/text_size_16</item>
         <item name="android:background">#dcf1f5</item>
-        <item name="android:layout_width">120dp</item>
+        <item name="android:layout_width">90dp</item>
     </style>
     <!--方案中的周期，左边title-->
     <style name="plan_cycle_left_title">

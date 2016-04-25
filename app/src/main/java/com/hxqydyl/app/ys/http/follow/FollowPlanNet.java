@@ -42,51 +42,51 @@ public class FollowPlanNet {
     }
 
     public static void addVisitPrecept(Plan plan, FollowCallback callback) throws JSONException {
-        OkHttpUtils.post().url(FollowApplyNet.baseURL
-                + "app/pub/doctor/1.0/addVisitPrecept")
-                .addParams("doctorUuid", LoginManager.getDoctorUuid())        //医生ID
-                .addParams("preceptName", plan.getPreceptName())       //方案名称
-                .addParams("drugTherapy", plan.getDrugTherapy())       //药物不良反应处理
-                .addParams("sideEffects", plan.getSideEffects())   //其他治疗
-                .addParams("doctorAdvice", Medicine.toJson(plan.getMedicineList()))  //药物信息
-                .addParams("ortherMap", CheckSycle.list2json(plan.getOtherCheckSycle())) //其他自定义随访周期
-                .addParams("period", plan.getPeriod())                //随访周期
-                .addParams("electrocardiogram", plan.getElectrocardiogram()) //心电图检查周期
-                .addParams("hepatic", plan.getHepatic())       //肝功能周期
-                .addParams("bloodRoutine", plan.getBloodRoutine())  //血常规周期
-                .addParams("weight", plan.getWeight())        //体重功能周期
-                .addParams("selfTest", Scale.parseIdStr(plan.getSelfTestList()))      ///自评量表
-                .addParams("doctorTest", Scale.parseIdStr(plan.getDoctorTestList()))    //医评量表
-                .addParams("healthGuide", HealthTips.toJson(plan.getHealthTipsList()))    //健康小贴士
-                .build()
-                .execute(callback);
+//        OkHttpUtils.post().url(FollowApplyNet.baseURL
+//                + "app/pub/doctor/1.0/addVisitPrecept")
+//                .addParams("doctorUuid", LoginManager.getDoctorUuid())        //医生ID
+//                .addParams("preceptName", plan.getPreceptName())       //方案名称
+//                .addParams("drugTherapy", plan.getDrugTherapy())       //药物不良反应处理
+//                .addParams("sideEffects", plan.getSideEffects())   //其他治疗
+//                .addParams("doctorAdvice", Medicine.toJson(plan.getMedicineList()))  //药物信息
+//                .addParams("ortherMap", CheckSycle.list2json(plan.getOtherCheckSycle())) //其他自定义随访周期
+//                .addParams("period", plan.getPeriod())                //随访周期
+//                .addParams("electrocardiogram", plan.getElectrocardiogram()) //心电图检查周期
+//                .addParams("hepatic", plan.getHepatic())       //肝功能周期
+//                .addParams("bloodRoutine", plan.getBloodRoutine())  //血常规周期
+//                .addParams("weight", plan.getWeight())        //体重功能周期
+//                .addParams("selfTest", Scale.parseIdStr(plan.getSelfTestList()))      ///自评量表
+//                .addParams("doctorTest", Scale.parseIdStr(plan.getDoctorTestList()))    //医评量表
+//                .addParams("healthGuide", HealthTips.toJson(plan.getHealthTipsList()))    //健康小贴士
+//                .build()
+//                .execute(callback);
     }
 
     public static void editVisitPrecept(Plan plan, String doctorAdviceDelete,
                                         String ortherMapDelete, String healthGuideDelete,
                                         FollowCallback callback) throws JSONException {
-        OkHttpUtils.post().url(FollowApplyNet.baseURL
-                + "app/pub/doctor/1.0/editVisitPrecept")
-                .addParams("doctorUuid", LoginManager.getDoctorUuid())        //医生ID
-                .addParams("visitUuid", plan.getVisitUuid())        //医生ID
-                .addParams("preceptName", plan.getPreceptName())       //方案名称
-                .addParams("drugTherapy", plan.getDrugTherapy())       //药物不良反应处理
-                .addParams("sideEffects", plan.getSideEffects())   //其他治疗
-                .addParams("doctorAdvice", Medicine.toJson(plan.getMedicineList()))  //药物信息
-                .addParams("ortherMap", CheckSycle.list2json(plan.getOtherCheckSycle())) //其他自定义随访周期
-                .addParams("period", plan.getPeriod())                //随访周期
-                .addParams("electrocardiogram", plan.getElectrocardiogram()) //心电图检查周期
-                .addParams("hepatic", plan.getHepatic())       //肝功能周期
-                .addParams("bloodRoutine", plan.getBloodRoutine())  //血常规周期
-                .addParams("weight", plan.getWeight())        //体重功能周期
-                .addParams("selfTest", Scale.parseIdStr(plan.getSelfTestList()))      ///自评量表
-                .addParams("doctorTest", Scale.parseIdStr(plan.getDoctorTestList()))    //医评量表
-                .addParams("healthGuide", HealthTips.toJson(plan.getHealthTipsList()))    //健康小贴士
-                .addParams("healthGuideDelete", healthGuideDelete)    //
-                .addParams("doctorAdviceDelete", doctorAdviceDelete)    //
-                .addParams("ortherMapDelete", ortherMapDelete)    //
-                .build()
-                .execute(callback);
+//        OkHttpUtils.post().url(FollowApplyNet.baseURL
+//                + "app/pub/doctor/1.0/editVisitPrecept")
+//                .addParams("doctorUuid", LoginManager.getDoctorUuid())        //医生ID
+//                .addParams("visitUuid", plan.getVisitUuid())        //医生ID
+//                .addParams("preceptName", plan.getPreceptName())       //方案名称
+//                .addParams("drugTherapy", plan.getDrugTherapy())       //药物不良反应处理
+//                .addParams("sideEffects", plan.getSideEffects())   //其他治疗
+//                .addParams("doctorAdvice", Medicine.toJson(plan.getMedicineList()))  //药物信息
+//                .addParams("ortherMap", CheckSycle.list2json(plan.getOtherCheckSycle())) //其他自定义随访周期
+//                .addParams("period", plan.getPeriod())                //随访周期
+//                .addParams("electrocardiogram", plan.getElectrocardiogram()) //心电图检查周期
+//                .addParams("hepatic", plan.getHepatic())       //肝功能周期
+//                .addParams("bloodRoutine", plan.getBloodRoutine())  //血常规周期
+//                .addParams("weight", plan.getWeight())        //体重功能周期
+//                .addParams("selfTest", Scale.parseIdStr(plan.getSelfTestList()))      ///自评量表
+//                .addParams("doctorTest", Scale.parseIdStr(plan.getDoctorTestList()))    //医评量表
+//                .addParams("healthGuide", HealthTips.toJson(plan.getHealthTipsList()))    //健康小贴士
+//                .addParams("healthGuideDelete", healthGuideDelete)    //
+//                .addParams("doctorAdviceDelete", doctorAdviceDelete)    //
+//                .addParams("ortherMapDelete", ortherMapDelete)    //
+//                .build()
+//                .execute(callback);
     }
 
     /**

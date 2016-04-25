@@ -49,7 +49,7 @@ public class PatientTreatInfoAdapter extends BaseAdapter{
         ImageView ivTreatIcon = BaseViewHolder.get(convertView,R.id.ivTreatIcon);
         TextView tvTreatName = BaseViewHolder.get(convertView,R.id.tvTreatName);
         TextView tvUnreadIcon = BaseViewHolder.get(convertView,R.id.tvUnreadIcon);
-        tvTreatTime.setText(treatInfo.getTime());
+        tvTreatTime.setText(treatInfo.getDt());
         switch(treatInfo.getTreatType()){
             case PatientTreatInfo.TREAT_TYPE_MEN_ZHEN:
                 tvTreatName.setText(context.getString(R.string.men_zhen_bing_li));

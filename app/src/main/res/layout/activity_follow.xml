@@ -31,7 +31,7 @@
                     android:src="@mipmap/icon_follow_up_patient_apply" />
 
                 <TextView
-                    style="@style/follow_text_16"
+                    style="@style/follow_text_20"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/space_10"
                     android:layout_toRightOf="@id/imge1"
@@ -62,7 +62,7 @@
                     android:src="@mipmap/icon_follow_up_plan_manage" />
 
                 <TextView
-                    style="@style/follow_text_16"
+                    style="@style/follow_text_20"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/space_10"
                     android:layout_toRightOf="@id/imge2"
@@ -93,7 +93,7 @@
                     android:src="@mipmap/icon_pending_follow_up" />
 
                 <TextView
-                    style="@style/follow_text_16"
+                    style="@style/follow_text_20"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/space_10"
                     android:layout_toRightOf="@id/imge3"
@@ -124,7 +124,7 @@
                     android:src="@mipmap/icon_follow_up_patient" />
 
                 <TextView
-                    style="@style/follow_text_16"
+                    style="@style/follow_text_20"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/space_10"
                     android:layout_toRightOf="@id/imge4"
@@ -170,7 +170,7 @@
                     android:src="@mipmap/icon_group_message" />
 
                 <TextView
-                    style="@style/follow_text_16"
+                    style="@style/follow_text_20"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/space_10"
                     android:layout_toRightOf="@id/imge5"
@@ -201,7 +201,7 @@
                     android:src="@mipmap/icon_patient_education" />
 
                 <TextView
-                    style="@style/follow_text_16"
+                    style="@style/follow_text_20"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/space_10"
                     android:layout_toRightOf="@id/imge6"

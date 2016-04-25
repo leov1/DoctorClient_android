@@ -22,7 +22,7 @@ public class Advice implements Serializable{
     private String uuid;
     private String drugReaction;
     private String cureNote;
-    private ArrayList<Medicine> medicineList;
+    private ArrayList<Medicine> child;
 
     public static Advice parseDetailJson(String response) {
         try {
@@ -31,7 +31,7 @@ public class Advice implements Serializable{
             advice.setUuid(jsonObject.getString("uuid"));
             advice.setDrugReaction(jsonObject.getString("drugReaction"));
             advice.setCureNote(jsonObject.getString("cureNote"));
-            advice.setMedicineList(Medicine.parse(jsonObject.optJSONArray("child")));
+            advice.setChild(Medicine.parse(jsonObject.optJSONArray("child")));
             return advice;
         } catch (Exception e) {
             Log.e("client", e.getMessage());
@@ -44,7 +44,7 @@ public class Advice implements Serializable{
         jsonObject.put("serviceStaffUuid", LoginManager.getDoctorUuid());
         jsonObject.put("customerUuid", customerUuid);
         jsonObject.put("visitPreceptUuid", visitPreceptUuid);
-        List<Medicine> medicineList = getMedicineList();
+        List<Medicine> medicineList = getChild();
         JSONArray jsonArray = new JSONArray();
         for (Medicine m : medicineList) {
             JSONObject object = new JSONObject();
@@ -108,12 +108,12 @@ public class Advice implements Serializable{
         this.cureNote = cureNote;
     }
 
-    public ArrayList<Medicine> getMedicineList() {
-        return medicineList;
+    public ArrayList<Medicine> getChild() {
+        return child;
     }
 
-    public void setMedicineList(ArrayList<Medicine> medicineList) {
-        this.medicineList = medicineList;
+    public void setChild(ArrayList<Medicine> child) {
+        this.child = child;
     }
 
 }
