@@ -64,7 +64,7 @@ public class DialogUtils {
      * @param context
      * @param renameGroupListener
      */
-    public static void showRenamePatientGroupDialog(Context context, final RenameGroupListener renameGroupListener,final String groupId) {
+    public static void showRenamePatientGroupDialog(Context context, final RenameGroupListener renameGroupListener,final String groupId,String groupName) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_add_patient_group, null);
         builder.setView(view);
@@ -72,6 +72,7 @@ public class DialogUtils {
         TextView tvTitle = (TextView) view.findViewById(R.id.tvTitle);
         tvTitle.setText(context.getString(R.string.rename_group));
         final EditText et = (EditText) view.findViewById(R.id.etGroupName);
+        et.setText(groupName);
         Button b = (Button) view.findViewById(R.id.bSaveGroup);
         b.setOnClickListener(new Button.OnClickListener() {
             @Override

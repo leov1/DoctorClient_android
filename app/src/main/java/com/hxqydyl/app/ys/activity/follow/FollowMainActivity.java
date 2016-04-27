@@ -63,7 +63,8 @@ public class FollowMainActivity extends BaseRequstActivity implements View.OnCli
         getPatientGroup();
 
     }
-
+//    18543228901
+//    hao123
     //获取患者列表
     public void getPatientGroup() {
         toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), PatientGroupResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_ALL_PATIENT_AND_GROUP_INFO, "1.0"), "正在获取患者列表");
@@ -77,8 +78,9 @@ public class FollowMainActivity extends BaseRequstActivity implements View.OnCli
 
     //删除患者
     public void deletePatient(String groupId, String customerUuid) {
-        PostPrams postPrams = toPostParams(toParamsBaen("groupId", groupId), toParamsBaen("customerUuid", customerUuid));
-        toNomalNet(postPrams, BaseResponse.class, 2, UrlConstants.getWholeApiUrl(UrlConstants.MOVE_PATIENT_TO_OTHER_GROUP, "1.0"), "正在删除患者");
+        PostPrams postPrams = toPostParams(toParamsBaen("groupId", groupId), toParamsBaen("customerUuid", customerUuid),toParamsBaen("doctorUuid",LoginManager.getDoctorUuid()));
+        toNomalNet(postPrams, BaseResponse.class, 3, UrlConstants.getWholeApiUrl(UrlConstants.DELETE_PATIENT, "1.0"), "正在删除患者");
+
     }
 
 
@@ -133,7 +135,7 @@ public class FollowMainActivity extends BaseRequstActivity implements View.OnCli
             case R.id.rl_articl://患教库
                 CommentWebActivity.toCommentWeb(UrlConstants.getWholeApiUrl(UrlConstants.PATIENT_EDUCATION), null, FollowMainActivity.this, false);
                 break;
-            case R.id.ivManagePatientGroup:
+            case R.id.ivManagePatientGroup://分组管理
                 Intent groupManageIntent = new Intent(FollowMainActivity.this, PatientGroupManageActivity.class);
                 startActivityForResult(groupManageIntent, REQ_MANAGE_PATIENT_GROUP);
                 break;
@@ -168,7 +170,7 @@ public class FollowMainActivity extends BaseRequstActivity implements View.OnCli
 
     @Override
     public void onConfirmDelete() {
-        deletePatient(curOperatePatient.getCustomerUuid(), groupId);
+        deletePatient(groupId,curOperatePatient.getCustomerUuid() );
     }
 
     @Override
@@ -218,7 +220,7 @@ public class FollowMainActivity extends BaseRequstActivity implements View.OnCli
             case PatientListAdapter.DELETE:
                 PatientGroup patientGroup = (PatientGroup) patientListAdapter.getGroup(groupPosition);
                 groupId = patientGroup.getGroupId();
-                DialogUtils.showDeleteDialog(FollowMainActivity.this, FollowMainActivity.this, String.format(getString(R.string.confirm_delete_this_patient), curOperatePatient.getRealName()));
+                DialogUtils.showDeleteDialog(FollowMainActivity.this, FollowMainActivity.this, String.format(getString(R.string.confirm_delete_this_patient), curOperatePatient.getCustomerName()));
                 break;
         }
     }

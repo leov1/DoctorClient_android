@@ -24,9 +24,7 @@ import com.hxqydyl.app.ys.adapter.PlanCheckSycleAdapter;
 import com.hxqydyl.app.ys.adapter.PlanSelfScaleAdapter;
 import com.hxqydyl.app.ys.bean.follow.plan.CheckSycle;
 import com.hxqydyl.app.ys.bean.follow.plan.HealthTips;
-import com.hxqydyl.app.ys.bean.follow.plan.ImportantAdvice;
 import com.hxqydyl.app.ys.bean.follow.plan.ImportantAdviceChild;
-import com.hxqydyl.app.ys.bean.follow.plan.Medicine;
 import com.hxqydyl.app.ys.bean.follow.plan.MedicineDosage;
 import com.hxqydyl.app.ys.bean.follow.plan.Plan;
 import com.hxqydyl.app.ys.bean.follow.plan.Scale;
@@ -406,8 +404,8 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
         plan.setPreceptName(title);
         plan.setDrugTherapy(drugTherapy);
         plan.setSideEffects(sideEffects);
-        plan.setDoctorTestList(doctorScaleList);
-        plan.setSelfTestList(selfScaleList);
+        plan.setDoctorTest(doctorScaleList);
+        plan.setSelfTest(selfScaleList);
         plan.setPeriod(cycleNum(tvFollowCycle));
         plan.setWeight(cycleNum(tvWeightCycle));
         plan.setHepatic(cycleNum(tvLiverCycle));
@@ -415,8 +413,8 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
         plan.setElectrocardiogram(cycleNum(tvEcgCycle));
 
         plan.setMedicineList(mList);
-        plan.setOtherCheckSycle(csList);
-        plan.setHealthTipsList(htList);
+        plan.setOtherMap(csList);
+        plan.setHealthGuide(htList);
         try {
             if (StringUtils.isEmpty(plan.getVisitUuid())) {
                 //新建
@@ -470,16 +468,20 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
         etSideEffects.setText(plan.getSideEffects());
 
         medicineList.clear();
-        medicineList.addAll(plan.getMedicineList());
+        if (plan.getMedicineList() != null)
+            medicineList.addAll(plan.getMedicineList());
         healthTipsList.clear();
-        healthTipsList.addAll(plan.getHealthTipsList());
+        if (plan.getHealthGuide() != null)
+            healthTipsList.addAll(plan.getHealthGuide());
         checkSycleList.clear();
-        checkSycleList.addAll(plan.getOtherCheckSycle());
+        if (plan.getOtherMap() != null)
+            checkSycleList.addAll(plan.getOtherMap());
         selfScaleList.clear();
-        selfScaleList.addAll(plan.getSelfTestList());
+        if (plan.getSelfTest() != null)
+            selfScaleList.addAll(plan.getSelfTest());
         doctorScaleList.clear();
-        doctorScaleList.addAll(plan.getDoctorTestList());
-
+        if (plan.getDoctorTest() != null)
+            doctorScaleList.addAll(plan.getDoctorTest());
         medicineAdapter.notifyDataSetChanged();
         planCheckSycleAdapter.notifyDataSetChanged();
         selfScaleAdapter.notifyDataSetChanged();

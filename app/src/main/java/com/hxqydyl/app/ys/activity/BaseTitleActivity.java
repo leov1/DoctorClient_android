@@ -79,12 +79,16 @@ public class BaseTitleActivity extends SwipeBackActivity implements NetRequestLi
 
     }
 
+
     public void showDialog(String text) {
-        pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
-        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        if (!(pDialog!=null&&pDialog.isShowing())){
+            pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
         pDialog.setTitleText(text);
-        pDialog.setCancelable(true);
-        pDialog.show();
+
     }
 
     public void dismissDialog() {

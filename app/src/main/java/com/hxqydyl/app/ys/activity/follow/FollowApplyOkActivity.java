@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 import com.hxqydyl.app.ys.R;
+import com.hxqydyl.app.ys.activity.BaseRequstActivity;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.adapter.PatientGroupSelectAdapter;
 import com.hxqydyl.app.ys.adapter.PlanSelectAdapter;
@@ -19,6 +20,9 @@ import com.hxqydyl.app.ys.bean.PatientGroup;
 import com.hxqydyl.app.ys.bean.follow.FollowApply;
 import com.hxqydyl.app.ys.bean.follow.plan.Plan;
 import com.hxqydyl.app.ys.bean.follow.plan.PlanBaseInfo;
+import com.hxqydyl.app.ys.bean.response.BaseResponse;
+import com.hxqydyl.app.ys.bean.response.PatientGroupResponse;
+import com.hxqydyl.app.ys.bean.response.PlanListResponse;
 import com.hxqydyl.app.ys.http.PatientGroupNet;
 import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.http.follow.CustomerNet;
@@ -29,9 +33,12 @@ import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.DialogUtils;
 import com.hxqydyl.app.ys.utils.LoginManager;
 import com.hxqydyl.app.ys.utils.StringUtils;
+import com.xus.http.httplib.model.PostPrams;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.Call;
 
@@ -39,7 +46,7 @@ import okhttp3.Call;
  * Created by wangchao36 on 16/3/23.
  * 随访申请接受，并关联随访方案
  */
-public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnClickListener {
+public class FollowApplyOkActivity extends BaseRequstActivity implements View.OnClickListener {
 
     private LinearLayout llAddPlan;
     private LinearLayout llAddGroup;
@@ -64,20 +71,20 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_follow_apply_ok);
         initViewOnBaseTitle("选择随访方案");
-//        applyUuid = getIntent().getStringExtra("applyUuid");
+        applyUuid = getIntent().getStringExtra("applyUuid");
         customerUuid = getIntent().getStringExtra("customerUuid");
         type = getIntent().getStringExtra("type");
-
         setBackListener();
         initView();
         initEvent();
+        getGroupList();
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         getMyVisitPreceptList();
-        patientGroupNet.getPatientGroups(LoginManager.getDoctorUuid());
     }
 
     private void initView() {
@@ -87,10 +94,8 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
         lvPlan = (ListView) findViewById(R.id.lvPlan);
         lvGroup = (ListView) findViewById(R.id.lvGroup);
         btnApply = (Button) findViewById(R.id.btnApply);
-
         planList = new ArrayList<>();
         patientGroupList = new ArrayList<>();
-
         planSelectAdapter = new PlanSelectAdapter(this, planList);
         lvPlan.setAdapter(planSelectAdapter);
         patientGroupSelectAdapter = new PatientGroupSelectAdapter(this, patientGroupList);
@@ -135,7 +140,6 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
                 } else {
                     apply();
                 }
-
                 break;
         }
     }
@@ -151,89 +155,33 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
             }
         });
     }
-
-    private void getMyVisitPreceptList() {
-        FollowPlanNet.getMyVisitPreceptList(new FollowCallback(this) {
-            @Override
-            public void onFail(String status, String msg) {
-                super.onFail(status, msg);
-                UIHelper.ToastMessage(FollowApplyOkActivity.this, msg);
-            }
-
-            @Override
-            public void onResult(String result) {
-                super.onResult(result);
-                if (FollowApplyNet.myDev)
-                    result = "[" +
-                            "{" +
-                            "\"visitUuid\": \"0000\"," +
-                            "\"preceptName\": \"推荐你就选我呗\"," +
-                            "\"doctorUuid\": \"4c61df50ebb34b7bac8339f605f2c218\"," +
-                            "\"num\": \"1\"" +
-                            "}" +
-                            "]";
-                try {
-                    List<PlanBaseInfo> tmp = PlanBaseInfo.parseList(result);
-                    if (tmp.size() > 0) {
-                        planList.clear();
-                        planList.addAll(tmp);
-                        planSelectAdapter.notifyDataSetChanged();
-                    }
-                } catch (Exception e) {
-                    onFail("","解析出错啦，刷新下就好啦");
-                }
-
-            }
-        });
-    }
-
-    @Override
-    public void onResponse(String url, Object result) {
-        super.onResponse(url, result);
-        if (url.endsWith(UrlConstants.GET_ALL_PATIENT_GROUP)) {
-            List<PatientGroup> pgList = (ArrayList<PatientGroup>) result;
-            patientGroupList.clear();
-            patientGroupList.addAll(pgList);
-            patientGroupSelectAdapter.notifyDataSetChanged();
-        }
-    }
-
+    //更新关联
     private void applyUpdate() {
         if (planSelectAdapter.getSelect() < 0) {
             UIHelper.ToastMessage(this, "请选择方案");
             return;
         }
-        showDialog("正在提交");
         PlanBaseInfo plan = planList.get(planSelectAdapter.getSelect());
-        FollowApplyNet.updateVisitRecord(customerUuid, plan.getVisitUuid(), new FollowCallback(this){
-            @Override
-            public void onResponse(String response) {
-                if (StringUtils.isEmpty(response)) {
-                    UIHelper.ToastMessage(FollowApplyOkActivity.this, "没有数据");
-                    return;
-                }
-                try {
-                    JSONObject object = JSONObject.parseObject(response);
-                    String message = object.getString("message");
-                    String value = object.getString("value");
-                    UIHelper.ToastMessage(FollowApplyOkActivity.this, message);
-                    if ("true".equals(value)) {
-                        setResult(RESULT_OK);
-                        finish();
-                    }
-                } catch (Exception e) {
-                    onFail("999999", "解析出错啦，重新刷新下吧");
-                }
-            }
 
-            @Override
-            public void onError(Call call, Exception e) {
-                super.onError(call, e);
-                dismissDialog();
-                UIHelper.ToastMessage(FollowApplyOkActivity.this, "提交失败");
-            }
-        });
+        String url="http://172.168.1.53/app/pub/doctor/1.0/updateVisitRecord";
+        toNomalNet(toPostParams(toParamsBaen("customerUuid", customerUuid), toParamsBaen("visitPreceptUuid", plan.getVisitUuid()), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())),
+                BaseResponse.class, 5,url, "正更新关联信息");
+//        toNomalNet(toPostParams(toParamsBaen("customerUuid", customerUuid), toParamsBaen("visitPreceptUuid", plan.getVisitUuid()), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())),
+//                BaseResponse.class, 5, UrlConstants.getWholeApiUrl(UrlConstants.UPDATE_VISIT_RECORD, "1.0"), "正更新关联信息");
     }
+
+    //获取群组
+    public void getGroupList() {
+        toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), PatientGroupResponse.class, 4, UrlConstants.getWholeApiUrl(UrlConstants.GET_ALL_PATIENT_GROUP, "1.0"), "正在获取群组列表");
+
+    }
+
+    //获取方案列表
+    private void getMyVisitPreceptList() {
+        toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), PlanListResponse.class, 3, UrlConstants.getWholeApiUrl(UrlConstants.GET_MYVISIT_PRECEPTLIST, "1.0"), "正在获取方案列表");
+    }
+
+    //第一次接受并关联
     private void apply() {
         if (planSelectAdapter.getSelect() < 0) {
             UIHelper.ToastMessage(this, "请选择方案");
@@ -243,41 +191,54 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
             UIHelper.ToastMessage(this, "请选择分组");
             return;
         }
-        showDialog("正在提交");
         PlanBaseInfo plan = planList.get(planSelectAdapter.getSelect());
-        FollowApplyNet.addVisitRecord(customerUuid, plan.getVisitUuid(), new FollowCallback(this){
-            @Override
-            public void onResult(String result) {
-                super.onResult(result);
-                updateCustomerGroup();
-            }
+//        String url="http://172.168.1.53/app/pub/doctor/2.0/addVisitRecord";
+//        toNomalNet(toGetParams(toParamsBaen("visitUuid", applyUuid), toParamsBaen("visitPreceptUuid", plan.getVisitUuid())), BaseResponse.class, 1, url, "正在接受 ..");
 
-            @Override
-            public void onError(Call call, Exception e) {
-                super.onError(call, e);
-                dismissDialog();
-                UIHelper.ToastMessage(FollowApplyOkActivity.this, "提交失败");
-            }
-        });
+        toNomalNet(toGetParams(toParamsBaen("visitUuid", applyUuid), toParamsBaen("visitPreceptUuid", plan.getVisitUuid())), BaseResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.ADD_VISIT_RECORD, "1.0"), "正在接受 ..");
+
     }
 
+    //将患者更新至分组
     private void updateCustomerGroup() {
         final PatientGroup pg = patientGroupList.get(patientGroupSelectAdapter.getSelect());
-        CustomerNet.updateCustomerGroup(pg.getId(), customerUuid, new FollowCallback(this){
-            @Override
-            public void onResult(String result) {
-                super.onResult(result);
-                dismissDialog();
+        PostPrams postPrams = toPostParams(toParamsBaen("groupId",  pg.getGroupId()), toParamsBaen("customerUuid", customerUuid), toParamsBaen("doctorUuid",  LoginManager.getDoctorUuid()));
+        toNomalNet(postPrams, BaseResponse.class, 2, UrlConstants.getWholeApiUrl(UrlConstants.MOVE_PATIENT_TO_OTHER_GROUP, "1.0"), "正在移动患者");
+//        Map<String,String> head=new HashMap<>();
+//        head.put("accept", "application/json");
+//        toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid()), toParamsBaen("groupId", pg.getGroupId()), toParamsBaen("customerUuid", customerUuid)), BaseResponse.class, 2, UrlConstants.getWholeApiUrl(UrlConstants.UPDATE_CUSTOMER_GROUP, "1.0"), "正在关联 ..");
+    }
+
+    @Override
+    public void onSuccessToBean(Object bean, int flag) {
+        switch (flag) {
+            case 1:
+                updateCustomerGroup();
+                break;
+            case 2:
+            case 5:
+
                 UIHelper.ToastMessage(FollowApplyOkActivity.this, "保存成功");
                 finish();
-            }
-            @Override
-            public void onError(Call call, Exception e) {
-                super.onError(call, e);
-                dismissDialog();
-                UIHelper.ToastMessage(FollowApplyOkActivity.this, "提交失败");
-            }
-        });
+                break;
+            case 3:
+                PlanListResponse plr = (PlanListResponse) bean;
+                List<PlanBaseInfo> tmp = plr.getRelist();
+                if (tmp != null && tmp.size() > 0) {
+                    planList.clear();
+                    planList.addAll(tmp);
+                    planSelectAdapter.notifyDataSetChanged();
+                }
+                break;
+            case 4:
+                PatientGroupResponse pgr = (PatientGroupResponse) bean;
+                if (pgr.getRelist() != null && pgr.getRelist().size() > 0) {
+                    patientGroupList.clear();
+                    patientGroupList.addAll(pgr.getRelist());
+                    patientGroupSelectAdapter.notifyDataSetChanged();
+                }
+                break;
+        }
     }
 
 

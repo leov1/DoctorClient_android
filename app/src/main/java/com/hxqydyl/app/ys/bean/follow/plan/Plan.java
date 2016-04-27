@@ -3,8 +3,6 @@ package com.hxqydyl.app.ys.bean.follow.plan;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSONArray;
-import com.hxqydyl.app.ys.http.JsonUtils;
-import com.hxqydyl.app.ys.utils.LoginManager;
 
 import org.json.JSONObject;
 
@@ -29,10 +27,10 @@ public class Plan extends PlanBaseInfo implements Serializable {
     private String weight;  //
 
     private ArrayList<ImportantAdviceChild> medicineList;        //药品信息
-    private ArrayList<CheckSycle> otherCheckSycle;   //其他自定义随访周期
-    private ArrayList<Scale> selfTestList;   //自评量表
-    private ArrayList<Scale> doctorTestList; //医评量表
-    private ArrayList<HealthTips> healthTipsList;        //健康小贴士
+    private ArrayList<CheckSycle> otherMap;   //其他自定义随访周期
+    private ArrayList<Scale> selfTest;   //自评量表
+    private ArrayList<Scale> doctorTest; //医评量表
+    private ArrayList<HealthTips> healthGuide;        //健康小贴士
 
     public Plan(String doctorUuid,
                 String visitUuid,
@@ -58,7 +56,6 @@ public class Plan extends PlanBaseInfo implements Serializable {
                 Log.e("client", "API返回失败， success 不为1");
                 return null;
             }
-
             Plan plan = new Plan();
             plan.setPreceptName(jsonObject.getString("preceptName"));
             plan.setVisitUuid(jsonObject.getString("visitUuid"));
@@ -69,12 +66,11 @@ public class Plan extends PlanBaseInfo implements Serializable {
             plan.setDrugTherapy(jsonObject.getString("drugTherapy"));
             plan.setSideEffects(jsonObject.getString("sideEffects"));
             plan.setBloodRoutine(jsonObject.getString("bloodRoutine"));
-
-            plan.setSelfTestList(Scale.parse(jsonObject.optJSONArray("selfTest")));
-            plan.setDoctorTestList(Scale.parse(jsonObject.optJSONArray("doctorTest")));
-            plan.setOtherCheckSycle(CheckSycle.parse(jsonObject.optJSONArray("otherMap")));
+            plan.setSelfTest(Scale.parse(jsonObject.optJSONArray("selfTest")));
+            plan.setDoctorTest(Scale.parse(jsonObject.optJSONArray("doctorTest")));
+            plan.setOtherMap(CheckSycle.parse(jsonObject.optJSONArray("otherMap")));
 //            plan.setMedicineList(Medicine.parse(jsonObject.optJSONArray("doctorAdvice")));
-            plan.setHealthTipsList(HealthTips.parse(jsonObject.optJSONArray("healthGuide")));
+            plan.setHealthGuide(HealthTips.parse(jsonObject.optJSONArray("healthGuide")));
             return plan;
         } catch (Exception e) {
             Log.e("client", e.getMessage());
@@ -86,36 +82,36 @@ public class Plan extends PlanBaseInfo implements Serializable {
         this.medicineList = medicineList;
     }
 
-    public void setOtherCheckSycle(ArrayList<CheckSycle> otherCheckSycle) {
-        this.otherCheckSycle = otherCheckSycle;
+    public void setOtherMap(ArrayList<CheckSycle> otherMap) {
+        this.otherMap = otherMap;
     }
 
-    public void setSelfTestList(ArrayList<Scale> selfTestList) {
-        this.selfTestList = selfTestList;
+    public void setSelfTest(ArrayList<Scale> selfTest) {
+        this.selfTest = selfTest;
     }
 
-    public ArrayList<Scale> getDoctorTestList() {
-        return doctorTestList;
+    public ArrayList<Scale> getDoctorTest() {
+        return doctorTest;
     }
 
-    public void setDoctorTestList(ArrayList<Scale> doctorTestList) {
-        this.doctorTestList = doctorTestList;
+    public void setDoctorTest(ArrayList<Scale> doctorTest) {
+        this.doctorTest = doctorTest;
     }
 
-    public ArrayList<HealthTips> getHealthTipsList() {
-        return healthTipsList;
+    public ArrayList<HealthTips> getHealthGuide() {
+        return healthGuide;
     }
 
-    public void setHealthTipsList(ArrayList<HealthTips> healthTipsList) {
-        this.healthTipsList = healthTipsList;
+    public void setHealthGuide(ArrayList<HealthTips> healthGuide) {
+        this.healthGuide = healthGuide;
     }
 
     public static List<Plan> parseList2(String string) {
         return JSONArray.parseArray(string, Plan.class);
     }
 
-    public List<CheckSycle> getOtherCheckSycle() {
-        return otherCheckSycle;
+    public List<CheckSycle> getOtherMap() {
+        return otherMap;
     }
 
     public List<ImportantAdviceChild> getMedicineList() {
@@ -186,8 +182,8 @@ public class Plan extends PlanBaseInfo implements Serializable {
         this.weight = weight;
     }
 
-    public List<Scale> getSelfTestList() {
-        return selfTestList;
+    public List<Scale> getSelfTest() {
+        return selfTest;
     }
 
 

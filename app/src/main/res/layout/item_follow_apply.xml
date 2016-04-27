@@ -50,6 +50,7 @@
                 android:layout_height="wrap_content"
                 android:text="年龄：26岁"
                 android:layout_toRightOf="@+id/img_sex"
+
                 android:layout_marginLeft="@dimen/space_15"
                 android:layout_centerVertical="true"
                 />

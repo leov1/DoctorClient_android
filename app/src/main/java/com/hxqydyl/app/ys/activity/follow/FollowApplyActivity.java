@@ -2,18 +2,24 @@ package com.hxqydyl.app.ys.activity.follow;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.hxqydyl.app.ys.R;
+import com.hxqydyl.app.ys.activity.BaseRequstActivity;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.adapter.FollowApplyAdapter;
 import com.hxqydyl.app.ys.bean.follow.FollowApply;
+import com.hxqydyl.app.ys.bean.response.FollowUserApplyResponse;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.http.follow.FollowApplyNet;
 import com.hxqydyl.app.ys.http.follow.FollowCallback;
 import com.hxqydyl.app.ys.ui.UIHelper;
+import com.hxqydyl.app.ys.utils.LoginManager;
+import com.xus.http.httplib.model.GetParams;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +27,8 @@ import java.util.List;
 /**
  * 随访申请
  */
-public class FollowApplyActivity extends BaseTitleActivity
-        implements View.OnClickListener, AdapterView.OnItemClickListener{
+public class FollowApplyActivity extends BaseRequstActivity
+        implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     private ListView listView;
     private FollowApplyAdapter adapter;
@@ -32,7 +38,6 @@ public class FollowApplyActivity extends BaseTitleActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_follow_apply);
-
         initViews();
         initListeners();
     }
@@ -57,52 +62,26 @@ public class FollowApplyActivity extends BaseTitleActivity
     }
 
     private void getVisitApplyList() {
-        showDialog("");
-        FollowApplyNet.getVisitApplyList(new FollowCallback(this){
-            @Override
-            public void onFail(String status, String msg) {
-                super.onFail(status, msg);
-                UIHelper.ToastMessage(FollowApplyActivity.this,msg);
-            }
+        toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), FollowUserApplyResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_VISIT_APPLYLIST, "1.0"), "正在获取关联列表...");
+    }
 
-            @Override
-            public void onResult(String result) {
-                super.onResult(result);
-                if (FollowApplyNet.myDev)
-                    result = "[" +
-                        "    {" +
-                        "        \"imgUrl\": \"http://101.201.150.49:7500/dev1/0/000/001/0000001978.fid\"," +
-                        "        \"realName\": \"小马\"," +
-                        "        \"applyUuid\": \"0ef34b3fabbd44b1b9e1d72c0350a552\"," +
-                        "        \"customerUuid\": \"9ee56d1310b54baa97f5a8abbe85a0b1\"," +
-                        "        \"createTime\": \"2016-03-19\"," +
-                        "        \"illnessDescription\": \"illnessDescriptionillnessDescription\"," +
-                        "        \"doctorUuid\": \"rvicestaff0000001961\"," +
-                        "        \"sex\": \"1\"," +
-                        "        \"age\": \"26\"" +
-                        "    }" +
-                        "]";
 
-                dismissDialog();
-                try{
-                    List<FollowApply> tmp = FollowApply.parseList(result);
-                    if (tmp.size() > 0) {
-                        list.clear();
-                        list.addAll(tmp);
-                        adapter.notifyDataSetChanged();
-                    } else {
-                        Toast.makeText(FollowApplyActivity.this, "没有数据", Toast.LENGTH_SHORT).show();
-                    }}catch (Exception e){
-                    onFail("","解析出错了，重新刷新下吧");
-                }
+    @Override
+    public void onSuccessToBean(Object bean, int flag) {
+        FollowUserApplyResponse rs = (FollowUserApplyResponse) bean;
+        list.clear();
+        if (rs.getRelist() != null && rs.getRelist().size() > 0) {
+            list.addAll(rs.getRelist());
+        } else {
+            Toast.makeText(FollowApplyActivity.this, "没有数据", Toast.LENGTH_SHORT).show();
+        }
+        adapter.notifyDataSetChanged();
 
-            }
-        });
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.back_img:
                 finish();
                 break;

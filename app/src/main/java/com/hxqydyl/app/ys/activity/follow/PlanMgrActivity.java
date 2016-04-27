@@ -11,14 +11,21 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.hxqydyl.app.ys.R;
+import com.hxqydyl.app.ys.activity.BaseRequstActivity;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.adapter.PlanMgrAdapter;
 import com.hxqydyl.app.ys.bean.follow.plan.Plan;
 import com.hxqydyl.app.ys.bean.follow.plan.PlanBaseInfo;
+import com.hxqydyl.app.ys.bean.response.BaseResponse;
+import com.hxqydyl.app.ys.bean.response.FollowUserApplyResponse;
+import com.hxqydyl.app.ys.bean.response.PlanInfoListResponse;
+import com.hxqydyl.app.ys.bean.response.PlanListResponse;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.http.follow.FollowApplyNet;
 import com.hxqydyl.app.ys.http.follow.FollowCallback;
 import com.hxqydyl.app.ys.http.follow.FollowPlanNet;
 import com.hxqydyl.app.ys.ui.UIHelper;
+import com.hxqydyl.app.ys.utils.LoginManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +38,7 @@ import ui.swipemenulistview.SwipeMenuListView;
 /**
  * 随访方案管理页面
  */
-public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickListener {
+public class PlanMgrActivity extends BaseRequstActivity implements View.OnClickListener {
 
     private SwipeMenuListView swipeMenuListView;
     private PlanMgrAdapter adapter;
@@ -41,6 +48,7 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
     private ListView lvSuggestPlan;
     private PlanMgrAdapter suggestPlanAdapter;
     private List<Plan> suggestPlanList;
+    private int delectPos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +63,6 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
     protected void onResume() {
         super.onResume();
         getMyVisitPreceptList();
-        getRecommendVisitpreceptByDoctorid();
     }
 
     private void initListeners() {
@@ -142,100 +149,49 @@ public class PlanMgrActivity extends BaseTitleActivity implements View.OnClickLi
                 getResources().getDisplayMetrics());
     }
 
+    //获取我的方案
     private void getMyVisitPreceptList() {
-        FollowPlanNet.getMyVisitPreceptList(new FollowCallback(this) {
-            @Override
-            public void onFail(String status, String msg) {
-                super.onFail(status, msg);
-                UIHelper.ToastMessage(PlanMgrActivity.this, msg);
-            }
-
-            @Override
-            public void onResult(String result) {
-                super.onResult(result);
-                if (FollowApplyNet.myDev)
-                    result = "[" +
-                            "{" +
-                            "\"visitUuid\": \"0000\"," +
-                            "\"preceptName\": \"我的方案\"," +
-                            "\"doctorUuid\": \"4c61df50ebb34b7bac8339f605f2c218\"," +
-                            "\"num\": \"1\"" +
-                            "}," +
-                            "{" +
-                            "\"visitUuid\": \"0000\"," +
-                            "\"preceptName\": \"我的方案\"," +
-                            "\"doctorUuid\": \"4c61df50ebb34b7bac8339f605f2c218\"," +
-                            "\"num\": \"1\"" +
-                            "}" +
-                            "]";
-                try {
-                    List<Plan> tmp = Plan.parseList2(result);
-                    if (tmp.size() > 0) {
-                        myPlanList.clear();
-                        myPlanList.addAll(tmp);
-                        adapter.notifyDataSetChanged();
-                    }
-                } catch (Exception e) {
-                    onFail("", "解析出错啦，刷新下试试吧");
-                }
-
-            }
-        });
+        toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), PlanInfoListResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_MYVISIT_PRECEPTLIST, "1.0"), "正在获取方案列表");
     }
 
-
+    //获取推荐的随访方案
     private void getRecommendVisitpreceptByDoctorid() {
-        FollowPlanNet.getRecommendVisitpreceptByDoctorid(new FollowCallback(this) {
-            @Override
-            public void onFail(String status, String msg) {
-                super.onFail(status, msg);
-                UIHelper.ToastMessage(PlanMgrActivity.this,msg);
-            }
-
-            @Override
-            public void onResult(String result) {
-                super.onResult(result);
-                if (FollowApplyNet.myDev) result = "[" +
-                        "{" +
-                        "\"visitUuid\": \"0000\"," +
-                        "\"preceptName\": \"建议方案\"," +
-                        "\"doctorUuid\": \"4c61df50ebb34b7bac8339f605f2c218\"," +
-                        "\"num\": \"1\"" +
-                        "}" +
-                        "]";
-                try{List<Plan> tmp = Plan.parseList2(result);
-                    if (tmp.size() > 0) {
-                        suggestPlanList.clear();
-                        suggestPlanList.addAll(tmp);
-                        suggestPlanAdapter.notifyDataSetChanged();
-                    }}catch (Exception e){
-                    onFail("","解析错误");
-                }
-
-            }
-        });
+        toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), PlanInfoListResponse.class, 2, UrlConstants.getWholeApiUrl(UrlConstants.GET_RECOMMEND_VISITPRECEPT_BY_DOCTORID, "1.0"), "正在推荐列表");
     }
 
+    //删除方案
     private void delPreceptDetail(final int position) {
         Plan plan = myPlanList.get(position);
-        FollowPlanNet.delPreceptDetail(plan.getVisitUuid(), new FollowCallback(this) {
-            @Override
-            public void onResponse(String response) {
-                super.onResponse(response);
-                myPlanList.remove(position);
+        delectPos = position;
+        toNomalNet(toPostParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid()), toParamsBaen("visitUuid", plan.getVisitUuid())), BaseResponse.class, 3, UrlConstants.getWholeApiUrl(UrlConstants.DEL_PRECEPT_DETAIL, "1.0"), "正在删除方案");
+    }
+
+    @Override
+    public void onSuccessToBean(Object bean, int flag) {
+        switch (flag) {
+            case 1:
+                PlanInfoListResponse pilr = (PlanInfoListResponse) bean;
+                myPlanList.clear();
+                if (pilr.getRelist() != null && pilr.getRelist().size() > 0) {
+                    myPlanList.addAll(pilr.getRelist());
+                }
+                adapter.notifyDataSetChanged();
+                getRecommendVisitpreceptByDoctorid();
+                break;
+
+            case 2:
+                PlanInfoListResponse pilr2 = (PlanInfoListResponse) bean;
+                suggestPlanList.clear();
+                if (pilr2.getRelist() != null && pilr2.getRelist().size() > 0) {
+                    suggestPlanList.addAll(pilr2.getRelist());
+                }
+                suggestPlanAdapter.notifyDataSetChanged();
+                break;
+            case 3:
+                myPlanList.remove(delectPos);
                 adapter.notifyDataSetChanged();
                 UIHelper.ToastMessage(PlanMgrActivity.this, "删除成功");
-            }
-
-            @Override
-            public void onFail(String status, String msg) {
-                super.onFail(status, msg);
-                if ("0".equals(status)) {
-                    myPlanList.remove(position);
-                    adapter.notifyDataSetChanged();
-                }
-                UIHelper.ToastMessage(PlanMgrActivity.this, msg);
-            }
-        });
+                break;
+        }
     }
 }

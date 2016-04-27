@@ -23,6 +23,7 @@ import com.hxqydyl.app.ys.activity.follow.FollowApplyOkActivity;
 import com.hxqydyl.app.ys.adapter.PatientTreatInfoAdapter;
 import com.hxqydyl.app.ys.bean.Patient;
 import com.hxqydyl.app.ys.bean.PatientTreatInfo;
+import com.hxqydyl.app.ys.bean.response.BaseResponse;
 import com.hxqydyl.app.ys.bean.response.PatientGroupResponse;
 import com.hxqydyl.app.ys.http.CaseReportNet;
 import com.hxqydyl.app.ys.http.UrlConstants;
@@ -106,7 +107,10 @@ public class PatientDetailsActivity extends BaseRequstActivity implements View.O
 
 
     private void refreshTreatInfoList() {
-        toNomalNetStringBack(toGetParams(toParamsBaen("customerUuid", patient.getCustomerUuid()), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_PATIENT_TREAT_RECORD, "1.0"), "正在获取患者病例");
+//        String url="http://172.168.1.53/mobile/patient/medical/record/1.0/getPatientMedicalRecordList";
+//        toNomalNetStringBack(toGetParams(toParamsBaen("customerUuid", patient.getCustomerUuid()), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid()),toParamsBaen("visitState","1")), 1, url, "正在获取患者病例");
+
+        toNomalNetStringBack(toGetParams(toParamsBaen("customerUuid", patient.getCustomerUuid()), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid()),toParamsBaen("visitState","0")), 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_PATIENT_TREAT_RECORD, "1.0"), "正在获取患者病例");
     }
 
     @Override
@@ -146,6 +150,7 @@ public class PatientDetailsActivity extends BaseRequstActivity implements View.O
             case R.id.bSelectNewFollowUpForPatient:
                 intent = new Intent(this, FollowApplyOkActivity.class);
                 intent.putExtra("customerUuid", patient.getCustomerUuid());
+                intent.putExtra("type", "updateVisitRecord");
                 startActivity(intent);
                 break;
             case R.id.llPatientSimpleInfo://患者详情

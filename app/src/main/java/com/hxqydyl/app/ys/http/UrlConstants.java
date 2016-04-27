@@ -63,7 +63,8 @@ public class UrlConstants {
     //    获取所有的患者与分组信息 (版本号)
     public static final String GET_ALL_PATIENT_AND_GROUP_INFO = "/app/service/customer/%s/getGroupAndCustomer";
     // 删除患者 (版本号)
-    public static final String DELETE_PATIENT = "/app/service/customer/%s/deleteCustomerByCostomerUuidAndGid";
+    public static final String
+            DELETE_PATIENT = "/app/service/customer/%s/deleteCustomerByCostomerUuidAndGid";
     //    修改患者所在的分组(版本号)
     public static final String MOVE_PATIENT_TO_OTHER_GROUP = "/app/service/customer/%s/updateCustomerGroup";
     //    获取所有的患者分组(版本号)
@@ -165,7 +166,26 @@ public class UrlConstants {
     // 随访表单-重要医嘱-查询
     public static String GET_ADVICE_SEARCH = "/mobile/doctor/visit/advice/%s/search/%s/%s";
     // 随访表单-重要医嘱-添加
-    public static String GET_ADVICE_SAVE =   "/mobile/doctor/visit/advice/%s/save";
-
+    public static String GET_ADVICE_SAVE = "/mobile/doctor/visit/advice/%s/save";
+    //获取随访申请
+    public static String GET_VISIT_APPLYLIST = "/app/pub/doctor/%s/getVisitApplyList";
+    //获取随访申请详情
+    public static String GET_APPLY_DETAIL = "/app/pub/doctor/%s/getApplyDetail";
+    //拒绝随访申请
+    public static String REFUSE_VIVIST_APPLY = "/app/public/refuseapply/%s/refuseVivistApply";
+    //接受并关联
+    public static String ADD_VISIT_RECORD = "/app/pub/doctor/%s/addVisitRecord";
+    //更新用户分组
+//    public static String UPDATE_CUSTOMER_GROUP = "/app/service/customer/%s/updateCustomerGroup";
+    //获取我的随访列表
+    public static String GET_MYVISIT_PRECEPTLIST = "/app/pub/doctor/%s/getMyVisitPreceptList";
+    //更新关联信息
+    public static String UPDATE_VISIT_RECORD = "/app/pub/doctor/%s/updateVisitRecord";
+    //获取推荐的随访方案
+    public static String GET_RECOMMEND_VISITPRECEPT_BY_DOCTORID = "/app/pub/doctor/%s/getRecommendVisitpreceptByDoctorid";
+    //删除随访方案
+    public static String DEL_PRECEPT_DETAIL = "/app/pub/doctor/%s/delPreceptDetail";
+    //查看随访方案
+    public static String VISIT_PRECEPT_DETAIL = "/app/pub/doctor/%s/visitPreceptDetail";
 
 }

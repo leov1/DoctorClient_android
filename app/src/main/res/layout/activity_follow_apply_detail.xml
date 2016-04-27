@@ -8,17 +8,20 @@
     <include layout="@layout/top_title"></include>
 
     <ScrollView
-        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:layout_weight="1">
+
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:id="@+id/rl_patient"
-                android:layout_width="match_parent" android:layout_height="80dp"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
                 android:background="@color/white">
 
                 <ImageView
@@ -26,174 +29,153 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/space_20"
-                    />
+                    android:layout_marginLeft="@dimen/space_20" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/head_img"
+                    android:layout_alignTop="@+id/head_img"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/space_12"
-                    android:layout_alignTop="@+id/head_img"
-                    >
+                    android:layout_toRightOf="@+id/head_img">
 
                     <RelativeLayout
                         android:id="@+id/info_rl"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
+
                         <TextView
+                            android:id="@+id/head_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="王志文"
-                            android:id="@+id/head_name"
                             android:layout_centerVertical="true"
-                            android:textSize="@dimen/text_size_20"
-                            />
+                            android:textSize="@dimen/text_size_20" />
 
                         <TextView
                             android:id="@+id/tv_sex"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="男"
-                            android:layout_toRightOf="@+id/head_name"
-                            android:layout_marginLeft="@dimen/space_15"
                             android:layout_centerVertical="true"
-                            />
+                            android:layout_marginLeft="@dimen/space_15"
+                            android:layout_toRightOf="@+id/head_name"
+                             />
 
                         <TextView
                             android:id="@+id/tvAge"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="26"
-                            android:layout_toRightOf="@+id/tv_sex"
-                            android:layout_marginLeft="@dimen/space_15"
                             android:layout_centerVertical="true"
-                            />
+                            android:layout_marginLeft="@dimen/space_15"
+                            android:layout_toRightOf="@+id/tv_sex" />
                     </RelativeLayout>
 
                     <TextView
                         android:id="@+id/tvQ"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
                         android:layout_below="@+id/info_rl"
-                        android:textSize="@dimen/text_size_16"
+                        android:layout_marginTop="3dp"
                         android:text=""
-                        />
+                        android:textSize="@dimen/text_size_16" />
                 </RelativeLayout>
             </RelativeLayout>
 
-            <View android:layout_width="match_parent"
+            <View
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#e4e4e4"/>
+                android:background="#e4e4e4" />
 
             <LinearLayout
-                android:layout_marginTop="15dp"
-                android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="@color/white"
                 android:orientation="vertical">
 
-                <View android:layout_width="match_parent"
+                <View
+                    android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#e4e4e4"/>
+                    android:background="#e4e4e4" />
+
                 <TextView
                     android:layout_width="match_parent"
+                    android:layout_height="60dp"
                     android:layout_marginLeft="20dp"
                     android:gravity="center_vertical"
                     android:text="症状表现和既往治疗经过"
-                    android:textSize="@dimen/text_size_20"
-                    android:layout_height="60dp" />
+                    android:textSize="@dimen/text_size_20" />
 
-                <View android:layout_width="match_parent"
-                    android:layout_marginLeft="20dp"
+                <View
+                    android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#e4e4e4"/>
+                    android:layout_marginLeft="20dp"
+                    android:background="#e4e4e4" />
 
                 <TextView
                     android:id="@+id/tvContent"
                     android:layout_width="match_parent"
-                    android:layout_marginLeft="20dp"
-                    android:gravity="center_vertical"
-                    android:layout_marginTop="20dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
-                    android:text="具体的内容"
-                    android:textSize="@dimen/text_size_16"
-                    android:layout_height="wrap_content" />
-
-                <View android:layout_width="match_parent"
                     android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center_vertical"
+                    android:text="具体的内容"
+                    android:textSize="@dimen/text_size_16" />
+
+                <View
+                    android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#e4e4e4"/>
+                    android:layout_marginLeft="20dp"
+                    android:background="#e4e4e4" />
 
-                <!--<LinearLayout-->
-                    <!--android:orientation="horizontal"-->
-                    <!--android:layout_marginLeft="20dp"-->
-                    <!--android:layout_marginRight="20dp"-->
-                    <!--android:layout_marginTop="18dp"-->
-                    <!--android:layout_marginBottom="18dp"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content">-->
-                    <!---->
-                    <!--<ImageView-->
-                        <!--android:src="@drawable/default_image"-->
-                        <!--android:layout_width="80dp"-->
-                        <!--android:layout_height="80dp" />-->
-
-                    <!--<ImageView-->
-                        <!--android:src="@drawable/default_image"-->
-                        <!--android:layout_marginLeft="10dp"-->
-                        <!--android:layout_width="80dp"-->
-                        <!--android:layout_height="80dp" />-->
-
-                    <!--<ImageView-->
-                        <!--android:src="@drawable/default_image"-->
-                        <!--android:layout_marginLeft="10dp"-->
-                        <!--android:layout_width="80dp"-->
-                        <!--android:layout_height="80dp" />-->
-
-                    <!--<ImageView-->
-                        <!--android:src="@drawable/default_image"-->
-                        <!--android:layout_marginLeft="10dp"-->
-                        <!--android:layout_width="80dp"-->
-                        <!--android:layout_height="80dp" />-->
-
-                <!--</LinearLayout>-->
+                <GridView
+                    android:scrollbars="none"
+                    android:id="@+id/gv_pics"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:horizontalSpacing="2dp"
+                    android:layout_marginBottom="18dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="18dp"
+                    android:numColumns="4"
+                    android:orientation="horizontal" />
 
             </LinearLayout>
 
-            <View android:layout_width="match_parent"
+            <View
+                android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#e4e4e4"/>
-            
+                android:background="#e4e4e4" />
+
         </LinearLayout>
     </ScrollView>
+
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:paddingRight="20dp">
 
         <Button
             android:id="@+id/btnApply"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="接受并关联随访方案"
-            android:textColor="@color/white"
+            android:layout_gravity="bottom"
             android:background="@color/color_btn_bg"
-            android:layout_gravity="bottom" />
+            android:text="接受并关联随访方案"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/btnCancel"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_gravity="bottom"
             android:layout_marginTop="@dimen/space_10"
-            android:text="拒绝"
-            android:textColor="@color/white"
             android:background="@color/color_btn_bg"
-            android:layout_gravity="bottom" />
+            android:text="拒绝"
+            android:textColor="@color/white" />
     </LinearLayout>
 
 </LinearLayout>

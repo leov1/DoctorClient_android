@@ -3,34 +3,35 @@ package com.hxqydyl.app.ys.bean.follow;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by wangchao36 on 16/4/3.
  * 随访申请信息
- *  "ifStart": 是否首发,
-     "applyUuid": 申请uuid,
-     "imgs": 图片信息,
-     "address": 住址,
-     "firstDiagnosis": 首次就诊时间,
-     "certCode": 出生年月,
-     "illnessDescription": 病情描述,
-     "doctorUuid": 医生uuid,
-     "sex": 性别 ：1是男；2是女,
-     "mobile": 手机号,
-     "weight": 体重,
-     "industry": 职业,
-     "marryState": 婚姻状况,
-     "realName": 真实姓名,
-     "diseaseTime": 病程,
-     "customerUuid": 患者uuid,
-     "diagnose": 诊断描述,
-     "nickname": 昵称,
-     "email": 电子邮箱,
-     "age": 年龄,
-     "seizureTimes": 复发次数,
-     "height": 身高,
-     "nearlyDrugs": 近3个月使用药物
+ * "ifStart": 是否首发,
+ * "applyUuid": 申请uuid,
+ * "imgs": 图片信息,
+ * "address": 住址,
+ * "firstDiagnosis": 首次就诊时间,
+ * "certCode": 出生年月,
+ * "illnessDescription": 病情描述,
+ * "doctorUuid": 医生uuid,
+ * "sex": 性别 ：1是男；2是女,
+ * "mobile": 手机号,
+ * "weight": 体重,
+ * "industry": 职业,
+ * "marryState": 婚姻状况,
+ * "realName": 真实姓名,
+ * "diseaseTime": 病程,
+ * "customerUuid": 患者uuid,
+ * "diagnose": 诊断描述,
+ * "nickname": 昵称,
+ * "email": 电子邮箱,
+ * "age": 年龄,
+ * "seizureTimes": 复发次数,
+ * "height": 身高,
+ * "nearlyDrugs": 近3个月使用药物
  */
 public class FollowApply {
 
@@ -44,9 +45,8 @@ public class FollowApply {
     private String createTime;
     private String illnessDescription;
     private String symptoms;    //症状
-
+    private ArrayList<String> imgs;
     private String ifStart;
-    private String imgs;// null,
     private String address;// 北京市,
     private String firstDiagnosis;// null,
     private String certCode;// 11231321213,
@@ -159,14 +159,6 @@ public class FollowApply {
         this.ifStart = ifStart;
     }
 
-    public String getImgs() {
-        return imgs;
-    }
-
-    public void setImgs(String imgs) {
-        this.imgs = imgs;
-    }
-
     public String getAddress() {
         return address;
     }
@@ -277,5 +269,13 @@ public class FollowApply {
 
     public void setNearlyDrugs(String nearlyDrugs) {
         this.nearlyDrugs = nearlyDrugs;
+    }
+
+    public ArrayList<String> getImgs() {
+        return imgs;
+    }
+
+    public void setImgs(ArrayList<String> imgs) {
+        this.imgs = imgs;
     }
 }

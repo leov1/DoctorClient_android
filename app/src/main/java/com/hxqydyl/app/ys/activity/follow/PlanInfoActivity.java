@@ -1,21 +1,16 @@
 package com.hxqydyl.app.ys.activity.follow;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
+import com.hxqydyl.app.ys.activity.BaseRequstActivity;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.adapter.HealthTipsAdapter;
 import com.hxqydyl.app.ys.adapter.MedicineAdapter;
@@ -24,30 +19,27 @@ import com.hxqydyl.app.ys.adapter.PlanSelfScaleAdapter;
 import com.hxqydyl.app.ys.bean.follow.plan.CheckSycle;
 import com.hxqydyl.app.ys.bean.follow.plan.HealthTips;
 import com.hxqydyl.app.ys.bean.follow.plan.ImportantAdviceChild;
-import com.hxqydyl.app.ys.bean.follow.plan.Medicine;
 import com.hxqydyl.app.ys.bean.follow.plan.Plan;
 import com.hxqydyl.app.ys.bean.follow.plan.Scale;
+import com.hxqydyl.app.ys.bean.response.PlanInfoListResponse;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.http.follow.FollowApplyNet;
 import com.hxqydyl.app.ys.http.follow.FollowCallback;
 import com.hxqydyl.app.ys.http.follow.FollowPlanNet;
 import com.hxqydyl.app.ys.ui.UIHelper;
-import com.hxqydyl.app.ys.utils.DialogUtils;
-import com.hxqydyl.app.ys.utils.StringUtils;
+import com.hxqydyl.app.ys.utils.LoginManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import ui.swipemenulistview.SwipeMenu;
-import ui.swipemenulistview.SwipeMenuCreator;
 import ui.swipemenulistview.SwipeMenuExpandableListView;
-import ui.swipemenulistview.SwipeMenuItem;
 import ui.swipemenulistview.SwipeMenuListView;
 
 /**
  * Created by wangchao36 on 16/3/22.
  * 编辑随访方案
  */
-public class PlanInfoActivity extends BaseTitleActivity implements View.OnClickListener{
+public class PlanInfoActivity extends BaseRequstActivity implements View.OnClickListener {
 
     private TextView tvTitle;
     private TextView tvDrugTherapy; // 不良反应
@@ -90,16 +82,6 @@ public class PlanInfoActivity extends BaseTitleActivity implements View.OnClickL
     private String from = null; // my\suggest
     private Plan plan = null;
 
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (msg.what == 100) {
-                updateUIData();
-            }
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,9 +90,7 @@ public class PlanInfoActivity extends BaseTitleActivity implements View.OnClickL
         visitUuid = intent.getStringExtra("visitUuid");
         from = intent.getStringExtra("from");
         preceptName = intent.getStringExtra("preceptName");
-
         initViewOnBaseTitle(preceptName + "随访方案");
-
         setBackListener();
         initView();
         bindEvent();
@@ -119,13 +99,7 @@ public class PlanInfoActivity extends BaseTitleActivity implements View.OnClickL
     @Override
     protected void onResume() {
         super.onResume();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                showDialog("加载中");
-                visitPreceptDetail(visitUuid);
-            }
-        }).run();
+        visitPreceptDetail(visitUuid);
     }
 
     private void initView() {
@@ -174,7 +148,7 @@ public class PlanInfoActivity extends BaseTitleActivity implements View.OnClickL
         healthTipsList.add(new HealthTips());
         healthTipsAdapter = new HealthTipsAdapter(this, healthTipsList, elvHealthTips);
         elvHealthTips.setAdapter(healthTipsAdapter);
-        for(int i = 0; i < healthTipsAdapter.getGroupCount(); i++){
+        for (int i = 0; i < healthTipsAdapter.getGroupCount(); i++) {
             elvHealthTips.expandGroup(i);
         }
         if ("my".equals(from)) {
@@ -208,130 +182,15 @@ public class PlanInfoActivity extends BaseTitleActivity implements View.OnClickL
 
 
     private void visitPreceptDetail(String visitUuid) {
-        FollowPlanNet.visitPreceptDetail(visitUuid, new FollowCallback(this){
-            @Override
-            public void onFail(String status, String msg) {
-                super.onFail(status, msg);
-                UIHelper.ToastMessage(PlanInfoActivity.this,msg);
-            }
+        toNomalNetStringBack(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid()), toParamsBaen("visitUuid", visitUuid)), 1, UrlConstants.getWholeApiUrl(UrlConstants.VISIT_PRECEPT_DETAIL, "1.0"), "正在获取方案详情");
+    }
 
-            @Override
-            public void onResponse(String response) {
-                super.onResponse(response);
-                if (FollowApplyNet.myDev)
-                    response = "{" +
-                        "  \"hepatic\" : \"1\"," +
-                        "  \"selfTest\" : [" +
-                        "    {" +
-                        "      \"description\" : \"\"," +
-                        "      \"id\" : \"0001\"," +
-                        "      \"thumb\" : \"\"," +
-                        "      \"digest\" : \"\"," +
-                        "      \"createDate\" : \"2015-11-24 20:09:56\"," +
-                        "      \"total\" : 0," +
-                        "      \"url\" : \"\"," +
-                        "      \"title\" : \"综合测试2\"," +
-                        "      \"self\" : \"0\"," +
-                        "      \"cover\" : \"\"," +
-                        "      \"integral\" : 0," +
-                        "      \"media\" : \"\"," +
-                        "      \"sort\" : 1," +
-                        "      \"parentId\" : \"00\"" +
-                        "    }" +
-                        "  ]," +
-                        "  \"period\" : \"6\"," +
-                        "  \"preceptName\" : \"方案名称\"," +
-                        "  \"query\" : {" +
-                        "    \"success\" : \"1\"," +
-                        "    \"message\" : \"操作成功\"" +
-                        "  }," +
-                        "  \"doctorAdvice\" : [" +
-                        "    {" +
-                        "      \"doctorName\" : \"李狗蛋\"," +
-                        "      \"productName\" : \"\"," +
-                        "      \"medicalRecordUuid\" : \"\"," +
-                        "      \"dosage\" : \"1|mg\"," +
-                        "      \"opeTime\" : \"2016-04-08 11:46:19\"," +
-                        "      \"serviceStaffUuid\" : \"ae0a8f2d76e3442981625ee96648b6eb\"," +
-                        "      \"visitRecordUuid\" : \"sitPrecept0000000343\"," +
-                        "      \"medicalDateBegin\" : null," +
-                        "      \"sortType\" : \"desc\"," +
-                        "      \"medicineUuid\" : \"也是名称\"," +
-                        "      \"uuid\" : \"ctorAdvice0000000368\"," +
-                        "      \"cureNote\" : \"\"," +
-                        "      \"customerUuid\" : \"\"," +
-                        "      \"delFlag\" : \"1\"," +
-                        "      \"type\" : \"0\"," +
-                        "      \"food\" : \"饭前服用\"," +
-                        "      \"state\" : \"\"," +
-                        "      \"sortName\" : \"uuid\"," +
-                        "      \"oper\" : \"\"," +
-                        "      \"unit\" : \"\"," +
-                        "      \"createTime\" : \"\"," +
-                        "      \"directions\" : \"早,中,晚\"," +
-                        "      \"frequency\" : \"1\"," +
-                        "      \"mapCondition\" : {" +
-                        "" +
-                        "      }," +
-                        "      \"customerName\" : \"\"," +
-                        "      \"medicalDateEnd\" : null" +
-                        "    }" +
-                        "  ]," +
-                        "  \"electrocardiogram\" : \"5\"," +
-                        "  \"weight\" : \"4\"," +
-                        "  \"drugTherapy\" : \"药物不良咋处理\"," +
-                        "  \"sideEffects\" : \"其他治疗也行\"," +
-                        "  \"otherMap\" : [" +
-                        "" +
-                        "  ]," +
-                        "  \"visitUuid\" : \"sitPrecept0000000343\"," +
-                        "  \"doctorTest\" : [" +
-                        "    {" +
-                        "      \"description\" : \"\"," +
-                        "      \"id\" : \"0005\"," +
-                        "      \"thumb\" : \"\"," +
-                        "      \"digest\" : \"\"," +
-                        "      \"createDate\" : \"2015-11-24 20:10:36\"," +
-                        "      \"total\" : 0," +
-                        "      \"url\" : \"\"," +
-                        "      \"title\" : \"综合测试6\"," +
-                        "      \"self\" : \"1\"," +
-                        "      \"cover\" : \"\"," +
-                        "      \"integral\" : 0," +
-                        "      \"media\" : \"\"," +
-                        "      \"sort\" : 5," +
-                        "      \"parentId\" : \"00\"" +
-                        "    }," +
-                        "    {" +
-                        "      \"description\" : \"\"," +
-                        "      \"id\" : \"0006\"," +
-                        "      \"thumb\" : \"\"," +
-                        "      \"digest\" : \"\"," +
-                        "      \"createDate\" : \"2015-11-24 20:10:44\"," +
-                        "      \"total\" : 0," +
-                        "      \"url\" : \"\"," +
-                        "      \"title\" : \"综合测试7\"," +
-                        "      \"self\" : \"1\"," +
-                        "      \"cover\" : \"\"," +
-                        "      \"integral\" : 0," +
-                        "      \"media\" : \"\"," +
-                        "      \"sort\" : 6," +
-                        "      \"parentId\" : \"00\"" +
-                        "    }" +
-                        "  ]," +
-                        "  \"bloodRoutine\" : \"2\"," +
-                        "  \"healthGuide\" : [" +
-                        "  ] }";
-                try{
-                    plan = Plan.parseDetailJson(response);
-                    dismissDialog();
-                    handler.sendEmptyMessage(100);
-                }catch (Exception e){
-                    onFail("","解析出错了，刷新下有意外惊喜呦");
-                }
-
-            }
-        });
+    @Override
+    public void onSuccessToString(String json, int flag) {
+        //TODO 此处1.0先如此处理，2.0使用bean处理
+        plan = Plan.parseDetailJson(json);
+        dismissDialog();
+        updateUIData();
     }
 
     private void updateUIData() {
@@ -349,15 +208,20 @@ public class PlanInfoActivity extends BaseTitleActivity implements View.OnClickL
         tvLiverCycle.setText(plan.getHepatic() + "周");
 
         medicineList.clear();
-        medicineList.addAll(plan.getMedicineList());
+        if (plan.getMedicineList() != null)
+            medicineList.addAll(plan.getMedicineList());
         healthTipsList.clear();
-        healthTipsList.addAll(plan.getHealthTipsList());
+        if (plan.getHealthGuide() != null)
+            healthTipsList.addAll(plan.getHealthGuide());
         checkSycleList.clear();
-        checkSycleList.addAll(plan.getOtherCheckSycle());
+        if (plan.getOtherMap() != null)
+            checkSycleList.addAll(plan.getOtherMap());
         selfScaleList.clear();
-        selfScaleList.addAll(plan.getSelfTestList());
+        if (plan.getSelfTest() != null)
+            selfScaleList.addAll(plan.getSelfTest());
         doctorScaleList.clear();
-        doctorScaleList.addAll(plan.getDoctorTestList());
+        if (plan.getDoctorTest() != null)
+            doctorScaleList.addAll(plan.getDoctorTest());
 
         medicineAdapter.notifyDataSetChanged();
         planCheckSycleAdapter.notifyDataSetChanged();

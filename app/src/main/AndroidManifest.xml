@@ -161,6 +161,10 @@
             android:theme="@style/AppBaseThemeLib"
             android:screenOrientation="portrait"
             ></activity>
+        <activity
+            android:name=".activity.BigPicActivity"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

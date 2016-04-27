@@ -24,6 +24,7 @@ public class PatientTreatInfo extends BaseBean implements Serializable {
     }
 
     public void setCaseCategoryType(String caseCategoryType) {
+
         this.caseCategoryType = caseCategoryType;
     }
 
