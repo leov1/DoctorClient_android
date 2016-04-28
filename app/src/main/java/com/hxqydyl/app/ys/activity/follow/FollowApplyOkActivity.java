@@ -2,13 +2,11 @@ package com.hxqydyl.app.ys.activity.follow;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 import com.hxqydyl.app.ys.R;
@@ -16,8 +14,6 @@ import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.adapter.PatientGroupSelectAdapter;
 import com.hxqydyl.app.ys.adapter.PlanSelectAdapter;
 import com.hxqydyl.app.ys.bean.PatientGroup;
-import com.hxqydyl.app.ys.bean.follow.FollowApply;
-import com.hxqydyl.app.ys.bean.follow.plan.Plan;
 import com.hxqydyl.app.ys.bean.follow.plan.PlanBaseInfo;
 import com.hxqydyl.app.ys.http.PatientGroupNet;
 import com.hxqydyl.app.ys.http.UrlConstants;
@@ -64,7 +60,7 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_follow_apply_ok);
         initViewOnBaseTitle("选择随访方案");
-//        applyUuid = getIntent().getStringExtra("applyUuid");
+        applyUuid = getIntent().getStringExtra("applyUuid");
         customerUuid = getIntent().getStringExtra("customerUuid");
         type = getIntent().getStringExtra("type");
 
@@ -245,7 +241,7 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
         }
         showDialog("正在提交");
         PlanBaseInfo plan = planList.get(planSelectAdapter.getSelect());
-        FollowApplyNet.addVisitRecord(customerUuid, plan.getVisitUuid(), new FollowCallback(this){
+        FollowApplyNet.addVisitRecord(applyUuid, plan.getVisitUuid(), new FollowCallback(this){
             @Override
             public void onResult(String result) {
                 super.onResult(result);

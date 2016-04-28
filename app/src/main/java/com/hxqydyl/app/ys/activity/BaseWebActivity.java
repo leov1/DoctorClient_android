@@ -13,16 +13,14 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.hxqydyl.app.ys.R;
+import com.hxqydyl.app.ys.activity.reading.VitamioPlayerActivity;
 import com.hxqydyl.app.ys.ui.ProgressWebView;
 import com.hxqydyl.app.ys.ui.UIHelper;
-import com.hxqydyl.app.ys.ui.videoplay_lib.JCFullScreenActivity;
 import com.hxqydyl.app.ys.utils.LoginManager;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-
-
 import java.lang.reflect.Method;
+import java.net.URLDecoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,7 +30,7 @@ import java.util.regex.Pattern;
  */
 public class BaseWebActivity extends BaseTitleActivity {
     public ProgressWebView webView;
-    private boolean isNeedLogin = false;
+    public boolean isNeedLogin = false;
     private OnLoginSuccess onLoginSuccess;
     private Intent intent;
     private String beanPath;
@@ -168,14 +166,13 @@ public class BaseWebActivity extends BaseTitleActivity {
                 ps = parameters.split("\\|");
                 String sourceUrl = ps[0];
                 String duration = ps[1];
-                JCFullScreenActivity.toActivity(this,
-                        "http://gslb.miaopai.com/stream/ed5HCfnhovu3tyIQAiv60Q__.mp4",
-                        "嫂子躺下");
-//                intent = new Intent(this, VideoPlayActivity.class);
-//                intent.putExtra("VideoUrl", sourceUrl);
-//                intent.putExtra("VideoTitle", duration);
-//                startActivityForResult(intent, FULLPLAY);
-//                startActivity(intent);
+//                JCFullScreenActivity.toActivity(this,
+//                        "http://gslb.miaopai.com/stream/ed5HCfnhovu3tyIQAiv60Q__.mp4",
+//                        "淡淡的");
+                intent = new Intent(this, VitamioPlayerActivity.class);
+                intent.putExtra("VideoUrl", sourceUrl);
+                intent.putExtra("VideoTitle", duration);
+                startActivity(intent);
                 break;
 //            case "getFriendList":
 //                new ContactHelper().init(this, this);
@@ -268,6 +265,7 @@ public class BaseWebActivity extends BaseTitleActivity {
         if (isNeedLogin) {
             if (!TextUtils.isEmpty(LoginManager.getDoctorUuid())) {
                 onLoginSuccess.onLoginSuccess();
+                isNeedLogin = false;
             } else {
                 onLoginSuccess.onLoginfail();
             }

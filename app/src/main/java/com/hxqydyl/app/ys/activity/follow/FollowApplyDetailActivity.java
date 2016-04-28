@@ -1,26 +1,33 @@
 package com.hxqydyl.app.ys.activity.follow;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+import com.hxqydyl.app.ys.activity.BigPicActivity;
 import com.hxqydyl.app.ys.activity.patient.PatientInfoActivity;
-import com.hxqydyl.app.ys.adapter.FollowApplyAdapter;
+import com.hxqydyl.app.ys.adapter.PicAdapter;
 import com.hxqydyl.app.ys.bean.follow.FollowApply;
 import com.hxqydyl.app.ys.http.follow.FollowApplyNet;
 import com.hxqydyl.app.ys.http.follow.FollowCallback;
 import com.hxqydyl.app.ys.ui.UIHelper;
+import com.hxqydyl.app.ys.utils.DensityUtils;
 import com.hxqydyl.app.ys.utils.DialogUtils;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import java.util.List;
 
@@ -28,7 +35,7 @@ import java.util.List;
  * 随访申请
  */
 public class FollowApplyDetailActivity extends BaseTitleActivity
-        implements View.OnClickListener {
+        implements View.OnClickListener,AdapterView.OnItemClickListener {
 
     private RelativeLayout rlPatient;
     private Button btnApply;
@@ -39,11 +46,14 @@ public class FollowApplyDetailActivity extends BaseTitleActivity
     private TextView tvAge;
     private TextView tvQ;
     private TextView tvContent;
+    private PicAdapter adapter;
 
     private String applyUuid = null;
     private String avatar = null;
+    private DisplayImageOptions options;
 
     private FollowApply fa;
+    private GridView gv_pics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +70,9 @@ public class FollowApplyDetailActivity extends BaseTitleActivity
 
     private void initViews() {
         initViewOnBaseTitle("随访申请详情");
+        gv_pics = (GridView) findViewById(R.id.gv_pics);
+
+
         rlPatient = (RelativeLayout) findViewById(R.id.rl_patient);
         btnApply = (Button) findViewById(R.id.btnApply);
         btnCancel = (Button) findViewById(R.id.btnCancel);
@@ -69,6 +82,14 @@ public class FollowApplyDetailActivity extends BaseTitleActivity
         tvAge = (TextView) findViewById(R.id.tvAge);
         tvQ = (TextView) findViewById(R.id.tvQ);
         tvContent = (TextView) findViewById(R.id.tvContent);
+        options = new DisplayImageOptions.Builder()
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .displayer(new RoundedBitmapDisplayer(DensityUtils.dp2px(this, 50)))
+                .showImageForEmptyUri(R.mipmap.portrait_man)
+                .showImageOnFail(R.mipmap.portrait_man)
+                .build();
     }
 
     private void initListeners() {
@@ -150,7 +171,14 @@ public class FollowApplyDetailActivity extends BaseTitleActivity
                         } else {
                             tvSex.setText("女");
                         }
-                        ImageLoader.getInstance().displayImage(avatar, ivAvatar);
+
+                        ImageLoader.getInstance().displayImage(avatar, ivAvatar, options);
+                        if (fa.getImgs() != null && fa.getImgs().size() > 0)
+                            adapter = new PicAdapter(FollowApplyDetailActivity.this, fa.getImgs());
+                        gv_pics.setAdapter(adapter);
+                        setListViewHeightBasedOnChildren(gv_pics);
+                        gv_pics.setOnItemClickListener(FollowApplyDetailActivity.this);
+
                     } else {
                         Toast.makeText(FollowApplyDetailActivity.this, "没有数据", Toast.LENGTH_SHORT).show();
                         finish();
@@ -188,5 +216,37 @@ public class FollowApplyDetailActivity extends BaseTitleActivity
             }
         });
     }
+    public static void setListViewHeightBasedOnChildren(GridView listView) {
+        // 获取listview的adapter
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            return;
+        }
+        // 固定列宽，有多少列
+        int col = 4;// listView.getNumColumns();
+        int totalHeight = 0;
+        // i每次加4，相当于listAdapter.getCount()小于等于4时 循环一次，计算一次item的高度，
+        // listAdapter.getCount()小于等于8时计算两次高度相加
+        for (int i = 0; i < listAdapter.getCount(); i += col) {
+            // 获取listview的每一个item
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            // 获取item的高度和
+            totalHeight += listItem.getMeasuredHeight();
+        }
 
+        // 获取listview的布局参数
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        // 设置高度
+        params.height = totalHeight;
+        // 设置margin
+        ((GridView.MarginLayoutParams) params).setMargins(10, 10, 10, 10);
+        // 设置参数
+        listView.setLayoutParams(params);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        BigPicActivity.toBigPic(fa.getImgs(),position,this);
+    }
 }

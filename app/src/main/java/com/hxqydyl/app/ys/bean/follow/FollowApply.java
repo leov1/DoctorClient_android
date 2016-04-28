@@ -3,6 +3,7 @@ package com.hxqydyl.app.ys.bean.follow;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,7 +47,7 @@ public class FollowApply {
     private String symptoms;    //症状
 
     private String ifStart;
-    private String imgs;// null,
+    private ArrayList<String> imgs;
     private String address;// 北京市,
     private String firstDiagnosis;// null,
     private String certCode;// 11231321213,
@@ -159,11 +160,11 @@ public class FollowApply {
         this.ifStart = ifStart;
     }
 
-    public String getImgs() {
+    public ArrayList<String> getImgs() {
         return imgs;
     }
 
-    public void setImgs(String imgs) {
+    public void setImgs(ArrayList<String> imgs) {
         this.imgs = imgs;
     }
 
