@@ -86,8 +86,8 @@ public class FollowApplyActivity extends BaseTitleActivity
                 dismissDialog();
                 try{
                     List<FollowApply> tmp = FollowApply.parseList(result);
+                    list.clear();
                     if (tmp.size() > 0) {
-                        list.clear();
                         list.addAll(tmp);
                         adapter.notifyDataSetChanged();
                     } else {

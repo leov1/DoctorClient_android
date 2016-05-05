@@ -37,7 +37,7 @@ public class CaptchaNet {
 
                     @Override
                     public void onError(Call call, Exception e) {
-                        System.out.println("onError--->");
+                        System.out.println("onError--->"+e.toString());
                         listener.requestCaptchaNetFail();
                     }
 

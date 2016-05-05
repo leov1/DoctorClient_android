@@ -16,7 +16,6 @@ import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.NormalListDialog;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
-import com.hxqydyl.app.ys.activity.follow.FollowMainActivity;
 import com.hxqydyl.app.ys.bean.AddressBook;
 import com.hxqydyl.app.ys.bean.PatientGroup;
 import com.hxqydyl.app.ys.http.PatientGroupNet;
@@ -29,8 +28,6 @@ import com.hxqydyl.app.ys.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import okhttp3.Call;
 
 /**
  * Created by wangchao36 on 16/3/21.
@@ -107,7 +104,7 @@ public class PatientAddActivity extends BaseTitleActivity implements View.OnClic
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 0 && resultCode == 0) {
+        if (requestCode == 0 && resultCode == 0 && data != null) {
             AddressBook ab = (AddressBook) data.getSerializableExtra("ab");
             etPhone.setText(ab.getPhone());
             etRealName.setText(ab.getName());

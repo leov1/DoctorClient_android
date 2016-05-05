@@ -60,7 +60,7 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_follow_apply_ok);
         initViewOnBaseTitle("选择随访方案");
-        applyUuid = getIntent().getStringExtra("applyUuid");
+//        applyUuid = getIntent().getStringExtra("applyUuid");
         customerUuid = getIntent().getStringExtra("customerUuid");
         type = getIntent().getStringExtra("type");
 
@@ -241,11 +241,23 @@ public class FollowApplyOkActivity extends BaseTitleActivity implements View.OnC
         }
         showDialog("正在提交");
         PlanBaseInfo plan = planList.get(planSelectAdapter.getSelect());
-        FollowApplyNet.addVisitRecord(applyUuid, plan.getVisitUuid(), new FollowCallback(this){
+        FollowApplyNet.addVisitRecord(customerUuid, plan.getVisitUuid(), new FollowCallback(this){
+//            @Override
+//            public void onResult(String result) {
+//                super.onResult(result);
+//                updateCustomerGroup();
+//            }
+
             @Override
-            public void onResult(String result) {
-                super.onResult(result);
-                updateCustomerGroup();
+            public void onResponse(String response) {
+                JSONObject object = JSONObject.parseObject(response);
+                int code = object.getInteger("code");
+                if (code==200){
+                    updateCustomerGroup();
+                }else{
+                    dismissDialog();
+                    UIHelper.ToastMessage(FollowApplyOkActivity.this, "提交失败");
+                }
             }
 
             @Override

@@ -1,18 +1,21 @@
 package com.hxqydyl.app.ys.adapter;
 
 import android.content.Context;
-import android.text.Layout;
+import android.graphics.Bitmap;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.bean.follow.FollowApply;
+import com.hxqydyl.app.ys.utils.DensityUtils;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import java.util.List;
 
@@ -24,10 +27,19 @@ public class FollowApplyAdapter extends BaseAdapter{
 
     private Context context;
     private List<FollowApply> list;
+    private DisplayImageOptions options;
 
     public FollowApplyAdapter(Context context, List<FollowApply> list){
         this.context = context;
         this.list = list;
+        options = new DisplayImageOptions.Builder()
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .displayer(new RoundedBitmapDisplayer(DensityUtils.dp2px(context, 50)))
+                .showImageForEmptyUri(R.mipmap.portrait_man)
+                .showImageOnFail(R.mipmap.portrait_man)
+                .build();
     }
     @Override
     public int getCount() {
@@ -62,15 +74,15 @@ public class FollowApplyAdapter extends BaseAdapter{
         }
         FollowApply fa = list.get(position);
         holder.tvName.setText(fa.getRealName());
-        holder.tvAge.setText("年龄：" + fa.getAge() + "岁");
-        holder.tvDay.setText(fa.getCreateTime());
-        holder.tvQ.setText(fa.getIllnessDescription());
+        holder.tvAge.setText(TextUtils.isEmpty(fa.getAge())?"" :fa.getAge()+ "岁");
+        holder.tvDay.setText(TextUtils.isEmpty(fa.getDate())?"":fa.getDate().split(" ")[0]);
+        holder.tvQ.setText(fa.getInfo());
         if ("1".equals(fa.getSex())) {
             holder.ivSex.setImageDrawable(context.getResources().getDrawable(R.mipmap.icon_man_flag));
         } else {
             holder.ivSex.setImageDrawable(context.getResources().getDrawable(R.mipmap.female));
         }
-        ImageLoader.getInstance().displayImage(fa.getImgUrl(), holder.ivAvatar);
+        ImageLoader.getInstance().displayImage(fa.getImgUrl(), holder.ivAvatar,options);
 
         return convertView;
     }

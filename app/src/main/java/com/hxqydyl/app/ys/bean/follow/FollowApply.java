@@ -45,6 +45,24 @@ public class FollowApply {
     private String createTime;
     private String illnessDescription;
     private String symptoms;    //症状
+    private String date;//关联时间
+    private String info;//用户信息
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     private String ifStart;
     private ArrayList<String> imgs;

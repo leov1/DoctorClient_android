@@ -52,7 +52,9 @@ public class FollowApplyNet {
      * @param visitPreceptUuid 随访方案的uuid
      */
     public static void addVisitRecord(String visitUuid, String visitPreceptUuid, FollowCallback callback) {
-        OkHttpUtils.get().url(baseURL + "app/pub/doctor/1.0/addVisitRecord")
+        OkHttpUtils.get().url(baseURL + "app/pub/doctor/2.0/addVisitRecord")
+//        OkHttpUtils.get().url("http://172.168.1.53/app/pub/doctor/2.0/addVisitRecord")
+                .addHeader("Accept","application/json")
                 .addParams("visitUuid", visitUuid)
                 .addParams("visitPreceptUuid", visitPreceptUuid)
                 .build()

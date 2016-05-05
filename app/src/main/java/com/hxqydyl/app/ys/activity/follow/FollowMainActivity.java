@@ -98,25 +98,6 @@ public class FollowMainActivity extends BaseTitleActivity implements View.OnClic
         }
     };
 
-    private void initListData() {
-        for (int i = 0; i < 5; i++) {
-            PatientGroup patientGroup = new PatientGroup();
-            patientGroup.setId(i + "");
-            patientGroup.setGroupName("group " + i);
-            for (int j = 0; j < i; j++) {
-                Patient patient = new Patient();
-                patient.setId("" + i + j);
-                patient.setName("组" + i + "病人" + j);
-                patient.setAge("年龄：" + j + "岁");
-                patient.setSex("女");
-                patient.setFollowTime("2016-03-21");
-                patient.setDescription("问题：天天吃不下饭，没有精神，头晕目眩。当看到美女时，两眼会放光，其他时间都无精打采");
-                patientGroup.addPatient(patient);
-            }
-            patientGroups.add(patientGroup);
-        }
-    }
-
     private void initViews() {
         initViewOnBaseTitle("随访");
         addBtn = (ImageView) findViewById(R.id.right_img);
