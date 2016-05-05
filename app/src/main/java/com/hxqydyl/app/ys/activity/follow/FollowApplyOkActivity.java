@@ -2,45 +2,31 @@ package com.hxqydyl.app.ys.activity.follow;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.alibaba.fastjson.JSONObject;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseRequstActivity;
-import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.adapter.PatientGroupSelectAdapter;
 import com.hxqydyl.app.ys.adapter.PlanSelectAdapter;
 import com.hxqydyl.app.ys.bean.PatientGroup;
-import com.hxqydyl.app.ys.bean.follow.FollowApply;
-import com.hxqydyl.app.ys.bean.follow.plan.Plan;
 import com.hxqydyl.app.ys.bean.follow.plan.PlanBaseInfo;
 import com.hxqydyl.app.ys.bean.response.BaseResponse;
+import com.hxqydyl.app.ys.bean.response.BaseStringResponse;
 import com.hxqydyl.app.ys.bean.response.PatientGroupResponse;
 import com.hxqydyl.app.ys.bean.response.PlanListResponse;
 import com.hxqydyl.app.ys.http.PatientGroupNet;
 import com.hxqydyl.app.ys.http.UrlConstants;
-import com.hxqydyl.app.ys.http.follow.CustomerNet;
-import com.hxqydyl.app.ys.http.follow.FollowApplyNet;
-import com.hxqydyl.app.ys.http.follow.FollowCallback;
-import com.hxqydyl.app.ys.http.follow.FollowPlanNet;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.DialogUtils;
 import com.hxqydyl.app.ys.utils.LoginManager;
-import com.hxqydyl.app.ys.utils.StringUtils;
 import com.xus.http.httplib.model.PostPrams;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import okhttp3.Call;
 
 /**
  * Created by wangchao36 on 16/3/23.
@@ -192,10 +178,10 @@ public class FollowApplyOkActivity extends BaseRequstActivity implements View.On
             return;
         }
         PlanBaseInfo plan = planList.get(planSelectAdapter.getSelect());
-//        String url="http://172.168.1.53/app/pub/doctor/2.0/addVisitRecord";
-//        toNomalNet(toGetParams(toParamsBaen("visitUuid", applyUuid), toParamsBaen("visitPreceptUuid", plan.getVisitUuid())), BaseResponse.class, 1, url, "正在接受 ..");
+        String url="http://172.168.1.53/app/pub/doctor/2.0/addVisitRecord";
+        toNomalNet(toGetParams(toParamsBaen("visitUuid", applyUuid), toParamsBaen("visitPreceptUuid", plan.getVisitUuid())), BaseStringResponse.class, 1, url, "正在接受 ..");
 
-        toNomalNet(toGetParams(toParamsBaen("visitUuid", applyUuid), toParamsBaen("visitPreceptUuid", plan.getVisitUuid())), BaseResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.ADD_VISIT_RECORD, "1.0"), "正在接受 ..");
+//        toNomalNet(toGetParams(toParamsBaen("visitUuid", applyUuid), toParamsBaen("visitPreceptUuid", plan.getVisitUuid())), BaseResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.ADD_VISIT_RECORD, "1.0"), "正在接受 ..");
 
     }
 
@@ -217,7 +203,6 @@ public class FollowApplyOkActivity extends BaseRequstActivity implements View.On
                 break;
             case 2:
             case 5:
-
                 UIHelper.ToastMessage(FollowApplyOkActivity.this, "保存成功");
                 finish();
                 break;

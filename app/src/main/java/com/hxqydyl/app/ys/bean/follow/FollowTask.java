@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class FollowTask {
 
-    private String imgUrl;
+    private List<String> imgUrl;
     private String realName;
     private String applyUuid;
     private String customerUuid;
@@ -24,11 +24,11 @@ public class FollowTask {
         return JSONArray.parseArray(string, FollowTask.class);
     }
 
-    public String getImgUrl() {
+    public List<String> getImgUrl() {
         return imgUrl;
     }
 
-    public void setImgUrl(String imgUrl) {
+    public void setImgUrl(List<String> imgUrl) {
         this.imgUrl = imgUrl;
     }
 

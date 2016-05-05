@@ -14,7 +14,7 @@ import android.webkit.WebViewClient;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.reading.VitamioPlayerActivity;
-import com.hxqydyl.app.ys.ui.ProgressWebView;
+import com.hxqydyl.app.ys.ui.library.RefreshProgressWebView;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.LoginManager;
 
@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
  * Created by hxq on 2016/3/25.
  */
 public class BaseWebActivity extends BaseTitleActivity {
-    public ProgressWebView webView;
+    public RefreshProgressWebView webView;
     public boolean isNeedLogin = false;
     private OnLoginSuccess onLoginSuccess;
     private Intent intent;
@@ -46,7 +46,7 @@ public class BaseWebActivity extends BaseTitleActivity {
         setContentView(R.layout.activity_web);
         initViews();
         initWebSetting();
-        setWebBackListener(webView);
+        setWebBackListener(webView.getRefreshableView());
     }
 
     private void initViews() {
@@ -54,16 +54,16 @@ public class BaseWebActivity extends BaseTitleActivity {
             beanPath = getIntent().getStringExtra("beanPath");
         }
         initViewOnBaseTitle("加载中...");
-        webView = (ProgressWebView) findViewById(R.id.webview);
+        webView = (RefreshProgressWebView) findViewById(R.id.webview);
         initWebSetting();
     }
 
     public void loadUrl(String url) {
-        webView.loadUrl(url);
+        webView.getRefreshableView().loadUrl(url);
     }
 
     private void initWebSetting() {
-        WebSettings webSettings = webView.getSettings();
+        WebSettings webSettings = webView.getRefreshableView().getSettings();
         webSettings.setDomStorageEnabled(true);
         webSettings.setAppCacheMaxSize(1024 * 1024 * 8);
         String appCachePath = getApplicationContext().getCacheDir().getAbsolutePath();
@@ -71,8 +71,8 @@ public class BaseWebActivity extends BaseTitleActivity {
         webSettings.setAllowFileAccess(true);
         webSettings.setAppCacheEnabled(true);
         webSettings.setJavaScriptEnabled(true);
-        webView.setWebViewClient(webViewClient);
-        webView.setWebChromeClient(mChromeClient);
+        webView.getRefreshableView().setWebViewClient(webViewClient);
+        webView.getRefreshableView().setWebChromeClient(mChromeClient);
 //        webView.addJavascriptInterface(this, CLIENT_INTERFACE_NAME);
     }
 
@@ -96,7 +96,7 @@ public class BaseWebActivity extends BaseTitleActivity {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            webView.loadUrl("javascript:gm.user.setDoctor('" + LoginManager.getDoctorUuid() + "')");
+            webView.getRefreshableView().loadUrl("javascript:gm.user.setDoctor('" + LoginManager.getDoctorUuid() + "')");
         }
 
         @Override
@@ -277,8 +277,8 @@ public class BaseWebActivity extends BaseTitleActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (webView.canGoBack()) {
-                webView.goBack();
+            if (webView.getRefreshableView().canGoBack()) {
+                webView.getRefreshableView().goBack();
                 return true;
             }
         }

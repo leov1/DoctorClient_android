@@ -15,6 +15,8 @@ public class ImportantAdviceChild implements Serializable {
     @Expose
     private String medicineUuid;//药物名称
     @Expose
+    private String uuid;//方案用药物名称
+    @Expose
     private String directions;//时间
     @Expose
     private String dosage;//量剂
@@ -52,6 +54,14 @@ public class ImportantAdviceChild implements Serializable {
 
         }
         return this;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public ImportantAdviceChild toJsonBean() {

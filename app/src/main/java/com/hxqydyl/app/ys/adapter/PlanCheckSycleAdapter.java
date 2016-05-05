@@ -26,6 +26,14 @@ public class PlanCheckSycleAdapter extends BaseAdapter {
         this.list = list;
     }
 
+    public List<CheckSycle> getList() {
+        return list;
+    }
+
+    public void setList(List<CheckSycle> list) {
+        this.list = list;
+    }
+
     @Override
     public int getCount() {
         return list.size();
@@ -33,7 +41,7 @@ public class PlanCheckSycleAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return list.get(position);
     }
 
     @Override

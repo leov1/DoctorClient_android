@@ -16,7 +16,7 @@ public class MyPatientFrg extends BaseWebFragment implements BaseWebFragment.DoJ
         super.onActivityCreated(savedInstanceState);
         initViewOnBaseTitle("我的患者", view);
         setCustomInterceptor(this);
-        webView.loadUrl(UrlConstants.getWholeApiUrl(UrlConstants.MY_PATIENT));
+        webView.getRefreshableView().loadUrl(UrlConstants.getWholeApiUrl(UrlConstants.MY_PATIENT));
     }
 
     @Override
@@ -24,7 +24,7 @@ public class MyPatientFrg extends BaseWebFragment implements BaseWebFragment.DoJ
         super.onHiddenChanged(hidden);
         if (!hidden && LoginManager.isQuit_myPatient){
             LoginManager.isQuit_myPatient = false;
-            webView.loadUrl(UrlConstants.getWholeApiUrl(UrlConstants.MY_PATIENT));
+            webView.getRefreshableView().loadUrl(UrlConstants.getWholeApiUrl(UrlConstants.MY_PATIENT));
         }
     }
 

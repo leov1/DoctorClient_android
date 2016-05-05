@@ -25,6 +25,8 @@ import com.hxqydyl.app.ys.adapter.FollowApplyAdapter;
 import com.hxqydyl.app.ys.adapter.PicAdapter;
 import com.hxqydyl.app.ys.bean.follow.FollowApply;
 import com.hxqydyl.app.ys.bean.response.BaseResponse;
+import com.hxqydyl.app.ys.bean.response.BaseStringResponse;
+import com.hxqydyl.app.ys.bean.response.FollowUserApplyDetailResponse;
 import com.hxqydyl.app.ys.bean.response.FollowUserApplyResponse;
 import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.http.follow.FollowApplyNet;
@@ -127,18 +129,20 @@ public class FollowApplyDetailActivity extends BaseRequstActivity
                 break;
         }
     }
-
+//获取申请详情
     private void getApplyDetail() {
-        toNomalNet(toGetParams(toParamsBaen("applyUuid", applyUuid), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), FollowUserApplyResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_APPLY_DETAIL, "1.0"), "获取随访申请详情中...");
+       String url= "http://172.168.1.53/app/pub/doctor/2.0/getApplyDetail";
+        toNomalNet(toGetParams(toParamsBaen("applyUuid", applyUuid), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), FollowUserApplyDetailResponse.class, 1, url, "获取随访申请详情中...");
+//        toNomalNet(toGetParams(toParamsBaen("applyUuid", applyUuid), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), FollowUserApplyResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_APPLY_DETAIL, "1.0"), "获取随访申请详情中...");
     }
 
     @Override
     public void onSuccessToBean(Object bean, int flag) {
         switch (flag) {
             case 1:
-                FollowUserApplyResponse rs = (FollowUserApplyResponse) bean;
-                if (rs.getRelist() != null && rs.getRelist().size() > 0) {
-                    fa = rs.getRelist().get(0);
+                FollowUserApplyDetailResponse rs = (FollowUserApplyDetailResponse) bean;
+                if (rs.value != null) {
+                    fa = rs.value;
                     tvName.setText(fa.getRealName());
                     tvAge.setText(TextUtils.isEmpty(fa.getAge()) ? "" : fa.getAge() + "岁");
                     tvQ.setText(TextUtils.isEmpty(fa.getIllnessDescription()) ? "" : "问题" + fa.getAge());
@@ -162,20 +166,19 @@ public class FollowApplyDetailActivity extends BaseRequstActivity
                 }
                 break;
             case 2:
-                BaseResponse baseResponse = (BaseResponse) bean;
-                if (baseResponse.message.contains("成功")) {
                     UIHelper.ToastMessage(FollowApplyDetailActivity.this, "已拒绝");
                     finish();
-                }
                 break;
         }
     }
-
+//拒绝
     private void refuseVivistApply() {
         DialogUtils.showSignleEditTextDialog(this, new DialogUtils.SaveTextListener() {
             @Override
             public boolean save(String text) {
-                toNomalNet(toPostParams(toParamsBaen("applyUuid", fa.getApplyUuid()), toParamsBaen("refuseReason", text), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), BaseResponse.class, 2, UrlConstants.getWholeApiUrl(UrlConstants.REFUSE_VIVIST_APPLY, "1.0"), "正在拒绝...");
+                String url= "http://172.168.1.53//app/public/refuseapply/2.0/refuseVivistApply";
+                toNomalNet(toPostParams(toParamsBaen("applyUuid", fa.getApplyUuid()), toParamsBaen("refuseReason", text), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), BaseStringResponse.class, 2, url, "正在拒绝...");
+//                toNomalNet(toPostParams(toParamsBaen("applyUuid", fa.getApplyUuid()), toParamsBaen("refuseReason", text), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), BaseResponse.class, 2, UrlConstants.getWholeApiUrl(UrlConstants.REFUSE_VIVIST_APPLY, "1.0"), "正在拒绝...");
                 return true;
             }
         });

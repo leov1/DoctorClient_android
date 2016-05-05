@@ -9,8 +9,7 @@ import com.zhy.http.okhttp.OkHttpUtils;
  * 随访申请相关接口医生id：2979745c9af9459289fd6fafa3af8898、
  * 35223f71d7bc4484bc3a677b35b5f07b、
  * 5617d2fd94514ed98fb908f0ef15a859、
- * 566dec740c404ffa813253b8a03f0c1b、
- * 739e9e64edb24720aff2a89de967ec19、
+ * 566dec740c404ffa813253b8a03f0c1b、 * 739e9e64edb24720aff2a89de967ec19、
  * a9bedf064707480eaaa79388b227adb4
  */
 public class FollowApplyNet {
@@ -21,13 +20,13 @@ public class FollowApplyNet {
     public static boolean myDev = false;
 
     /**
-     * 随访申请列表
-     * @param callback
-     */
-    public static void getVisitApplyList(FollowCallback callback) {
-        OkHttpUtils.get().url(FollowApplyNet.baseURL
-                + "app/pub/doctor/1.0/getVisitApplyList")
-                .addParams("doctorUuid", LoginManager.getDoctorUuid())
+                * 随访申请列表
+                * @param callback
+                */
+        public static void getVisitApplyList(FollowCallback callback) {
+            OkHttpUtils.get().url(FollowApplyNet.baseURL
+                    + "app/pub/doctor/1.0/getVisitApplyList")
+                    .addParams("doctorUuid", LoginManager.getDoctorUuid())
                 .build()
                 .execute(callback);
     }

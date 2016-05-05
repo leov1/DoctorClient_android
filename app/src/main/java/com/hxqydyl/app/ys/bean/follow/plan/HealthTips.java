@@ -17,11 +17,11 @@ import java.util.List;
 public class HealthTips implements Serializable {
 
     private String uuid;
-    private String day = "";
-    private String food;
-    private String sport;
+    private String period = "";
+    private String diet;
+    private String sports;
     private String sleep;
-    private String other;
+    private String rest;
 
     public static ArrayList<HealthTips> parse(JSONArray jsonArray) throws JSONException {
         ArrayList<HealthTips> list = new ArrayList<>();
@@ -30,11 +30,11 @@ public class HealthTips implements Serializable {
             JSONObject obj = jsonArray.getJSONObject(i);
             HealthTips tips = new HealthTips();
             tips.setUuid(obj.getString("uuid"));
-            tips.setDay(obj.getString("period"));
-            tips.setFood(obj.getString("diet"));
-            tips.setSport(obj.getString("sports"));
+            tips.setPeriod(obj.getString("period"));
+            tips.setDiet(obj.getString("diet"));
+            tips.setSports(obj.getString("sports"));
             tips.setSleep(obj.getString("sleep"));
-            tips.setOther(obj.getString("rest"));
+            tips.setRest(obj.getString("rest"));
             list.add(tips);
         }
         return list;
@@ -47,11 +47,11 @@ public class HealthTips implements Serializable {
             if (StringUtils.isNotEmpty(tmp.getUuid())) {
                 object.put("uuid", tmp.getUuid());
             }
-            object.put("period", tmp.getDay());
-            object.put("diet", tmp.getFood());
-            object.put("sports", tmp.getSport());
+            object.put("period", tmp.getPeriod());
+            object.put("diet", tmp.getDiet());
+            object.put("sports", tmp.getSports());
             object.put("sleep", tmp.getSleep());
-            object.put("rest", tmp.getOther());
+            object.put("rest", tmp.getRest());
             jsonArray.put(object);
         }
         return jsonArray.toString();
@@ -67,28 +67,28 @@ public class HealthTips implements Serializable {
         this.uuid = uuid;
     }
 
-    public String getDay() {
-        return day;
+    public String getPeriod() {
+        return period;
     }
 
-    public void setDay(String day) {
-        this.day = day;
+    public void setPeriod(String period) {
+        this.period = period;
     }
 
-    public String getFood() {
-        return food;
+    public String getDiet() {
+        return diet;
     }
 
-    public void setFood(String food) {
-        this.food = food;
+    public void setDiet(String diet) {
+        this.diet = diet;
     }
 
-    public String getSport() {
-        return sport;
+    public String getSports() {
+        return sports;
     }
 
-    public void setSport(String sport) {
-        this.sport = sport;
+    public void setSports(String sports) {
+        this.sports = sports;
     }
 
     public String getSleep() {
@@ -99,11 +99,11 @@ public class HealthTips implements Serializable {
         this.sleep = sleep;
     }
 
-    public String getOther() {
-        return other;
+    public String getRest() {
+        return rest;
     }
 
-    public void setOther(String other) {
-        this.other = other;
+    public void setRest(String rest) {
+        this.rest = rest;
     }
 }

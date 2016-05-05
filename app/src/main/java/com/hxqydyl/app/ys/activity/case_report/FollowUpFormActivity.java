@@ -23,6 +23,7 @@ import com.hxqydyl.app.ys.bean.followupform.IllnessChange;
 import com.hxqydyl.app.ys.bean.followupform.MeasureFormRecord;
 import com.hxqydyl.app.ys.bean.followupform.OtherCheckRecord;
 import com.hxqydyl.app.ys.bean.followupform.WeightRecord;
+import com.hxqydyl.app.ys.bean.response.BaseResponse;
 import com.hxqydyl.app.ys.bean.response.FollowUpFormResponse;
 import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.ui.UIHelper;
@@ -79,7 +80,7 @@ public class FollowUpFormActivity extends BaseRequstActivity implements View.OnC
     }
 
     private void getFollowUpFormDetails() {
-        toNomalNet(new GetParams(), FollowUpFormResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_FOLLOW_UP_FORM_DETAILS, "1.0", treatInfo.getId()), "正在获取获取随访表单详情");
+        toNomalNet(new GetParams(), 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_FOLLOW_UP_FORM_DETAILS, "1.0", treatInfo.getId()), "正在获取获取随访表单详情");
     }
 
     @Override
@@ -105,7 +106,7 @@ public class FollowUpFormActivity extends BaseRequstActivity implements View.OnC
 
     @Override
     public void onSuccessToBean(Object bean, int flag) {
-        FollowUpFormResponse FollowUpFormResponse = (FollowUpFormResponse) bean;
+        BaseResponse<VisitRecord> FollowUpFormResponse = (  BaseResponse<VisitRecord>) bean;
         ArrayList<FollowUpFormGroup> list = toformList(FollowUpFormResponse);
         if (list != null && list.size() > 0) {
             formList.clear();
@@ -117,10 +118,10 @@ public class FollowUpFormActivity extends BaseRequstActivity implements View.OnC
     }
 
     //将数据转换成界面处理的list
-    public ArrayList<FollowUpFormGroup> toformList(FollowUpFormResponse followUpFormResponse) {
+    public ArrayList<FollowUpFormGroup> toformList(BaseResponse<VisitRecord> followUpFormResponse) {
 
         ArrayList<FollowUpFormGroup> formList = new ArrayList<>();
-        if (followUpFormResponse.getVisitRecord() == null) {
+        if (followUpFormResponse.value == null) {
             return formList;
         }
         FollowUpFormGroup bqbh = new FollowUpFormGroup();
@@ -136,8 +137,8 @@ public class FollowUpFormActivity extends BaseRequstActivity implements View.OnC
         FollowUpFormGroup yplb = new FollowUpFormGroup();
         yplb.setFormGroupType(FollowUpFormGroup.Type.DOC_MEASURE_RECORD);
         //病情变化中的病情变化
-        if (followUpFormResponse.getVisitRecord().getIllnessRecord() != null) {
-            VisitRecord.IllnessRecord record = followUpFormResponse.getVisitRecord().getIllnessRecord();
+        if (followUpFormResponse.value.getIllnessRecord() != null) {
+            VisitRecord.IllnessRecord record = followUpFormResponse.value.getIllnessRecord();
             IllnessChange change = new IllnessChange();
             change.setType(IllnessChange.Type.ILL);
             change.setDescription(record.getNewCondition());
@@ -145,8 +146,8 @@ public class FollowUpFormActivity extends BaseRequstActivity implements View.OnC
             bqbh.addRecord(change);
         }
         //进食情况
-        if (followUpFormResponse.getVisitRecord().getEat() != null) {
-            VisitRecord.SleepOrEat eat = followUpFormResponse.getVisitRecord().getEat();
+        if (followUpFormResponse.value.getEat() != null) {
+            VisitRecord.SleepOrEat eat = followUpFormResponse.value.getEat();
             IllnessChange change = new IllnessChange();
 
             getStatus(change, eat.getState());
@@ -155,8 +156,8 @@ public class FollowUpFormActivity extends BaseRequstActivity implements View.OnC
             bqbh.addRecord(change);
         }
         //其他情况
-        if (followUpFormResponse.getVisitRecord().getOther() != null) {
-            VisitRecord.Other other = followUpFormResponse.getVisitRecord().getOther();
+        if (followUpFormResponse.value.getOther() != null) {
+            VisitRecord.Other other = followUpFormResponse.value.getOther();
             IllnessChange change = new IllnessChange();
             change.setDescription(other.getResult());
             change.setType(IllnessChange.Type.OTHER);
@@ -165,8 +166,8 @@ public class FollowUpFormActivity extends BaseRequstActivity implements View.OnC
         if (bqbh.getRecords().size() > 0)
             formList.add(bqbh);
         //体重记录
-        if (followUpFormResponse.getVisitRecord().getWeight() != null) {
-            VisitRecord.Weight weight = followUpFormResponse.getVisitRecord().getWeight();
+        if (followUpFormResponse.value.getWeight() != null) {
+            VisitRecord.Weight weight = followUpFormResponse.value.getWeight();
             WeightRecord change = new WeightRecord();
             change.setWeight(weight.getResult());
             tzjl.addRecord(change);
@@ -174,8 +175,8 @@ public class FollowUpFormActivity extends BaseRequstActivity implements View.OnC
         if (tzjl.getRecords().size() > 0)
             formList.add(tzjl);
         //检查结果
-        if (followUpFormResponse.getVisitRecord().getCheckResult() != null && followUpFormResponse.getVisitRecord().getCheckResult().size() > 0) {
-            for (CheckResult result : followUpFormResponse.getVisitRecord().getCheckResult()) {
+        if (followUpFormResponse.value.getCheckResult() != null && followUpFormResponse.value.getCheckResult().size() > 0) {
+            for (CheckResult result : followUpFormResponse.value.getCheckResult()) {
                 OtherCheckRecord record = new OtherCheckRecord();
                 record.setId(result.getUuid());
                 record.setName(result.getName());
@@ -194,14 +195,14 @@ public class FollowUpFormActivity extends BaseRequstActivity implements View.OnC
         if (jcjg.getRecords().size() > 0)
             formList.add(jcjg);
         //服药记录
-        if (followUpFormResponse.getVisitRecord().getDoctorAdvice() != null && followUpFormResponse.getVisitRecord().getDoctorAdvice().size() > 0) {
-            for (EatMedRecord record : followUpFormResponse.getVisitRecord().getDoctorAdvice()) {
+        if (followUpFormResponse.value.getDoctorAdvice() != null && followUpFormResponse.value.getDoctorAdvice().size() > 0) {
+            for (EatMedRecord record : followUpFormResponse.value.getDoctorAdvice()) {
                 fyjl.addRecord(record);
             }
         }
         //不良反应
-        if (followUpFormResponse.getVisitRecord().getDrugReaction() != null) {
-            fyjl.addRecord(followUpFormResponse.getVisitRecord().getDrugReaction());
+        if (followUpFormResponse.value.getDrugReaction() != null) {
+            fyjl.addRecord(followUpFormResponse.value.getDrugReaction());
         }
         if (fyjl.getRecords().size() > 0)
             formList.add(fyjl);

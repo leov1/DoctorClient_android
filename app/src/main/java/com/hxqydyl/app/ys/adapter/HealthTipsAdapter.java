@@ -7,12 +7,10 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.bean.follow.plan.HealthTips;
-import com.hxqydyl.app.ys.bean.follow.plan.Medicine;
 import com.hxqydyl.app.ys.utils.StringUtils;
 
 import java.util.List;
@@ -75,11 +73,11 @@ public class HealthTipsAdapter extends BaseExpandableListAdapter {
                     i+=2, j = (i-1)/2) {
                 ChildViewHolder vh = (ChildViewHolder) listView.getChildAt(i).getTag();
                 HealthTips m = list.get(j);
-                m.setDay(vh.etDay.getText().toString());
-                m.setFood(vh.etFood.getText().toString());
+                m.setPeriod(vh.etDay.getText().toString());
+                m.setDiet(vh.etFood.getText().toString());
                 m.setSleep(vh.etSleep.getText().toString());
-                m.setSport(vh.etSport.getText().toString());
-                m.setOther(vh.etOther.getText().toString());
+                m.setSports(vh.etSport.getText().toString());
+                m.setRest(vh.etOther.getText().toString());
             }
         }
         BaseExpandableListAdapter adapter =
@@ -94,10 +92,10 @@ public class HealthTipsAdapter extends BaseExpandableListAdapter {
         }
         TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
         final HealthTips tips = list.get(groupPosition);
-        if (StringUtils.isEmpty(tips.getDay())) {
+        if (StringUtils.isEmpty(tips.getPeriod())) {
             tvTitle.setText("新增");
         } else {
-            tvTitle.setText("第" + tips.getDay() + "天");
+            tvTitle.setText("第" + tips.getPeriod() + "天");
         }
         return convertView;
     }
@@ -119,11 +117,11 @@ public class HealthTipsAdapter extends BaseExpandableListAdapter {
             holder = (ChildViewHolder) convertView.getTag();
         }
         final HealthTips tips = list.get(groupPosition);
-        holder.etDay.setText(String.valueOf(tips.getDay()));
-        holder.etFood.setText(tips.getFood());
-        holder.etSport.setText(tips.getSport());
+        holder.etDay.setText(String.valueOf(tips.getPeriod()));
+        holder.etFood.setText(tips.getDiet());
+        holder.etSport.setText(tips.getSports());
         holder.etSleep.setText(tips.getSleep());
-        holder.etOther.setText(tips.getOther());
+        holder.etOther.setText(tips.getRest());
         return convertView;
     }
 

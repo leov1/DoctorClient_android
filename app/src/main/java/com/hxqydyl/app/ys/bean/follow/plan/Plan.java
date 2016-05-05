@@ -18,7 +18,7 @@ public class Plan extends PlanBaseInfo implements Serializable {
 
     private String drugTherapy; //药物不良反应处理
     private String sideEffects; //其他治疗
-    private String doctorAdvice;    //药物信息
+//    private String doctorAdvice;    //药物信息
 
     private String period;      //随访周期
     private String electrocardiogram;       //心电图检查周期
@@ -26,7 +26,7 @@ public class Plan extends PlanBaseInfo implements Serializable {
     private String hepatic;         //肝功能周期
     private String weight;  //
 
-    private ArrayList<ImportantAdviceChild> medicineList;        //药品信息
+    private ArrayList<ImportantAdviceChild> doctorAdvice;        //药品信息
     private ArrayList<CheckSycle> otherMap;   //其他自定义随访周期
     private ArrayList<Scale> selfTest;   //自评量表
     private ArrayList<Scale> doctorTest; //医评量表
@@ -48,38 +48,38 @@ public class Plan extends PlanBaseInfo implements Serializable {
     }
 
 
-    public static Plan parseDetailJson(String response) {
-        try {
-            JSONObject jsonObject = new JSONObject(response);
-            JSONObject query = jsonObject.getJSONObject("query");
-            if (!"1".equals(query.getString("success"))) {
-                Log.e("client", "API返回失败， success 不为1");
-                return null;
-            }
-            Plan plan = new Plan();
-            plan.setPreceptName(jsonObject.getString("preceptName"));
-            plan.setVisitUuid(jsonObject.getString("visitUuid"));
-            plan.setHepatic(jsonObject.getString("hepatic"));
-            plan.setPeriod(jsonObject.getString("period"));
-            plan.setElectrocardiogram(jsonObject.getString("electrocardiogram"));
-            plan.setWeight(jsonObject.getString("weight"));
-            plan.setDrugTherapy(jsonObject.getString("drugTherapy"));
-            plan.setSideEffects(jsonObject.getString("sideEffects"));
-            plan.setBloodRoutine(jsonObject.getString("bloodRoutine"));
-            plan.setSelfTest(Scale.parse(jsonObject.optJSONArray("selfTest")));
-            plan.setDoctorTest(Scale.parse(jsonObject.optJSONArray("doctorTest")));
-            plan.setOtherMap(CheckSycle.parse(jsonObject.optJSONArray("otherMap")));
-//            plan.setMedicineList(Medicine.parse(jsonObject.optJSONArray("doctorAdvice")));
-            plan.setHealthGuide(HealthTips.parse(jsonObject.optJSONArray("healthGuide")));
-            return plan;
-        } catch (Exception e) {
-            Log.e("client", e.getMessage());
-            return null;
-        }
-    }
+//    public static Plan parseDetailJson(String response) {
+//        try {
+//            JSONObject jsonObject = new JSONObject(response);
+//            JSONObject query = jsonObject.getJSONObject("query");
+//            if (!"1".equals(query.getString("success"))) {
+//                Log.e("client", "API返回失败， success 不为1");
+//                return null;
+//            }
+//            Plan plan = new Plan();
+//            plan.setPreceptName(jsonObject.getString("preceptName"));
+//            plan.setVisitUuid(jsonObject.getString("visitUuid"));
+//            plan.setHepatic(jsonObject.getString("hepatic"));
+//            plan.setPeriod(jsonObject.getString("period"));
+//            plan.setElectrocardiogram(jsonObject.getString("electrocardiogram"));
+//            plan.setWeight(jsonObject.getString("weight"));
+//            plan.setDrugTherapy(jsonObject.getString("drugTherapy"));
+//            plan.setSideEffects(jsonObject.getString("sideEffects"));
+//            plan.setBloodRoutine(jsonObject.getString("bloodRoutine"));
+//            plan.setSelfTest(Scale.parse(jsonObject.optJSONArray("selfTest")));
+//            plan.setDoctorTest(Scale.parse(jsonObject.optJSONArray("doctorTest")));
+//            plan.setOtherMap(CheckSycle.parse(jsonObject.optJSONArray("otherMap")));
+////            plan.setMedicineList(Medicine.parse(jsonObject.optJSONArray("doctorAdvice")));
+//            plan.setHealthGuide(HealthTips.parse(jsonObject.optJSONArray("healthGuide")));
+//            return plan;
+//        } catch (Exception e) {
+//            Log.e("client", e.getMessage());
+//            return null;
+//        }
+//    }
 
-    public void setMedicineList(ArrayList<ImportantAdviceChild> medicineList) {
-        this.medicineList = medicineList;
+    public void setDoctorAdvice(ArrayList<ImportantAdviceChild> doctorAdvice) {
+        this.doctorAdvice = doctorAdvice;
     }
 
     public void setOtherMap(ArrayList<CheckSycle> otherMap) {
@@ -114,8 +114,8 @@ public class Plan extends PlanBaseInfo implements Serializable {
         return otherMap;
     }
 
-    public List<ImportantAdviceChild> getMedicineList() {
-        return medicineList;
+    public List<ImportantAdviceChild> getDoctorAdvice() {
+        return doctorAdvice;
     }
 
     public String getDrugTherapy() {
@@ -134,13 +134,13 @@ public class Plan extends PlanBaseInfo implements Serializable {
         this.sideEffects = sideEffects;
     }
 
-    public String getDoctorAdvice() {
-        return doctorAdvice;
-    }
-
-    public void setDoctorAdvice(String doctorAdvice) {
-        this.doctorAdvice = doctorAdvice;
-    }
+//    public String getDoctorAdvice() {
+//        return doctorAdvice;
+//    }
+//
+//    public void setDoctorAdvice(String doctorAdvice) {
+//        this.doctorAdvice = doctorAdvice;
+//    }
 
     public String getPeriod() {
         return period;

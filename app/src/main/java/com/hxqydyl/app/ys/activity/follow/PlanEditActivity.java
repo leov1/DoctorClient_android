@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.BaseExpandableListAdapter;
@@ -15,8 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.hxqydyl.app.ys.R;
-import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+import com.hxqydyl.app.ys.activity.BaseRequstActivity;
 import com.hxqydyl.app.ys.adapter.HealthTipsAdapter;
 import com.hxqydyl.app.ys.adapter.MedicineAdapter;
 import com.hxqydyl.app.ys.adapter.MedicineDosageAdapter;
@@ -28,11 +28,13 @@ import com.hxqydyl.app.ys.bean.follow.plan.ImportantAdviceChild;
 import com.hxqydyl.app.ys.bean.follow.plan.MedicineDosage;
 import com.hxqydyl.app.ys.bean.follow.plan.Plan;
 import com.hxqydyl.app.ys.bean.follow.plan.Scale;
-import com.hxqydyl.app.ys.http.follow.FollowCallback;
-import com.hxqydyl.app.ys.http.follow.FollowPlanNet;
+import com.hxqydyl.app.ys.bean.response.BaseResponse;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.DialogUtils;
+import com.hxqydyl.app.ys.utils.LoginManager;
 import com.hxqydyl.app.ys.utils.StringUtils;
+import com.xus.http.httplib.model.PostPrams;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +49,7 @@ import ui.swipemenulistview.SwipeMenuListView;
  * Created by wangchao36 on 16/3/22.
  * 编辑随访方案
  */
-public class PlanEditActivity extends BaseTitleActivity implements View.OnClickListener {
+public class PlanEditActivity extends BaseRequstActivity implements View.OnClickListener {
 
     private EditText etTitle;
     private EditText etDrugTherapy; // 不良反应
@@ -92,19 +94,18 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
     private String from = null; // my\suggest
     private Plan plan = null;
 
-    private FollowCallback updateFollowCallback;
+    //    private FollowCallback updateFollowCallback;
     private StringBuffer ortherMapDelete = new StringBuffer();
     private StringBuffer healthGuideDelete = new StringBuffer();
 
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (msg.what == 100) {
-                updateUIData();
-            }
-        }
-    };
+//    private Handler handler = new Handler() {
+//        @Override
+//        public void handleMessage(Message msg) {
+//            super.handleMessage(msg);
+//            if (msg.what == 100) {
+//            }
+//        }
+//    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,8 +123,8 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
 
         initView();
         bindEvent();
-        initUpdateFollowCallback();
-        handler.sendEmptyMessage(100);
+//        initUpdateFollowCallback();
+        updateUIData();
     }
 
     private void initView() {
@@ -363,7 +364,7 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
             m.setTimeNoon(vh.boolTimeNoon);
             m.setTimeNight(vh.boolTimeNight);
             m.setTimeMorning(vh.boolTimeMorning);
-
+            m.setUuid(vh.uuid);
             ListView lvDosage = vh.lvDosage;
             ArrayList<MedicineDosage> mdList = new ArrayList<>();
             for (int j = 0; j < lvDosage.getChildCount(); j++) {
@@ -391,11 +392,11 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
         for (int i = 1; i < elvHealthTips.getChildCount(); i += 2) {
             HealthTipsAdapter.ChildViewHolder vh = (HealthTipsAdapter.ChildViewHolder) elvHealthTips.getChildAt(i).getTag();
             HealthTips ht = new HealthTips();
-            ht.setDay(vh.etDay.getText().toString());
-            ht.setFood(vh.etFood.getText().toString());
-            ht.setSport(vh.etSport.getText().toString());
+            ht.setPeriod(vh.etDay.getText().toString());
+            ht.setDiet(vh.etFood.getText().toString());
+            ht.setSports(vh.etSport.getText().toString());
             ht.setSleep(vh.etSleep.getText().toString());
-            ht.setOther(vh.etOther.getText().toString());
+            ht.setRest(vh.etOther.getText().toString());
             htList.add(ht);
         }
         if (plan == null) {
@@ -412,16 +413,15 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
         plan.setBloodRoutine(cycleNum(tvBloodCycle));
         plan.setElectrocardiogram(cycleNum(tvEcgCycle));
 
-        plan.setMedicineList(mList);
+        plan.setDoctorAdvice(mList);
         plan.setOtherMap(csList);
         plan.setHealthGuide(htList);
         try {
             if (StringUtils.isEmpty(plan.getVisitUuid())) {
                 //新建
-                FollowPlanNet.addVisitPrecept(plan, updateFollowCallback);
+                addViditPrecept(plan);
             } else {
-                FollowPlanNet.editVisitPrecept(plan, medicineAdapter.getUuidDeleteSb().toString(),
-                        ortherMapDelete.toString(), healthGuideDelete.toString(), updateFollowCallback);
+                upViditPrecept(plan);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -430,21 +430,72 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
 
     }
 
-    private void initUpdateFollowCallback() {
-        updateFollowCallback = new FollowCallback(this) {
-            @Override
-            public void onResponse(String response) {
-                super.onResponse(response);
-                UIHelper.ToastMessage(PlanEditActivity.this, "保存成功");
-                finish();
-            }
+    //新建随访方案
+    private void addViditPrecept(Plan plan) {
+//        FollowPlanNet.addVisitPrecept(plan, updateFollowCallback);
 
-            @Override
-            public void onFail(String status, String msg) {
-                super.onFail(status, msg);
-                UIHelper.ToastMessage(PlanEditActivity.this, "保存失败");
-            }
-        };
+        List<ImportantAdviceChild> advice = new ArrayList<>();
+        for (int i = 0; i < plan.getDoctorAdvice().size(); i++) {
+            advice.add(plan.getDoctorAdvice().get(i).toJsonBean());
+        }
+        Gson myJson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+
+        String doctorAdvice =  myJson.toJson(advice);
+        PostPrams postPrams = toPostParams(
+                toParamsBaen("doctorUuid", LoginManager.getDoctorUuid()),//医生ID
+                toParamsBaen("preceptName", plan.getPreceptName()),  //方案名称
+                toParamsBaen("drugTherapy", plan.getDrugTherapy()),  //药物不良反应处理
+                toParamsBaen("sideEffects", plan.getSideEffects()),     //其他治疗
+                toParamsBaen("doctorAdvice", doctorAdvice),//药物信息
+                toParamsBaen("ortherMap", gson.toJson(plan.getOtherMap())),//其他自定义随访周期
+                toParamsBaen("period", plan.getPeriod()),//随访周期
+                toParamsBaen("electrocardiogram", plan.getElectrocardiogram()),//心电图周期
+                toParamsBaen("hepatic", plan.getHepatic()),//肝功能周期
+                toParamsBaen("bloodRoutine", plan.getBloodRoutine()), //血常规周期
+                toParamsBaen("weight", plan.getWeight()), //体重功能周期
+                toParamsBaen("selfTest", Scale.parseIdStr(plan.getSelfTest())),///自评量表
+                toParamsBaen("doctorTest", Scale.parseIdStr(plan.getDoctorTest())),//医评量表
+                toParamsBaen("healthGuide", gson.toJson(plan.getHealthGuide()))//健康小贴士
+        );
+        toNomalNet(postPrams, BaseResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.ADD_VISIT_PRECEPT, "1.0"), "正在添加随访方案");
+    }
+
+
+    private void upViditPrecept(Plan plan) {
+//        FollowPlanNet.editVisitPrecept(plan, medicineAdapter.getUuidDeleteSb().toString(),
+////                ortherMapDelete.toString(), healthGuideDelete.toString(), updateFollowCallback);
+        List<ImportantAdviceChild> advice = new ArrayList<>();
+        for (int i = 0; i < plan.getDoctorAdvice().size(); i++) {
+            advice.add(plan.getDoctorAdvice().get(i).toJsonBean());
+        }
+        Gson myJson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+
+        String doctorAdvice =  myJson.toJson(advice);
+        PostPrams postPrams = toPostParams(
+
+                toParamsBaen("visitUuid", plan.getVisitUuid()),  //方案id
+                toParamsBaen("doctorUuid", LoginManager.getDoctorUuid()),//医生ID
+                toParamsBaen("preceptName", plan.getPreceptName()),  //方案名称
+                toParamsBaen("drugTherapy", plan.getDrugTherapy()),  //药物不良反应处理
+                toParamsBaen("sideEffects", plan.getSideEffects()),     //其他治疗
+                toParamsBaen("doctorAdvice", doctorAdvice),//药物信息
+                toParamsBaen("ortherMap", gson.toJson(plan.getOtherMap())),//其他自定义随访周期
+                toParamsBaen("period", plan.getPeriod()),//随访周期
+                toParamsBaen("electrocardiogram", plan.getElectrocardiogram()),//心电图周期
+                toParamsBaen("hepatic", plan.getHepatic()),//肝功能周期
+                toParamsBaen("bloodRoutine", plan.getBloodRoutine()), //血常规周期
+                toParamsBaen("weight", plan.getWeight()), //体重功能周期
+                toParamsBaen("selfTest", Scale.parseIdStr(plan.getSelfTest())),///自评量表
+                toParamsBaen("doctorTest", Scale.parseIdStr(plan.getDoctorTest())),//医评量表
+                toParamsBaen("healthGuide", gson.toJson(plan.getHealthGuide())),//健康小贴士
+                toParamsBaen("healthGuideDelete", healthGuideDelete.toString()),///自评量表删除
+                toParamsBaen("doctorAdviceDelete", medicineAdapter.getUuidDeleteSb().toString()),//医评量表删除
+                toParamsBaen("ortherMapDelete", ortherMapDelete.toString())//健康小贴士删除
+        );
+//        String url = "http://172.168.1.63/app/pub/doctor/1.0/editVisitPrecept";
+//        toNomalNet(postPrams, BaseResponse.class, 1, url, "正在修改随访方案");
+        toNomalNet(postPrams, BaseResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.EDIT_VISIT_PRECEPT, "1.0"), "正在修改随访方案");
+
     }
 
 
@@ -468,8 +519,8 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
         etSideEffects.setText(plan.getSideEffects());
 
         medicineList.clear();
-        if (plan.getMedicineList() != null)
-            medicineList.addAll(plan.getMedicineList());
+        if (plan.getDoctorAdvice() != null)
+            medicineList.addAll(plan.getDoctorAdvice());
         healthTipsList.clear();
         if (plan.getHealthGuide() != null)
             healthTipsList.addAll(plan.getHealthGuide());
@@ -489,5 +540,11 @@ public class PlanEditActivity extends BaseTitleActivity implements View.OnClickL
         BaseExpandableListAdapter adapter =
                 (BaseExpandableListAdapter) elvHealthTips.getExpandableListAdapter();
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onSuccessToBean(Object bean, int flag) {
+        UIHelper.ToastMessage(this, "保存成功");
+        this.finish();
     }
 }

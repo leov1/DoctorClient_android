@@ -68,7 +68,8 @@ public class FollowTaskAdapter extends BaseAdapter{
         } else {
             holder.ivSex.setImageDrawable(context.getResources().getDrawable(R.mipmap.female));
         }
-        ImageLoader.getInstance().displayImage(fa.getImgUrl(), holder.ivAvatar);
+        String img=(fa.getImgUrl()!=null&&fa.getImgUrl().size()>0)?fa.getImgUrl().get(0):"";
+        ImageLoader.getInstance().displayImage(img, holder.ivAvatar);
 
         return convertView;
     }

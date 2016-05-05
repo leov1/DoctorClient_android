@@ -9,8 +9,6 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
-import com.hxqydyl.app.ys.bean.PatientGroup;
-import com.hxqydyl.app.ys.bean.follow.plan.Plan;
 import com.hxqydyl.app.ys.bean.follow.plan.PlanBaseInfo;
 
 import java.util.List;

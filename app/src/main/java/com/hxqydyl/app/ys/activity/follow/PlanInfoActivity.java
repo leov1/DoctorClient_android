@@ -2,8 +2,6 @@ package com.hxqydyl.app.ys.activity.follow;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.View;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ListView;
@@ -11,7 +9,6 @@ import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseRequstActivity;
-import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.adapter.HealthTipsAdapter;
 import com.hxqydyl.app.ys.adapter.MedicineAdapter;
 import com.hxqydyl.app.ys.adapter.PlanCheckSycleAdapter;
@@ -21,11 +18,7 @@ import com.hxqydyl.app.ys.bean.follow.plan.HealthTips;
 import com.hxqydyl.app.ys.bean.follow.plan.ImportantAdviceChild;
 import com.hxqydyl.app.ys.bean.follow.plan.Plan;
 import com.hxqydyl.app.ys.bean.follow.plan.Scale;
-import com.hxqydyl.app.ys.bean.response.PlanInfoListResponse;
 import com.hxqydyl.app.ys.http.UrlConstants;
-import com.hxqydyl.app.ys.http.follow.FollowApplyNet;
-import com.hxqydyl.app.ys.http.follow.FollowCallback;
-import com.hxqydyl.app.ys.http.follow.FollowPlanNet;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.LoginManager;
 
@@ -188,7 +181,7 @@ public class PlanInfoActivity extends BaseRequstActivity implements View.OnClick
     @Override
     public void onSuccessToString(String json, int flag) {
         //TODO 此处1.0先如此处理，2.0使用bean处理
-        plan = Plan.parseDetailJson(json);
+        plan = gson.fromJson(json,Plan.class);
         dismissDialog();
         updateUIData();
     }
@@ -208,8 +201,8 @@ public class PlanInfoActivity extends BaseRequstActivity implements View.OnClick
         tvLiverCycle.setText(plan.getHepatic() + "周");
 
         medicineList.clear();
-        if (plan.getMedicineList() != null)
-            medicineList.addAll(plan.getMedicineList());
+        if (plan.getDoctorAdvice() != null)
+            medicineList.addAll(plan.getDoctorAdvice());
         healthTipsList.clear();
         if (plan.getHealthGuide() != null)
             healthTipsList.addAll(plan.getHealthGuide());

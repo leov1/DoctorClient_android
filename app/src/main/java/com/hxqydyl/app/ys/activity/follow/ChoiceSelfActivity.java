@@ -1,6 +1,5 @@
 package com.hxqydyl.app.ys.activity.follow;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -8,24 +7,20 @@ import android.widget.AdapterView;
 import android.widget.Button;
 
 import com.hxqydyl.app.ys.R;
-import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+import com.hxqydyl.app.ys.activity.BaseRequstActivity;
 import com.hxqydyl.app.ys.adapter.ChoiceScaleAdapter;
 import com.hxqydyl.app.ys.bean.follow.plan.Scale;
-import com.hxqydyl.app.ys.http.follow.FollowApplyNet;
-import com.hxqydyl.app.ys.http.follow.FollowCallback;
-import com.hxqydyl.app.ys.http.follow.FollowPlanNet;
+import com.hxqydyl.app.ys.bean.response.TestListResponse;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.ui.scrollviewandgridview.MyScrollListView;
 
-import org.json.JSONException;
-
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 自评量表选择页面
  */
-public class    ChoiceSelfActivity extends BaseTitleActivity implements View.OnClickListener {
+public class ChoiceSelfActivity extends BaseRequstActivity implements View.OnClickListener {
 
     private MyScrollListView listView;
     private ChoiceScaleAdapter adapter;
@@ -87,46 +82,19 @@ public class    ChoiceSelfActivity extends BaseTitleActivity implements View.OnC
     }
 
     private void selectPreceptDetail() {
-        FollowPlanNet.selectPreceptDetail("0", new FollowCallback(this){
-            @Override
-            public void onFail(String status, String msg) {
-                super.onFail(status, msg);
-                UIHelper.ToastMessage(ChoiceSelfActivity.this,msg);
-            }
+        toNomalNet(toGetParams(toParamsBaen("type", "0")), TestListResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.SELECT_PRECEPT_DETAIL, "1.0"), "正在获取测试列表");
+    }
 
-            @Override
-            public void onResponse(String response) {
-                super.onResponse(response);
-                if (FollowApplyNet.myDev)
-                    response = "[" +
-                        "{" +
-                        "        \"id\": \"0000\", " +
-                        "        \"title\": \"综合测试\", " +
-                        "        \"digest\": \"本测验适用对象包括初中生至成人(16岁以上)...\", " +
-                        "        \"self\": \"0\"" +
-                        "    }," +
-                        "{" +
-                        "        \"id\": \"0000\", " +
-                        "        \"title\": \"综合测试\", " +
-                        "        \"digest\": \"本测验适用对象包括初中生至成人(16岁以上)...\", " +
-                        "        \"self\": \"0\"" +
-                        "    }" +
-                        "]";
-                try{
-                    List<Scale> tmp = Scale.parse(response);
-                    if (tmp == null || tmp.size() == 0) {
-                        UIHelper.ToastMessage(ChoiceSelfActivity.this, "内容为空");
-                        return;
-                    }
-                    list.clear();
-                    list.addAll(tmp);
-                    adapter.notifyDataSetChanged();
-                }catch (Exception e){
-                    onFail("999","解析异常");
-                }
+    @Override
+    public void onSuccessToBean(Object bean, int flag) {
+        TestListResponse tlr = (TestListResponse) bean;
+        list.clear();
 
-
-            }
-        });
+        if (tlr.getRelist() == null || tlr.getRelist().size() == 0) {
+            UIHelper.ToastMessage(this, "暂无数据..");
+            return;
+        }
+        list.addAll(tlr.getRelist());
+        adapter.notifyDataSetChanged();
     }
 }

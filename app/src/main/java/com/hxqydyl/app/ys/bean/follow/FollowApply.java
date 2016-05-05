@@ -3,6 +3,7 @@ package com.hxqydyl.app.ys.bean.follow;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -64,7 +65,7 @@ public class FollowApply {
     }
 
     private String ifStart;
-    private String imgs;// null,
+    private ArrayList<String> imgs;
     private String address;// 北京市,
     private String firstDiagnosis;// null,
     private String certCode;// 11231321213,

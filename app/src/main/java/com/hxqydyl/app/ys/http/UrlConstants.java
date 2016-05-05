@@ -21,7 +21,7 @@ public class UrlConstants {
     //    内网开发端口
     public static final String BASE_PORT_DEVELOP = "";
     //    内网测试ip
-    public static final String BASE_IP_TEST = "http://192.168.1.38";
+    public static final String BASE_IP_TEST = "http://172.168.1.46";
     //    内网测试端口
     public static final String BASE_PORT_TEST = "8080";
     //    线上测试ip
@@ -187,5 +187,13 @@ public class UrlConstants {
     public static String DEL_PRECEPT_DETAIL = "/app/pub/doctor/%s/delPreceptDetail";
     //查看随访方案
     public static String VISIT_PRECEPT_DETAIL = "/app/pub/doctor/%s/visitPreceptDetail";
+//增加随访方案
+public static String ADD_VISIT_PRECEPT = "/app/pub/doctor/%s/addVisitPrecept";
+    //编辑随访方案
+    public static String EDIT_VISIT_PRECEPT = "/app/pub/doctor/%s/editVisitPrecept";
+    // * 获取医评和自评列表
+    public static String SELECT_PRECEPT_DETAIL = "/app/pub/doctor/%s/selectPreceptDetail";
+    // * 获取医评和自评列表
+    public static String GET_PROCESSED_VISITLIST = "/app/pub/doctor/%s/getProcessedVisitList";
 
 }

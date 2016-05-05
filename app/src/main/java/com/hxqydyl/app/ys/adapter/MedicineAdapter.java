@@ -110,12 +110,14 @@ public class MedicineAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
+        if (!TextUtils.isEmpty(m.getUuid()))
+            holder.uuid = m.getUuid();
         holder.etName.setText(m.getMedicineUuid());
         holder.tvFoodRelation.setText(m.getFood());
         if (!TextUtils.isEmpty(m.getDirections())) {
-            timeSelected(holder.tvTimeMorning, m.isTimeMorning(),holder);
-            timeSelected(holder.tvTimeNoon, m.isTimeNoon(),holder);
-            timeSelected(holder.tvTimeNight, m.isTimeNight(),holder);
+            timeSelected(holder.tvTimeMorning, m.isTimeMorning(), holder);
+            timeSelected(holder.tvTimeNoon, m.isTimeNoon(), holder);
+            timeSelected(holder.tvTimeNight, m.isTimeNight(), holder);
         }
         List<MedicineDosage> mdList = m.getMd();
         MedicineDosageAdapter adapter;
@@ -127,9 +129,9 @@ public class MedicineAdapter extends BaseAdapter {
         if (isEdit) {
             holder.etName.setEnabled(true);
             holder.ibDelete.setVisibility(View.VISIBLE);
-            setTimeClick(holder.tvTimeMorning, m,holder);
-            setTimeClick(holder.tvTimeNoon, m,holder);
-            setTimeClick(holder.tvTimeNight, m,holder);
+            setTimeClick(holder.tvTimeMorning, m, holder);
+            setTimeClick(holder.tvTimeNoon, m, holder);
+            setTimeClick(holder.tvTimeNight, m, holder);
             holder.ibDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -171,7 +173,7 @@ public class MedicineAdapter extends BaseAdapter {
         });
     }
 
-    private void timeSelected(TextView tv, boolean bool,ViewHolder vh) {
+    private void timeSelected(TextView tv, boolean bool, ViewHolder vh) {
         if (bool) {
             tv.setTextColor(context.getResources().getColor(R.color.white));
             tv.setBackgroundResource(R.drawable.btn_bg_selecter);
@@ -183,19 +185,19 @@ public class MedicineAdapter extends BaseAdapter {
 
         switch (text) {
             case "早":
-                vh.boolTimeMorning=bool;
+                vh.boolTimeMorning = bool;
                 break;
             case "中":
-                vh.boolTimeNoon=bool;
+                vh.boolTimeNoon = bool;
 
                 break;
             case "晚":
-                vh.boolTimeNight=bool;
+                vh.boolTimeNight = bool;
                 break;
         }
     }
 
-    private void setTimeClick(final TextView tv, final ImportantAdviceChild m,final  ViewHolder vh) {
+    private void setTimeClick(final TextView tv, final ImportantAdviceChild m, final ViewHolder vh) {
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -217,7 +219,7 @@ public class MedicineAdapter extends BaseAdapter {
                         bool = m.isTimeNight();
                         break;
                 }
-                timeSelected(tv, bool,vh);
+                timeSelected(tv, bool, vh);
             }
         });
     }
@@ -234,7 +236,7 @@ public class MedicineAdapter extends BaseAdapter {
         public TextView tvTimeNight;
         public TextView tvFoodRelation;    //与食物的关系，是饭前，饭后
         public ListView lvDosage;
-
+        public String uuid;
         public boolean boolTimeMorning = false;
         public boolean boolTimeNoon = false;
         public boolean boolTimeNight = false;

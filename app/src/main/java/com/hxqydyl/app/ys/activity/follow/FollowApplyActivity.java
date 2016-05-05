@@ -13,6 +13,8 @@ import com.hxqydyl.app.ys.activity.BaseRequstActivity;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.adapter.FollowApplyAdapter;
 import com.hxqydyl.app.ys.bean.follow.FollowApply;
+import com.hxqydyl.app.ys.bean.request.BaseRequest;
+import com.hxqydyl.app.ys.bean.response.BaseResponse;
 import com.hxqydyl.app.ys.bean.response.FollowUserApplyResponse;
 import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.http.follow.FollowApplyNet;
@@ -27,8 +29,7 @@ import java.util.List;
 /**
  * 随访申请
  */
-public class FollowApplyActivity extends BaseRequstActivity
-        implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class FollowApplyActivity extends BaseRequstActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     private ListView listView;
     private FollowApplyAdapter adapter;
@@ -63,7 +64,12 @@ public class FollowApplyActivity extends BaseRequstActivity
     }
 
     private void getVisitApplyList() {
-        toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), FollowUserApplyResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_VISIT_APPLYLIST, "1.0"), "正在获取关联列表...");
+        String url = "http://172.168.1.53/app/pub/doctor/2.0/getVisitApplyList";
+        GetParams params = toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid()));
+        toNomalNet(params, FollowUserApplyResponse.class, 1, url, "正在获取关联列表...");
+
+//        toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), FollowUserApplyResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_VISIT_APPLYLIST, "2.0"), "正在获取关联列表...");
+//        toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())),  1, UrlConstants.getWholeApiUrl(UrlConstants.GET_VISIT_APPLYLIST, "1.0"), "正在获取关联列表...");
     }
 
 
@@ -71,20 +77,18 @@ public class FollowApplyActivity extends BaseRequstActivity
     public void onSuccessToBean(Object bean, int flag) {
         FollowUserApplyResponse rs = (FollowUserApplyResponse) bean;
         list.clear();
-        if (rs.getRelist() != null && rs.getRelist().size() > 0) {
-            list.addAll(rs.getRelist());
+        if (rs.value != null && rs.value.size() > 0) {
+            list.addAll(rs.value);
         } else {
             Toast.makeText(FollowApplyActivity.this, "没有数据", Toast.LENGTH_SHORT).show();
         }
         adapter.notifyDataSetChanged();
 
-            }
-        });
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.back_img:
                 finish();
                 break;

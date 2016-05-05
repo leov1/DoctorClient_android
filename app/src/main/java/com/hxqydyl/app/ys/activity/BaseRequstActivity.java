@@ -113,7 +113,20 @@ public class BaseRequstActivity<T> extends BaseTitleActivity implements HttpUtil
             httpUtil.doPost(flag, url, post, aClass, map);
         }
     }
-
+    public void toNomalNet(BaseParams params, int flag, String url,String showdialog) {
+        if (!TextUtils.isEmpty(showdialog)){
+            showDialog(showdialog);
+        }
+        Map<String, String> map = new HashMap<>();
+        map.put("IsString", "false");
+        if (params instanceof GetParams) {
+            GetParams get = (GetParams) params;
+            httpUtil.doGet(flag, url, get, BaseResponse.class, map);
+        } else if (params instanceof PostPrams) {
+            PostPrams post = (PostPrams) params;
+            httpUtil.doPost(flag, url, post,  BaseResponse.class, map);
+        }
+    }
     public GetParams toGetParams( ParamsBean... keys) {
         return toGetParams(null, keys);
     }

@@ -5,16 +5,18 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
+import com.hxqydyl.app.ys.activity.BaseRequstActivity;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.bean.Patient;
 import com.hxqydyl.app.ys.http.PatientNet;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.InjectId;
 import com.hxqydyl.app.ys.utils.InjectUtils;
 
 /**
  * Created by white_ash on 2016/3/20.
  */
-public class PatientInfoActivity extends BaseTitleActivity implements View.OnClickListener {
+public class PatientInfoActivity extends BaseRequstActivity implements View.OnClickListener {
     @InjectId(id = R.id.tvPhoneNumber)
     private TextView tvPhoneNumber;
     @InjectId(id = R.id.tvNick)
@@ -79,6 +81,7 @@ public class PatientInfoActivity extends BaseTitleActivity implements View.OnCli
         if (patientNet == null) {
             patientNet = new PatientNet(this);
         }
+        toNomalNetStringBack(toGetParams(toParamsBaen("uuid",patientId)),1, UrlConstants.getWholeApiUrl(UrlConstants.GET_PATIENT_PERSIONAL_INFO, "2.0"),"获取患者详情中....");
         patientNet.getPatientPersionalInfo(patientId);
     }
 

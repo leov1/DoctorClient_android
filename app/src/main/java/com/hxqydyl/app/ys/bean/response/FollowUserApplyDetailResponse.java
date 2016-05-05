@@ -8,6 +8,6 @@ import java.util.List;
  * Created by wangxu on 2016/4/25.
  * 随访申请列表
  */
-public class FollowUserApplyResponse extends  BaseResponse< List<FollowApply>>{
+public class FollowUserApplyDetailResponse extends  BaseResponse< FollowApply>{
 
 }

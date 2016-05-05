@@ -7,9 +7,9 @@ import java.util.List;
 /**
  * Created by wangxu on 2016/4/20.
  */
-public class BaseResponse {
+public class BaseResponse<T> {
     public int code;
-    public String value;
+    public T value;
     public String message;
     public Query query;
     public class Query {
