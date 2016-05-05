@@ -149,11 +149,11 @@ public class FollowApplyOkActivity extends BaseRequstActivity implements View.On
         }
         PlanBaseInfo plan = planList.get(planSelectAdapter.getSelect());
 
-        String url="http://172.168.1.53/app/pub/doctor/1.0/updateVisitRecord";
-        toNomalNet(toPostParams(toParamsBaen("customerUuid", customerUuid), toParamsBaen("visitPreceptUuid", plan.getVisitUuid()), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())),
-                BaseResponse.class, 5,url, "正更新关联信息");
+//        String url="http://172.168.1.53/app/pub/doctor/1.0/updateVisitRecord";
 //        toNomalNet(toPostParams(toParamsBaen("customerUuid", customerUuid), toParamsBaen("visitPreceptUuid", plan.getVisitUuid()), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())),
-//                BaseResponse.class, 5, UrlConstants.getWholeApiUrl(UrlConstants.UPDATE_VISIT_RECORD, "1.0"), "正更新关联信息");
+//                BaseResponse.class, 5,url, "正更新关联信息");
+        toNomalNet(toPostParams(toParamsBaen("customerUuid", customerUuid), toParamsBaen("visitPreceptUuid", plan.getVisitUuid()), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())),
+                BaseResponse.class, 5, UrlConstants.getWholeApiUrl(UrlConstants.UPDATE_VISIT_RECORD, "1.0"), "正更新关联信息");
     }
 
     //获取群组
@@ -178,10 +178,10 @@ public class FollowApplyOkActivity extends BaseRequstActivity implements View.On
             return;
         }
         PlanBaseInfo plan = planList.get(planSelectAdapter.getSelect());
-        String url="http://172.168.1.53/app/pub/doctor/2.0/addVisitRecord";
-        toNomalNet(toGetParams(toParamsBaen("visitUuid", applyUuid), toParamsBaen("visitPreceptUuid", plan.getVisitUuid())), BaseStringResponse.class, 1, url, "正在接受 ..");
+//        String url="http://172.168.1.53/app/pub/doctor/2.0/addVisitRecord";
+//        toNomalNet(toGetParams(toParamsBaen("visitUuid", applyUuid), toParamsBaen("visitPreceptUuid", plan.getVisitUuid())), BaseStringResponse.class, 1, url, "正在接受 ..");
 
-//        toNomalNet(toGetParams(toParamsBaen("visitUuid", applyUuid), toParamsBaen("visitPreceptUuid", plan.getVisitUuid())), BaseResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.ADD_VISIT_RECORD, "1.0"), "正在接受 ..");
+        toNomalNet(toGetParams(toParamsBaen("visitUuid", applyUuid), toParamsBaen("visitPreceptUuid", plan.getVisitUuid())), BaseResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.ADD_VISIT_RECORD, "1.0"), "正在接受 ..");
 
     }
 

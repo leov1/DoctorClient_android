@@ -64,12 +64,12 @@ public class FollowApplyActivity extends BaseRequstActivity implements View.OnCl
     }
 
     private void getVisitApplyList() {
-        String url = "http://172.168.1.53/app/pub/doctor/2.0/getVisitApplyList";
-        GetParams params = toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid()));
-        toNomalNet(params, FollowUserApplyResponse.class, 1, url, "正在获取关联列表...");
+//        String url = "http://172.168.1.53/app/pub/doctor/2.0/getVisitApplyList";
+//        GetParams params = toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid()));
+//        toNomalNet(params, FollowUserApplyResponse.class, 1, url, "正在获取关联列表...");
 
 //        toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), FollowUserApplyResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_VISIT_APPLYLIST, "2.0"), "正在获取关联列表...");
-//        toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())),  1, UrlConstants.getWholeApiUrl(UrlConstants.GET_VISIT_APPLYLIST, "1.0"), "正在获取关联列表...");
+        toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())),  1, UrlConstants.getWholeApiUrl(UrlConstants.GET_VISIT_APPLYLIST, "1.0"), "正在获取关联列表...");
     }
 
 

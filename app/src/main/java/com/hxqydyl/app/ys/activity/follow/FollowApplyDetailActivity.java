@@ -131,9 +131,9 @@ public class FollowApplyDetailActivity extends BaseRequstActivity
     }
 //获取申请详情
     private void getApplyDetail() {
-       String url= "http://172.168.1.53/app/pub/doctor/2.0/getApplyDetail";
-        toNomalNet(toGetParams(toParamsBaen("applyUuid", applyUuid), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), FollowUserApplyDetailResponse.class, 1, url, "获取随访申请详情中...");
-//        toNomalNet(toGetParams(toParamsBaen("applyUuid", applyUuid), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), FollowUserApplyResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_APPLY_DETAIL, "1.0"), "获取随访申请详情中...");
+//       String url= "http://172.168.1.53/app/pub/doctor/2.0/getApplyDetail";
+//        toNomalNet(toGetParams(toParamsBaen("applyUuid", applyUuid), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), FollowUserApplyDetailResponse.class, 1, url, "获取随访申请详情中...");
+        toNomalNet(toGetParams(toParamsBaen("applyUuid", applyUuid), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), FollowUserApplyResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_APPLY_DETAIL, "1.0"), "获取随访申请详情中...");
     }
 
     @Override
@@ -176,9 +176,9 @@ public class FollowApplyDetailActivity extends BaseRequstActivity
         DialogUtils.showSignleEditTextDialog(this, new DialogUtils.SaveTextListener() {
             @Override
             public boolean save(String text) {
-                String url= "http://172.168.1.53//app/public/refuseapply/2.0/refuseVivistApply";
-                toNomalNet(toPostParams(toParamsBaen("applyUuid", fa.getApplyUuid()), toParamsBaen("refuseReason", text), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), BaseStringResponse.class, 2, url, "正在拒绝...");
-//                toNomalNet(toPostParams(toParamsBaen("applyUuid", fa.getApplyUuid()), toParamsBaen("refuseReason", text), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), BaseResponse.class, 2, UrlConstants.getWholeApiUrl(UrlConstants.REFUSE_VIVIST_APPLY, "1.0"), "正在拒绝...");
+//                String url= "http://172.168.1.53//app/public/refuseapply/2.0/refuseVivistApply";
+//                toNomalNet(toPostParams(toParamsBaen("applyUuid", fa.getApplyUuid()), toParamsBaen("refuseReason", text), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), BaseStringResponse.class, 2, url, "正在拒绝...");
+                toNomalNet(toPostParams(toParamsBaen("applyUuid", fa.getApplyUuid()), toParamsBaen("refuseReason", text), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), BaseResponse.class, 2, UrlConstants.getWholeApiUrl(UrlConstants.REFUSE_VIVIST_APPLY, "1.0"), "正在拒绝...");
                 return true;
             }
         });
