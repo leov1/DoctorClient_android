@@ -8,7 +8,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.hxqydyl.app.ys.R;
-import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+import com.hxqydyl.app.ys.activity.BaseRequstActivity;
 import com.hxqydyl.app.ys.adapter.FollowApplyAdapter;
 import com.hxqydyl.app.ys.bean.follow.FollowApply;
 import com.hxqydyl.app.ys.http.follow.FollowApplyNet;
@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * 关联的患者
  */
-public class PlanPatientListActivity extends BaseTitleActivity
+public class PlanPatientListActivity extends BaseRequstActivity
         implements View.OnClickListener, AdapterView.OnItemClickListener{
 
     private ListView listView;
@@ -61,6 +61,8 @@ public class PlanPatientListActivity extends BaseTitleActivity
 
     private void getVisitApplyList() {
         showDialog("");
+
+        //toNomalNetStringBack(toPostParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid()),toParamsBaen("preceptUuid", preceptUuid)),1, UrlConstants.getWholeApiUrl(UrlConstants.GET_CUSTOMER_VISIT,2),"");
         FollowPlanNet.getCustomerVisitRecordByUuid(preceptUuid, new FollowCallback(this){
             @Override
             public void onFail(String status, String msg) {

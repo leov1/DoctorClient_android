@@ -22,7 +22,7 @@ import framework.listener.RegisterSucListener;
  * Created by hxq on 2016/2/25.
  * 登陆页面
  */
-public class LoginActivity extends BaseTitleActivity implements View.OnClickListener, LoginNet.OnLoginNetListener, RegisterSucListener {
+public class LoginActivity extends BaseRequstActivity implements View.OnClickListener, LoginNet.OnLoginNetListener, RegisterSucListener {
 
     private TextView forgetBtn;
     private TextView registerBtn;
@@ -82,6 +82,7 @@ public class LoginActivity extends BaseTitleActivity implements View.OnClickList
             case R.id.login_btn:
                 showDialog("登陆中...");
                 loginNet.loginData(mobileEdit.getText().toString(), passwordEdit.getText().toString());
+             //   toNomalNetStringBack(toPostParams(toParamsBaen("mobile", mobileEdit.getText().toString()),toParamsBaen("password", passwordEdit.getText().toString())),1, UrlConstants.getWholeApiUrl(UrlConstants.LOGIN_URL),"登陆中...");
                 break;
         }
     }

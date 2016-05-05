@@ -195,5 +195,8 @@ public static String ADD_VISIT_PRECEPT = "/app/pub/doctor/%s/addVisitPrecept";
     public static String SELECT_PRECEPT_DETAIL = "/app/pub/doctor/%s/selectPreceptDetail";
     // * 获取医评和自评列表
     public static String GET_PROCESSED_VISITLIST = "/app/pub/doctor/%s/getProcessedVisitList";
-
+    //添加患者
+    public static String ADD_CUSTOMER = "/app/service/customer/%s/addCustomer";
+   //
+    public static String GET_CUSTOMER_VISIT = "app/pub/doctor/%s/getCustomerVisitRecordByUuid";
 }

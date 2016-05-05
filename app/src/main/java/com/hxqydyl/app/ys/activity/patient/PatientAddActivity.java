@@ -15,7 +15,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.NormalListDialog;
 import com.hxqydyl.app.ys.R;
-import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+import com.hxqydyl.app.ys.activity.BaseRequstActivity;
 import com.hxqydyl.app.ys.bean.AddressBook;
 import com.hxqydyl.app.ys.bean.PatientGroup;
 import com.hxqydyl.app.ys.http.PatientGroupNet;
@@ -33,7 +33,7 @@ import java.util.List;
  * Created by wangchao36 on 16/3/21.
  * 添加患者
  */
-public class PatientAddActivity extends BaseTitleActivity implements View.OnClickListener {
+public class PatientAddActivity extends BaseRequstActivity implements View.OnClickListener {
 
     private ImageView ibAddressBook;
     private EditText etPhone;
@@ -64,6 +64,7 @@ public class PatientAddActivity extends BaseTitleActivity implements View.OnClic
         tvGroupName.setOnClickListener(this);
         btnAdd = (Button) findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(this);
+
 
         patientGroupNet = new PatientGroupNet(this);
         patientGroupNet.getPatientGroups(LoginManager.getDoctorUuid());

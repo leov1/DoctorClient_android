@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -18,16 +17,18 @@ import com.hxqydyl.app.ys.fragment.MyPatientFrg;
 import com.hxqydyl.app.ys.fragment.MyTaskFrg;
 import com.hxqydyl.app.ys.fragment.PersonalFrg;
 import com.hxqydyl.app.ys.ui.UIHelper;
+import com.hxqydyl.app.ys.utils.InjectId;
+import com.hxqydyl.app.ys.utils.InjectUtils;
 import com.hxqydyl.app.ys.utils.LoginManager;
 import com.hxqydyl.app.ys.utils.Update;
-
-import common.AppManager;
-import framework.BaseFragmentActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import common.AppManager;
+import framework.BaseFragmentActivity;
 
 public class MainActivity extends BaseFragmentActivity {
 
@@ -36,9 +37,8 @@ public class MainActivity extends BaseFragmentActivity {
     private static final String CURR_INDEX = "currIndex";
     private static int currIndex = 0;
 
+    @InjectId(id = R.id.group)
     private RadioGroup group;
-    private RadioButton home;
-
 
     private ArrayList<String> fragmentTags;
     private FragmentManager fragmentManager;
@@ -50,7 +50,7 @@ public class MainActivity extends BaseFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        InjectUtils.injectView(this);
         fragmentManager = getSupportFragmentManager();
         if (savedInstanceState == null) {
             initData();
@@ -86,8 +86,6 @@ public class MainActivity extends BaseFragmentActivity {
     }
 
     private void initView() {
-        group = (RadioGroup) findViewById(R.id.group);
-        home = (RadioButton) findViewById(R.id.foot_bar_home);
 
         group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override

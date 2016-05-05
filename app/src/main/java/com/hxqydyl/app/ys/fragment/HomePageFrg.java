@@ -35,6 +35,8 @@ import com.hxqydyl.app.ys.ui.library.PullToRefreshScrollView;
 import com.hxqydyl.app.ys.ui.linegridview.LineGridView;
 import com.hxqydyl.app.ys.ui.loopviewpager.AutoLoopViewPager;
 import com.hxqydyl.app.ys.ui.viewpagerindicator.CirclePageIndicator;
+import com.hxqydyl.app.ys.utils.InjectId;
+import com.hxqydyl.app.ys.utils.InjectUtils;
 import com.hxqydyl.app.ys.utils.LoginManager;
 import com.hxqydyl.app.ys.utils.SharedPreferences;
 import com.hxqydyl.app.ys.utils.StringUtils;
@@ -55,22 +57,34 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
         , AdapterView.OnItemClickListener, QuitLoginNet.OnQuitLoginListener
         , PagerNet.OnPagerNetListener,RegisterSucListener {
 
+    @InjectId(id = R.id.login_linear)
     private LinearLayout loginLiear;
+    @InjectId(id = R.id.not_login_linear)
     private LinearLayout noLoginLinear;
+    @InjectId(id = R.id.login_btn)
     private TextView loginBtn;
+    @InjectId(id = R.id.register_btn)
     private TextView registerBtn;
 
+    @InjectId(id = R.id.head_img)
     private CircleImageView headImg;//医生头像
+    @InjectId(id = R.id.head_name)
     private TextView headName;//医生名字
+    @InjectId(id = R.id.sufferer_num)
     private TextView suffererNum;//患者数量
+    @InjectId(id = R.id.follow_num)
     private TextView followNum;//随访数量
+    @InjectId(id = R.id.income)
     private TextView income;//医生收入
 
     private View view;
+    @InjectId(id = R.id.home_gridview)
     private LineGridView lineGridView;
     private LineGridViewAdapter lineGridViewAdapter;
 
+    @InjectId(id = R.id.pager)
     private AutoLoopViewPager pager;
+    @InjectId(id = R.id.indicator)
     private CirclePageIndicator indicator;
     private GalleryPagerAdapter galleryAdapter;
 
@@ -84,9 +98,9 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
     private QuitLoginNet quitLoginNet;
     private PagerNet pagerNet;
 
-    private ScrollView scrollView;
     private Intent intent;
 
+    @InjectId(id = R.id.list_view)
     private PullToRefreshScrollView pullToRefreshListView;
     private Handler mHandler = new Handler();
 
@@ -102,10 +116,10 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        InjectUtils.injectView(this,getView());
         super.onActivityCreated(savedInstanceState);
         readHeaderInfoFromCache();
         initViews();
-        initHeadView();
         initListeners();
         parseHeaderJSON();
         getData();
@@ -171,31 +185,6 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
         });
     }
 
-    private void initHeadView() {
-
-        noLoginLinear = (LinearLayout) view.findViewById(R.id.not_login_linear);
-        loginLiear = (LinearLayout) view.findViewById(R.id.login_linear);
-        //已经登陆
-
-        headImg = (CircleImageView) view.findViewById(R.id.head_img);
-        headName = (TextView) view.findViewById(R.id.head_name);
-        suffererNum = (TextView) view.findViewById(R.id.sufferer_num);
-        followNum = (TextView) view.findViewById(R.id.follow_num);
-        income = (TextView) view.findViewById(R.id.income);
-
-        loginBtn = (TextView) view.findViewById(R.id.login_btn);
-        registerBtn = (TextView) view.findViewById(R.id.register_btn);
-
-        lineGridView = (LineGridView) view.findViewById(R.id.home_gridview);
-        lineGridViewAdapter = new LineGridViewAdapter(this.getContext());
-        lineGridView.setAdapter(lineGridViewAdapter);
-        //防止gridview和scrollview抢焦点
-        lineGridView.setFocusable(false);
-
-        pager = (AutoLoopViewPager) view.findViewById(R.id.pager);
-        indicator = (CirclePageIndicator) view.findViewById(R.id.indicator);
-
-    }
 
     private void initViews() {
         initViewOnBaseTitle("首页", view);
@@ -206,9 +195,12 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
         quitLoginNet = new QuitLoginNet();
         pagerNet = new PagerNet();
 
-        pullToRefreshListView = (PullToRefreshScrollView) view.findViewById(R.id.list_view);
-        scrollView = pullToRefreshListView.getRefreshableView();
         pullToRefreshListView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+
+        lineGridViewAdapter = new LineGridViewAdapter(this.getContext());
+        lineGridView.setAdapter(lineGridViewAdapter);
+        //防止gridview和scrollview抢焦点
+        lineGridView.setFocusable(false);
 
     }
 

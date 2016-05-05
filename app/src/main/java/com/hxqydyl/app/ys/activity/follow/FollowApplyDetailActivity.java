@@ -11,26 +11,19 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseRequstActivity;
-import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.activity.BigPicActivity;
 import com.hxqydyl.app.ys.activity.patient.PatientInfoActivity;
-import com.hxqydyl.app.ys.adapter.FollowApplyAdapter;
 import com.hxqydyl.app.ys.adapter.PicAdapter;
 import com.hxqydyl.app.ys.bean.follow.FollowApply;
 import com.hxqydyl.app.ys.bean.response.BaseResponse;
-import com.hxqydyl.app.ys.bean.response.BaseStringResponse;
 import com.hxqydyl.app.ys.bean.response.FollowUserApplyDetailResponse;
 import com.hxqydyl.app.ys.bean.response.FollowUserApplyResponse;
 import com.hxqydyl.app.ys.http.UrlConstants;
-import com.hxqydyl.app.ys.http.follow.FollowApplyNet;
-import com.hxqydyl.app.ys.http.follow.FollowCallback;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.DensityUtils;
 import com.hxqydyl.app.ys.utils.DialogUtils;
@@ -39,9 +32,6 @@ import com.hxqydyl.app.ys.utils.StringUtils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
-import com.xus.http.httplib.model.PostPrams;
-
-import java.util.List;
 
 /**
  * 随访申请
