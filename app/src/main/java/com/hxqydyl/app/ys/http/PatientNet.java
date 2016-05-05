@@ -3,6 +3,7 @@ package com.hxqydyl.app.ys.http;
 import com.google.gson.Gson;
 import com.hxqydyl.app.ys.bean.Patient;
 import com.hxqydyl.app.ys.bean.Query;
+import com.hxqydyl.app.ys.utils.LoginManager;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
@@ -97,6 +98,7 @@ public class PatientNet extends BaseNet {
                 .addHeader("Accept","application/json")
                 .url(UrlConstants.getWholeApiUrl(shortUrl, version))
                 .addParams("groupId", groupId)
+                .addParams("doctorUuid", LoginManager.getDoctorUuid())
                 .addParams("customerUuid", customerUuid)
                 .build()
                 .execute(new Callback<Query>() {

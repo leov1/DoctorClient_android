@@ -38,6 +38,7 @@ public class FollowApplyActivity extends BaseRequstActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_follow_apply);
+
         initViews();
         initListeners();
     }
@@ -77,11 +78,13 @@ public class FollowApplyActivity extends BaseRequstActivity
         }
         adapter.notifyDataSetChanged();
 
+            }
+        });
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
+        switch (v.getId()){
             case R.id.back_img:
                 finish();
                 break;

@@ -1,6 +1,5 @@
 package com.hxqydyl.app.ys.http.follow;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSONObject;
@@ -24,7 +23,7 @@ public class FollowCallback extends StringCallback {
 
     @Override
     public void onError(Call call, Exception e) {
-        Log.e("xx", e.getMessage());
+        Log.e("xx", e.getMessage()+"");
         e.printStackTrace();
         baseTitleActivity.dismissDialog();
         onFail("999999", "请求出错啦，重新刷新下吧");
