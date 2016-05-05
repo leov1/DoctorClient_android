@@ -47,7 +47,7 @@
     <string name="login_toregister">没有帐号?立即注册</string>
 
     <!--register-->
-    <string name="register_password">登陆密码</string>
+    <string name="register_password">登录密码</string>
     <string name="register_login">已有帐号</string>
     <string name="register_agree">我已阅读并同意</string>
     <string name="register_order">《咨询医师协议》</string>

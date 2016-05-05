@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+
 import com.hxqydyl.app.ys.bean.js.BaseJsBean;
-import com.hxqydyl.app.ys.bean.js.LoginOutJsBean;
 
 
 /**
@@ -13,8 +13,6 @@ import com.hxqydyl.app.ys.bean.js.LoginOutJsBean;
  */
 public class CommentWebActivity extends BaseWebActivity implements BaseWebActivity.OnLoginSuccess {
     private String url;
-    private String title;
-    private boolean isfrist = true;   //应该需要传所需的方法对象
 
     public static void toCommentWeb(String url, String title, Activity a, boolean isNeedLogin) {
         Intent intent = new Intent(a, CommentWebActivity.class);
@@ -58,10 +56,7 @@ public class CommentWebActivity extends BaseWebActivity implements BaseWebActivi
 
     @Override
     public void onLoginSuccess() {
-        if (!isfrist) {
-            loadUrl(url);
-        }
-        isfrist=false;
+       loadUrl(url);
     }
 
     @Override

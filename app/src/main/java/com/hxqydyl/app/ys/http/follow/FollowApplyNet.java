@@ -55,7 +55,6 @@ public class FollowApplyNet {
         OkHttpUtils.get().url(baseURL + "app/pub/doctor/1.0/addVisitRecord")
                 .addParams("visitUuid", visitUuid)
                 .addParams("visitPreceptUuid", visitPreceptUuid)
-                .addParams("doctorUuid", LoginManager.getDoctorUuid())
                 .build()
                 .execute(callback);
     }

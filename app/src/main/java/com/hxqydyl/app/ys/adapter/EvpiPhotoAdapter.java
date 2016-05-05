@@ -49,9 +49,7 @@ public class EvpiPhotoAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        if (convertView == null) {
-            convertView = inflater.inflate(R.layout.item_evpi_photo_gridview, parent, false);
-        }
+        convertView = inflater.inflate(R.layout.item_evpi_photo_gridview, parent, false);
 
         ImageView img = BaseViewHolder.get(convertView, R.id.imge);
         if (position == list.size()) {
