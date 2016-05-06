@@ -1,47 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/not_login_linear"
     android:layout_width="match_parent"
     android:layout_height="80dp"
-    android:background="@color/color_home_info_background"
-    android:gravity="center"
-    android:id="@+id/not_login_linear"
-    android:orientation="horizontal">
+    android:background="@color/color_home_info_background">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/ic_logo"
+        android:layout_width="50dip"
+        android:layout_height="50dip"
+        android:layout_centerInParent="true"
+        android:src="@mipmap/ic_logo" />
 
-        <ImageView
-            android:id="@+id/ic_logo"
-            android:layout_width="50dip"
-            android:layout_height="50dip"
-            android:layout_centerInParent="true"
-            android:src="@mipmap/ic_logo" />
+    <TextView
+        android:id="@+id/login_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/space_28"
+        android:layout_toLeftOf="@+id/ic_logo"
+        android:padding="@dimen/space_8"
+        android:text="@string/login"
+        android:textColor="@color/text_color_white"
+        android:textSize="@dimen/space_20" />
 
-        <TextView
-            android:id="@+id/login_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/space_28"
-            android:layout_toLeftOf="@+id/ic_logo"
-            android:padding="@dimen/space_8"
-            android:text="@string/login"
-            android:textColor="@color/text_color_white"
-            android:textSize="@dimen/space_20" />
-
-        <TextView
-            android:id="@+id/register_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/space_28"
-            android:layout_toRightOf="@+id/ic_logo"
-            android:padding="@dimen/space_8"
-            android:text="@string/register"
-            android:textColor="@color/text_color_white"
-            android:textSize="@dimen/space_20" />
-    </RelativeLayout>
-
-
-</LinearLayout>
+    <TextView
+        android:id="@+id/register_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/space_28"
+        android:layout_toRightOf="@+id/ic_logo"
+        android:padding="@dimen/space_8"
+        android:text="@string/register"
+        android:textColor="@color/text_color_white"
+        android:textSize="@dimen/space_20" />
+</RelativeLayout>

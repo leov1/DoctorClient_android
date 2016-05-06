@@ -17,9 +17,11 @@ import com.hxqydyl.app.ys.fragment.MyPatientFrg;
 import com.hxqydyl.app.ys.fragment.MyTaskFrg;
 import com.hxqydyl.app.ys.fragment.PersonalFrg;
 import com.hxqydyl.app.ys.ui.UIHelper;
+import com.hxqydyl.app.ys.utils.DialogUtils;
 import com.hxqydyl.app.ys.utils.InjectId;
 import com.hxqydyl.app.ys.utils.InjectUtils;
 import com.hxqydyl.app.ys.utils.LoginManager;
+import com.hxqydyl.app.ys.utils.SharedPreferences;
 import com.hxqydyl.app.ys.utils.Update;
 
 import java.util.ArrayList;
@@ -29,8 +31,9 @@ import java.util.TimerTask;
 
 import common.AppManager;
 import framework.BaseFragmentActivity;
+import framework.listener.RegisterSucListener;
 
-public class MainActivity extends BaseFragmentActivity {
+public class MainActivity extends BaseFragmentActivity implements RegisterSucListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String FRAGMENT_TAGS = "fragmentTags";
@@ -51,6 +54,7 @@ public class MainActivity extends BaseFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         InjectUtils.injectView(this);
+        addRegisterListener(this);
         fragmentManager = getSupportFragmentManager();
         if (savedInstanceState == null) {
             initData();
@@ -97,7 +101,6 @@ public class MainActivity extends BaseFragmentActivity {
                             break;
                         case R.id.foot_bar_im:
                             chageIndex(1);
-
                             break;
                         case R.id.foot_bar_interest:
                             chageIndex(2);
@@ -192,23 +195,19 @@ public class MainActivity extends BaseFragmentActivity {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case UIHelper.LOGIN_REQUEST_CODE:
-                    if (data.getBooleanExtra("isLogin", true)) {
-
+                    if (LoginManager.isHasLogin()) {
                         showFragment();
-                        if (currIndex==0){
-                            fragmentManager.findFragmentByTag(fragmentTags.get(0)).onActivityResult(requestCode,resultCode,data);
+                        if (currIndex == 0) {
+                            fragmentManager.findFragmentByTag(fragmentTags.get(0)).onActivityResult(requestCode, resultCode, data);
                         }
                     } else {
-                        if (currIndex == 0){
-                            fragmentManager.findFragmentByTag(fragmentTags.get(0)).onHiddenChanged(false);
-                        }else{
-                            currIndex = 0;
-                            group.check(R.id.foot_bar_home);
-                        }
+                        currIndex = 0;
+                        group.check(R.id.foot_bar_home);
                     }
                     break;
                 case UIHelper.LOGINOUT_REQUEST_CODE:
                     currIndex = 0;
+                    fragmentManager.findFragmentByTag(fragmentTags.get(0)).onActivityResult(requestCode, resultCode, data);
                     group.check(R.id.foot_bar_home);
                     break;
             }
@@ -216,4 +215,18 @@ public class MainActivity extends BaseFragmentActivity {
         }
     }
 
+    @Override
+    public void onRegisterSuc() {
+        boolean firstTip = SharedPreferences.getInstance().getBoolean("first-time-tip", true);
+        if (firstTip) {
+            SharedPreferences.getInstance().putBoolean("first-time-tip", false);
+            DialogUtils.showNormalDialog(this);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        removeRegisterListener(this);
+        super.onDestroy();
+    }
 }

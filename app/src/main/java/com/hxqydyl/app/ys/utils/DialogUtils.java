@@ -18,7 +18,8 @@ import android.widget.Toast;
 import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.NormalListDialog;
 import com.hxqydyl.app.ys.R;
-import com.hxqydyl.app.ys.bean.PatientGroup;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by white_ash on 2016/3/20.
@@ -294,4 +295,27 @@ public class DialogUtils {
     public interface SaveTextListener {
         boolean save(String text);
     }
+
+    public static void showNormalDialog(Context context) {
+        SweetAlertDialog pDialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("通知")
+                .setContentText("恭喜您成功注册好心情医生版!您可以点击头像或个人中心进行认证。")
+                .setCancelText("关闭")
+                .setConfirmText("确认")
+                .showCancelButton(true)
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismiss();
+                    }
+                }).setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismiss();
+                    }
+                });
+        pDialog.show();
+
+    }
+
 }

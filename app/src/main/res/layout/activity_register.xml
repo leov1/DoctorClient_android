@@ -23,27 +23,12 @@
             android:paddingLeft="@dimen/space_30"
             android:paddingRight="@dimen/space_30">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/img_margin_top"
-                android:src="@mipmap/ic_logo" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/tv_margin_top"
-                android:text="@string/register"
-                android:textColor="@color/login_text_color"
-                android:textSize="@dimen/text_size_22" />
-
             <EditText
                 android:id="@+id/mobile_edit"
                 style="@style/edit_blue"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_marginTop="@dimen/space_26"
+                android:layout_marginTop="45dp"
                 android:hint="@string/phone"
                 android:inputType="number"
                 android:maxLength="11"
@@ -52,7 +37,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_marginTop="@dimen/space_20"
+                android:layout_marginTop="@dimen/space_18"
                 android:orientation="horizontal">
 
                 <EditText
@@ -81,33 +66,42 @@
                 style="@style/edit_blue"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_marginTop="@dimen/space_20"
+                android:layout_marginTop="@dimen/space_18"
                 android:digits="0123456789abcdefghigklmnopqrstuvwxyz"
                 android:hint="@string/register_password"
                 android:paddingLeft="@dimen/space_15"
-                android:password="true" />
+                android:inputType="textPassword" />
+
+            <EditText
+                android:id="@+id/visit_edit"
+                style="@style/edit_blue"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="@dimen/space_18"
+                android:hint="@string/visit_code"
+                android:paddingLeft="@dimen/space_15"
+                android:inputType="number" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_8">
+                android:layout_marginTop="@dimen/space_18">
 
                 <TextView
                     android:id="@+id/login_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:padding="@dimen/space_8"
+                    android:padding="@dimen/space_10"
                     android:text="@string/register_login"
                     android:textColor="@color/gray"
-                    android:textSize="@dimen/text_size_15" />
+                    android:textSize="@dimen/text_size_18" />
             </RelativeLayout>
 
             <Button
                 android:id="@+id/next_btn"
                 style="@style/btn_blue"
-                android:layout_marginTop="@dimen/space_25"
-                android:text="@string/next" />
+                android:text="@string/register" />
 
             <LinearLayout
                 android:layout_width="match_parent"

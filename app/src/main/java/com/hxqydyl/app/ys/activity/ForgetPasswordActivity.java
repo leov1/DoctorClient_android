@@ -13,15 +13,17 @@ import android.widget.TextView;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.bean.Query;
 import com.hxqydyl.app.ys.bean.register.CaptchaResult;
+import com.hxqydyl.app.ys.http.JsonUtils;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.http.login.UpdatePasswordNet;
-import com.hxqydyl.app.ys.http.register.CaptchaNet;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.Validator;
+import com.xus.http.httplib.model.GetParams;
 
 /**
  * 忘记密码
  */
-public class ForgetPasswordActivity extends BaseTitleActivity implements View.OnClickListener, UpdatePasswordNet.OnUpdatePasswordListener, CaptchaNet.OnCaptchaNetListener {
+public class ForgetPasswordActivity extends BaseRequstActivity implements View.OnClickListener, UpdatePasswordNet.OnUpdatePasswordListener {
 
     private TextView loginBtn;
     private Button next_btn;
@@ -36,7 +38,6 @@ public class ForgetPasswordActivity extends BaseTitleActivity implements View.On
 
     private Intent intent;
     private UpdatePasswordNet updatePasswordNet;
-    private CaptchaNet captchaNet;
 
     private int timeCount = 60;
     public static final int GET_VERIFICATION = 0x23;
@@ -88,9 +89,7 @@ public class ForgetPasswordActivity extends BaseTitleActivity implements View.On
         password_edit = (EditText) findViewById(R.id.password_edit);
 
         updatePasswordNet = new UpdatePasswordNet();
-        captchaNet = new CaptchaNet();
         updatePasswordNet.setListener(this);
-        captchaNet.setListener(this);
 
     }
 
@@ -134,8 +133,8 @@ public class ForgetPasswordActivity extends BaseTitleActivity implements View.On
      * 获取验证码网络请求
      */
     private void obtainCaptcha() {
-        if (!TextUtils.isEmpty(validateMobile())){
-            UIHelper.ToastMessage(ForgetPasswordActivity.this,validateMobile());
+        if (!TextUtils.isEmpty(validateMobile())) {
+            UIHelper.ToastMessage(ForgetPasswordActivity.this, validateMobile());
             return;
         }
 
@@ -143,7 +142,8 @@ public class ForgetPasswordActivity extends BaseTitleActivity implements View.On
         timeCount = 60;
         handler.sendEmptyMessage(GET_VERIFICATION);
 
-        captchaNet.obtainCaptcha(mobile);
+        GetParams params = toGetParams(toParamsBaen("mobile", mobile));
+        toNomalNetStringBack(params, 2, UrlConstants.getWholeApiUrl(UrlConstants.GET_VERIFICATION_CODE), "");
     }
 
     /**
@@ -196,14 +196,13 @@ public class ForgetPasswordActivity extends BaseTitleActivity implements View.On
     }
 
     @Override
-    public void requestCaptchaNetSuc(CaptchaResult captchaResult) {
-        System.out.println("capche--->"+captchaResult.getCaptcha());
-        if (captchaResult == null)return;
-        UIHelper.ToastMessage(ForgetPasswordActivity.this,captchaResult.getQuery().getMessage());
-    }
-
-    @Override
-    public void requestCaptchaNetFail() {
+    public void onSuccessToString(String json, int flag) {
+        switch (flag) {
+            case 2:
+                CaptchaResult captchaResult = JsonUtils.JsonCaptchResult(json);
+                UIHelper.ToastMessage(ForgetPasswordActivity.this, captchaResult.getQuery().getMessage());
+                break;
+        }
 
     }
 }

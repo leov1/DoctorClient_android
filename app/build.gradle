@@ -37,4 +37,8 @@ dependencies {
     compile 'com.flyco.dialog:FlycoDialog_Lib:1.2.6@aar'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.zhy:okhttputils:2.3.8'
+
+    /*首页轮播图用到的*/
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.daimajia.slider:library:1.1.5@aar'
 }

@@ -6,8 +6,6 @@ import com.hxqydyl.app.ys.http.UrlConstants;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import org.json.JSONException;
-
 import okhttp3.Call;
 
 /**
@@ -17,18 +15,19 @@ public class PagerNet {
 
     private OnPagerNetListener listener;
 
-    public void setPagerNetListener(OnPagerNetListener listener){
+    public void setPagerNetListener(OnPagerNetListener listener) {
         this.listener = listener;
     }
 
-    public interface OnPagerNetListener{
-        void PagerNetSuccess(PageIconResult pageIconResult,String str);
+    public interface OnPagerNetListener {
+        void PagerNetSuccess(PageIconResult pageIconResult, String str);
+
         void PagerNetFail(int statueCode);
     }
 
-    public void getPager(){
+    public void getPager() {
         OkHttpUtils.get().url(UrlConstants.getWholeApiUrl(UrlConstants.GET_PLATFORMPIC))
-                .addParams("adUuid","customerLunBoTuId")
+                .addParams("adUuid", "customerLunBoTuId")
                 .build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e) {
@@ -37,11 +36,7 @@ public class PagerNet {
 
             @Override
             public void onResponse(String response) {
-                try {
-                    listener.PagerNetSuccess(JsonUtils.JsonPageIconResult(response),response);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                listener.PagerNetSuccess(JsonUtils.JsonPageIconResult(response), response);
             }
         });
     }

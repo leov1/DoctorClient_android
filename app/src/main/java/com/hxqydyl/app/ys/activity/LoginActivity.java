@@ -11,10 +11,11 @@ import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.bean.register.DoctorResult;
-import com.hxqydyl.app.ys.http.login.LoginNet;
+import com.hxqydyl.app.ys.http.JsonUtils;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.LoginManager;
-import com.hxqydyl.app.ys.utils.SharedPreferences;
+import com.hxqydyl.app.ys.utils.StringUtils;
 
 import framework.listener.RegisterSucListener;
 
@@ -22,7 +23,7 @@ import framework.listener.RegisterSucListener;
  * Created by hxq on 2016/2/25.
  * 登陆页面
  */
-public class LoginActivity extends BaseRequstActivity implements View.OnClickListener, LoginNet.OnLoginNetListener, RegisterSucListener {
+public class LoginActivity extends BaseRequstActivity implements View.OnClickListener, RegisterSucListener {
 
     private TextView forgetBtn;
     private TextView registerBtn;
@@ -32,7 +33,6 @@ public class LoginActivity extends BaseRequstActivity implements View.OnClickLis
 
     private Button loginBtn;
     private boolean isNeedCallback = false;
-    private LoginNet loginNet = new LoginNet();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +57,6 @@ public class LoginActivity extends BaseRequstActivity implements View.OnClickLis
     }
 
     private void initListener() {
-        loginNet.setmListener(this);
         setBackListener(this);
 
         forgetBtn.setOnClickListener(this);
@@ -69,8 +68,7 @@ public class LoginActivity extends BaseRequstActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.back_img:
-                setLoginResult(LoginManager.isHasLogin());
-                finish();
+                setLoginResult();
                 break;
             case R.id.forget_btn:
                 Intent forgetIntent = new Intent(this, ForgetPasswordActivity.class);
@@ -80,53 +78,35 @@ public class LoginActivity extends BaseRequstActivity implements View.OnClickLis
                 UIHelper.showRegister(this);
                 break;
             case R.id.login_btn:
-                showDialog("登陆中...");
-                loginNet.loginData(mobileEdit.getText().toString(), passwordEdit.getText().toString());
-             //   toNomalNetStringBack(toPostParams(toParamsBaen("mobile", mobileEdit.getText().toString()),toParamsBaen("password", passwordEdit.getText().toString())),1, UrlConstants.getWholeApiUrl(UrlConstants.LOGIN_URL),"登陆中...");
+                toNomalNetStringBack(toPostParams(toParamsBaen("mobile", mobileEdit.getText().toString()),toParamsBaen("password", passwordEdit.getText().toString()),toParamsBaen("callback",UrlConstants.CALLBACK)),1, UrlConstants.getWholeApiUrl(UrlConstants.LOGIN_URL),"登陆中...");
                 break;
         }
     }
 
     @Override
-    public void requestLoginNetSuccess(DoctorResult doctorResult) {
-        try {
-            System.out.println("doctorinfo--->" + doctorResult);
-            dismissDialog();
-            if (doctorResult == null) return;
-            if (doctorResult.getQuery().getSuccess().equals("1")) {
-                SharedPreferences.getInstance().putString("doctorUuid", doctorResult.getServiceStaff().getDoctorUuid());
-                UIHelper.ToastMessage(LoginActivity.this, "登陆成功");
-                setLoginResult(LoginManager.isHasLogin());
-
-                finish();
-            } else {
-                UIHelper.ToastMessage(LoginActivity.this, doctorResult.getQuery().getMessage());
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-            UIHelper.ToastMessage(LoginActivity.this, "登陆失败");
+    public void onSuccessToString(String json, int flag) {
+        DoctorResult doctorResult = JsonUtils.JsonLoginData(StringUtils.cutoutBracketToString(json));
+        if (doctorResult == null) return;
+        if (doctorResult.getQuery().getSuccess().equals("1")) {
+            LoginManager.setDoctorUuid(doctorResult.getServiceStaff().getDoctorUuid());
+            UIHelper.ToastMessage(LoginActivity.this, "登陆成功");
+            setLoginResult();
+        } else {
+            UIHelper.ToastMessage(LoginActivity.this, doctorResult.getQuery().getMessage());
         }
-
-
     }
 
-    public void setLoginResult(boolean islogin) {
+    public void setLoginResult() {
         if (isNeedCallback) {
             Intent intent = new Intent();
-            intent.putExtra("isLogin", islogin);
             setResult(Activity.RESULT_OK, intent);
         }
-    }
-
-    @Override
-    public void requestLoginNetFail() {
-        dismissDialog();
-        UIHelper.ToastMessage(LoginActivity.this, "登陆失败");
+        finish();
     }
 
     @Override
     public void onRegisterSuc() {
-        finish();
+        setLoginResult();
     }
 
     @Override
@@ -138,10 +118,10 @@ public class LoginActivity extends BaseRequstActivity implements View.OnClickLis
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            setLoginResult(LoginManager.isHasLogin());
-            finish();
+            setLoginResult();
             return true;
         }
         return super.onKeyDown(keyCode, event);
     }
+
 }
