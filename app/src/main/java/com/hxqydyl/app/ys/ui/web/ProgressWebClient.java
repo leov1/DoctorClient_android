@@ -25,5 +25,6 @@ public class ProgressWebClient extends android.webkit.WebChromeClient {
         }
         super.onProgressChanged(view, newProgress);
     }
+
 }
 

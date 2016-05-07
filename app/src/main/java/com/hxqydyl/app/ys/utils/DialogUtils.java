@@ -298,8 +298,8 @@ public class DialogUtils {
 
     public static void showNormalDialog(Context context) {
         SweetAlertDialog pDialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
-                .setTitleText("通知")
-                .setContentText("恭喜您成功注册好心情医生版!您可以点击头像或个人中心进行认证。")
+                .setTitleText("恭喜您成功注册好心情医生版!")
+                .setContentText("您可以点击头像或个人中心进行认证。")
                 .setCancelText("关闭")
                 .setConfirmText("确认")
                 .showCancelButton(true)

@@ -6,16 +6,14 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
-import android.view.KeyEvent;
-import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.reading.VitamioPlayerActivity;
-import com.hxqydyl.app.ys.ui.library.RefreshProgressWebView;
 import com.hxqydyl.app.ys.ui.UIHelper;
+import com.hxqydyl.app.ys.ui.library.RefreshProgressWebView;
 import com.hxqydyl.app.ys.utils.LoginManager;
 
 import java.io.UnsupportedEncodingException;
@@ -72,17 +70,8 @@ public class BaseWebActivity extends BaseTitleActivity {
         webSettings.setAppCacheEnabled(true);
         webSettings.setJavaScriptEnabled(true);
         webView.getRefreshableView().setWebViewClient(webViewClient);
-        webView.getRefreshableView().setWebChromeClient(mChromeClient);
 //        webView.addJavascriptInterface(this, CLIENT_INTERFACE_NAME);
     }
-
-    public WebChromeClient mChromeClient = new WebChromeClient() {
-        @Override
-        public void onReceivedTitle(WebView view, String title) {
-            super.onReceivedTitle(view, title);
-            topTv.setText(title);
-        }
-    };
 
     public WebViewClient webViewClient = new WebViewClient() {
         @Override
@@ -166,9 +155,7 @@ public class BaseWebActivity extends BaseTitleActivity {
                 ps = parameters.split("\\|");
                 String sourceUrl = ps[0];
                 String duration = ps[1];
-//                JCFullScreenActivity.toActivity(this,
-//                        "http://gslb.miaopai.com/stream/ed5HCfnhovu3tyIQAiv60Q__.mp4",
-//                        "淡淡的");
+
                 intent = new Intent(this, VitamioPlayerActivity.class);
                 intent.putExtra("VideoUrl", sourceUrl);
                 intent.putExtra("VideoTitle", duration);
@@ -273,16 +260,13 @@ public class BaseWebActivity extends BaseTitleActivity {
 
     }
 
-
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (webView.getRefreshableView().canGoBack()) {
-                webView.getRefreshableView().goBack();
-                return true;
-            }
+    public void onBackPressed() {
+        if (webView.getRefreshableView().canGoBack()) {
+            webView.getRefreshableView().goBack();
+        }else {
+            super.onBackPressed();
         }
-        return super.onKeyDown(keyCode, event);
     }
 
     public interface OnLoginSuccess {

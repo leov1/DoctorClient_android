@@ -56,7 +56,7 @@ public class Update {
                 Gson gson = new Gson();
                 AppVersion version = gson.fromJson(response, AppVersion.class);
                 try {
-                    if (TextUtils.isEmpty(version.getVersion()))
+                    if (version == null || TextUtils.isEmpty(version.getVersion()))
                         return;
                     float f=Float.parseFloat(version.getVersion());
                     if (f!=getVersionName(context)) {

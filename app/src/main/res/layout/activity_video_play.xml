@@ -6,11 +6,9 @@
     android:background="#00000000"
     android:cacheColorHint="#00000000">
 
-    <VideoView
-        android:id="@+id/video_play_pldplayer"
+    <fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard
+        android:id="@+id/custom_videoplayer_standard"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:layout_margin="0dp" />
+        android:layout_height="200dp"/>
 
 </LinearLayout>
