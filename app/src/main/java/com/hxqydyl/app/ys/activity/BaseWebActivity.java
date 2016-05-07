@@ -339,9 +339,9 @@ public class BaseWebActivity extends BaseRequstActivity {
                         PostPrams postPrams = toPostFileParams(toParamsBaen("thumbnail", "true"));
                         File file = new File(filePath);
                         postPrams.addFile(file.getName(), file);
-                        String url = "http://172.168.1.53/app/support/common/1.0/uploadimg";
-                        toNomalNet(postPrams, ImageResponse.class, 6, url, "正在上传图片");
-//                        toNomalNet(postPrams, ImageResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.UPLOAD_IMGS, "1.0"), null);
+//                        String url = "http://172.168.1.53/app/support/common/1.0/uploadimg";
+//                        toNomalNet(postPrams, ImageResponse.class, 6, url, "正在上传图片");
+                        toNomalNet(postPrams, ImageResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.UPLOAD_IMGS, "1.0"), null);
                     }
                 });
             }
