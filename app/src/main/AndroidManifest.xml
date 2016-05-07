@@ -146,6 +146,9 @@
         <activity
             android:name=".activity.patient_group.PatientGroupSelectActivity"
             android:screenOrientation="portrait" />
+
+
+
         <activity android:name=".activity.follow.PatientSelectActivity"></activity>
         <activity
             android:screenOrientation="portrait"
@@ -165,6 +168,9 @@
             ></activity>
         <activity
             android:name=".activity.BigPicActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.register.QualidicationActivity"
             android:screenOrientation="portrait" />
 
     </application>

@@ -244,7 +244,7 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
                             healthGuideDelete.append(tmp.getUuid());
                         }
                         healthTipsList.remove(position);
-                        healthTipsAdapter.notifyDataSetChanged(true);
+                        healthTipsAdapter.notifyDataSetChanged();
                         break;
                 }
                 return false;
@@ -280,7 +280,7 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
                 break;
             case R.id.llAddTips:
                 healthTipsList.add(new HealthTips());
-                healthTipsAdapter.notifyDataSetChanged(true);
+                healthTipsAdapter.notifyDataSetChanged();
                 for (int i = 0; i < healthTipsAdapter.getGroupCount(); i++) {
                     elvHealthTips.expandGroup(i);
                 }

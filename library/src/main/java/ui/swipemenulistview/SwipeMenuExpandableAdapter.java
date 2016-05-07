@@ -81,6 +81,9 @@ public class SwipeMenuExpandableAdapter extends BaseExpandableListAdapter implem
                     listView.getCloseInterpolator(),
                     listView.getOpenInterpolator());
             layout.setPosition(groupPosition);
+            if (contentView.getTag()!=null){
+                convertView.setTag(contentView.getTag());
+            }
         } else {
             layout = (SwipeMenuLayout) convertView;
             layout.closeMenu();

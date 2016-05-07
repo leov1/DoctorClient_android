@@ -124,15 +124,15 @@ public class UrlConstants {
     public static String GET_DOCTOR_INFO = "/app/service/doctor/getDoctorInfo";
 
     //获取省
-    public static String GET_PROVINCE = "/app/service/doctor/getProvince";
+    public static String GET_PROVINCE = "/app/service/doctor/%s/getProvince";
     //获取市
-    public static String GET_CITY = "/app/service/doctor/getCity";
+    public static String GET_CITY = "/app/service/doctor/%s/getCity";
     //获取区县
-    public static String GET_REGION = "/app/service/doctor/getRegion";
+    public static String GET_REGION = "/app/service/doctor/%s/getRegion";
     //获取医院
-    public static String GET_HOSPITAL = "/app/service/doctor/getHospital";
+    public static String GET_HOSPITAL = "/app/service/doctor/%s/getHospital";
     //获取科室
-    public static String GET_DEPARTMENT = "/app/service/doctor/getDepartment";
+    public static String GET_DEPARTMENT = "/app/service/doctor/%s/getDepartment";
     //获取标签
     public static String GET_TAGS = "/app/service/doctor/getTags";
 
@@ -141,7 +141,7 @@ public class UrlConstants {
     //上传完善用户图片信息
     public static String SAVE_USER_ICON_LIST = "/app/service/doctor/saveUserIconList";
     //上传图片集
-    public static String UPLOAD_IMGS = "/app/support/common/uploadimg";
+    public static String UPLOAD_IMGS = "/app/support/common/%s/uploadimg";
 
     //获取阅读列表
     public static String GET_READING = "/html/thedoctorinformation/index.shtml";/*"http://admin.hxqydyl.com/html/thedoctorinformation/index.shtml";*/
@@ -199,4 +199,9 @@ public static String ADD_VISIT_PRECEPT = "/app/pub/doctor/%s/addVisitPrecept";
     public static String ADD_CUSTOMER = "/app/service/customer/%s/addCustomer";
    //
     public static String GET_CUSTOMER_VISIT = "app/pub/doctor/%s/getCustomerVisitRecordByUuid";
+
+//医生完善信息
+    public static String INSERT_SERVICE_STAFF_MESSAGE = "/app/pub/doctor/%s/insertServiceStaffMessage";
+    //个人信息
+    public static String PERSONAL_INFORMATION = "/html/user/personal_information.shtml";
 }

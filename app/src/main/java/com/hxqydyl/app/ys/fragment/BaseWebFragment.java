@@ -1,18 +1,23 @@
 package com.hxqydyl.app.ys.fragment;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.ui.library.RefreshProgressWebView;
+import com.hxqydyl.app.ys.ui.web.ProgressWebClient;
 import com.hxqydyl.app.ys.ui.web.ProgressWebView;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.LoginManager;
@@ -35,6 +40,7 @@ public class BaseWebFragment extends BaseFragment {
     private boolean isCustom = false;
     private DoJsBridge doJsBridge;
     private boolean isNeedLogin = false;
+    public WebChromeClient mChromeClient ;
 
     public void setIsNeedLogin(boolean isNeedLogin) {
         this.isNeedLogin = isNeedLogin;
@@ -73,7 +79,12 @@ public class BaseWebFragment extends BaseFragment {
         webSettings.setAllowFileAccess(true);
         webSettings.setAppCacheEnabled(true);
         webSettings.setJavaScriptEnabled(true);
+        mChromeClient = new WebClient(getActivity());
+        webView.setPullToRefreshEnabled(false);
+
         webView.getRefreshableView().setWebViewClient(webViewClient);
+        webView.getRefreshableView().setWebChromeClient(mChromeClient);
+
 //        webView.setWebChromeClient(mChromeClient);
 //        webView.addJavascriptInterface(this, CLIENT_INTERFACE_NAME);
     }
@@ -235,5 +246,33 @@ public class BaseWebFragment extends BaseFragment {
 
     public interface DoJsBridge {
         void doJs(String url);
+    }
+    public class WebClient extends ProgressWebClient {
+        public WebClient(Context context) {
+            super(context,webView);
+        }
+        @Override
+        public void onProgressChanged(WebView view, int newProgress) {
+            super.onProgressChanged(view, newProgress);
+            if (newProgress == 100) {
+                webView.onRefreshComplete();
+            }
+        }
+        //扩展浏览器上传文件
+        //3.0++版本
+        public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType) {
+        }
+
+        //3.0--版本
+        public void openFileChooser(ValueCallback<Uri> uploadMsg) {
+        }
+
+        public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture) {
+        }
+
+        // For Android > 5.0
+        public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> uploadMsg, WebChromeClient.FileChooserParams fileChooserParams) {
+            return true;
+        }
     }
 }

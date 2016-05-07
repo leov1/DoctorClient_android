@@ -1,4 +1,4 @@
-package com.hxqydyl.app.ys.activity;
+package com.hxqydyl.app.ys.fragment;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -11,7 +11,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.hxqydyl.app.ys.bean.request.BaseRequest;
+import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.bean.request.ParamsBean;
 import com.hxqydyl.app.ys.bean.response.BaseResponse;
 import com.hxqydyl.app.ys.ui.UIHelper;
@@ -21,22 +21,40 @@ import com.xus.http.httplib.model.BaseParams;
 import com.xus.http.httplib.model.GetParams;
 import com.xus.http.httplib.model.PostPrams;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import galleryfinal.wq.photo.widget.PickConfig;
 import galleryfinal.yalantis.ucrop.UCrop;
 
 /**
  * Created by wangxu on 2016/4/20.
  */
-public class BaseRequstActivity<T> extends BaseTitleActivity implements HttpUtilBack {
+public class BaseRequstFragment<T> extends BaseFragment implements HttpUtilBack {
     public HttpUtil httpUtil = new HttpUtil(this);
     public Gson gson = new Gson();
+    private SweetAlertDialog pDialog;
     private int pickPic = 1;//选择图片模式
     private int pickNum = 1;//允许选择张数
+    private static final int CODE_FOR_WRITE_PERMISSION = 1119;
 
+    public void showDialog(String text) {
+        if (!(pDialog!=null&&pDialog.isShowing())){
+            pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
+            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+        pDialog.setTitleText(text);
+
+    }
+
+    public void dismissDialog() {
+        if (pDialog != null && pDialog.isShowing()) {
+            pDialog.dismissWithAnimation();
+        }
+    }
     @Override
     public <T> void onSuccess(int i, String s, Class<T> aClass, Map<String, String> map) {
         Log.e("wangxu", "json=" + s);
@@ -44,21 +62,21 @@ public class BaseRequstActivity<T> extends BaseTitleActivity implements HttpUtil
             dismissDialog();
             if (map.get("IsString").equals("false")) {
                 BaseResponse t = (BaseResponse) gson.fromJson(s, aClass);
-                if (t.code == 200 || (t.query != null && !TextUtils.isEmpty(t.query.success) && t.query.success.equals("1")) || (t.value != null && t.value.equals("true"))) {
+                if (t.code==200 || (t.query != null && !TextUtils.isEmpty(t.query.success) && t.query.success.equals("1"))||(t.value!=null&&t.value.equals("true"))) {
                     onSuccessToBean(t, i);
-                } else if (t.code != 200 && !TextUtils.isEmpty(t.message)) {
-                    UIHelper.ToastMessage(this, t.message);
+                } else if (t.code!=200 && !TextUtils.isEmpty(t.message)) {
+                    UIHelper.ToastMessage(getActivity(), t.message);
                 } else if (t.query != null && !TextUtils.isEmpty(t.query.message)) {
-                    UIHelper.ToastMessage(this, t.query.message);
+                    UIHelper.ToastMessage(getActivity(), t.query.message);
                 } else {
-                    UIHelper.ToastMessage(this, "请求异常！请稍后再试");
+                    UIHelper.ToastMessage(getActivity(), "请求异常！请稍后再试");
                 }
             } else {
                 onSuccessToString(s, i);
             }
         } catch (Exception e) {
-            Log.e("wangxu", e.toString());
-            UIHelper.ToastMessage(this, "加载失败，请稍后再试" + e.toString());
+            Log.e("wangxu" ,e.toString());
+            UIHelper.ToastMessage(getActivity(), "加载失败，请稍后再试"+e.toString());
 
             onfail(i, 9999, map);
         }
@@ -68,7 +86,7 @@ public class BaseRequstActivity<T> extends BaseTitleActivity implements HttpUtil
     @Override
     public void onfail(int i, int i1, Map<String, String> map) {
         dismissDialog();
-        UIHelper.ToastMessage(this, "加载失败，请稍后再试");
+        UIHelper.ToastMessage(getActivity(), "加载失败，请稍后再试");
     }
 
     public <T> void onSuccessToBean(T bean, int flag) {
@@ -86,8 +104,8 @@ public class BaseRequstActivity<T> extends BaseTitleActivity implements HttpUtil
      *               <p>
      *               onSuccessString中回调
      */
-    public void toNomalNetStringBack(BaseParams params, int flag, String url, String showdialog) {
-        if (!TextUtils.isEmpty(showdialog)) {
+    public void toNomalNetStringBack(BaseParams params, int flag, String url,String showdialog) {
+        if (!TextUtils.isEmpty(showdialog)){
             showDialog(showdialog);
         }
         Map<String, String> map = new HashMap<>();
@@ -111,8 +129,8 @@ public class BaseRequstActivity<T> extends BaseTitleActivity implements HttpUtil
      *               <p>
      *               在onSuccessToBean中回调
      */
-    public void toNomalNet(BaseParams params, Class<T> aClass, int flag, String url, String showdialog) {
-        if (!TextUtils.isEmpty(showdialog)) {
+    public void toNomalNet(BaseParams params, Class<T> aClass, int flag, String url,String showdialog) {
+        if (!TextUtils.isEmpty(showdialog)){
             showDialog(showdialog);
         }
         Map<String, String> map = new HashMap<>();
@@ -125,9 +143,8 @@ public class BaseRequstActivity<T> extends BaseTitleActivity implements HttpUtil
             httpUtil.doPost(flag, url, post, aClass, map);
         }
     }
-
-    public void toNomalNet(BaseParams params, int flag, String url, String showdialog) {
-        if (!TextUtils.isEmpty(showdialog)) {
+    public void toNomalNet(BaseParams params, int flag, String url,String showdialog) {
+        if (!TextUtils.isEmpty(showdialog)){
             showDialog(showdialog);
         }
         Map<String, String> map = new HashMap<>();
@@ -137,74 +154,79 @@ public class BaseRequstActivity<T> extends BaseTitleActivity implements HttpUtil
             httpUtil.doGet(flag, url, get, BaseResponse.class, map);
         } else if (params instanceof PostPrams) {
             PostPrams post = (PostPrams) params;
-            httpUtil.doPost(flag, url, post, BaseResponse.class, map);
+            httpUtil.doPost(flag, url, post,  BaseResponse.class, map);
         }
     }
 
-    public GetParams toGetParams(ParamsBean... keys) {
+    public GetParams toGetParams( ParamsBean... keys) {
         return toGetParams(null, keys);
     }
-
-    public PostPrams toPostParams(ParamsBean... keys) {
-        return toPostParams(null, keys);
+    public PostPrams toPostParams( ParamsBean... keys) {
+        return toPostParams(null,keys);
     }
-
     /**
      * @param keys 通过toParamsBaen获取键值对
      * @return
      */
-    public PostPrams toPostParams(Map<String, String> header, ParamsBean... keys) {
+    public PostPrams toPostParams(Map<String,String> header, ParamsBean... keys) {
         PostPrams params = new PostPrams();
         for (ParamsBean s : keys) {
             params.put(s.getKey(), s.getValue());
         }
-        if (header != null) {
+        if (header!=null){
             params.setHeader(header);
         }
         return params;
     }
-
-    public PostPrams toPostFileParams(Map<String, String> header, ParamsBean... keys) {
+    public PostPrams toPostFileParams(Map<String,String> header, ParamsBean... keys) {
         PostPrams params = new PostPrams();
         for (ParamsBean s : keys) {
             params.addFilePrams(s.getKey(), s.getValue());
         }
-        if (header != null) {
+        if (header!=null){
             params.setHeader(header);
         }
         return params;
     }
-
-    public PostPrams toPostFileParams(ParamsBean... keys) {
+    public PostPrams toPostFileParams( ParamsBean... keys) {
         PostPrams params = new PostPrams();
         for (ParamsBean s : keys) {
             params.addFilePrams(s.getKey(), s.getValue());
         }
         return params;
     }
-
-    public GetParams toGetParams(Map<String, String> header, ParamsBean... keys) {
+    public GetParams toGetParams(Map<String,String> header,ParamsBean... keys) {
         GetParams params = new GetParams();
         for (ParamsBean s : keys) {
             params.put(s.getKey(), s.getValue());
         }
-        if (header != null) {
+        if (header!=null){
             params.setHeader(header);
         }
         return params;
     }
 
-    private static final int CODE_FOR_WRITE_PERMISSION = 1119;
+    /**
+     * 填入表单值
+     *
+     * @param key
+     * @param value
+     * @return
+     */
+    public ParamsBean toParamsBaen(String key, String value) {
+        return new ParamsBean(key, value);
+    }
+
 
     public void access(int pickPic, int picknum) {
         this.pickNum = picknum;
         this.pickPic = pickPic;
         int hasWriteContactsPermission = 0;
         if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
-            hasWriteContactsPermission = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            hasWriteContactsPermission = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {
 
-                ActivityCompat.requestPermissions(BaseRequstActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         CODE_FOR_WRITE_PERMISSION);
 
                 return;
@@ -231,7 +253,7 @@ public class BaseRequstActivity<T> extends BaseTitleActivity implements HttpUtil
         UCrop.Options options = new UCrop.Options();
         options.setCompressionFormat(Bitmap.CompressFormat.JPEG);
         options.setCompressionQuality(90);
-        new PickConfig.Builder(BaseRequstActivity.this)
+        new PickConfig.Builder(getActivity())
                 .isneedcrop(false)
                 .actionBarcolor(Color.parseColor("#1F80B8"))
                 .statusBarcolor(Color.parseColor("#FFFFFF"))
@@ -243,14 +265,4 @@ public class BaseRequstActivity<T> extends BaseTitleActivity implements HttpUtil
                 .pickMode(pickPic).build();
     }
 
-    /**
-     * 填入表单值
-     *
-     * @param key
-     * @param value
-     * @return
-     */
-    public ParamsBean toParamsBaen(String key, String value) {
-        return new ParamsBean(key, value);
-    }
 }

@@ -89,6 +89,10 @@
 
     <!-- 分组管理 -->
     <color name="color_f7f7f7">#f7f7f7</color>
+    <color name="color_e0e0e0">#e0e0e0</color>
+    <color name="color_646464">#646464</color>
+
+    <color name="color_6e6e6e">#6e6e6e</color>
     <color name="color_ececec">#ececec</color>
     <color name="color_dfdfdf">#dfdfdf</color>
     <color name="color_efefef">#efefef</color>

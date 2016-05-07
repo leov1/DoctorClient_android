@@ -1,37 +1,70 @@
 package com.hxqydyl.app.ys.activity;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.reading.VitamioPlayerActivity;
+import com.hxqydyl.app.ys.bean.response.ImageResponse;
+import com.hxqydyl.app.ys.http.UrlConstants;
+import com.hxqydyl.app.ys.ui.library.RefreshProgressWebView;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.ui.library.RefreshProgressWebView;
+import com.hxqydyl.app.ys.ui.uploadimage.UploadPhotoUtil;
+import com.hxqydyl.app.ys.ui.web.ProgressWebClient;
 import com.hxqydyl.app.ys.utils.LoginManager;
+import com.xus.http.httplib.model.PostPrams;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import galleryfinal.wq.photo.widget.PickConfig;
+import galleryfinal.yalantis.ucrop.UCrop;
 
 /**
  * 网页activity基类
  * Created by hxq on 2016/3/25.
  */
-public class BaseWebActivity extends BaseTitleActivity {
+public class BaseWebActivity extends BaseRequstActivity {
+
     public RefreshProgressWebView webView;
     public boolean isNeedLogin = false;
     private OnLoginSuccess onLoginSuccess;
     private Intent intent;
     private String beanPath;
+    private String webIsAvatar;
+
 
     public void setIsNeedLogin(boolean isNeedLogin, OnLoginSuccess onLoginSuccess) {
         this.isNeedLogin = isNeedLogin;
@@ -62,6 +95,7 @@ public class BaseWebActivity extends BaseTitleActivity {
 
     private void initWebSetting() {
         WebSettings webSettings = webView.getRefreshableView().getSettings();
+        webView.setPullToRefreshEnabled(false);
         webSettings.setDomStorageEnabled(true);
         webSettings.setAppCacheMaxSize(1024 * 1024 * 8);
         String appCachePath = getApplicationContext().getCacheDir().getAbsolutePath();
@@ -69,11 +103,27 @@ public class BaseWebActivity extends BaseTitleActivity {
         webSettings.setAllowFileAccess(true);
         webSettings.setAppCacheEnabled(true);
         webSettings.setJavaScriptEnabled(true);
+        mChromeClient = new WebClient(this);
         webView.getRefreshableView().setWebViewClient(webViewClient);
 //        webView.addJavascriptInterface(this, CLIENT_INTERFACE_NAME);
     }
 
+    public WebChromeClient mChromeClient;
+
     public WebViewClient webViewClient = new WebViewClient() {
+        @SuppressWarnings("deprecation")
+        @Override
+        public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+            webView.getRefreshableView().loadUrl("file:///android_asset/demo.html");
+        }
+
+        @TargetApi(android.os.Build.VERSION_CODES.M)
+        @Override
+        public void onReceivedError(WebView view, WebResourceRequest req, WebResourceError rerr) {
+            // Redirect to deprecated method, so you can use it in all SDK versions
+            onReceivedError(view, rerr.getErrorCode(), rerr.getDescription().toString(), req.getUrl().toString());
+        }
+
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
@@ -179,8 +229,8 @@ public class BaseWebActivity extends BaseTitleActivity {
 //                startActivityForResult(intent, CONTRACTCODE);
 //                break;
             case "takephoto":
-//                ll_popup.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.activity_translate_in));
-//                pop.showAtLocation(parentView, Gravity.BOTTOM, 0, 0);
+                webIsAvatar = parameters;
+                access(PickConfig.MODE_SINGLE_PICK,1);
                 break;
 //            case "saveImage":
 //                new RemoteImageHelper().downloadImage2local(this, parameters, this);
@@ -273,6 +323,68 @@ public class BaseWebActivity extends BaseTitleActivity {
         void onLoginSuccess();
 
         void onLoginfail();
+
+    }
+
+    private void uploadFile(final String filePath) {
+        showDialog("正在上传图片");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final String fileString = UploadPhotoUtil.getInstance().getUploadBitmapZoomString(
+                        filePath);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        PostPrams postPrams = toPostFileParams(toParamsBaen("thumbnail", "true"));
+                        File file = new File(filePath);
+                        postPrams.addFile(file.getName(), file);
+                        String url = "http://172.168.1.53/app/support/common/1.0/uploadimg";
+                        toNomalNet(postPrams, ImageResponse.class, 6, url, "正在上传图片");
+//                        toNomalNet(postPrams, ImageResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.UPLOAD_IMGS, "1.0"), null);
+                    }
+                });
+            }
+        }).start();
+
+    }
+
+    @Override
+    public void onSuccessToBean(Object bean, int flag) {
+        ImageResponse ir = (ImageResponse) bean;
+            webView.getRefreshableView().loadUrl("javascript:gm.user.getuserimg('" + ir.value.get(0).getThumbnail() + "','" + ir.value.get(0).getId() + "','" + webIsAvatar + "')");
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        //为什么不在这处理图片呢？因为处理图片比较耗时，如果在这里处理图片，从图库或者拍照Activity时会不流畅，很卡卡卡，试试就知道了
+        if (resultCode == RESULT_OK && requestCode == PickConfig.PICK_REQUEST_CODE) {
+            //在data中返回 选择的图片列表
+            this.intent = intent;
+            ArrayList<String> paths = intent.getStringArrayListExtra("data");
+            for (int i = 0; i < paths.size(); i++) {
+                if (!TextUtils.isEmpty(paths.get(i))) {
+                    uploadFile(paths.get(i));
+                }
+            }
+
+        }
+    }
+
+
+    public class WebClient extends ProgressWebClient {
+        public WebClient(Context context) {
+            super(context, webView);
+        }
+
+        @Override
+        public void onProgressChanged(WebView view, int newProgress) {
+            super.onProgressChanged(view, newProgress);
+            if (newProgress == 100) {
+                webView.onRefreshComplete();
+            }
+        }
 
     }
 }

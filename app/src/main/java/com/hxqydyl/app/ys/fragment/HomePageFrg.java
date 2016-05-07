@@ -22,6 +22,7 @@ import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.CommentWebActivity;
 import com.hxqydyl.app.ys.activity.follow.FollowMainActivity;
 import com.hxqydyl.app.ys.activity.reading.ReadingActivity;
+import com.hxqydyl.app.ys.activity.register.QualidicationActivity;
 import com.hxqydyl.app.ys.adapter.LineGridViewAdapter;
 import com.hxqydyl.app.ys.bean.homepage.PageIconBean;
 import com.hxqydyl.app.ys.bean.homepage.PageIconResult;
@@ -328,7 +329,8 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
                 //startActivity(new Intent(getActivity(), EvpiPhotoActivity.class));
                 break;
             case R.id.head_img:
-                //     quitLogin();
+           //     quitLogin();
+                QualidicationActivity.toQualidicationActivity(getActivity(),"0");
                 break;
             case R.id.back_img:
                 CommentWebActivity.toCommentWeb(UrlConstants.getWholeApiUrl(UrlConstants.CURPAGE), null, getActivity(), true);
@@ -342,6 +344,8 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         startRefreshing();
     }
+
+
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

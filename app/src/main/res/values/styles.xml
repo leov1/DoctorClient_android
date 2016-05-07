@@ -291,4 +291,29 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="click_list_item">
+        <item name="android:background">@color/color_f7f7f7</item>
+        <item name="android:layout_marginBottom">2px</item>
+        <item name="android:layout_height">80dp</item>
+        <item name="android:padding">20dp</item>
+
+    </style>
+
+    <style name="click_list_item_name">
+        <item name="android:drawableLeft">@drawable/need_input</item>
+        <item name="android:drawablePadding">5dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginRight">5dp</item>
+        <item name="android:textColor">@color/color_646464</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+    <style name="sex_switch">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textOff">"男"</item><!-- 此设置不需要文字，只显示背景图的开关 -->
+        <item name="android:textOn">"女"</item>
+
+    </style>
 </resources>

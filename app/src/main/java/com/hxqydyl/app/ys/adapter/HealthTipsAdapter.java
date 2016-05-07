@@ -66,20 +66,20 @@ public class HealthTipsAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
-    public void notifyDataSetChanged(boolean updateData) {
-        if (updateData) {
-            for (int i = 1, j = 0;
-                    i < listView.getChildCount() && j < list.size();
-                    i+=2, j = (i-1)/2) {
-                ChildViewHolder vh = (ChildViewHolder) listView.getChildAt(i).getTag();
-                HealthTips m = list.get(j);
-                m.setPeriod(vh.etDay.getText().toString());
-                m.setDiet(vh.etFood.getText().toString());
-                m.setSleep(vh.etSleep.getText().toString());
-                m.setSports(vh.etSport.getText().toString());
-                m.setRest(vh.etOther.getText().toString());
-            }
-        }
+    public void notifyDataSetChanged() {
+//        if (updateData) {
+//            for (int i = 1, j = 0;
+//                    i < listView.getChildCount() && j < list.size();
+//                    i+=2, j = (i-1)/2) {
+//                ChildViewHolder vh = (ChildViewHolder) listView.getChildAt(i).getTag();
+//                HealthTips m = list.get(j);
+//                m.setPeriod(vh.etDay.getText().toString()+"");
+//                m.setDiet(vh.etFood.getText().toString()+"");
+//                m.setSleep(vh.etSleep.getText().toString()+"");
+//                m.setSports(vh.etSport.getText().toString()+"");
+//                m.setRest(vh.etOther.getText().toString()+"");
+//            }
+//        }
         BaseExpandableListAdapter adapter =
                 (BaseExpandableListAdapter) listView.getExpandableListAdapter();
         adapter.notifyDataSetChanged();

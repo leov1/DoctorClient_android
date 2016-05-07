@@ -18,13 +18,21 @@ import com.hxqydyl.app.ys.ui.web.ProgressWebClient;
  * Created by wangxu on 2016/4/15.
  */
 public class RefreshProgressWebView extends PullToRefreshBase<WebView> {
-    private ProgressBar progressbar;
+//    private ProgressBar progressbar;
 
     private static final OnRefreshListener<WebView> defaultOnRefreshListener = new OnRefreshListener<WebView>() {
 
         @Override
         public void onRefresh(PullToRefreshBase<WebView> refreshView) {
-            refreshView.getRefreshableView().reload();
+            String url=refreshView.getRefreshableView().getUrl();
+            if (url.contains("file:///android_asset/demo.html")){
+                refreshView.getRefreshableView().goBack();
+
+            }else{
+                refreshView.getRefreshableView().reload();
+
+
+            }
         }
 
     };
@@ -42,11 +50,7 @@ public class RefreshProgressWebView extends PullToRefreshBase<WebView> {
 //    };
 
     private void addProgress(Context context) {
-        progressbar = new ProgressBar(context, null, android.R.attr.progressBarStyleHorizontal);
-        progressbar.setLayoutParams(new AbsoluteLayout.LayoutParams(AbsoluteLayout.LayoutParams.MATCH_PARENT, 8, 0, 0));
-        progressbar.setProgressDrawable(getResources().getDrawable(R.drawable.wevbview_progressbar));
-        addView(progressbar);
-        mRefreshableView.setWebChromeClient(new RefreshWebClient(progressbar));
+        mRefreshableView.setWebChromeClient(new RefreshWebClient(context));
     }
 
     public RefreshProgressWebView(Context context) {
@@ -169,11 +173,9 @@ public class RefreshProgressWebView extends PullToRefreshBase<WebView> {
     }
 
     public class RefreshWebClient extends ProgressWebClient {
-
-        public RefreshWebClient(ProgressBar progressbar) {
-            super(progressbar);
+        public RefreshWebClient(Context context) {
+            super(context,RefreshProgressWebView.this);
         }
-
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);

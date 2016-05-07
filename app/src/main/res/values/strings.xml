@@ -179,4 +179,7 @@
     <string name="score_xx">分数：%s</string>
     <string name="result_xx">测试结果：%s</string>
     <string name="result_description_xx">结果说明：%s</string>
+    <string name="qualification_info">认证说明:\n 1.请确保照片及文字信息清晰可见；\n 2.职业医生资格证图片，请确保标红部分的信息总能完全展示</string>
+    <string name="qualificating_info">您的资料已提交成功！\n审核时间为1-3个工作日，审核结果将以短信形式通知您，如有疑问，请联系客服电话：010-52451076</string>
+
 </resources>
