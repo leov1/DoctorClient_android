@@ -357,23 +357,30 @@ public class HomePageFrg extends BaseRequstFragment implements GainDoctorInfoNet
                 startActivity(intent);
                 break;
             case 1://讲堂
-                CommentWebActivity.toCommentWebForResult(UrlConstants.getWholeApiUrl(UrlConstants.GET_VIDEOS), getActivity(), UIHelper.LOGIN_REQUEST_CODE, true);
+                if (!LoginManager.isHasLogin()){
+                    UIHelper.showLoginForResult(this.getActivity());
+                    return;
+                }
+                CommentWebActivity.toCommentWeb(UrlConstants.getWholeApiUrl(UrlConstants.GET_VIDEOS),"", getActivity(), false);
                 break;
             case 2://随访
                 if (!TextUtils.isEmpty(((BaseFragmentActivity)getActivity()).isIdenyInfo())){
                     UIHelper.ToastMessage(this.getActivity(),((BaseFragmentActivity)getActivity()).isIdenyInfo());
                     return;
                 }
-
                 intent = new Intent(getActivity(), FollowMainActivity.class);
                 startActivity(intent);
                 break;
             case 3://诊所
+                if (!LoginManager.isHasLogin()){
+                    UIHelper.showLoginForResult(this.getActivity());
+                    return;
+                }
                 if (!TextUtils.isEmpty(((BaseFragmentActivity)getActivity()).isIdenyInfo())){
                     UIHelper.ToastMessage(this.getActivity(),((BaseFragmentActivity)getActivity()).isIdenyInfo());
                     return;
                 }
-                CommentWebActivity.toCommentWebForResult(UrlConstants.getWholeApiUrl(UrlConstants.GET_CLINIC), getActivity(), UIHelper.LOGIN_REQUEST_CODE, true);
+                CommentWebActivity.toCommentWeb(UrlConstants.getWholeApiUrl(UrlConstants.GET_CLINIC),"", getActivity(), false);
                 break;
         }
     }

@@ -1,26 +1,13 @@
 package com.hxqydyl.app.ys.activity;
 
-import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
-import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -32,10 +19,8 @@ import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.reading.VitamioPlayerActivity;
 import com.hxqydyl.app.ys.bean.response.ImageResponse;
 import com.hxqydyl.app.ys.http.UrlConstants;
-import com.hxqydyl.app.ys.ui.library.RefreshProgressWebView;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.ui.library.RefreshProgressWebView;
-import com.hxqydyl.app.ys.ui.uploadimage.UploadPhotoUtil;
 import com.hxqydyl.app.ys.ui.web.ProgressWebClient;
 import com.hxqydyl.app.ys.utils.LoginManager;
 import com.xus.http.httplib.model.PostPrams;
@@ -45,12 +30,10 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import galleryfinal.wq.photo.widget.PickConfig;
-import galleryfinal.yalantis.ucrop.UCrop;
 
 /**
  * 网页activity基类

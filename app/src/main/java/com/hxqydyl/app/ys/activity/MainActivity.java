@@ -222,6 +222,7 @@ public class MainActivity extends BaseFragmentActivity {
                     break;
                 case UIHelper.LOGINOUT_REQUEST_CODE:
                     currIndex = 0;
+                    fragmentManager.findFragmentByTag(fragmentTags.get(0)).onActivityResult(requestCode, resultCode, data);
                     checkGroup(currIndex);
                     break;
             }
