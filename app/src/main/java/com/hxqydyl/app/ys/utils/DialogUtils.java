@@ -311,5 +311,19 @@ public class DialogUtils {
         pDialog.show();
 
     }
+    public static void showNormalDialog(Context context,String title,String content) {
+        SweetAlertDialog pDialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText(title)
+                .setContentText(content)
+                .setConfirmText("确认")
+                .showCancelButton(true)
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismiss();
+                    }
+                });
+        pDialog.show();
 
+    }
 }

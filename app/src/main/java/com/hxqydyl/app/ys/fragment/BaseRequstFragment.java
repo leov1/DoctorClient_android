@@ -14,7 +14,9 @@ import com.google.gson.Gson;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.bean.request.ParamsBean;
 import com.hxqydyl.app.ys.bean.response.BaseResponse;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.ui.UIHelper;
+import com.hxqydyl.app.ys.utils.DialogUtils;
 import com.xus.http.httplib.https.HttpUtil;
 import com.xus.http.httplib.interfaces.HttpUtilBack;
 import com.xus.http.httplib.model.BaseParams;
@@ -62,25 +64,32 @@ public class BaseRequstFragment<T> extends BaseFragment implements HttpUtilBack 
             dismissDialog();
             if (map.get("IsString").equals("false")) {
                 BaseResponse t = (BaseResponse) gson.fromJson(s, aClass);
-                if (t.code==200 || (t.query != null && !TextUtils.isEmpty(t.query.success) && t.query.success.equals("1"))||(t.value!=null&&t.value.equals("true"))) {
+                if (t.code == 200 || (t.query != null && !TextUtils.isEmpty(t.query.success) && t.query.success.equals("1")) || (t.value != null && t.value.equals("true"))) {
                     onSuccessToBean(t, i);
-                } else if (t.code!=200 && !TextUtils.isEmpty(t.message)) {
+                } else if (t.code != 200 && !TextUtils.isEmpty(t.message)) {
                     UIHelper.ToastMessage(getActivity(), t.message);
+                    if ((!UrlConstants.isOnline)&&UrlConstants.isTest&&t.code!=406){
+                        DialogUtils.showNormalDialog(getActivity(),"此弹框仅在测试弹出","服务器错误:请测试人员区分是否为bug后记录-\nurl:"+map.get("url")+"\n请求数据:"+map.get("params")+"\n请求方式:"+map.get("httpType")+"\n"+"返回数据:"+s);
+                    }
                 } else if (t.query != null && !TextUtils.isEmpty(t.query.message)) {
                     UIHelper.ToastMessage(getActivity(), t.query.message);
                 } else {
                     UIHelper.ToastMessage(getActivity(), "请求异常！请稍后再试");
+                    if ((!UrlConstants.isOnline)&&UrlConstants.isTest){
+                        DialogUtils.showNormalDialog(getActivity(),"此弹框仅在测试弹出","服务端请求头有误，请确认json\n"+s);
+                    }
                 }
             } else {
                 onSuccessToString(s, i);
             }
         } catch (Exception e) {
-            Log.e("wangxu" ,e.toString());
-            UIHelper.ToastMessage(getActivity(), "加载失败，请稍后再试"+e.toString());
-
+            Log.e("wangxu", e.toString());
+            UIHelper.ToastMessage(getActivity(), "加载失败，请稍后再试");
+            if ((!UrlConstants.isOnline)&&UrlConstants.isTest){
+                DialogUtils.showNormalDialog(getActivity(),"此弹框仅在测试弹出","android程序内部错误"+e.toString());
+            }
             onfail(i, 9999, map);
         }
-
     }
 
     @Override
@@ -110,12 +119,16 @@ public class BaseRequstFragment<T> extends BaseFragment implements HttpUtilBack 
         }
         Map<String, String> map = new HashMap<>();
         map.put("IsString", "true");
+        map.put("url",url);
+        map.put("params",params.toString());
         if (params instanceof GetParams) {
             GetParams get = (GetParams) params;
             httpUtil.doGet(flag, url, get, String.class, map);
+            map.put("httpType","get");
         } else if (params instanceof PostPrams) {
             PostPrams post = (PostPrams) params;
             httpUtil.doPost(flag, url, post, String.class, map);
+            map.put("httpType","post");
         }
     }
 
@@ -135,12 +148,18 @@ public class BaseRequstFragment<T> extends BaseFragment implements HttpUtilBack 
         }
         Map<String, String> map = new HashMap<>();
         map.put("IsString", "false");
+        map.put("url",url);
+        map.put("params",params.toString());
         if (params instanceof GetParams) {
             GetParams get = (GetParams) params;
             httpUtil.doGet(flag, url, get, aClass, map);
+            map.put("httpType","get");
+
         } else if (params instanceof PostPrams) {
             PostPrams post = (PostPrams) params;
             httpUtil.doPost(flag, url, post, aClass, map);
+            map.put("httpType","post");
+
         }
     }
     public void toNomalNet(BaseParams params, int flag, String url,String showdialog) {

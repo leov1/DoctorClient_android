@@ -13,7 +13,7 @@ public class UrlConstants {
      * 线上发布 isOnline = true,isTest = false;
      */
     public static final boolean isOnline = false;//    是否是线上环境
-    public static final boolean isTest = true;//    是否是测试包
+    public static final boolean isTest = false;//    是否是测试包
 
 
     //    内网开发ip
@@ -204,4 +204,7 @@ public static String ADD_VISIT_PRECEPT = "/app/pub/doctor/%s/addVisitPrecept";
     public static String INSERT_SERVICE_STAFF_MESSAGE = "/app/pub/doctor/%s/insertServiceStaffMessage";
     //个人信息
     public static String PERSONAL_INFORMATION = "/html/user/personal_information.shtml";
+    //获取状态
+    public static String GET_SERVICE_STAFFINFO = "/app/pub/doctor/%s/getServiceStaffInfo";
+
 }

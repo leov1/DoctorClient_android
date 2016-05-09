@@ -14,7 +14,9 @@ import com.google.gson.Gson;
 import com.hxqydyl.app.ys.bean.request.BaseRequest;
 import com.hxqydyl.app.ys.bean.request.ParamsBean;
 import com.hxqydyl.app.ys.bean.response.BaseResponse;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.ui.UIHelper;
+import com.hxqydyl.app.ys.utils.DialogUtils;
 import com.xus.http.httplib.https.HttpUtil;
 import com.xus.http.httplib.interfaces.HttpUtilBack;
 import com.xus.http.httplib.model.BaseParams;
@@ -48,18 +50,26 @@ public class BaseRequstActivity<T> extends BaseTitleActivity implements HttpUtil
                     onSuccessToBean(t, i);
                 } else if (t.code != 200 && !TextUtils.isEmpty(t.message)) {
                     UIHelper.ToastMessage(this, t.message);
+                    if ((!UrlConstants.isOnline)&&t.code!=406){
+                        DialogUtils.showNormalDialog(this,"此弹框仅在测试弹出","服务器错误:请测试人员区分是否为bug后记录-\nurl:"+map.get("url")+"\n请求数据:"+map.get("params")+"\n请求方式:"+map.get("httpType")+"\n"+"返回数据:"+s);
+                    }
                 } else if (t.query != null && !TextUtils.isEmpty(t.query.message)) {
                     UIHelper.ToastMessage(this, t.query.message);
                 } else {
                     UIHelper.ToastMessage(this, "请求异常！请稍后再试");
+                    if ((!UrlConstants.isOnline)){
+                        DialogUtils.showNormalDialog(this,"此弹框仅在测试弹出","服务端请求头有误 \nurl:"+map.get("url")+"\n请求数据:"+map.get("params")+"\n请求方式:"+map.get("httpType")+"\n"+"返回数据:"+s);
+                    }
                 }
             } else {
                 onSuccessToString(s, i);
             }
         } catch (Exception e) {
             Log.e("wangxu", e.toString());
-            UIHelper.ToastMessage(this, "加载失败，请稍后再试" + e.toString());
-
+            UIHelper.ToastMessage(this, "加载失败，请稍后再试");
+            if ((!UrlConstants.isOnline)){
+                DialogUtils.showNormalDialog(this,"此弹框仅在测试弹出","android程序内部错误"+e.toString());
+            }
             onfail(i, 9999, map);
         }
 
@@ -92,12 +102,18 @@ public class BaseRequstActivity<T> extends BaseTitleActivity implements HttpUtil
         }
         Map<String, String> map = new HashMap<>();
         map.put("IsString", "true");
+        map.put("url",url);
+        map.put("params",params.toString());
         if (params instanceof GetParams) {
             GetParams get = (GetParams) params;
             httpUtil.doGet(flag, url, get, String.class, map);
+            map.put("httpType","get");
+
         } else if (params instanceof PostPrams) {
             PostPrams post = (PostPrams) params;
             httpUtil.doPost(flag, url, post, String.class, map);
+            map.put("httpType","post");
+
         }
     }
 
@@ -117,12 +133,16 @@ public class BaseRequstActivity<T> extends BaseTitleActivity implements HttpUtil
         }
         Map<String, String> map = new HashMap<>();
         map.put("IsString", "false");
+        map.put("url",url);
+        map.put("params",params.toString());
         if (params instanceof GetParams) {
             GetParams get = (GetParams) params;
             httpUtil.doGet(flag, url, get, aClass, map);
+            map.put("httpType","get");
         } else if (params instanceof PostPrams) {
             PostPrams post = (PostPrams) params;
             httpUtil.doPost(flag, url, post, aClass, map);
+            map.put("httpType","post");
         }
     }
 

@@ -269,7 +269,7 @@ this.onSubmitSuccess=onSubmitSuccess;
         PostPrams postPrams = toPostFileParams(toParamsBaen("thumbnail", "true"));
         File file = new File(imagePath);
         postPrams.addFile(file.getName(), file);
-        toNomalNet(postPrams, ImageResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.UPLOAD_IMGS, "1.0"), "正在上传图片");
+        toNomalNet(postPrams, ImageResponse.class, 6, UrlConstants.getWholeApiUrl(UrlConstants.UPLOAD_IMGS, "1.0"), "正在上传图片");
     }
 
     private void subMitInfo(String imageId) {

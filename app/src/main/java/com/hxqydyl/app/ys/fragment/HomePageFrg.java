@@ -25,10 +25,12 @@ import com.hxqydyl.app.ys.activity.follow.FollowMainActivity;
 import com.hxqydyl.app.ys.activity.reading.ReadingActivity;
 import com.hxqydyl.app.ys.activity.register.QualidicationActivity;
 import com.hxqydyl.app.ys.adapter.LineGridViewAdapter;
+import com.hxqydyl.app.ys.bean.StatusBean;
 import com.hxqydyl.app.ys.bean.homepage.PageIconBean;
 import com.hxqydyl.app.ys.bean.homepage.PageIconResult;
 import com.hxqydyl.app.ys.bean.register.DoctorInfoNew;
 import com.hxqydyl.app.ys.bean.register.DoctorResultNew;
+import com.hxqydyl.app.ys.bean.response.StatusResponse;
 import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.http.homepage.GainDoctorInfoNet;
@@ -54,7 +56,7 @@ import framework.listener.RegisterSucListener;
 /**
  * 首页frg
  */
-public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGainDoctorInfoListener, View.OnClickListener, ViewPagerEx.OnPageChangeListener, BaseSliderView.OnSliderClickListener
+public class HomePageFrg extends BaseRequstFragment implements GainDoctorInfoNet.OnGainDoctorInfoListener, View.OnClickListener, ViewPagerEx.OnPageChangeListener, BaseSliderView.OnSliderClickListener
         , AdapterView.OnItemClickListener
         , PagerNet.OnPagerNetListener, RegisterSucListener {
 
@@ -148,6 +150,9 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
     //获取导航图
     private void getData() {
         pagerNet.getPager();
+        if (LoginManager.isHasLogin()){
+            getStatus();
+        }
     }
 
     private void initListeners() {
@@ -192,7 +197,7 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
 
         mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
         mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-     //   mDemoSlider.setCustomAnimation(new DescriptionAnimation());
+        //   mDemoSlider.setCustomAnimation(new DescriptionAnimation());
         mDemoSlider.setDuration(4000);
         mDemoSlider.setCustomIndicator((PagerIndicator) view.findViewById(R.id.custom_indicator));
         mDemoSlider.addOnPageChangeListener(this);
@@ -241,6 +246,7 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
     private void loadDoctorInfo() {
         if (LoginManager.isHasLogin()) {
             doctorUuid = LoginManager.getDoctorUuid();
+            showDialog("获取医生信息中...");
             gainDoctorInfoNet.gainDoctorInfo(doctorUuid);
         } else {
             if (LoginManager.isQuit_home) {
@@ -305,6 +311,7 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
                 updateDoctorInfo(doctorResultNew.getDoctorInfo());
                 SharedPreferences.getInstance().putString(SharedPreferences.HOME_DOCTOR_INFO_CACHE, str);
             }
+            getStatus();
         } else {
             UIHelper.ToastMessage(getActivity(), doctorResultNew.getQuery().getMessage());
         }
@@ -327,7 +334,7 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
                 UIHelper.showRegister(getActivity());
                 break;
             case R.id.head_img:
-                QualidicationActivity.toQualidicationActivity(getActivity(),SharedPreferences.getInstance().getString(SharedPreferences.USER_INFO_COMPLETE,"0"));
+                QualidicationActivity.toQualidicationActivity(getActivity(), SharedPreferences.getInstance().getString(SharedPreferences.USER_INFO_COMPLETE, "0"));
                 break;
             case R.id.back_img:
                 CommentWebActivity.toCommentWeb(UrlConstants.getWholeApiUrl(UrlConstants.CURPAGE), null, getActivity(), true);
@@ -339,6 +346,7 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         startRefreshing();
     }
+
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -415,6 +423,24 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
     public void onSliderClick(BaseSliderView slider) {
         Toast.makeText(this.getActivity(), slider.getBundle().get("url") + "", Toast.LENGTH_SHORT).show();
         if (TextUtils.isEmpty(slider.getBundle().get("url").toString())) return;
-        CommentWebActivity.toCommentWeb(slider.getBundle().get("url").toString(),null,this.getActivity(),false);
+        CommentWebActivity.toCommentWeb(slider.getBundle().get("url").toString(), null, this.getActivity(), false);
+    }
+
+    //获取医生的状态
+    private void getStatus() {
+        doctorUuid=LoginManager.getDoctorUuid();
+        toNomalNet(toGetParams(toParamsBaen("doctorUuid", doctorUuid)), StatusResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_SERVICE_STAFFINFO, "2.0"), "正在获取医生信息");
+    }
+
+    @Override
+    public void onSuccessToBean(Object bean, int flag) {
+        switch (flag) {
+            case 1:
+
+                StatusResponse statusResponse = (StatusResponse) bean;
+                StatusBean sb = statusResponse.value;
+                SharedPreferences.getInstance().putString(SharedPreferences.USER_INFO_COMPLETE, sb.getSate());
+                break;
+        }
     }
 }

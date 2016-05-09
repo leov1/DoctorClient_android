@@ -1,5 +1,8 @@
 package com.hxqydyl.app.ys.bean.register;
 
+import com.hxqydyl.app.ys.bean.ImageBean;
+import com.hxqydyl.app.ys.bean.ImageShowBean;
+
 /**
  * Created by hxq on 2016/3/1.
  * 医生信息bean
@@ -14,7 +17,7 @@ public class DoctorInfo {
     private int customerNum;
     private String sate;
     private String synopsis;
-    private String doctorIcon;
+    private ImageShowBean doctorIcon;
     private String professional;
     private String doctorName;
     private String departmentLine;
@@ -25,7 +28,7 @@ public class DoctorInfo {
     public DoctorInfo() {
     }
 
-    public DoctorInfo(int income, String address, String doctorUuid, String sex, int visitNum, int customerNum, String sate, String synopsis, String doctorIcon, String professional, String doctorName, String departmentLine, String territory, String department, String hospital) {
+    public DoctorInfo(int income, String address, String doctorUuid, String sex, int visitNum, int customerNum, String sate, String synopsis, ImageShowBean doctorIcon, String professional, String doctorName, String departmentLine, String territory, String department, String hospital) {
         this.income = income;
         this.address = address;
         this.doctorUuid = doctorUuid;
@@ -91,11 +94,11 @@ public class DoctorInfo {
         this.professional = professional;
     }
 
-    public String getDoctorIcon() {
+    public ImageShowBean getDoctorIcon() {
         return doctorIcon;
     }
 
-    public void setDoctorIcon(String doctorIcon) {
+    public void setDoctorIcon(ImageShowBean doctorIcon) {
         this.doctorIcon = doctorIcon;
     }
 

@@ -35,7 +35,6 @@ public class QualidicationActivity extends BaseRequstActivity implements Quakudu
         int mystatus=0;
         try{
             mystatus=Integer.parseInt(status);
-            return;
         }catch (Exception e){
             UIHelper.ToastMessage(activity,"医生认证状态有误，请联系管理员");
         }
