@@ -360,9 +360,13 @@ public class HomePageFrg extends BaseRequstFragment implements GainDoctorInfoNet
                     UIHelper.showLoginForResult(this.getActivity());
                     return;
                 }
-                CommentWebActivity.toCommentWeb(UrlConstants.getWholeApiUrl(UrlConstants.GET_VIDEOS),"", getActivity(), false);
+                CommentWebActivity.toCommentWebForResult(UrlConstants.getWholeApiUrl(UrlConstants.GET_VIDEOS), getActivity(), UIHelper.LOGIN_REQUEST_CODE, false);
                 break;
             case 2://随访
+                if (!LoginManager.isHasLogin()){
+                    UIHelper.showLoginForResult(this.getActivity());
+                    return;
+                }
                 if (!TextUtils.isEmpty(((BaseFragmentActivity)getActivity()).isIdenyInfo())){
                     UIHelper.ToastMessage(this.getActivity(),((BaseFragmentActivity)getActivity()).isIdenyInfo());
                     return;
@@ -379,7 +383,7 @@ public class HomePageFrg extends BaseRequstFragment implements GainDoctorInfoNet
                     UIHelper.ToastMessage(this.getActivity(),((BaseFragmentActivity)getActivity()).isIdenyInfo());
                     return;
                 }
-                CommentWebActivity.toCommentWeb(UrlConstants.getWholeApiUrl(UrlConstants.GET_CLINIC),"", getActivity(), false);
+                CommentWebActivity.toCommentWebForResult(UrlConstants.getWholeApiUrl(UrlConstants.GET_CLINIC), getActivity(), UIHelper.LOGIN_REQUEST_CODE, false);
                 break;
         }
     }
