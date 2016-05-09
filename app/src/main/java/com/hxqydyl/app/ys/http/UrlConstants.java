@@ -13,7 +13,7 @@ public class UrlConstants {
      * 线上发布 isOnline = true,isTest = false;
      */
     public static final boolean isOnline = false;//    是否是线上环境
-    public static final boolean isTest = false;//    是否是测试包
+    public static final boolean isTest = true;//    是否是测试包
 
 
     //    内网开发ip

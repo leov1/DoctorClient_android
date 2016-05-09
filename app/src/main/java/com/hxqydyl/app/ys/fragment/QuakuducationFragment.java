@@ -249,7 +249,7 @@ this.onSubmitSuccess=onSubmitSuccess;
 
     private void getHos() {
         type = Type.hospital;
-        toNomalNet(toGetParams(toParamsBaen("regionUuid", ragionCode)), HospitalResponse.class, 4, UrlConstants.getWholeApiUrl(UrlConstants.GET_HOSPITAL, "2.0"), "正在获取医院列表");
+        toNomalNet(toGetParams(toParamsBaen("regionUuid", ragionCode),toParamsBaen("cityUuid", cityId),toParamsBaen("regionUuid", provinceId)), HospitalResponse.class, 4, UrlConstants.getWholeApiUrl(UrlConstants.GET_HOSPITAL, "2.0"), "正在获取医院列表");
 
     }
 
@@ -288,7 +288,7 @@ this.onSubmitSuccess=onSubmitSuccess;
             UIHelper.ToastMessage(getActivity(), "请填写您的电话号码");
             return;
         }
-        if (TextUtils.isEmpty(ragionCode)) {
+        if (TextUtils.isEmpty(ragionCode)&&TextUtils.isEmpty(cityId)&&TextUtils.isEmpty(provinceId)) {
             UIHelper.ToastMessage(getActivity(), "请选择您所在城市");
             return;
         }
@@ -341,26 +341,47 @@ this.onSubmitSuccess=onSubmitSuccess;
             case 1://省
                 ProvinceResponse pr = (ProvinceResponse) bean;
                 provinces = pr.value;
+                if (provinces==null||provinces.size()<=0){
+                    UIHelper.ToastMessage(getActivity(),"暂无可选省市");
+                    return;
+                }
                 showPopupWindow(toPopListForProvince(provinces));
                 break;
             case 2://市
                 CityResponse cr = (CityResponse) bean;
                 citys = cr.value;
-                showPopupWindow(toPopListForCity(citys));
+                if (citys==null||citys.size()<=0){
+                    tv_city_value.setText(provinceName);
+                    return;
+                }
+
+                    showPopupWindow(toPopListForCity(citys));
                 break;
             case 3://区县
                 RegionResponse rr = (RegionResponse) bean;
                 regions = rr.value;
+                if (regions==null||regions.size()<=0){
+                    tv_city_value.setText(provinceName + "/" + cityName );
+                    return;
+                }
                 showPopupWindow(toPopListForRegion(regions));
                 break;
             case 4://医院
                 HospitalResponse hr = (HospitalResponse) bean;
                 hospitals = hr.value;
+                if (hospitals==null||hospitals.size()<=0){
+                  UIHelper.ToastMessage(getActivity(),"暂无可选医院");
+                    return;
+                }
                 showPopupWindow(toPopListForHos(hospitals));
                 break;
             case 5://科室
                 DeptResponse dr = (DeptResponse) bean;
                 depts = dr.value;
+                if (depts==null||depts.size()<=0){
+                    UIHelper.ToastMessage(getActivity(),"暂无可选科室");
+                    return;
+                }
                 showPopupWindow(toPopListForDept(depts));
                 break;
             case 6://图片

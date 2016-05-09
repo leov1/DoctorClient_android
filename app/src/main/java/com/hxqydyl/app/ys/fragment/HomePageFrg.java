@@ -246,7 +246,6 @@ public class HomePageFrg extends BaseRequstFragment implements GainDoctorInfoNet
     private void loadDoctorInfo() {
         if (LoginManager.isHasLogin()) {
             doctorUuid = LoginManager.getDoctorUuid();
-            showDialog("获取医生信息中...");
             gainDoctorInfoNet.gainDoctorInfo(doctorUuid);
         } else {
             if (LoginManager.isQuit_home) {
