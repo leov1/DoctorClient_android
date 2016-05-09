@@ -13,7 +13,7 @@ public class UrlConstants {
      * 线上发布 isOnline = true,isTest = false;
      */
     public static final boolean isOnline = false;//    是否是线上环境
-    public static final boolean isTest = false;//    是否是测试包
+    public static final boolean isTest = true;//    是否是测试包
 
 
     //    内网开发ip
@@ -102,7 +102,7 @@ public class UrlConstants {
     public static String ADD_INNER_MSG = "/app/service/customer/1.0/addInnerMessage";
 
     //登陆
-    public static String LOGIN_URL = "/app/pub/doctor/gotoLogin";
+    public static String LOGIN_URL = "/app/pub/doctor/%s/gotoLogin";
 
     //获取轮播图
     public static String GET_PLATFORMPIC = "/app/pub/doctor/getPlatformPic";

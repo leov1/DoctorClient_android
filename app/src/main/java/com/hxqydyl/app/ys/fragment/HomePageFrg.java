@@ -39,7 +39,6 @@ import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.ui.library.PullToRefreshBase;
 import com.hxqydyl.app.ys.ui.library.PullToRefreshScrollView;
 import com.hxqydyl.app.ys.ui.linegridview.LineGridView;
-import com.hxqydyl.app.ys.utils.DialogUtils;
 import com.hxqydyl.app.ys.utils.InjectId;
 import com.hxqydyl.app.ys.utils.InjectUtils;
 import com.hxqydyl.app.ys.utils.LoginManager;
@@ -336,14 +335,10 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
         }
     }
 
-    private int LOGIN_STATE = 0;
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         startRefreshing();
     }
-
-
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -354,10 +349,11 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
                 startActivity(intent);
                 break;
             case 1://讲堂
-                CommentWebActivity.toCommentWebForResult(UrlConstants.getWholeApiUrl(UrlConstants.GET_VIDEOS), getActivity(), LOGIN_STATE, true);
+                CommentWebActivity.toCommentWebForResult(UrlConstants.getWholeApiUrl(UrlConstants.GET_VIDEOS), getActivity(), UIHelper.LOGIN_REQUEST_CODE, true);
                 break;
             case 2://随访
-                if (((BaseFragmentActivity)getActivity()).isCompleteInfo()||((BaseFragmentActivity)getActivity()).isIdenyInfo()){
+                if (!TextUtils.isEmpty(((BaseFragmentActivity)getActivity()).isIdenyInfo())){
+                    UIHelper.ToastMessage(this.getActivity(),((BaseFragmentActivity)getActivity()).isIdenyInfo());
                     return;
                 }
 
@@ -365,11 +361,11 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
                 startActivity(intent);
                 break;
             case 3://诊所
-                if (((BaseFragmentActivity)getActivity()).isCompleteInfo()||((BaseFragmentActivity)getActivity()).isIdenyInfo()){
+                if (!TextUtils.isEmpty(((BaseFragmentActivity)getActivity()).isIdenyInfo())){
+                    UIHelper.ToastMessage(this.getActivity(),((BaseFragmentActivity)getActivity()).isIdenyInfo());
                     return;
                 }
-                DialogUtils.showNormalDialog(this.getContext());
-               // CommentWebActivity.toCommentWebForResult(UrlConstants.getWholeApiUrl(UrlConstants.GET_CLINIC), getActivity(), LOGIN_STATE, true);
+                CommentWebActivity.toCommentWebForResult(UrlConstants.getWholeApiUrl(UrlConstants.GET_CLINIC), getActivity(), UIHelper.LOGIN_REQUEST_CODE, true);
                 break;
         }
     }

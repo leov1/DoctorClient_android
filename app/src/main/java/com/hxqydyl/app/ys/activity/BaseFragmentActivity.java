@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.DialogUtils;
 import com.hxqydyl.app.ys.utils.SharedPreferences;
 
@@ -64,29 +63,27 @@ public class BaseFragmentActivity extends FragmentActivity implements RegisterSu
     }
 
     //判断是否认证
-    public boolean isIdenyInfo(){
+    public String isIdenyInfo(){
         String code = SharedPreferences.getInstance().getString(SharedPreferences.USER_INFO_COMPLETE,"0");
+        String text = "";
         if (code.equals("0")){
-            UIHelper.ToastMessage(this,"待审核/未认证");
-            return false;
+            text = "您还未完善个人信息，您可以点击头像或个人中心进行认证";
         }else if (code.equals("2")){
-            UIHelper.ToastMessage(this,"未通过审核/未通过认证");
-            return false;
+            text = "未通过审核/未通过认证";
         }else if (code.equals("3")){
-            UIHelper.ToastMessage(this,"认证中");
-            return false;
+            text = "认证中";
         }
-        return true;
+        return text;
     }
 
     //医生是否完善个人资料
-    public boolean isCompleteInfo(){
+    public String isCompleteInfo(){
         String code = SharedPreferences.getInstance().getString(SharedPreferences.USER_INFO_COMPLETE,"0");
+        String text = "";
         if (code.equals("0")){
-            UIHelper.ToastMessage(this,"您还未完善个人信息，您可以点击头像或个人中心进行认证");
-            return true;
+            text = "您还未完善个人信息，您可以点击头像或个人中心进行认证";
         }
-        return false;
+        return text;
     }
 
     @Override

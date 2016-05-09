@@ -300,15 +300,9 @@ public class DialogUtils {
         SweetAlertDialog pDialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
                 .setTitleText("恭喜您成功注册好心情医生版!")
                 .setContentText("您可以点击头像或个人中心进行认证。")
-                .setCancelText("关闭")
                 .setConfirmText("确认")
                 .showCancelButton(true)
-                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        sweetAlertDialog.dismiss();
-                    }
-                }).setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                         sweetAlertDialog.dismiss();

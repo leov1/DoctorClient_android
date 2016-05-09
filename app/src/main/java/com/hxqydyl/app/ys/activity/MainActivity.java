@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -115,18 +116,30 @@ public class MainActivity extends BaseFragmentActivity {
 
     public void chageIndex(int index) {
 
-        /*if (this.isCompleteInfo()) {
+        if (!TextUtils.isEmpty(isCompleteInfo())) {
             if (index == 1 || index == 2) {
+                UIHelper.ToastMessage(this,isCompleteInfo());
+                checkGroup(currIndex);
                 return;
             }
-        }*/
+        }
         currIndex = index;
         if (index == 0 || LoginManager.isHasLogin()) {
             showFragment();
         } else {
             UIHelper.showLoginForResult(this);
         }
+    }
 
+    private void checkGroup(int idex){
+        switch (idex){
+            case 0:
+                group.check(R.id.foot_bar_home);
+                break;
+            case 3:
+                group.check(R.id.main_footbar_user);
+                break;
+        }
     }
 
     private void showFragment() {
@@ -200,17 +213,16 @@ public class MainActivity extends BaseFragmentActivity {
                     if (LoginManager.isHasLogin()) {
                         showFragment();
                         if (currIndex == 0) {
-                            fragmentManager.findFragmentByTag(fragmentTags.get(0)).onActivityResult(requestCode, resultCode, data);
+                            checkGroup(currIndex);
                         }
                     } else {
                         currIndex = 0;
-                        group.check(R.id.foot_bar_home);
+                        checkGroup(currIndex);
                     }
                     break;
                 case UIHelper.LOGINOUT_REQUEST_CODE:
                     currIndex = 0;
-                    fragmentManager.findFragmentByTag(fragmentTags.get(0)).onActivityResult(requestCode, resultCode, data);
-                    group.check(R.id.foot_bar_home);
+                    checkGroup(currIndex);
                     break;
             }
 
