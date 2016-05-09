@@ -12,8 +12,6 @@ import com.hxqydyl.app.ys.bean.homepage.PageIconResult;
 import com.hxqydyl.app.ys.bean.register.CaptchaResult;
 import com.hxqydyl.app.ys.bean.register.CityBean;
 import com.hxqydyl.app.ys.bean.register.CityResultBean;
-import com.hxqydyl.app.ys.bean.register.DoctorInfo;
-import com.hxqydyl.app.ys.bean.register.DoctorResult;
 import com.hxqydyl.app.ys.bean.register.DoctorResultNew;
 import com.hxqydyl.app.ys.bean.register.HeadIconResult;
 import com.hxqydyl.app.ys.bean.register.HospitalResultBean;
@@ -42,31 +40,6 @@ import java.util.List;
  * 解析网络请求返回的数据
  */
 public class JsonUtils {
-
-    /**
-     * 登陆完成返回
-     *
-     * @param string
-     * @return
-     * @throws JSONException
-     */
-    public static DoctorResult JsonLoginData(String string) {
-        if (TextUtils.isEmpty(string)) return null;
-        DoctorResult doctorResult = new DoctorResult();
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = new JSONObject(string);
-            doctorResult.setQuery(JsonQuery(string));
-            if (jsonObject.has("serviceStaff")) {
-                JSONObject serviceStaff = jsonObject.getJSONObject("serviceStaff");
-                DoctorInfo doctorInfo = new Gson().fromJson(serviceStaff.toString(), DoctorInfo.class);
-                doctorResult.setServiceStaff(doctorInfo);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return doctorResult;
-    }
 
     /**
      * 主页获取医生信息

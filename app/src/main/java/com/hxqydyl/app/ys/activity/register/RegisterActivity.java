@@ -15,14 +15,14 @@ import android.widget.TextView;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseRequstActivity;
 import com.hxqydyl.app.ys.bean.register.CaptchaResult;
-import com.hxqydyl.app.ys.bean.register.RegisterFirst;
+import com.hxqydyl.app.ys.bean.register.RegiserResult;
 import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.InjectId;
 import com.hxqydyl.app.ys.utils.InjectUtils;
 import com.hxqydyl.app.ys.utils.LoginManager;
-import com.hxqydyl.app.ys.utils.StringUtils;
+import com.hxqydyl.app.ys.utils.SharedPreferences;
 import com.hxqydyl.app.ys.utils.Validator;
 import com.xus.http.httplib.model.GetParams;
 import com.xus.http.httplib.model.PostPrams;
@@ -158,8 +158,8 @@ public class RegisterActivity extends BaseRequstActivity implements View.OnClick
      * 注册请求
      */
     private void registerOne() {
-        PostPrams params = toPostParams(toParamsBaen("mobile",mobile),toParamsBaen("password", password),toParamsBaen("captcha", captcha),toParamsBaen("callback", UrlConstants.CALLBACK));
-        toNomalNetStringBack(params,1,UrlConstants.getWholeApiUrl(UrlConstants.REGISTER_ONE),"请稍等...");
+        PostPrams params = toPostParams(toParamsBaen("mobile",mobile),toParamsBaen("password", password),toParamsBaen("captcha", captcha));
+        toNomalNet(params, RegiserResult.class,1,UrlConstants.getWholeApiUrl(UrlConstants.REGISTER_ONE,"2.0"),"请稍等...");
     }
 
     /**
@@ -197,17 +197,22 @@ public class RegisterActivity extends BaseRequstActivity implements View.OnClick
     }
 
     @Override
-    public void onSuccessToString(String json, int flag) {
+    public void onSuccessToBean(Object bean, int flag) {
         switch (flag){
             case 1: //注册成功
-                RegisterFirst registerFirst = JsonUtils.JsonRegisterFirst(StringUtils.cutoutBracketToString(json));
-                UIHelper.ToastMessage(RegisterActivity.this, registerFirst.getQuery().getMessage());
-                if (registerFirst.getQuery().getSuccess().equals("1")) {
-                    LoginManager.setDoctorUuid(registerFirst.getDoctorUuid());
+                UIHelper.ToastMessage(RegisterActivity.this, "注册成功");
+                    LoginManager.setDoctorUuid(((RegiserResult)bean).value.getUuid());
+                    SharedPreferences.getInstance().putString(SharedPreferences.USER_INFO_COMPLETE,((RegiserResult)bean).value.getSate());
                     removeBeforViews();
                     finish();
-                }
                 break;
+
+        }
+    }
+
+    @Override
+    public void onSuccessToString(String json, int flag) {
+        switch (flag){
             case 2://验证码
                 CaptchaResult captchaResult = JsonUtils.JsonCaptchResult(json);
                 UIHelper.ToastMessage(RegisterActivity.this, captchaResult.getQuery().getMessage());

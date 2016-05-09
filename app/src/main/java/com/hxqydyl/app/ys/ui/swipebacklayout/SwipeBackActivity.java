@@ -4,7 +4,7 @@ package com.hxqydyl.app.ys.ui.swipebacklayout;
 import android.os.Bundle;
 import android.view.View;
 
-import framework.BaseFragmentActivity;
+import com.hxqydyl.app.ys.activity.BaseFragmentActivity;
 
 
 public class SwipeBackActivity extends BaseFragmentActivity implements SwipeBackActivityBase {

@@ -17,11 +17,9 @@ import com.hxqydyl.app.ys.fragment.MyPatientFrg;
 import com.hxqydyl.app.ys.fragment.MyTaskFrg;
 import com.hxqydyl.app.ys.fragment.PersonalFrg;
 import com.hxqydyl.app.ys.ui.UIHelper;
-import com.hxqydyl.app.ys.utils.DialogUtils;
 import com.hxqydyl.app.ys.utils.InjectId;
 import com.hxqydyl.app.ys.utils.InjectUtils;
 import com.hxqydyl.app.ys.utils.LoginManager;
-import com.hxqydyl.app.ys.utils.SharedPreferences;
 import com.hxqydyl.app.ys.utils.Update;
 
 import java.util.ArrayList;
@@ -30,10 +28,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import common.AppManager;
-import framework.BaseFragmentActivity;
-import framework.listener.RegisterSucListener;
 
-public class MainActivity extends BaseFragmentActivity implements RegisterSucListener {
+public class MainActivity extends BaseFragmentActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String FRAGMENT_TAGS = "fragmentTags";
@@ -118,6 +114,12 @@ public class MainActivity extends BaseFragmentActivity implements RegisterSucLis
     }
 
     public void chageIndex(int index) {
+
+        /*if (this.isCompleteInfo()) {
+            if (index == 1 || index == 2) {
+                return;
+            }
+        }*/
         currIndex = index;
         if (index == 0 || LoginManager.isHasLogin()) {
             showFragment();
@@ -212,15 +214,6 @@ public class MainActivity extends BaseFragmentActivity implements RegisterSucLis
                     break;
             }
 
-        }
-    }
-
-    @Override
-    public void onRegisterSuc() {
-        boolean firstTip = SharedPreferences.getInstance().getBoolean("first-time-tip", true);
-        if (firstTip) {
-            SharedPreferences.getInstance().putBoolean("first-time-tip", false);
-            DialogUtils.showNormalDialog(this);
         }
     }
 

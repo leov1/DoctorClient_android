@@ -19,6 +19,7 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.hxqydyl.app.ys.R;
+import com.hxqydyl.app.ys.activity.BaseFragmentActivity;
 import com.hxqydyl.app.ys.activity.CommentWebActivity;
 import com.hxqydyl.app.ys.activity.follow.FollowMainActivity;
 import com.hxqydyl.app.ys.activity.reading.ReadingActivity;
@@ -49,7 +50,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 
-import framework.BaseFragmentActivity;
 import framework.listener.RegisterSucListener;
 
 /**
@@ -326,10 +326,8 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
                 break;
             case R.id.register_btn:
                 UIHelper.showRegister(getActivity());
-                //startActivity(new Intent(getActivity(), EvpiPhotoActivity.class));
                 break;
             case R.id.head_img:
-           //     quitLogin();
                 QualidicationActivity.toQualidicationActivity(getActivity(),SharedPreferences.getInstance().getString(SharedPreferences.USER_INFO_COMPLETE,"0"));
                 break;
             case R.id.back_img:
@@ -359,10 +357,17 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
                 CommentWebActivity.toCommentWebForResult(UrlConstants.getWholeApiUrl(UrlConstants.GET_VIDEOS), getActivity(), LOGIN_STATE, true);
                 break;
             case 2://随访
+                if (((BaseFragmentActivity)getActivity()).isCompleteInfo()||((BaseFragmentActivity)getActivity()).isIdenyInfo()){
+                    return;
+                }
+
                 intent = new Intent(getActivity(), FollowMainActivity.class);
                 startActivity(intent);
                 break;
             case 3://诊所
+                if (((BaseFragmentActivity)getActivity()).isCompleteInfo()||((BaseFragmentActivity)getActivity()).isIdenyInfo()){
+                    return;
+                }
                 DialogUtils.showNormalDialog(this.getContext());
                // CommentWebActivity.toCommentWebForResult(UrlConstants.getWholeApiUrl(UrlConstants.GET_CLINIC), getActivity(), LOGIN_STATE, true);
                 break;

@@ -11,11 +11,9 @@ import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.bean.register.DoctorResult;
-import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.LoginManager;
-import com.hxqydyl.app.ys.utils.StringUtils;
 
 import framework.listener.RegisterSucListener;
 
@@ -78,22 +76,17 @@ public class LoginActivity extends BaseRequstActivity implements View.OnClickLis
                 UIHelper.showRegister(this);
                 break;
             case R.id.login_btn:
-                toNomalNetStringBack(toPostParams(toParamsBaen("mobile", mobileEdit.getText().toString()),toParamsBaen("password", passwordEdit.getText().toString()),toParamsBaen("callback",UrlConstants.CALLBACK)),1, UrlConstants.getWholeApiUrl(UrlConstants.LOGIN_URL),"登陆中...");
+                toNomalNet(toPostParams(toParamsBaen("mobile", mobileEdit.getText().toString()),toParamsBaen("password", passwordEdit.getText().toString())), DoctorResult.class,1, UrlConstants.getWholeApiUrl(UrlConstants.LOGIN_URL,"2.0"),"登陆中...");
                 break;
         }
     }
 
     @Override
-    public void onSuccessToString(String json, int flag) {
-        DoctorResult doctorResult = JsonUtils.JsonLoginData(StringUtils.cutoutBracketToString(json));
-        if (doctorResult == null) return;
-        if (doctorResult.getQuery().getSuccess().equals("1")) {
-            LoginManager.setDoctorUuid(doctorResult.getServiceStaff().getDoctorUuid());
-            UIHelper.ToastMessage(LoginActivity.this, "登陆成功");
-            setLoginResult();
-        } else {
-            UIHelper.ToastMessage(LoginActivity.this, doctorResult.getQuery().getMessage());
-        }
+    public void onSuccessToBean(Object bean, int flag) {
+        super.onSuccessToBean(bean, flag);
+        LoginManager.setDoctorUuid(((DoctorResult)bean).value.getDoctorUuid());
+        UIHelper.ToastMessage(LoginActivity.this, "登陆成功");
+        setLoginResult();
     }
 
     public void setLoginResult() {

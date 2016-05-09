@@ -18,9 +18,6 @@ import com.hxqydyl.app.ys.utils.SharedPreferences;
 
 import java.util.Timer;
 
-import framework.BaseFragmentActivity;
-
-
 /**
  * 引导页
  */

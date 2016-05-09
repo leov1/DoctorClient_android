@@ -1,4 +1,4 @@
-package framework;
+package com.hxqydyl.app.ys.activity;
 
 import android.annotation.TargetApi;
 import android.os.Bundle;
@@ -6,12 +6,16 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.hxqydyl.app.ys.ui.UIHelper;
+import com.hxqydyl.app.ys.utils.DialogUtils;
+import com.hxqydyl.app.ys.utils.SharedPreferences;
+
 import common.AppManager;
 import framework.listener.RegisterSucListener;
 import framework.listener.RegisterSucMag;
 
 
-public class BaseFragmentActivity extends FragmentActivity{
+public class BaseFragmentActivity extends FragmentActivity implements RegisterSucListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,5 +61,40 @@ public class BaseFragmentActivity extends FragmentActivity{
     public void removeRegisterListener(RegisterSucListener listener){
         if (listener != null)
             RegisterSucMag.getInstance().removeRegisterSucListeners(listener);
+    }
+
+    //判断是否认证
+    public boolean isIdenyInfo(){
+        String code = SharedPreferences.getInstance().getString(SharedPreferences.USER_INFO_COMPLETE,"0");
+        if (code.equals("0")){
+            UIHelper.ToastMessage(this,"待审核/未认证");
+            return false;
+        }else if (code.equals("2")){
+            UIHelper.ToastMessage(this,"未通过审核/未通过认证");
+            return false;
+        }else if (code.equals("3")){
+            UIHelper.ToastMessage(this,"认证中");
+            return false;
+        }
+        return true;
+    }
+
+    //医生是否完善个人资料
+    public boolean isCompleteInfo(){
+        String code = SharedPreferences.getInstance().getString(SharedPreferences.USER_INFO_COMPLETE,"0");
+        if (code.equals("0")){
+            UIHelper.ToastMessage(this,"您还未完善个人信息，您可以点击头像或个人中心进行认证");
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onRegisterSuc() {
+        boolean firstTip = SharedPreferences.getInstance().getBoolean(SharedPreferences.FIRST_SHOW_TIP, true);
+        if (firstTip) {
+            SharedPreferences.getInstance().putBoolean(SharedPreferences.FIRST_SHOW_TIP, false);
+            DialogUtils.showNormalDialog(this);
+        }
     }
 }

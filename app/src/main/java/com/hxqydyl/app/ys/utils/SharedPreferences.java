@@ -13,7 +13,8 @@ public class SharedPreferences {
     public static final String KEY_LOGIN_TYPE = "login_type";
     public static final String HOME_VP_CACHE = "vpInfoCache";
     public static final String HOME_DOCTOR_INFO_CACHE = "doctorInfoCache";
-    public static final String USER_INFO_COMPLETE = "";
+    public static final String USER_INFO_COMPLETE = "userInfoComplete";
+    public static final String FIRST_SHOW_TIP = "first_show_tip";
 
     private static SharedPreferences instance = new SharedPreferences();
 
