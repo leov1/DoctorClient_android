@@ -331,16 +331,12 @@ public class BaseWebActivity extends BaseRequstActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                final String fileString = UploadPhotoUtil.getInstance().getUploadBitmapZoomString(
-                        filePath);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         PostPrams postPrams = toPostFileParams(toParamsBaen("thumbnail", "true"));
                         File file = new File(filePath);
                         postPrams.addFile(file.getName(), file);
-//                        String url = "http://172.168.1.53/app/support/common/1.0/uploadimg";
-//                        toNomalNet(postPrams, ImageResponse.class, 6, url, "正在上传图片");
                         toNomalNet(postPrams, ImageResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.UPLOAD_IMGS, "1.0"), null);
                     }
                 });

@@ -33,6 +33,7 @@ import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.ui.pickerview.lib.OptionsPopupWindow;
 import com.hxqydyl.app.ys.utils.LoginManager;
+import com.hxqydyl.app.ys.utils.SharedPreferences;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xus.http.httplib.model.GetParams;
 import com.xus.http.httplib.model.PostPrams;
@@ -254,10 +255,8 @@ this.onSubmitSuccess=onSubmitSuccess;
 
     private void getDept() {
         type = Type.dept;
-        String url = "http://172.168.1.53/app/service/doctor/2.0/getDepartment";
-        toNomalNet(new GetParams(), DeptResponse.class, 5, url, "正在获取科室列表");
 
-//        toNomalNet(new GetParams(), DeptResponse.class, 5, UrlConstants.getWholeApiUrl(UrlConstants.GET_DEPARTMENT, "2.0"), "正在获取科室列表");
+        toNomalNet(new GetParams(), DeptResponse.class, 5, UrlConstants.getWholeApiUrl(UrlConstants.GET_DEPARTMENT, "2.0"), "正在获取科室列表");
 
     }
 
@@ -270,8 +269,6 @@ this.onSubmitSuccess=onSubmitSuccess;
         PostPrams postPrams = toPostFileParams(toParamsBaen("thumbnail", "true"));
         File file = new File(imagePath);
         postPrams.addFile(file.getName(), file);
-//        String url = "http://172.168.1.53/app/support/common/1.0/uploadimg";
-//        toNomalNet(postPrams, ImageResponse.class, 6, url, "正在上传图片");
         toNomalNet(postPrams, ImageResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.UPLOAD_IMGS, "1.0"), "正在上传图片");
     }
 
@@ -371,7 +368,7 @@ this.onSubmitSuccess=onSubmitSuccess;
                 subMitInfo(ir.value.get(0).getId());
                 break;
             case 7://提交
-
+                SharedPreferences.getInstance().putString(SharedPreferences.USER_INFO_COMPLETE,"3");
                 onSubmitSuccess.onSucess();
                 break;
         }

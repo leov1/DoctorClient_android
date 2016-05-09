@@ -78,7 +78,7 @@ public class LoginActivity extends BaseRequstActivity implements View.OnClickLis
                 UIHelper.showRegister(this);
                 break;
             case R.id.login_btn:
-                toNomalNetStringBack(toPostParams(toParamsBaen("mobile", mobileEdit.getText().toString()),toParamsBaen("password", passwordEdit.getText().toString()),toParamsBaen("callback",UrlConstants.CALLBACK)),1, UrlConstants.getWholeApiUrl(UrlConstants.LOGIN_URL,"2.0"),"登陆中...");
+                toNomalNetStringBack(toPostParams(toParamsBaen("mobile", mobileEdit.getText().toString()),toParamsBaen("password", passwordEdit.getText().toString()),toParamsBaen("callback",UrlConstants.CALLBACK)),1, UrlConstants.getWholeApiUrl(UrlConstants.LOGIN_URL),"登陆中...");
                 break;
         }
     }

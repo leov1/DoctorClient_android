@@ -330,7 +330,7 @@ public class HomePageFrg extends BaseFragment implements GainDoctorInfoNet.OnGai
                 break;
             case R.id.head_img:
            //     quitLogin();
-                QualidicationActivity.toQualidicationActivity(getActivity(),"0");
+                QualidicationActivity.toQualidicationActivity(getActivity(),SharedPreferences.getInstance().getString(SharedPreferences.USER_INFO_COMPLETE,"0"));
                 break;
             case R.id.back_img:
                 CommentWebActivity.toCommentWeb(UrlConstants.getWholeApiUrl(UrlConstants.CURPAGE), null, getActivity(), true);
