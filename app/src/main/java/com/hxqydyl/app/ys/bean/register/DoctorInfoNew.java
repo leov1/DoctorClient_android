@@ -1,5 +1,7 @@
 package com.hxqydyl.app.ys.bean.register;
 
+import com.hxqydyl.app.ys.bean.ImageShowBean;
+
 /**
  * Created by hxq on 2016/3/1.
  * 最新的医生信息
@@ -15,7 +17,7 @@ public class DoctorInfoNew {
     private String delFlag;
     private String departmentUuid;
     private String professional;
-    private String doctorName;
+    private String realName;
     private String province;
     private String cityName;
     private String hospital;
@@ -25,7 +27,8 @@ public class DoctorInfoNew {
     private String sex;
     private int customerNum;
     private String synopsis;
-    private String doctorIcon;
+    private ImageShowBean image;
+
     private String departmentLine;
     private String regState;
     private String provinceName;
@@ -152,12 +155,12 @@ public class DoctorInfoNew {
         this.professional = professional;
     }
 
-    public String getDoctorName() {
-        return doctorName;
+    public String getRealName() {
+        return realName;
     }
 
-    public void setDoctorName(String doctorName) {
-        this.doctorName = doctorName;
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 
     public String getProvince() {
@@ -224,12 +227,12 @@ public class DoctorInfoNew {
         this.customerNum = customerNum;
     }
 
-    public String getDoctorIcon() {
-        return doctorIcon;
+    public ImageShowBean getImage() {
+        return image;
     }
 
-    public void setDoctorIcon(String doctorIcon) {
-        this.doctorIcon = doctorIcon;
+    public void setImage(ImageShowBean image) {
+        this.image = image;
     }
 
     @Override
@@ -244,7 +247,7 @@ public class DoctorInfoNew {
                 ", delFlag='" + delFlag + '\'' +
                 ", departmentUuid='" + departmentUuid + '\'' +
                 ", professional='" + professional + '\'' +
-                ", doctorName='" + doctorName + '\'' +
+                ", doctorName='" + realName + '\'' +
                 ", province='" + province + '\'' +
                 ", cityName='" + cityName + '\'' +
                 ", hospital='" + hospital + '\'' +
@@ -254,7 +257,7 @@ public class DoctorInfoNew {
                 ", sex='" + sex + '\'' +
                 ", customerNum=" + customerNum +
                 ", synopsis='" + synopsis + '\'' +
-                ", doctorIcon='" + doctorIcon + '\'' +
+                ", doctorIcon='" + image + '\'' +
                 ", departmentLine='" + departmentLine + '\'' +
                 ", regState='" + regState + '\'' +
                 ", provinceName='" + provinceName + '\'' +

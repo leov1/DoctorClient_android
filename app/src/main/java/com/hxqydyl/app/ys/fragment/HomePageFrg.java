@@ -25,15 +25,13 @@ import com.hxqydyl.app.ys.activity.follow.FollowMainActivity;
 import com.hxqydyl.app.ys.activity.reading.ReadingActivity;
 import com.hxqydyl.app.ys.activity.register.QualidicationActivity;
 import com.hxqydyl.app.ys.adapter.LineGridViewAdapter;
-import com.hxqydyl.app.ys.bean.StatusBean;
 import com.hxqydyl.app.ys.bean.homepage.PageIconBean;
 import com.hxqydyl.app.ys.bean.homepage.PageIconResult;
+import com.hxqydyl.app.ys.bean.register.DoctorInfo;
 import com.hxqydyl.app.ys.bean.register.DoctorInfoNew;
-import com.hxqydyl.app.ys.bean.register.DoctorResultNew;
-import com.hxqydyl.app.ys.bean.response.StatusResponse;
+import com.hxqydyl.app.ys.bean.response.DoctorInfoNewResponse;
 import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.http.UrlConstants;
-import com.hxqydyl.app.ys.http.homepage.GainDoctorInfoNet;
 import com.hxqydyl.app.ys.http.homepage.PagerNet;
 import com.hxqydyl.app.ys.ui.CircleImageView;
 import com.hxqydyl.app.ys.ui.TextSliderView;
@@ -45,7 +43,6 @@ import com.hxqydyl.app.ys.utils.InjectId;
 import com.hxqydyl.app.ys.utils.InjectUtils;
 import com.hxqydyl.app.ys.utils.LoginManager;
 import com.hxqydyl.app.ys.utils.SharedPreferences;
-import com.hxqydyl.app.ys.utils.StringUtils;
 import com.hxqydyl.app.ys.utils.Utils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -56,7 +53,7 @@ import framework.listener.RegisterSucListener;
 /**
  * 首页frg
  */
-public class HomePageFrg extends BaseRequstFragment implements GainDoctorInfoNet.OnGainDoctorInfoListener, View.OnClickListener, ViewPagerEx.OnPageChangeListener, BaseSliderView.OnSliderClickListener
+public class HomePageFrg extends BaseRequstFragment implements  View.OnClickListener, ViewPagerEx.OnPageChangeListener, BaseSliderView.OnSliderClickListener
         , AdapterView.OnItemClickListener
         , PagerNet.OnPagerNetListener, RegisterSucListener {
 
@@ -94,7 +91,6 @@ public class HomePageFrg extends BaseRequstFragment implements GainDoctorInfoNet
     private ArrayList<PageIconBean> pageIconBeans = new ArrayList<>();
     private DoctorInfoNew doctorInfoNew;
 
-    private GainDoctorInfoNet gainDoctorInfoNet;
     private PagerNet pagerNet;
 
     private Intent intent;
@@ -130,34 +126,28 @@ public class HomePageFrg extends BaseRequstFragment implements GainDoctorInfoNet
             pageIconBeans = JsonUtils.JsonPageIconResult(vpInfoCache).getPageIconBeans();
             initSlider(pageIconBeans);
         }
-
         if (!TextUtils.isEmpty(doctorInfoCache)) {
-            doctorInfoNew = JsonUtils.JsonDoctorInfoNew(StringUtils.cutoutBracketToString(doctorInfoCache)).getDoctorInfo();
+            doctorInfoNew = gson.fromJson(doctorInfoCache, DoctorInfoNew.class);
             updateDoctorInfo(doctorInfoNew);
         } else {
             updateLinear(false);
         }
     }
-
     private void readHeaderInfoFromCache() {
         vpInfoCache = SharedPreferences.getInstance().getString(SharedPreferences.HOME_VP_CACHE, "");
         if (TextUtils.isEmpty(vpInfoCache)) {
             vpInfoCache = Utils.readAssetFileData(this.getContext(), "data/header_vp.txt");
         }
-        doctorInfoCache = SharedPreferences.getInstance().getString(SharedPreferences.HOME_DOCTOR_INFO_CACHE, "");
+        doctorInfoCache = SharedPreferences.getInstance().getString(SharedPreferences.HOME_DOCTOR_INFO_CACHE_NEW, "");
     }
 
     //获取导航图
     private void getData() {
         pagerNet.getPager();
-        if (LoginManager.isHasLogin()){
-            getStatus();
-        }
     }
 
     private void initListeners() {
         ((BaseFragmentActivity) getActivity()).addRegisterListener(this);
-        gainDoctorInfoNet.setOnGainDoctorInfoListener(this);
         pagerNet.setPagerNetListener(this);
         lineGridView.setOnItemClickListener(this);
         loginBtn.setOnClickListener(this);
@@ -185,7 +175,7 @@ public class HomePageFrg extends BaseRequstFragment implements GainDoctorInfoNet
         backImg.setVisibility(View.VISIBLE);
         backImg.setImageResource(R.mipmap.erweima);
 
-        gainDoctorInfoNet = new GainDoctorInfoNet();
+//        gainDoctorInfoNet = new GainDoctorInfoNet();
         pagerNet = new PagerNet();
 
         pullToRefreshListView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
@@ -246,7 +236,7 @@ public class HomePageFrg extends BaseRequstFragment implements GainDoctorInfoNet
     private void loadDoctorInfo() {
         if (LoginManager.isHasLogin()) {
             doctorUuid = LoginManager.getDoctorUuid();
-            gainDoctorInfoNet.gainDoctorInfo(doctorUuid);
+            toNomalNet(toGetParams(toParamsBaen("doctorUuid", doctorUuid)), DoctorInfoNewResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_DOCTOR_INFO, "2.0"), null);
         } else {
             if (LoginManager.isQuit_home) {
                 LoginManager.isQuit_home = false;
@@ -265,9 +255,13 @@ public class HomePageFrg extends BaseRequstFragment implements GainDoctorInfoNet
     private void updateDoctorInfo(DoctorInfoNew doctorInfo) {
         updateLinear(true);
         System.out.println("doctorInfo--->" + doctorInfo);
+        if (doctorInfo.getImage()!=null){
+            ImageLoader.getInstance().displayImage(doctorInfo.getImage().getSmall(), headImg, Utils.initImageLoader(R.mipmap.portrait_man, true));
+        }else{
+            ImageLoader.getInstance().displayImage("", headImg, Utils.initImageLoader(R.mipmap.portrait_man, true));
 
-        ImageLoader.getInstance().displayImage(doctorInfo.getDoctorIcon(), headImg, Utils.initImageLoader(R.mipmap.portrait_man, true));
-        headName.setText(doctorInfo.getDoctorName());
+        }
+        headName.setText(doctorInfo.getRealName());
         suffererNum.setText(doctorInfo.getCustomerNum() + "");
         followNum.setText(doctorInfo.getVisitNum() + "");
         income.setText(doctorInfo.getIncome());
@@ -298,28 +292,6 @@ public class HomePageFrg extends BaseRequstFragment implements GainDoctorInfoNet
     public void onStop() {
         mDemoSlider.stopAutoCycle();
         super.onStop();
-    }
-
-    @Override
-    public void requestGainDoctorInfoSuccess(DoctorResultNew doctorResultNew, String str) {
-        stopRefreshing();
-        if (doctorResultNew == null) return;
-        if (doctorResultNew.getQuery().getSuccess().equals("1")) {
-            if (doctorResultNew.getDoctorInfo() != null) {
-                updateDoctorInfo(doctorResultNew.getDoctorInfo());
-                SharedPreferences.getInstance().putString(SharedPreferences.HOME_DOCTOR_INFO_CACHE, str);
-            }
-            getStatus();
-        } else {
-            UIHelper.ToastMessage(getActivity(), doctorResultNew.getQuery().getMessage());
-        }
-
-    }
-
-    @Override
-    public void requestGainDoctorInfoFail() {
-        UIHelper.ToastMessage(getActivity(), "请求失败");
-        stopRefreshing();
     }
 
     @Override
@@ -355,31 +327,31 @@ public class HomePageFrg extends BaseRequstFragment implements GainDoctorInfoNet
                 startActivity(intent);
                 break;
             case 1://讲堂
-                if (!LoginManager.isHasLogin()){
+                if (!LoginManager.isHasLogin()) {
                     UIHelper.showLoginForResult(this.getActivity());
                     return;
                 }
                 CommentWebActivity.toCommentWebForResult(UrlConstants.getWholeApiUrl(UrlConstants.GET_VIDEOS), getActivity(), UIHelper.LOGIN_REQUEST_CODE, false);
                 break;
             case 2://随访
-                if (!LoginManager.isHasLogin()){
+                if (!LoginManager.isHasLogin()) {
                     UIHelper.showLoginForResult(this.getActivity());
                     return;
                 }
-                if (!TextUtils.isEmpty(((BaseFragmentActivity)getActivity()).isIdenyInfo())){
-                    UIHelper.ToastMessage(this.getActivity(),((BaseFragmentActivity)getActivity()).isIdenyInfo());
+                if (!TextUtils.isEmpty(((BaseFragmentActivity) getActivity()).isIdenyInfo())) {
+                    UIHelper.ToastMessage(this.getActivity(), ((BaseFragmentActivity) getActivity()).isIdenyInfo());
                     return;
                 }
                 intent = new Intent(getActivity(), FollowMainActivity.class);
                 startActivity(intent);
                 break;
             case 3://诊所
-                if (!LoginManager.isHasLogin()){
+                if (!LoginManager.isHasLogin()) {
                     UIHelper.showLoginForResult(this.getActivity());
                     return;
                 }
-                if (!TextUtils.isEmpty(((BaseFragmentActivity)getActivity()).isIdenyInfo())){
-                    UIHelper.ToastMessage(this.getActivity(),((BaseFragmentActivity)getActivity()).isIdenyInfo());
+                if (!TextUtils.isEmpty(((BaseFragmentActivity) getActivity()).isIdenyInfo())) {
+                    UIHelper.ToastMessage(this.getActivity(), ((BaseFragmentActivity) getActivity()).isIdenyInfo());
                     return;
                 }
                 CommentWebActivity.toCommentWebForResult(UrlConstants.getWholeApiUrl(UrlConstants.GET_CLINIC), getActivity(), UIHelper.LOGIN_REQUEST_CODE, false);
@@ -393,7 +365,7 @@ public class HomePageFrg extends BaseRequstFragment implements GainDoctorInfoNet
         if (pageIconResult.getQuery().getSuccess().equals("1")) {
             pageIconBeans = pageIconResult.getPageIconBeans();
             initSlider(pageIconBeans);
-            SharedPreferences.getInstance().putString(SharedPreferences.HOME_VP_CACHE,str);
+            SharedPreferences.getInstance().putString(SharedPreferences.HOME_VP_CACHE, str);
             System.out.println("img--->" + pageIconBeans.toString());
         }
     }
@@ -436,21 +408,18 @@ public class HomePageFrg extends BaseRequstFragment implements GainDoctorInfoNet
         CommentWebActivity.toCommentWeb(slider.getBundle().get("url").toString(), null, this.getActivity(), false);
     }
 
-    //获取医生的状态
-    private void getStatus() {
-        headImg.setEnabled(false);
-        doctorUuid=LoginManager.getDoctorUuid();
-        toNomalNet(toGetParams(toParamsBaen("doctorUuid", doctorUuid)), StatusResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_SERVICE_STAFFINFO, "2.0"), "");
-    }
-
     @Override
     public void onSuccessToBean(Object bean, int flag) {
         switch (flag) {
             case 1:
-                headImg.setEnabled(true);
-                StatusResponse statusResponse = (StatusResponse) bean;
-                StatusBean sb = statusResponse.value;
-                SharedPreferences.getInstance().putString(SharedPreferences.USER_INFO_COMPLETE, sb.getSate());
+                DoctorInfoNewResponse dinr = (DoctorInfoNewResponse) bean;
+                DoctorInfoNew sb = dinr.value;
+                stopRefreshing();
+                if (sb != null) {
+                    updateDoctorInfo(sb);
+                    SharedPreferences.getInstance().putString(SharedPreferences.HOME_DOCTOR_INFO_CACHE_NEW, gson.toJson(sb));
+                    SharedPreferences.getInstance().putString(SharedPreferences.USER_INFO_COMPLETE, sb.getSate());
+                }
                 break;
         }
     }

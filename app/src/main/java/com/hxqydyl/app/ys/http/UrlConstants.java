@@ -13,7 +13,7 @@ public class UrlConstants {
      * 线上发布 isOnline = true,isTest = false;
      */
     public static final boolean isOnline = false;//    是否是线上环境
-    public static final boolean isTest = true;//    是否是测试包
+    public static final boolean isTest = false;//    是否是测试包
 
 
     //    内网开发ip
@@ -121,7 +121,7 @@ public class UrlConstants {
     public static String STAFF_OUT_OF = "/app/pub/doctor/staffOutOf";
 
     //获取医生基本信息（新添加）
-    public static String GET_DOCTOR_INFO = "/app/service/doctor/getDoctorInfo";
+    public static String GET_DOCTOR_INFO = "/app/pub/doctor/%s/getServiceStaffInfo";
 
     //获取省
     public static String GET_PROVINCE = "/app/service/doctor/%s/getProvince";

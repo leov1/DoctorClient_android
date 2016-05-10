@@ -12,7 +12,9 @@ public class SharedPreferences {
     public static final String KEY_LOGIN_TOKEN = "login_token";
     public static final String KEY_LOGIN_TYPE = "login_type";
     public static final String HOME_VP_CACHE = "vpInfoCache";
-    public static final String HOME_DOCTOR_INFO_CACHE = "doctorInfoCache";
+//    public static final String HOME_DOCTOR_INFO_CACHE = "doctorInfoCache";
+    public static final String HOME_DOCTOR_INFO_CACHE_NEW = "doctorInfoCacheNew";
+
     public static final String USER_INFO_COMPLETE = "userInfoComplete";
 
     private static SharedPreferences instance = new SharedPreferences();

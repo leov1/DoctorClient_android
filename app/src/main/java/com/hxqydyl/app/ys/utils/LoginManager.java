@@ -48,7 +48,7 @@ public class LoginManager {
      */
     public static void quitLogin() {
         SharedPreferences.getInstance().putString("doctorUuid", "");
-        SharedPreferences.getInstance().putString(SharedPreferences.HOME_DOCTOR_INFO_CACHE, "");
+        SharedPreferences.getInstance().putString(SharedPreferences.HOME_DOCTOR_INFO_CACHE_NEW, "");
         isQuit_home = true;
         isQuit_myPatient = true;
         isQuit_myTask = true;

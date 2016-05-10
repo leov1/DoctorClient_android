@@ -23,11 +23,17 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile project(':library')
+
+    /*视频*/
+    
+
+    /*首页轮播图用到的*/
+    compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.android.support:appcompat-v7:23.3.0'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.google.code.gson:gson:2.6.2'
-    compile 'com.squareup.haha:haha:2.0.2'
-    compile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta1'
+    compile  'com.squareup.picasso:picasso:2.5.2'
+    compile  'com.google.code.gson:gson:2.6.2'
+    compile  'com.squareup.haha:haha:2.0.2'
+    compile  'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta1'
     compile 'com.alibaba:fastjson:1.2.8'
     compile 'com.google.android.gms:play-services-ads:8.4.0'
     compile 'org.apache.httpcomponents:httpcore:4.4.4'
@@ -37,11 +43,6 @@ dependencies {
     compile 'com.flyco.dialog:FlycoDialog_Lib:1.2.6@aar'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.zhy:okhttputils:2.3.8'
-
-    /*视频*/
     compile 'fm.jiecao:jiecaovideoplayer:3.0_preview'
-
-    /*首页轮播图用到的*/
-    compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.daimajia.slider:library:1.1.5@aar'
 }

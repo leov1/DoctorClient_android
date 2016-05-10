@@ -1,6 +1,14 @@
 package common;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Environment;
+import android.os.Looper;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -11,6 +19,8 @@ import java.net.ConnectException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Date;
+import java.util.Properties;
+
 
 public class AppException extends Exception implements UncaughtExceptionHandler {
 
@@ -186,84 +196,83 @@ public class AppException extends Exception implements UncaughtExceptionHandler 
         for (int i = 0; i < elements.length; i++) {
             exceptionStr.append(elements[i].toString() + "\n");
         }
-//		System.out.println(exceptionStr.toString());
+        System.out.println(exceptionStr.toString());
 
-//		final Context context = AppManager.getAppManager().currentActivity();
-//		
-//		if(context == null) {
-//			return false;
-//		}
+        final Context context = AppManager.getAppManager().currentActivity();
 
-//		final String crashReport = getCrashReport(context, ex);
-        //显示异常信息&发送报告
-//		new Thread() {
-//			public void run() {
-//				Looper.prepare();
-//				sendAppCrashReport(context, crashReport);
-//				Looper.loop();
-//			}
-//
-//		}.start();
+        if (context == null) {
+            return false;
+        }
+
+        final String crashReport = getCrashReport(context, ex);
+//        显示异常信息&发送报告
+        new Thread() {
+            public void run() {
+                Looper.prepare();
+                sendAppCrashReport(context, crashReport);
+                Looper.loop();
+            }
+
+        }.start();
         return true;
     }
 
     /**
      * 发送App异常崩溃报告
+     *
      * @param cont
      * @param crashReport
      */
-    /*public static void sendAppCrashReport(final Context cont, final String crashReport)
-	{
-		AlertDialog.Builder builder = new AlertDialog.Builder(cont);
-		builder.setIcon(android.R.drawable.ic_dialog_info);
-		builder.setTitle(R.string.app_error);
-		builder.setMessage(R.string.app_error_message);
-		builder.setPositiveButton(R.string.submit_report, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-				//发送异常报告
-				Intent i = new Intent(Intent.ACTION_SEND);
-				//i.setType("text/plain"); //模拟器
-				i.setType("message/rfc822") ; //真机
-				i.putExtra(Intent.EXTRA_EMAIL, new String[]{"jxsmallmouse@163.com"});
-				i.putExtra(Intent.EXTRA_SUBJECT,"开源中国Android客户端 - 错误报告");
-				i.putExtra(Intent.EXTRA_TEXT,crashReport);
-				cont.startActivity(Intent.createChooser(i, "发送错误报告"));
-				//退出
-				AppManager.getAppManager().AppExit(cont);
-			}
-		});
-		builder.setNegativeButton(R.string.sure, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-				//退出
-				AppManager.getAppManager().AppExit(cont);
-			}
-		});
-		builder.show();
-	}*/
+    public static void sendAppCrashReport(final Context cont, final String crashReport) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(cont);
+        builder.setIcon(android.R.drawable.ic_dialog_info);
+        builder.setTitle("提示");
+        builder.setMessage("非常抱歉，在您使用好心情医生端app时出现问题，请您点击发送，向我们反馈，谢谢~");
+        builder.setPositiveButton("发送", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                //发送异常报告
+              boolean b=  EmailSend.sendTextMail(new MailSenderInfo(crashReport));
+                Toast.makeText(BaseApplication.getInstance(), "发动成功", Toast.LENGTH_SHORT).show();
+
+                //退出
+                AppManager.getAppManager().AppExit(cont);
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                //退出
+                AppManager.getAppManager().AppExit(cont);
+            }
+        });
+        builder.show();
+    }
 
     /**
      * 获取APP崩溃异常报告
+     *
      * @param ex
      * @return
      */
-	/*private String getCrashReport(Context context, Throwable ex) {
-		PackageInfo pinfo = null;
-		try { 
-			pinfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-		} catch (NameNotFoundException e) {    
-			e.printStackTrace(System.err);
-		} 
-		if(pinfo == null) pinfo = new PackageInfo();
-		StringBuffer exceptionStr = new StringBuffer();
-		exceptionStr.append("Version: "+pinfo.versionName+"("+pinfo.versionCode+")\n");
-		exceptionStr.append("Android: "+android.os.Build.VERSION.RELEASE+"("+android.os.Build.MODEL+")\n");
-		exceptionStr.append("Exception: "+ex.getMessage()+"\n");
-		StackTraceElement[] elements = ex.getStackTrace();
-		for (int i = 0; i < elements.length; i++) {
-			exceptionStr.append(elements[i].toString()+"\n");
-		}
-		return exceptionStr.toString();
-	}*/
+    private String getCrashReport(Context context, Throwable ex) {
+        PackageInfo pinfo = null;
+        try {
+            pinfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace(System.err);
+        }
+        if (pinfo == null) pinfo = new PackageInfo();
+        StringBuffer exceptionStr = new StringBuffer();
+        exceptionStr.append("Version: " + pinfo.versionName + "(" + pinfo.versionCode + ")\n");
+        exceptionStr.append("Android: " + android.os.Build.VERSION.RELEASE + "(" + android.os.Build.MODEL + ")\n");
+        exceptionStr.append("Exception: " + ex.getMessage() + "\n");
+        StackTraceElement[] elements = ex.getStackTrace();
+        for (int i = 0; i < elements.length; i++) {
+            exceptionStr.append(elements[i].toString() + "\n");
+        }
+        return exceptionStr.toString();
+    }
+
+
 }
