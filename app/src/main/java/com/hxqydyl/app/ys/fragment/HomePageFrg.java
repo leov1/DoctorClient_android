@@ -265,9 +265,8 @@ public class HomePageFrg extends BaseRequstFragment implements GainDoctorInfoNet
     private void updateDoctorInfo(DoctorInfoNew doctorInfo) {
         updateLinear(true);
         System.out.println("doctorInfo--->" + doctorInfo);
-        if (!TextUtils.isEmpty(doctorInfo.getDoctorIcon())) {
-            ImageLoader.getInstance().displayImage(doctorInfo.getDoctorIcon(), headImg, Utils.initImageLoader(R.mipmap.portrait_man, true));
-        }
+
+        ImageLoader.getInstance().displayImage(doctorInfo.getDoctorIcon(), headImg, Utils.initImageLoader(R.mipmap.portrait_man, true));
         headName.setText(doctorInfo.getDoctorName());
         suffererNum.setText(doctorInfo.getCustomerNum() + "");
         followNum.setText(doctorInfo.getVisitNum() + "");

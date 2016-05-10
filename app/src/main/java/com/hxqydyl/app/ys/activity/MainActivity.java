@@ -116,7 +116,7 @@ public class MainActivity extends BaseFragmentActivity {
 
     public void chageIndex(int index) {
 
-        if (!TextUtils.isEmpty(isCompleteInfo()) && LoginManager.isHasLogin()) {
+        if ((!TextUtils.isEmpty(isCompleteInfo())) && LoginManager.isHasLogin()) {
             if (index == 1 || index == 2) {
                 UIHelper.ToastMessage(this, isCompleteInfo());
                 checkGroup(currIndex);
@@ -210,12 +210,18 @@ public class MainActivity extends BaseFragmentActivity {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case UIHelper.LOGIN_REQUEST_CODE:
-                    if (LoginManager.isHasLogin() && TextUtils.isEmpty(isCompleteInfo())) {
+                    if (LoginManager.isHasLogin()) {
 
-                        showFragment();
-                        if (currIndex == 0) {
+                        if(TextUtils.isEmpty(isCompleteInfo())){
+                            showFragment();
+                        }else {
+                            currIndex = 0;
                             checkGroup(currIndex);
                         }
+                        if (currIndex == 0) {
+                            fragmentManager.findFragmentByTag(fragmentTags.get(0)).onActivityResult(requestCode, resultCode, data);
+                        }
+
                     } else {
                         currIndex = 0;
                         checkGroup(currIndex);

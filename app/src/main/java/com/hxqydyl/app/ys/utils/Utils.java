@@ -17,7 +17,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.regex.Pattern;
 
 
 /**
@@ -151,11 +150,11 @@ public class Utils {
     public static DisplayImageOptions initImageLoader(int defaultImageId, boolean isFadeIn){
         DisplayImageOptions options;
         if (isFadeIn) {
-            options = new DisplayImageOptions.Builder().bitmapConfig(Bitmap.Config.RGB_565).showImageOnLoading(defaultImageId)
+            options = new DisplayImageOptions.Builder().bitmapConfig(Bitmap.Config.RGB_565).showImageOnLoading(defaultImageId).showImageOnFail(defaultImageId).showImageForEmptyUri(defaultImageId)
                     .imageScaleType(ImageScaleType.EXACTLY).cacheInMemory(true).cacheOnDisk(true).considerExifParams(true)
                     .displayer(new FadeInBitmapDisplayer(500)).build();
         } else {
-            options = new DisplayImageOptions.Builder().bitmapConfig(Bitmap.Config.RGB_565).showImageOnLoading(defaultImageId)
+            options = new DisplayImageOptions.Builder().bitmapConfig(Bitmap.Config.RGB_565).showImageOnLoading(defaultImageId).showImageOnFail(defaultImageId).showImageForEmptyUri(defaultImageId)
                     .imageScaleType(ImageScaleType.EXACTLY).cacheInMemory(true).cacheOnDisk(true).considerExifParams(true).build();
         }
         return options;
