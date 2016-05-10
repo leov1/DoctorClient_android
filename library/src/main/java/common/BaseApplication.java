@@ -38,7 +38,7 @@ public class BaseApplication extends Application {
 
     // 注册App异常崩溃处理器
     private void registerUncaughtExceptionHandler() {
-//        Thread.setDefaultUncaughtExceptionHandler(AppException.getAppExceptionHandler());
+    //    Thread.setDefaultUncaughtExceptionHandler(AppException.getAppExceptionHandler());
     }
 
     private void configurationImageLoader(){

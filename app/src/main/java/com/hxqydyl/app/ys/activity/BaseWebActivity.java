@@ -331,7 +331,7 @@ public class BaseWebActivity extends BaseRequstActivity {
     @Override
     public void onSuccessToBean(Object bean, int flag) {
         ImageResponse ir = (ImageResponse) bean;
-            webView.getRefreshableView().loadUrl("javascript:gm.user.getuserimg('" + ir.value.get(0).getThumbnail() + "','" + ir.value.get(0).getId() + "','" + webIsAvatar + "')");
+        webView.getRefreshableView().loadUrl("javascript:gm.user.getuserimg('" + ir.value.get(0).getThumbnail() + "','" + ir.value.get(0).getId() + "','" + webIsAvatar + "')");
     }
 
     @Override
