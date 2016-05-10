@@ -205,6 +205,7 @@
                 android:background="@color/transparent"
                 android:gravity="right|center"
                 android:hint="区号"
+                android:maxLength="4"
                 android:imeOptions="actionNext"
                 android:inputType="number" />
 
@@ -225,6 +226,7 @@
                 android:layout_toRightOf="@+id/line"
                 android:background="@color/transparent"
                 android:gravity="right|center"
+                android:maxLength="8"
                 android:hint="电话"
                 android:inputType="number" />
         </RelativeLayout>

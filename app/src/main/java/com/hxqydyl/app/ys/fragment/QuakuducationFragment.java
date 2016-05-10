@@ -249,7 +249,7 @@ this.onSubmitSuccess=onSubmitSuccess;
 
     private void getHos() {
         type = Type.hospital;
-        toNomalNet(toGetParams(toParamsBaen("regionUuid", ragionCode),toParamsBaen("cityUuid", cityId),toParamsBaen("regionUuid", provinceId)), HospitalResponse.class, 4, UrlConstants.getWholeApiUrl(UrlConstants.GET_HOSPITAL, "2.0"), "正在获取医院列表");
+        toNomalNet(toGetParams(toParamsBaen("regionUuid", ragionCode),toParamsBaen("cityUuid", cityId),toParamsBaen("provinceUuid", provinceId)), HospitalResponse.class, 4, UrlConstants.getWholeApiUrl(UrlConstants.GET_HOSPITAL, "2.0"), "正在获取医院列表");
 
     }
 

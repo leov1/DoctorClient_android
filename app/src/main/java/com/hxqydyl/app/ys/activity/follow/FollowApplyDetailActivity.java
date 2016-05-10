@@ -123,7 +123,7 @@ public class FollowApplyDetailActivity extends BaseRequstActivity
     private void getApplyDetail() {
 //       String url= "http://172.168.1.53/app/pub/doctor/2.0/getApplyDetail";
 //        toNomalNet(toGetParams(toParamsBaen("applyUuid", applyUuid), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), FollowUserApplyDetailResponse.class, 1, url, "获取随访申请详情中...");
-        toNomalNet(toGetParams(toParamsBaen("applyUuid", applyUuid), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), FollowUserApplyResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_APPLY_DETAIL, "1.0"), "获取随访申请详情中...");
+        toNomalNet(toGetParams(toParamsBaen("applyUuid", applyUuid), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), FollowUserApplyDetailResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_APPLY_DETAIL, "2.0"), "获取随访申请详情中...");
     }
 
     @Override

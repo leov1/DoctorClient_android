@@ -14,35 +14,38 @@ import com.hxqydyl.app.ys.fragment.QuakuducationFragment;
 import com.hxqydyl.app.ys.fragment.QualiditingFragment;
 import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.ui.UIHelper;
+import com.hxqydyl.app.ys.utils.DialogUtils;
 
 import java.util.Map;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by wangxu on 2016/5/6.
  * 医生认证
- *
  */
-public class QualidicationActivity extends BaseRequstActivity implements QuakuducationFragment.OnSubmitSuccess{
+public class QualidicationActivity extends BaseRequstActivity implements QuakuducationFragment.OnSubmitSuccess {
     private int status;
     private Fragment content;
 
     /**
      * 医生认证
+     *
      * @param activity
-     * @param status 0待审核，1审核通过，2审核不通过
+     * @param status   0待审核，1审核通过，2审核不通过
      */
     public static void toQualidicationActivity(Activity activity, String status) {
-        int mystatus=0;
-        try{
-            mystatus=Integer.parseInt(status);
-        }catch (Exception e){
-            UIHelper.ToastMessage(activity,"医生认证状态有误，请联系管理员");
+        int mystatus = 0;
+        try {
+            mystatus = Integer.parseInt(status);
+        } catch (Exception e) {
+            UIHelper.ToastMessage(activity, "医生认证状态有误，请联系管理员");
         }
-        if (mystatus==0|mystatus==3){
+        if (mystatus == 0 | mystatus == 3) {
             Intent intent = new Intent(activity, QualidicationActivity.class);
             intent.putExtra("status", mystatus);
             activity.startActivity(intent);
-        }else{
+        } else {
             CommentWebActivity.toCommentWebForResult(UrlConstants.getWholeApiUrl(UrlConstants.PERSONAL_INFORMATION), activity, 1, false);
         }
     }
@@ -56,7 +59,7 @@ public class QualidicationActivity extends BaseRequstActivity implements Quakudu
     }
 
     private void init() {
-         status = getIntent().getExtras().getInt("status", 0);
+        status = getIntent().getExtras().getInt("status", 0);
 
     }
 
@@ -78,8 +81,8 @@ public class QualidicationActivity extends BaseRequstActivity implements Quakudu
                 content = new QualiditingFragment();
                 break;
         }
-        if (content instanceof  QuakuducationFragment){
-            QuakuducationFragment fragment=(QuakuducationFragment)content;
+        if (content instanceof QuakuducationFragment) {
+            QuakuducationFragment fragment = (QuakuducationFragment) content;
             fragment.setOnSubmitSuccess(this);
         }
         transaction.replace(R.id.fragment_container, content);
@@ -96,6 +99,13 @@ public class QualidicationActivity extends BaseRequstActivity implements Quakudu
 
     @Override
     public void onSucess() {
-        setDefaultFragment(3);
+        DialogUtils.showNormalDialog(this, "提示", "您的认证资料已提交成功！\n" +
+                "工作人员将尽快与您本人联系确认。\n \n您当前可在阅读、讲堂等功能体验好心情移动医疗之旅。\n", new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                QualidicationActivity.this.finish();
+            }
+        });
+//        setDefaultFragment(3);
     }
 }
