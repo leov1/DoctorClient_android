@@ -14,7 +14,7 @@ import framework.listener.RegisterSucListener;
 import framework.listener.RegisterSucMag;
 
 
-public class BaseFragmentActivity extends FragmentActivity implements RegisterSucListener{
+public class BaseFragmentActivity extends FragmentActivity implements RegisterSucListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +27,9 @@ public class BaseFragmentActivity extends FragmentActivity implements RegisterSu
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 //            setTranslucentStatus();
 //        }
-       // SystemBarTintManager tintManager = new SystemBarTintManager(this);
-       // tintManager.setStatusBarTintEnabled(true);
-       // tintManager.setStatusBarTintResource(R.color.status_bar_bg);//通知栏所需颜色
+        // SystemBarTintManager tintManager = new SystemBarTintManager(this);
+        // tintManager.setStatusBarTintEnabled(true);
+        // tintManager.setStatusBarTintResource(R.color.status_bar_bg);//通知栏所需颜色
     }
 
     @Override
@@ -52,35 +52,35 @@ public class BaseFragmentActivity extends FragmentActivity implements RegisterSu
 //                WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
     }
 
-    public void addRegisterListener(RegisterSucListener listener){
+    public void addRegisterListener(RegisterSucListener listener) {
         if (listener != null)
             RegisterSucMag.getInstance().addRegisterSucListeners(listener);
     }
 
-    public void removeRegisterListener(RegisterSucListener listener){
+    public void removeRegisterListener(RegisterSucListener listener) {
         if (listener != null)
             RegisterSucMag.getInstance().removeRegisterSucListeners(listener);
     }
 
     //判断是否认证
-    public String isIdenyInfo(){
-        String code = SharedPreferences.getInstance().getString(SharedPreferences.USER_INFO_COMPLETE,"0");
+    public String isIdenyInfo() {
+        String code = SharedPreferences.getInstance().getString(SharedPreferences.USER_INFO_COMPLETE, "0");
         String text = "";
-        if (code.equals("0")){
+        if (code.equals("0")) {
             text = "您还未完善个人信息，您可以点击头像或个人中心进行认证";
-        }else if (code.equals("2")){
+        } else if (code.equals("2")) {
             text = "未通过审核/未通过认证";
-        }else if (code.equals("3")){
+        } else if (code.equals("3")) {
             text = "认证中";
         }
         return text;
     }
 
     //医生是否完善个人资料
-    public String isCompleteInfo(){
-        String code = SharedPreferences.getInstance().getString(SharedPreferences.USER_INFO_COMPLETE,"0");
+    public String isCompleteInfo() {
+        String code = SharedPreferences.getInstance().getString(SharedPreferences.USER_INFO_COMPLETE, "0");
         String text = "";
-        if (code.equals("0")){
+        if (code.equals("0")) {
             text = "您还未完善个人信息，您可以点击头像或个人中心进行认证";
         }
         return text;
@@ -88,10 +88,6 @@ public class BaseFragmentActivity extends FragmentActivity implements RegisterSu
 
     @Override
     public void onRegisterSuc() {
-        boolean firstTip = SharedPreferences.getInstance().getBoolean(SharedPreferences.FIRST_SHOW_TIP, true);
-        if (firstTip) {
-            SharedPreferences.getInstance().putBoolean(SharedPreferences.FIRST_SHOW_TIP, false);
-            DialogUtils.showNormalDialog(this);
-        }
+        DialogUtils.showNormalDialog(this);
     }
 }

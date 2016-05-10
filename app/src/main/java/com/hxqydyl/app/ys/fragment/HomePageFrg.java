@@ -394,6 +394,7 @@ public class HomePageFrg extends BaseRequstFragment implements GainDoctorInfoNet
         if (pageIconResult.getQuery().getSuccess().equals("1")) {
             pageIconBeans = pageIconResult.getPageIconBeans();
             initSlider(pageIconBeans);
+            SharedPreferences.getInstance().putString(SharedPreferences.HOME_VP_CACHE,str);
             System.out.println("img--->" + pageIconBeans.toString());
         }
     }
@@ -438,15 +439,16 @@ public class HomePageFrg extends BaseRequstFragment implements GainDoctorInfoNet
 
     //获取医生的状态
     private void getStatus() {
+        headImg.setEnabled(false);
         doctorUuid=LoginManager.getDoctorUuid();
-        toNomalNet(toGetParams(toParamsBaen("doctorUuid", doctorUuid)), StatusResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_SERVICE_STAFFINFO, "2.0"), "正在获取医生信息");
+        toNomalNet(toGetParams(toParamsBaen("doctorUuid", doctorUuid)), StatusResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_SERVICE_STAFFINFO, "2.0"), "");
     }
 
     @Override
     public void onSuccessToBean(Object bean, int flag) {
         switch (flag) {
             case 1:
-
+                headImg.setEnabled(true);
                 StatusResponse statusResponse = (StatusResponse) bean;
                 StatusBean sb = statusResponse.value;
                 SharedPreferences.getInstance().putString(SharedPreferences.USER_INFO_COMPLETE, sb.getSate());

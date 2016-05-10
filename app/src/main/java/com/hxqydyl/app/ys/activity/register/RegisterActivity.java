@@ -23,7 +23,6 @@ import com.hxqydyl.app.ys.utils.InjectId;
 import com.hxqydyl.app.ys.utils.InjectUtils;
 import com.hxqydyl.app.ys.utils.LoginManager;
 import com.hxqydyl.app.ys.utils.SharedPreferences;
-import com.hxqydyl.app.ys.utils.Validator;
 import com.xus.http.httplib.model.GetParams;
 import com.xus.http.httplib.model.PostPrams;
 
@@ -174,7 +173,7 @@ public class RegisterActivity extends BaseRequstActivity implements View.OnClick
 
         password = passwordEdit.getText().toString();
         if (TextUtils.isEmpty(password)) return "密码不能为空";
-        if (!Validator.isPassword(password)) return "密码只能字母加数字";
+     //   if (!Validator.isPassword(password)) return "密码只能字母加数字";
 
         if (!agreeCheckBox.isChecked()) return "请同意医师协议";
         return "";

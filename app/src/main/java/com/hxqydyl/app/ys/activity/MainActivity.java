@@ -116,7 +116,7 @@ public class MainActivity extends BaseFragmentActivity {
 
     public void chageIndex(int index) {
 
-        if (!TextUtils.isEmpty(isCompleteInfo())) {
+        if (!TextUtils.isEmpty(isCompleteInfo()) && LoginManager.isHasLogin()) {
             if (index == 1 || index == 2) {
                 UIHelper.ToastMessage(this,isCompleteInfo());
                 checkGroup(currIndex);
@@ -211,6 +211,7 @@ public class MainActivity extends BaseFragmentActivity {
             switch (requestCode) {
                 case UIHelper.LOGIN_REQUEST_CODE:
                     if (LoginManager.isHasLogin()) {
+
                         showFragment();
                         if (currIndex == 0) {
                             checkGroup(currIndex);

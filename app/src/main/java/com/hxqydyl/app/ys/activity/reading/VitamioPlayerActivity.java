@@ -39,5 +39,8 @@ public class VitamioPlayerActivity extends AppCompatActivity {
 
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }
