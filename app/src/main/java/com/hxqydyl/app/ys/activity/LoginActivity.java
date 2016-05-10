@@ -14,6 +14,7 @@ import com.hxqydyl.app.ys.bean.register.DoctorResult;
 import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.LoginManager;
+import com.hxqydyl.app.ys.utils.SharedPreferences;
 
 import framework.listener.RegisterSucListener;
 
@@ -85,6 +86,7 @@ public class LoginActivity extends BaseRequstActivity implements View.OnClickLis
     public void onSuccessToBean(Object bean, int flag) {
         super.onSuccessToBean(bean, flag);
         LoginManager.setDoctorUuid(((DoctorResult)bean).value.getDoctorUuid());
+        SharedPreferences.getInstance().putString(SharedPreferences.USER_INFO_COMPLETE,((DoctorResult)bean).value.getSate());
         UIHelper.ToastMessage(LoginActivity.this, "登陆成功");
         setLoginResult();
     }

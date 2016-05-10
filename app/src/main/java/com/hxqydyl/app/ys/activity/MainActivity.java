@@ -118,7 +118,7 @@ public class MainActivity extends BaseFragmentActivity {
 
         if (!TextUtils.isEmpty(isCompleteInfo()) && LoginManager.isHasLogin()) {
             if (index == 1 || index == 2) {
-                UIHelper.ToastMessage(this,isCompleteInfo());
+                UIHelper.ToastMessage(this, isCompleteInfo());
                 checkGroup(currIndex);
                 return;
             }
@@ -131,8 +131,8 @@ public class MainActivity extends BaseFragmentActivity {
         }
     }
 
-    private void checkGroup(int idex){
-        switch (idex){
+    private void checkGroup(int idex) {
+        switch (idex) {
             case 0:
                 group.check(R.id.foot_bar_home);
                 break;
@@ -210,7 +210,7 @@ public class MainActivity extends BaseFragmentActivity {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case UIHelper.LOGIN_REQUEST_CODE:
-                    if (LoginManager.isHasLogin()) {
+                    if (LoginManager.isHasLogin() && TextUtils.isEmpty(isCompleteInfo())) {
 
                         showFragment();
                         if (currIndex == 0) {

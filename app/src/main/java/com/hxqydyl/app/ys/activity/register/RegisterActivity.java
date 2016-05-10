@@ -22,7 +22,6 @@ import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.InjectId;
 import com.hxqydyl.app.ys.utils.InjectUtils;
 import com.hxqydyl.app.ys.utils.LoginManager;
-import com.hxqydyl.app.ys.utils.SharedPreferences;
 import com.xus.http.httplib.model.GetParams;
 import com.xus.http.httplib.model.PostPrams;
 
@@ -201,7 +200,6 @@ public class RegisterActivity extends BaseRequstActivity implements View.OnClick
             case 1: //注册成功
                 UIHelper.ToastMessage(RegisterActivity.this, "注册成功");
                     LoginManager.setDoctorUuid(((RegiserResult)bean).value.getUuid());
-                    SharedPreferences.getInstance().putString(SharedPreferences.USER_INFO_COMPLETE,((RegiserResult)bean).value.getSate());
                     removeBeforViews();
                     finish();
                 break;
