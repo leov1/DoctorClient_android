@@ -97,14 +97,14 @@ public class BaseWebActivity extends BaseRequstActivity {
         @SuppressWarnings("deprecation")
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-            webView.getRefreshableView().loadUrl("file:///android_asset/demo.html");
+//            webView.getRefreshableView().loadUrl("file:///android_asset/demo.html");
         }
 
         @TargetApi(android.os.Build.VERSION_CODES.M)
         @Override
         public void onReceivedError(WebView view, WebResourceRequest req, WebResourceError rerr) {
             // Redirect to deprecated method, so you can use it in all SDK versions
-            onReceivedError(view, rerr.getErrorCode(), rerr.getDescription().toString(), req.getUrl().toString());
+//            onReceivedError(view, rerr.getErrorCode(), rerr.getDescription().toString(), req.getUrl().toString());
         }
 
         @Override
