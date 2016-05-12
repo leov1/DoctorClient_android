@@ -3,6 +3,7 @@ package com.hxqydyl.app.ys.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +17,10 @@ import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.LoginManager;
 import com.hxqydyl.app.ys.utils.SharedPreferences;
 
+import java.util.Set;
+
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 import framework.listener.RegisterSucListener;
 
 /**
@@ -83,12 +88,20 @@ public class LoginActivity extends BaseRequstActivity implements View.OnClickLis
     }
 
     @Override
-    public void onSuccessToBean(Object bean, int flag) {
+    public void onSuccessToBean(final Object bean, int flag) {
         super.onSuccessToBean(bean, flag);
         LoginManager.setDoctorUuid(((DoctorResult)bean).value.getDoctorUuid());
         SharedPreferences.getInstance().putString(SharedPreferences.USER_INFO_COMPLETE,((DoctorResult)bean).value.getSate());
         UIHelper.ToastMessage(LoginActivity.this, "登陆成功");
         setLoginResult();
+
+        JPushInterface.setAlias(this,((DoctorResult)bean).value.getDoctorUuid(), new TagAliasCallback(){
+
+            @Override
+            public void gotResult(int i, String s, Set<String> set) {
+                Log.e("wangxu","i="+i+"-------s="+s+"---------Alias="+((DoctorResult)bean).value.getDoctorUuid());
+            }
+        });
     }
 
     public void setLoginResult() {

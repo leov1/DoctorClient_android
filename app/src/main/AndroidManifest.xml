@@ -19,6 +19,19 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <uses-permission-sdk-23 android:name="android.permission.READ_CONTACTS" />
+    <permission
+        android:name="${applicationId}.permission.JPUSH_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="${applicationId}.permission.JPUSH_MESSAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- Optional for location -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
     <application
         android:name=".common.AppContext"
@@ -26,8 +39,15 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        tools:replace="android:icon, android:theme"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon, android:theme">
+        <meta-data
+            android:name="host_ip"
+            android:value="${HOST}" />
+        <meta-data
+            android:name="is_test"
+            android:value="${IS_TEST}" />
+
         <activity
             android:name=".activity.SplashActivity"
             android:label="@string/app_name"
@@ -48,9 +68,9 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+        <!--   <meta-data
+               android:name="com.google.android.gms.version"
+               android:value="@integer/google_play_services_version" />-->
 
         <activity
             android:name=".activity.CommentWebActivity"
@@ -88,7 +108,9 @@
             android:name=".activity.reading.ReadingActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".activity.patient.PatientInfoActivity" />
-        <activity android:name=".activity.follow.MassActivity" android:windowSoftInputMode="stateHidden|stateAlwaysHidden"/>
+        <activity
+            android:name=".activity.follow.MassActivity"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <activity android:name=".activity.follow.ChoiceScaleActivity" />
         <activity android:name=".activity.follow.ChoiceSelfActivity" />
         <activity android:name=".activity.follow.FollowMainActivity" />
@@ -100,12 +122,12 @@
         <activity android:name=".activity.patient_group.PatientGroupManageActivity" />
         <activity
             android:name=".activity.patient.PatientAddActivity"
-            android:windowSoftInputMode="stateHidden"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activity.patient.PatientAdviceEditActivity"
-            android:windowSoftInputMode="stateHidden"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activity.patient.AddressBookSelectActivity"
             android:screenOrientation="portrait" />
@@ -123,8 +145,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.follow.PlanEditActivity"
-            android:windowSoftInputMode="stateHidden"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activity.case_report.InPatientCaseReportActivity"
             android:screenOrientation="portrait" />
@@ -148,31 +170,122 @@
             android:screenOrientation="portrait" />
 
 
-
         <activity android:name=".activity.follow.PatientSelectActivity"></activity>
         <activity
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|screenSize|keyboardHidden"
             android:name="galleryfinal.wq.photo.MediaChoseActivity"
-            android:theme="@style/AppBaseThemeLib"
-            android:label="@string/title_activity_media_chose" >
-        </activity>
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/title_activity_media_chose"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppBaseThemeLib"></activity>
         <activity
-            android:screenOrientation="portrait"
             android:name="galleryfinal.wq.photo.CropImageActivity"
-            android:label="@string/title_activity_crop_image" >
-        </activity>
-        <activity android:name="galleryfinal.yalantis.ucrop.UCropActivity"
-            android:theme="@style/AppBaseThemeLib"
+            android:label="@string/title_activity_crop_image"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name="galleryfinal.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
-            ></activity>
+            android:theme="@style/AppBaseThemeLib"></activity>
         <activity
             android:name=".activity.BigPicActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.register.QualidicationActivity"
             android:screenOrientation="portrait" />
+        <!--极光推送-->
+        <!-- Required SDK核心功能-->
+        <activity
+            android:name="cn.jpush.android.ui.PushActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:exported="false"
+            android:theme="@android:style/Theme.NoTitleBar">
+            <intent-filter>
+                <action android:name="cn.jpush.android.ui.PushActivity" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="${applicationId}" />
+            </intent-filter>
+        </activity>
+
+        <!-- Required SDK核心功能-->
+        <service
+            android:name="cn.jpush.android.service.DownloadService"
+            android:enabled="true"
+            android:exported="false"></service>
+
+        <!-- Required SDK 核心功能-->
+        <!-- option since 2.0.5 可配置PushService，DaemonService,PushReceiver,AlarmReceiver的android:process参数 将JPush相关组件设置为一个独立进程 -->
+        <!-- 如：android:process=":remote" -->
+        <service
+            android:name="cn.jpush.android.service.PushService"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTER" />
+                <action android:name="cn.jpush.android.intent.REPORT" />
+                <action android:name="cn.jpush.android.intent.PushService" />
+                <action android:name="cn.jpush.android.intent.PUSH_TIME" />
+
+            </intent-filter>
+        </service>
+
+        <!-- Required SDK 核心功能 since 1.8.0 -->
+        <service
+            android:name="cn.jpush.android.service.DaemonService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.DaemonService" />
+                <category android:name="${applicationId}" />
+            </intent-filter>
+        </service>
+
+        <!-- Required SDK核心功能-->
+        <receiver
+            android:name="cn.jpush.android.service.PushReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter android:priority="1000">
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" /> <!--Required 显示通知栏 -->
+                <category android:name="${applicationId}" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+            <!-- Optional -->
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Required SDK核心功能-->
+        <receiver android:name="cn.jpush.android.service.AlarmReceiver" />
+
+        <!-- User defined. 用户自定义的广播接收器-->
+        <receiver
+            android:name=".push.PushReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTRATION" /> <!--Required 用户注册SDK的intent-->
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" /> <!--Required 用户接收SDK消息的intent-->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> <!--Required 用户接收SDK通知栏信息的intent-->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> <!--Required 用户打开自定义通知栏的intent-->
+                <action android:name="cn.jpush.android.intent.ACTION_RICHPUSH_CALLBACK" /> <!--Optional 用户接受Rich Push Javascript 回调函数的intent-->
+                <action android:name="cn.jpush.android.intent.CONNECTION" /><!-- 接收网络变化 连接/断开 since 1.6.3 -->
+                <category android:name="${applicationId}" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Required . Enable it you can get statistics data with channel -->
+        <meta-data
+            android:name="JPUSH_CHANNEL"
+            android:value="developer-default" />
+        <meta-data
+            android:name="JPUSH_APPKEY"
+            android:value="6bda069a6d817d1f567a86ed" /> <!-- </>值来自开发者平台取得的AppKey-->
     </application>
 
 </manifest>

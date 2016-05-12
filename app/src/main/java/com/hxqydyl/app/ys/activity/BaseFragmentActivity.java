@@ -9,6 +9,7 @@ import android.view.WindowManager;
 import com.hxqydyl.app.ys.utils.DialogUtils;
 import com.hxqydyl.app.ys.utils.SharedPreferences;
 
+import cn.jpush.android.api.JPushInterface;
 import common.AppManager;
 import framework.listener.RegisterSucListener;
 import framework.listener.RegisterSucMag;
@@ -89,5 +90,14 @@ public class BaseFragmentActivity extends FragmentActivity implements RegisterSu
     @Override
     public void onRegisterSuc() {
         DialogUtils.showNormalDialog(this);
+    }
+    protected void onResume() {
+        super.onResume();
+        JPushInterface.onResume(this);
+    }
+
+    protected void onPause() {
+        super.onPause();
+        JPushInterface.onPause(this);
     }
 }

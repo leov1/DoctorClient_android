@@ -1,5 +1,8 @@
 package com.hxqydyl.app.ys.http;
 
+import com.hxqydyl.app.ys.common.AppContext;
+import com.hxqydyl.app.ys.utils.CommonUtils;
+
 /**
  * Created by white_ash on 2016/4/1.
  */
@@ -12,31 +15,33 @@ public class UrlConstants {
      * 线上测试 isOnline = true,isTest = true;
      * 线上发布 isOnline = true,isTest = false;
      */
-    public static final boolean isOnline = false;//    是否是线上环境
-    public static final boolean isTest = true;//    是否是测试包
-
-
-    //    内网开发ip
-    public static final String BASE_IP_DEVELOP = "http://172.168.1.53";
-    //    内网开发端口
-    public static final String BASE_PORT_DEVELOP = "";
-    //    内网测试ip
-    public static final String BASE_IP_TEST = "http://172.168.1.46";
-    //    内网测试端口
-    public static final String BASE_PORT_TEST = "8080";
-    //    线上测试ip
-    public static final String BASE_IP_ONLINE_TEST = "http://101.201.154.86";
-    //    线上测试端口
-    public static final String BASE_PORT_ONLINE_TEST = "8080";
-    //    线上发布ip
-    public static final String BASE_IP_ONLINE_REALEASE = "http://admin.hxqydyl.com";
-    //    线上发布端口
-    public static final String BASE_PORT_ONLINE_REALEASE = "";
-
-    //    ip地址
-    public static final String BASE_IP = isOnline ? (isTest ? BASE_IP_ONLINE_TEST : BASE_IP_ONLINE_REALEASE) : (isTest ? BASE_IP_TEST : BASE_IP_DEVELOP);
-    //    端口
-    public static final String BASE_PORT = isOnline ? (isTest ? BASE_PORT_ONLINE_TEST : BASE_PORT_ONLINE_REALEASE) : (isTest ? BASE_PORT_TEST : BASE_PORT_DEVELOP);
+//    public static final boolean isOnline = true;//    是否是线上环境
+//    public static final boolean isTest = true;//    是否是测试包
+////正式环境 "http://admin.hxqydyl.com"
+////测试环境"http://172.168.1.46:8080"
+////开发"http://172.168.1.53"
+//
+//    //    内网开发ip
+//    public static final String BASE_IP_DEVELOP = "http://172.168.1.53";
+//    //    内网开发端口
+//    public static final String BASE_PORT_DEVELOP = "";
+//    //    内网测试ip
+//    public static final String BASE_IP_TEST = "http://172.168.1.46";
+//    //    内网测试端口
+//    public static final String BASE_PORT_TEST = "8080";
+//    //    线上测试ip
+//    public static final String BASE_IP_ONLINE_TEST = "http://101.201.154.86";
+//    //    线上测试端口
+//    public static final String BASE_PORT_ONLINE_TEST = "8080";
+//    //    线上发布ip
+//    public static final String BASE_IP_ONLINE_REALEASE = "http://admin.hxqydyl.com";
+//    //    线上发布端口
+//    public static final String BASE_PORT_ONLINE_REALEASE = "";
+//
+//    //    ip地址
+//    public static final String BASE_IP = isOnline ? (isTest ? BASE_IP_ONLINE_TEST : BASE_IP_ONLINE_REALEASE) : (isTest ? BASE_IP_TEST : BASE_IP_DEVELOP);
+//    //    端口
+//    public static final String BASE_PORT = isOnline ? (isTest ? BASE_PORT_ONLINE_TEST : BASE_PORT_ONLINE_REALEASE) : (isTest ? BASE_PORT_TEST : BASE_PORT_DEVELOP);
 
     // 服务器端api路径
     public static final String SERVER_BASE_API_PATH = "";
@@ -51,7 +56,7 @@ public class UrlConstants {
      * @return 完整地址
      */
     public static String getWholeApiUrl(String shortUrl, Object... args) {
-        return BASE_IP + ":" + BASE_PORT + SERVER_BASE_API_PATH + String.format(shortUrl, args);
+        return CommonUtils.getHostString(AppContext.getInstance()) + SERVER_BASE_API_PATH + String.format(shortUrl, args);
     }
 
     //上传图片

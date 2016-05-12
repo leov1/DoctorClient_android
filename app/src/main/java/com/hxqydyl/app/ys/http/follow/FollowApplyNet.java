@@ -1,6 +1,8 @@
 package com.hxqydyl.app.ys.http.follow;
 
+import com.hxqydyl.app.ys.common.AppContext;
 import com.hxqydyl.app.ys.http.UrlConstants;
+import com.hxqydyl.app.ys.utils.CommonUtils;
 import com.hxqydyl.app.ys.utils.LoginManager;
 import com.zhy.http.okhttp.OkHttpUtils;
 
@@ -16,7 +18,7 @@ public class FollowApplyNet {
 
 //    public static String baseURL = "http://101.201.154.86:8080/";
 //    public static String baseURL = "http://172.168.1.233/";
-    public static String baseURL = UrlConstants.BASE_IP + ":" + UrlConstants.BASE_PORT + "/";
+    public static String baseURL = CommonUtils.getHostString(AppContext.getInstance()) + "/";
     public static boolean myDev = false;
 
     /**

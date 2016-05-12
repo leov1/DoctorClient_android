@@ -55,6 +55,7 @@ public class LoginManager {
         isQuit_user=true;
     }
 
+
     public interface OnLoginSuccess {
         void onLoginSuccess(String doctorUuid);
         void onLoginfail();

@@ -422,7 +422,9 @@ this.onSubmitSuccess=onSubmitSuccess;
     private ArrayList<String> toPopListForHos(List<HospitalsBean> lists) {
         ArrayList<String> list = new ArrayList<>();
         for (HospitalsBean bean : lists) {
-            list.add(bean.getHospitalName());
+            String s=bean.getHospitalName();
+            if (!TextUtils.isEmpty(s))
+            list.add(bean.getHospitalName().length()>18?bean.getHospitalName().substring(0,18)+"...":bean.getHospitalName());
         }
         return list;
     }
