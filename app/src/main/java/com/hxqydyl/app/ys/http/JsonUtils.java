@@ -413,40 +413,4 @@ public class JsonUtils {
         }
         return articleResult;
     }
-
-    /**
-     * 获取导航图
-     *
-     * @param string
-     * @return
-     * @throws JSONException
-     */
-    public static PageIconResult JsonPageIconResult(String string) {
-        if (TextUtils.isEmpty(string)) return null;
-        PageIconResult pageIconResult = new PageIconResult();
-
-        try {
-            pageIconResult.setQuery(JsonQuery(string));
-            JSONObject js = new JSONObject(string);
-            if (js.has("relist")) {
-                JSONArray relist = js.getJSONArray("relist");
-                ArrayList<PageIconBean> pageIconBeans = new ArrayList<>();
-                for (int i = 0; i < relist.length(); i++) {
-                    JSONObject jsonObject = relist.getJSONObject(i);
-                    PageIconBean pageIconBean = new PageIconBean();
-                    pageIconBean.setNote(jsonObject.getString("note"));
-                    pageIconBean.setImageUrl(jsonObject.getString("imageUrl"));
-                    pageIconBean.setImageNote(jsonObject.getString("imageNote"));
-                    pageIconBean.setPosition(jsonObject.getInt("position"));
-                    pageIconBean.setImageUuid(jsonObject.getString("imageUuid"));
-                    pageIconBean.setUrl(jsonObject.getString("url"));
-                    pageIconBeans.add(pageIconBean);
-                }
-                pageIconResult.setPageIconBeans(pageIconBeans);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return pageIconResult;
-    }
 }

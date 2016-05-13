@@ -110,7 +110,7 @@ public class UrlConstants {
     public static String LOGIN_URL = "/app/pub/doctor/%s/gotoLogin";
 
     //获取轮播图
-    public static String GET_PLATFORMPIC = "/app/pub/doctor/getPlatformPic";
+    public static String GET_PLATFORMPIC = "/app/pub/doctor/%s/getPlatformPic";
 
     //手机获取验证码
     public static String GET_VERIFICATION_CODE = "/app/pub/doctor/getVerificationCode";

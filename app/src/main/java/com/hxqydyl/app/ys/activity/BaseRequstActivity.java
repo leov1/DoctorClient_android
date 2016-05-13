@@ -1,6 +1,10 @@
 package com.hxqydyl.app.ys.activity;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -16,6 +20,10 @@ import com.hxqydyl.app.ys.bean.request.ParamsBean;
 import com.hxqydyl.app.ys.bean.response.BaseResponse;
 import com.hxqydyl.app.ys.common.AppContext;
 import com.hxqydyl.app.ys.http.UrlConstants;
+import com.hxqydyl.app.ys.push.OnMessageGet;
+import com.hxqydyl.app.ys.push.bean.BasePushBean;
+import com.hxqydyl.app.ys.push.listener.BasePushListener;
+import com.hxqydyl.app.ys.push.toactivity.PushType;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.CommonUtils;
 import com.hxqydyl.app.ys.utils.DialogUtils;
@@ -276,4 +284,20 @@ public class BaseRequstActivity<T> extends BaseTitleActivity implements HttpUtil
     public ParamsBean toParamsBaen(String key, String value) {
         return new ParamsBean(key, value);
     }
+
+    public <L>void setPushListener(final OnMessageGet<L> listeners, final PushType type){
+        IntentFilter dynamic_filter = new IntentFilter();
+        dynamic_filter.addAction("com.push.sendMessage");
+            registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+              BasePushBean basePushBean=  gson.fromJson(intent.getExtras().getString("json"),type.getBean());
+                if (basePushBean.id.equals(type.getId())){
+                    L t=(L)basePushBean;
+                    listeners.onMessageGet(t);
+                }
+            }
+        }, dynamic_filter);
+    }
+
 }

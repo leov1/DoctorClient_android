@@ -13,10 +13,15 @@ import android.widget.TextView;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.bean.register.DoctorResult;
 import com.hxqydyl.app.ys.http.UrlConstants;
+import com.hxqydyl.app.ys.push.OnMessageGet;
+import com.hxqydyl.app.ys.push.bean.TestPushBean;
+import com.hxqydyl.app.ys.push.listener.TestPushListener;
+import com.hxqydyl.app.ys.push.toactivity.PushType;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.LoginManager;
 import com.hxqydyl.app.ys.utils.SharedPreferences;
 
+import java.util.Map;
 import java.util.Set;
 
 import cn.jpush.android.api.JPushInterface;
@@ -27,7 +32,7 @@ import framework.listener.RegisterSucListener;
  * Created by hxq on 2016/2/25.
  * 登陆页面
  */
-public class LoginActivity extends BaseRequstActivity implements View.OnClickListener, RegisterSucListener {
+public class LoginActivity extends BaseRequstActivity implements View.OnClickListener, RegisterSucListener, OnMessageGet<TestPushBean> {
 
     private TextView forgetBtn;
     private TextView registerBtn;
@@ -44,6 +49,7 @@ public class LoginActivity extends BaseRequstActivity implements View.OnClickLis
         setContentView(R.layout.activity_login);
         initViews();
         initListener();
+        setPushListener(this, PushType.Test);
     }
 
     private void initViews() {
@@ -82,7 +88,7 @@ public class LoginActivity extends BaseRequstActivity implements View.OnClickLis
                 UIHelper.showRegister(this);
                 break;
             case R.id.login_btn:
-                toNomalNet(toPostParams(toParamsBaen("mobile", mobileEdit.getText().toString()),toParamsBaen("password", passwordEdit.getText().toString())), DoctorResult.class,1, UrlConstants.getWholeApiUrl(UrlConstants.LOGIN_URL,"2.0"),"登陆中...");
+                toNomalNet(toPostParams(toParamsBaen("mobile", mobileEdit.getText().toString()), toParamsBaen("password", passwordEdit.getText().toString())), DoctorResult.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.LOGIN_URL, "2.0"), "登陆中...");
                 break;
         }
     }
@@ -90,16 +96,16 @@ public class LoginActivity extends BaseRequstActivity implements View.OnClickLis
     @Override
     public void onSuccessToBean(final Object bean, int flag) {
         super.onSuccessToBean(bean, flag);
-        LoginManager.setDoctorUuid(((DoctorResult)bean).value.getDoctorUuid());
-        SharedPreferences.getInstance().putString(SharedPreferences.USER_INFO_COMPLETE,((DoctorResult)bean).value.getSate());
+        LoginManager.setDoctorUuid(((DoctorResult) bean).value.getDoctorUuid());
+        SharedPreferences.getInstance().putString(SharedPreferences.USER_INFO_COMPLETE, ((DoctorResult) bean).value.getSate());
         UIHelper.ToastMessage(LoginActivity.this, "登陆成功");
         setLoginResult();
 
-        JPushInterface.setAlias(this,((DoctorResult)bean).value.getDoctorUuid(), new TagAliasCallback(){
+        JPushInterface.setAlias(this, ((DoctorResult) bean).value.getDoctorUuid(), new TagAliasCallback() {
 
             @Override
             public void gotResult(int i, String s, Set<String> set) {
-                Log.e("wangxu","i="+i+"-------s="+s+"---------Alias="+((DoctorResult)bean).value.getDoctorUuid());
+                Log.e("wangxu", "i=" + i + "-------s=" + s + "---------Alias=" + ((DoctorResult) bean).value.getDoctorUuid());
             }
         });
     }
@@ -132,4 +138,8 @@ public class LoginActivity extends BaseRequstActivity implements View.OnClickLis
         return super.onKeyDown(keyCode, event);
     }
 
+    @Override
+    public void onMessageGet(TestPushBean testPushBean) {
+        UIHelper.ToastMessage(this, testPushBean.getMessage());
+    }
 }

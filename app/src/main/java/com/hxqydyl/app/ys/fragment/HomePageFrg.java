@@ -18,6 +18,7 @@ import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.google.gson.reflect.TypeToken;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseFragmentActivity;
 import com.hxqydyl.app.ys.activity.CommentWebActivity;
@@ -26,13 +27,10 @@ import com.hxqydyl.app.ys.activity.reading.ReadingActivity;
 import com.hxqydyl.app.ys.activity.register.QualidicationActivity;
 import com.hxqydyl.app.ys.adapter.LineGridViewAdapter;
 import com.hxqydyl.app.ys.bean.homepage.PageIconBean;
-import com.hxqydyl.app.ys.bean.homepage.PageIconResult;
-import com.hxqydyl.app.ys.bean.register.DoctorInfo;
 import com.hxqydyl.app.ys.bean.register.DoctorInfoNew;
 import com.hxqydyl.app.ys.bean.response.DoctorInfoNewResponse;
-import com.hxqydyl.app.ys.http.JsonUtils;
+import com.hxqydyl.app.ys.bean.response.PageIconResponse;
 import com.hxqydyl.app.ys.http.UrlConstants;
-import com.hxqydyl.app.ys.http.homepage.PagerNet;
 import com.hxqydyl.app.ys.ui.CircleImageView;
 import com.hxqydyl.app.ys.ui.TextSliderView;
 import com.hxqydyl.app.ys.ui.UIHelper;
@@ -47,15 +45,16 @@ import com.hxqydyl.app.ys.utils.Utils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import framework.listener.RegisterSucListener;
 
 /**
  * 首页frg
  */
-public class HomePageFrg extends BaseRequstFragment implements  View.OnClickListener, ViewPagerEx.OnPageChangeListener, BaseSliderView.OnSliderClickListener
+public class HomePageFrg extends BaseRequstFragment implements View.OnClickListener, ViewPagerEx.OnPageChangeListener, BaseSliderView.OnSliderClickListener
         , AdapterView.OnItemClickListener
-        , PagerNet.OnPagerNetListener, RegisterSucListener {
+        ,  RegisterSucListener {
 
     @InjectId(id = R.id.login_linear)
     private LinearLayout loginLiear;
@@ -84,15 +83,14 @@ public class HomePageFrg extends BaseRequstFragment implements  View.OnClickList
 
     @InjectId(id = R.id.slider)
     private SliderLayout mDemoSlider;
+@InjectId(id = R.id.layout_ent_gallery)
+private RelativeLayout adlayout;
 
     private String doctorUuid;
     private String vpInfoCache;
     private String doctorInfoCache;
-    private ArrayList<PageIconBean> pageIconBeans = new ArrayList<>();
+    private List<PageIconBean> pageIconBeans = new ArrayList<>();
     private DoctorInfoNew doctorInfoNew;
-
-    private PagerNet pagerNet;
-
     private Intent intent;
 
     @InjectId(id = R.id.list_view)
@@ -123,8 +121,10 @@ public class HomePageFrg extends BaseRequstFragment implements  View.OnClickList
     private void parseHeaderJSON() {
         if (!TextUtils.isEmpty(vpInfoCache)) {
             pageIconBeans.clear();
-            pageIconBeans = JsonUtils.JsonPageIconResult(vpInfoCache).getPageIconBeans();
+            pageIconBeans = gson.fromJson(vpInfoCache,new TypeToken<List<PageIconBean>>(){}.getType());
             initSlider(pageIconBeans);
+        }else{
+            adlayout.setVisibility(View.GONE);
         }
         if (!TextUtils.isEmpty(doctorInfoCache)) {
             doctorInfoNew = gson.fromJson(doctorInfoCache, DoctorInfoNew.class);
@@ -133,22 +133,19 @@ public class HomePageFrg extends BaseRequstFragment implements  View.OnClickList
             updateLinear(false);
         }
     }
+
     private void readHeaderInfoFromCache() {
         vpInfoCache = SharedPreferences.getInstance().getString(SharedPreferences.HOME_VP_CACHE, "");
-        if (TextUtils.isEmpty(vpInfoCache)) {
-            vpInfoCache = Utils.readAssetFileData(this.getContext(), "data/header_vp.txt");
-        }
         doctorInfoCache = SharedPreferences.getInstance().getString(SharedPreferences.HOME_DOCTOR_INFO_CACHE_NEW, "");
     }
 
     //获取导航图
     private void getData() {
-        pagerNet.getPager();
+        toNomalNet(toGetParams(toParamsBaen("adUuid", "customerLunBoTuId")), PageIconResponse.class, 2, UrlConstants.getWholeApiUrl(UrlConstants.GET_PLATFORMPIC, "2.0"), null);
     }
 
     private void initListeners() {
         ((BaseFragmentActivity) getActivity()).addRegisterListener(this);
-        pagerNet.setPagerNetListener(this);
         lineGridView.setOnItemClickListener(this);
         loginBtn.setOnClickListener(this);
         registerBtn.setOnClickListener(this);
@@ -174,17 +171,11 @@ public class HomePageFrg extends BaseRequstFragment implements  View.OnClickList
         initViewOnBaseTitle("首页", view);
         backImg.setVisibility(View.VISIBLE);
         backImg.setImageResource(R.mipmap.erweima);
-
-//        gainDoctorInfoNet = new GainDoctorInfoNet();
-        pagerNet = new PagerNet();
-
         pullToRefreshListView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
-
         lineGridViewAdapter = new LineGridViewAdapter(this.getContext());
         lineGridView.setAdapter(lineGridViewAdapter);
         //防止gridview和scrollview抢焦点
         lineGridView.setFocusable(false);
-
         mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
         mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
         //   mDemoSlider.setCustomAnimation(new DescriptionAnimation());
@@ -194,8 +185,13 @@ public class HomePageFrg extends BaseRequstFragment implements  View.OnClickList
 
     }
 
-    private void initSlider(ArrayList<PageIconBean> pageIconBeans) {
-        if (pageIconBeans == null || pageIconBeans.size() == 0) return;
+    private void initSlider(List<PageIconBean> pageIconBeans) {
+        if (pageIconBeans == null || pageIconBeans.size() == 0){
+            adlayout.setVisibility(View.GONE);
+            return;
+        }else{
+            adlayout.setVisibility(View.VISIBLE);
+        }
         mDemoSlider.removeAllSliders();
         for (PageIconBean pageIconBean : pageIconBeans) {
             TextSliderView textSliderView = new TextSliderView(this.getActivity());
@@ -255,9 +251,9 @@ public class HomePageFrg extends BaseRequstFragment implements  View.OnClickList
     private void updateDoctorInfo(DoctorInfoNew doctorInfo) {
         updateLinear(true);
         System.out.println("doctorInfo--->" + doctorInfo);
-        if (doctorInfo.getImage()!=null){
+        if (doctorInfo.getImage() != null) {
             ImageLoader.getInstance().displayImage(doctorInfo.getImage().getSmall(), headImg, Utils.initImageLoader(R.mipmap.portrait_man, true));
-        }else{
+        } else {
             ImageLoader.getInstance().displayImage("", headImg, Utils.initImageLoader(R.mipmap.portrait_man, true));
 
         }
@@ -360,22 +356,6 @@ public class HomePageFrg extends BaseRequstFragment implements  View.OnClickList
     }
 
     @Override
-    public void PagerNetSuccess(PageIconResult pageIconResult, String str) {
-        if (pageIconResult == null) return;
-        if (pageIconResult.getQuery().getSuccess().equals("1")) {
-            pageIconBeans = pageIconResult.getPageIconBeans();
-            initSlider(pageIconBeans);
-            SharedPreferences.getInstance().putString(SharedPreferences.HOME_VP_CACHE, str);
-            System.out.println("img--->" + pageIconBeans.toString());
-        }
-    }
-
-    @Override
-    public void PagerNetFail(int statueCode) {
-
-    }
-
-    @Override
     public void onRegisterSuc() {
         startRefreshing();
     }
@@ -420,6 +400,13 @@ public class HomePageFrg extends BaseRequstFragment implements  View.OnClickList
                     SharedPreferences.getInstance().putString(SharedPreferences.HOME_DOCTOR_INFO_CACHE_NEW, gson.toJson(sb));
                     SharedPreferences.getInstance().putString(SharedPreferences.USER_INFO_COMPLETE, sb.getSate());
                 }
+                break;
+            case 2:
+                PageIconResponse pir = (PageIconResponse) bean;
+                    pageIconBeans = pir.value;
+                    initSlider(pageIconBeans);
+                    SharedPreferences.getInstance().putString(SharedPreferences.HOME_VP_CACHE, gson.toJson(pageIconBeans));
+
                 break;
         }
     }

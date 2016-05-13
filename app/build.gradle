@@ -19,9 +19,9 @@ android {
     }
 
     productFlavors {
+//                ceshi{manifestPlaceholders = [HOST: "http://172.168.1.53",IS_TEST:true]}
         ceshi { manifestPlaceholders = [HOST: "http://172.168.1.46:8080", IS_TEST: true] }
         zs { manifestPlaceholders = [HOST: "http://admin.hxqydyl.com", IS_TEST: false] }
-//        ceshi{[HOST: "http://172.168.1.53",IS_TEST:true]}
     }
 
 

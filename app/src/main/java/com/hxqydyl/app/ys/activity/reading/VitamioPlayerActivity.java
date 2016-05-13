@@ -41,6 +41,7 @@ public class VitamioPlayerActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        jcVideoPlayerStandard.releaseAllVideos();
         super.onDestroy();
     }
 }
