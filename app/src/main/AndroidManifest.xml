@@ -189,6 +189,9 @@
             android:name=".activity.BigPicActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activity.register.SelectHosActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activity.register.QualidicationActivity"
             android:screenOrientation="portrait" />
         <!--极光推送-->

@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
+import com.hxqydyl.app.ys.activity.register.SelectHosActivity;
 import com.hxqydyl.app.ys.bean.register.CityBean;
 import com.hxqydyl.app.ys.bean.register.HospitalsBean;
 import com.hxqydyl.app.ys.bean.register.OfficeBean;
@@ -49,8 +50,9 @@ import galleryfinal.wq.photo.widget.PickConfig;
  */
 public class QuakuducationFragment extends BaseRequstFragment implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, OptionsPopupWindow.OnOptionsSelectListener {
     OnSubmitSuccess onSubmitSuccess;
-   public void  setOnSubmitSuccess(OnSubmitSuccess onSubmitSuccess){
-this.onSubmitSuccess=onSubmitSuccess;
+
+    public void setOnSubmitSuccess(OnSubmitSuccess onSubmitSuccess) {
+        this.onSubmitSuccess = onSubmitSuccess;
     }
 
     private EditText edt_name;//医生名字
@@ -102,7 +104,11 @@ this.onSubmitSuccess=onSubmitSuccess;
                     UIHelper.ToastMessage(getActivity(), "请先选择城市");
                     return;
                 }
-                getHos();
+                Intent intent = new Intent(getActivity(), SelectHosActivity.class);
+                intent.putExtra("provinceId", provinceId);
+                intent.putExtra("ragionCode", ragionCode);
+                intent.putExtra("cityId", cityId);
+                getActivity().startActivityForResult(intent, 10010);
                 break;
             case R.id.rl_dept://科室
                 if (TextUtils.isEmpty(hosId)) {
@@ -144,11 +150,13 @@ this.onSubmitSuccess=onSubmitSuccess;
             case region:
                 tv_city_value.setText(provinceName + "/" + cityName + "/" + regions.get(options1).getRegionName());
                 ragionCode = regions.get(options1).getCode();
+                hosId=null;
+                tv_hos_value.setText("");
                 break;
-            case hospital:
-                tv_hos_value.setText(hospitals.get(options1).getHospitalName());
-                hosId = hospitals.get(options1).getId();
-                break;
+//            case hospital:
+//                tv_hos_value.setText(hospitals.get(options1).getHospitalName());
+//                hosId = hospitals.get(options1).getId();
+//                break;
             case dept:
                 tv_dept_value.setText(depts.get(options1).getDepartmentName());
                 deptId = depts.get(options1).getId();
@@ -247,11 +255,11 @@ this.onSubmitSuccess=onSubmitSuccess;
         toNomalNet(toGetParams(toParamsBaen("cityUuid", code)), RegionResponse.class, 3, UrlConstants.getWholeApiUrl(UrlConstants.GET_REGION, "2.0"), "正在获取区县列表");
     }
 
-    private void getHos() {
-        type = Type.hospital;
-        toNomalNet(toGetParams(toParamsBaen("regionUuid", ragionCode),toParamsBaen("cityUuid", cityId),toParamsBaen("provinceUuid", provinceId)), HospitalResponse.class, 4, UrlConstants.getWholeApiUrl(UrlConstants.GET_HOSPITAL, "2.0"), "正在获取医院列表");
-
-    }
+//    private void getHos() {
+//        type = Type.hospital;
+//        toNomalNet(toGetParams(toParamsBaen("regionUuid", ragionCode),toParamsBaen("cityUuid", cityId),toParamsBaen("provinceUuid", provinceId)), HospitalResponse.class, 4, UrlConstants.getWholeApiUrl(UrlConstants.GET_HOSPITAL, "2.0"), "正在获取医院列表");
+//
+//    }
 
     private void getDept() {
         type = Type.dept;
@@ -288,7 +296,7 @@ this.onSubmitSuccess=onSubmitSuccess;
             UIHelper.ToastMessage(getActivity(), "请填写您的电话号码");
             return;
         }
-        if (TextUtils.isEmpty(ragionCode)&&TextUtils.isEmpty(cityId)&&TextUtils.isEmpty(provinceId)) {
+        if (TextUtils.isEmpty(ragionCode) && TextUtils.isEmpty(cityId) && TextUtils.isEmpty(provinceId)) {
             UIHelper.ToastMessage(getActivity(), "请选择您所在城市");
             return;
         }
@@ -317,7 +325,7 @@ this.onSubmitSuccess=onSubmitSuccess;
 //        String url = "http://172.168.1.53/app/pub/doctor/2.0/insertServiceStaffMessage";
 //        toNomalNet(postPrams, BaseResponse.class, 7, url, "正在提交信息");
 
-    toNomalNet(postPrams, BaseResponse.class, 7, UrlConstants.getWholeApiUrl(UrlConstants.INSERT_SERVICE_STAFF_MESSAGE,"2.0"), "正在提交信息");
+        toNomalNet(postPrams, BaseResponse.class, 7, UrlConstants.getWholeApiUrl(UrlConstants.INSERT_SERVICE_STAFF_MESSAGE, "2.0"), "正在提交信息");
 
 
     }
@@ -332,6 +340,9 @@ this.onSubmitSuccess=onSubmitSuccess;
                 this.imagePath = path;
             }
             ImageLoader.getInstance().displayImage("file:/" + imagePath, iv_img);
+        }else if(resultCode == getActivity().RESULT_OK && requestCode==10010){
+            hosId=data.getStringExtra("hosId");
+            tv_hos_value.setText(data.getStringExtra("hosName")+"");
         }
     }
 
@@ -341,8 +352,8 @@ this.onSubmitSuccess=onSubmitSuccess;
             case 1://省
                 ProvinceResponse pr = (ProvinceResponse) bean;
                 provinces = pr.value;
-                if (provinces==null||provinces.size()<=0){
-                    UIHelper.ToastMessage(getActivity(),"暂无可选省市");
+                if (provinces == null || provinces.size() <= 0) {
+                    UIHelper.ToastMessage(getActivity(), "暂无可选省市");
                     return;
                 }
                 showPopupWindow(toPopListForProvince(provinces));
@@ -350,36 +361,36 @@ this.onSubmitSuccess=onSubmitSuccess;
             case 2://市
                 CityResponse cr = (CityResponse) bean;
                 citys = cr.value;
-                if (citys==null||citys.size()<=0){
+                if (citys == null || citys.size() <= 0) {
                     tv_city_value.setText(provinceName);
                     return;
                 }
 
-                    showPopupWindow(toPopListForCity(citys));
+                showPopupWindow(toPopListForCity(citys));
                 break;
             case 3://区县
                 RegionResponse rr = (RegionResponse) bean;
                 regions = rr.value;
-                if (regions==null||regions.size()<=0){
-                    tv_city_value.setText(provinceName + "/" + cityName );
+                if (regions == null || regions.size() <= 0) {
+                    tv_city_value.setText(provinceName + "/" + cityName);
                     return;
                 }
                 showPopupWindow(toPopListForRegion(regions));
                 break;
-            case 4://医院
-                HospitalResponse hr = (HospitalResponse) bean;
-                hospitals = hr.value;
-                if (hospitals==null||hospitals.size()<=0){
-                  UIHelper.ToastMessage(getActivity(),"暂无可选医院");
-                    return;
-                }
-                showPopupWindow(toPopListForHos(hospitals));
-                break;
+//            case 4://医院
+//                HospitalResponse hr = (HospitalResponse) bean;
+//                hospitals = hr.value;
+//                if (hospitals==null||hospitals.size()<=0){
+//                  UIHelper.ToastMessage(getActivity(),"暂无可选医院");
+//                    return;
+//                }
+//                showPopupWindow(toPopListForHos(hospitals));
+//                break;
             case 5://科室
                 DeptResponse dr = (DeptResponse) bean;
                 depts = dr.value;
-                if (depts==null||depts.size()<=0){
-                    UIHelper.ToastMessage(getActivity(),"暂无可选科室");
+                if (depts == null || depts.size() <= 0) {
+                    UIHelper.ToastMessage(getActivity(), "暂无可选科室");
                     return;
                 }
                 showPopupWindow(toPopListForDept(depts));
@@ -389,7 +400,7 @@ this.onSubmitSuccess=onSubmitSuccess;
                 subMitInfo(ir.value.get(0).getId());
                 break;
             case 7://提交
-                SharedPreferences.getInstance().putString(SharedPreferences.USER_INFO_COMPLETE,"3");
+                SharedPreferences.getInstance().putString(SharedPreferences.USER_INFO_COMPLETE, "3");
                 onSubmitSuccess.onSucess();
                 break;
         }
@@ -422,9 +433,9 @@ this.onSubmitSuccess=onSubmitSuccess;
     private ArrayList<String> toPopListForHos(List<HospitalsBean> lists) {
         ArrayList<String> list = new ArrayList<>();
         for (HospitalsBean bean : lists) {
-            String s=bean.getHospitalName();
+            String s = bean.getHospitalName();
             if (!TextUtils.isEmpty(s))
-            list.add(bean.getHospitalName().length()>18?bean.getHospitalName().substring(0,18)+"...":bean.getHospitalName());
+                list.add(bean.getHospitalName().length() > 18 ? bean.getHospitalName().substring(0, 18) + "..." : bean.getHospitalName());
         }
         return list;
     }
@@ -444,7 +455,8 @@ this.onSubmitSuccess=onSubmitSuccess;
         }
         return list;
     }
-    public interface OnSubmitSuccess{
+
+    public interface OnSubmitSuccess {
         void onSucess();
     }
 }
