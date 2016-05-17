@@ -6,14 +6,19 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
-import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+import com.hxqydyl.app.ys.activity.BaseRequstActivity;
 import com.hxqydyl.app.ys.adapter.PatientGroupSelectAdapter;
 import com.hxqydyl.app.ys.bean.PatientGroup;
-import com.hxqydyl.app.ys.http.PatientGroupNet;
+import com.hxqydyl.app.ys.bean.response.BaseResponse;
+import com.hxqydyl.app.ys.bean.response.PatientGroupResponse;
 import com.hxqydyl.app.ys.http.UrlConstants;
+import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.DialogUtils;
+import com.hxqydyl.app.ys.utils.InjectId;
+import com.hxqydyl.app.ys.utils.InjectUtils;
 import com.hxqydyl.app.ys.utils.LoginManager;
 
 import java.util.ArrayList;
@@ -21,23 +26,30 @@ import java.util.ArrayList;
 /**
  * Created by white_ash on 2016/3/20.
  */
-public class PatientGroupSelectActivity extends BaseTitleActivity implements View.OnClickListener, DialogUtils.SavePatientGroupListener {
+public class PatientGroupSelectActivity extends BaseRequstActivity implements View.OnClickListener
+        , DialogUtils.SavePatientGroupListener {
+    @InjectId(id = R.id.lvPatientGroup)
     private ListView lvPatientGroup;
+    @InjectId(id = R.id.right_txt_btn)
+    private TextView queryBtn;
     private ArrayList<PatientGroup> patientGroupArrayList = new ArrayList<PatientGroup>();
     private PatientGroupSelectAdapter patientGroupSelectAdapter;
 
+    @InjectId(id = R.id.bAddPatientGroup)
     private Button bAddPatientGroup;
-    private PatientGroupNet patientGroupNet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_group_select);
+        InjectUtils.injectView(this);
 
         initViewOnBaseTitle(getString(R.string.select_group));
+        queryBtn.setVisibility(View.VISIBLE);
+        queryBtn.setText("确认");
         setBackListener(this);
+        queryBtn.setOnClickListener(this);
 
-        lvPatientGroup = (ListView) findViewById(R.id.lvPatientGroup);
         patientGroupSelectAdapter = new PatientGroupSelectAdapter(this, patientGroupArrayList);
         lvPatientGroup.setAdapter(patientGroupSelectAdapter);
         lvPatientGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -47,7 +59,6 @@ public class PatientGroupSelectActivity extends BaseTitleActivity implements Vie
             }
         });
 
-        bAddPatientGroup = (Button) findViewById(R.id.bAddPatientGroup);
         bAddPatientGroup.setOnClickListener(this);
         initListData();
     }
@@ -55,38 +66,42 @@ public class PatientGroupSelectActivity extends BaseTitleActivity implements Vie
     private void initListData() {
         ArrayList<PatientGroup> groups = (ArrayList<PatientGroup>) getIntent().getSerializableExtra(PatientGroupManageActivity.GROUPS_INFO_KEY);
         if (groups != null && groups.size() > 0) {
+            groups.remove(0);
             patientGroupArrayList.addAll(groups);
             patientGroupSelectAdapter.notifyDataSetChanged();
-        }else{
-            refreshPatientGroups();
         }
-    }
-
-    private void refreshPatientGroups(){
-        if(patientGroupNet == null) {
-            patientGroupNet = new PatientGroupNet(this);
-        }
-        patientGroupNet.getPatientGroups(LoginManager.getDoctorUuid());
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.back_img:
-                int groupSelcect = patientGroupSelectAdapter.getSelect();
-                if (groupSelcect != -1) {
-                    Intent resultIntent = new Intent();
-                    resultIntent.putExtra(PatientGroupManageActivity.GROUPS_INFO_KEY, patientGroupArrayList.get(groupSelcect));
-                    setResult(RESULT_OK, resultIntent);
-                } else {
-                    setResult(RESULT_CANCELED);
-                }
                 this.finish();
                 break;
             case R.id.bAddPatientGroup:
                 showInputDialog();
                 break;
+            case R.id.right_txt_btn:
+                int groupSelcect = patientGroupSelectAdapter.getSelect();
+                if (-1 != groupSelcect){
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra(PatientGroupManageActivity.GROUPS_INFO_KEY, patientGroupArrayList.get(groupSelcect));
+                    setResult(RESULT_OK, resultIntent);
+                }else {
+                    setResult(RESULT_CANCELED);
+                }
+                finish();
+                break;
         }
+    }
+
+    //获取群组列表
+    private void getGroups() {
+        toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), PatientGroupResponse.class, 3, UrlConstants.getWholeApiUrl(UrlConstants.GET_ALL_PATIENT_GROUP, "1.0"), "正在获取群组列表");
+    }
+
+    private void addGroups(String groupName) {
+        toNomalNet(toPostParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid()), toParamsBaen("groupName", groupName)), BaseResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.ADD_PATIENT_GROUP, "1.0"), "正在添加");
     }
 
     private void showInputDialog() {
@@ -96,18 +111,26 @@ public class PatientGroupSelectActivity extends BaseTitleActivity implements Vie
 
     @Override
     public void onSaveGroup(String groupName) {
-        patientGroupNet.addPatientGroup(LoginManager.getDoctorUuid(),groupName);
+        addGroups(groupName);
     }
 
     @Override
-    public void onResponse(String url, Object result) {
-        super.onResponse(url, result);
-        if(url.endsWith(UrlConstants.GET_ALL_PATIENT_GROUP)){
-            patientGroupArrayList.clear();
-            patientGroupArrayList.addAll((ArrayList<PatientGroup>)result);
-            patientGroupSelectAdapter.notifyDataSetChanged();
-        }else{
-            refreshPatientGroups();
+    public void onSuccessToBean(Object bean, int flag) {
+        switch (flag) {
+            case 1:
+                UIHelper.ToastMessage(this, "添加成功");
+                getGroups();
+                setResult(RESULT_OK);
+                break;
+            case 3:
+                PatientGroupResponse pgr = (PatientGroupResponse) bean;
+                if (pgr.getRelist() != null) {
+                    patientGroupArrayList.clear();
+                    patientGroupArrayList.addAll(pgr.getRelist());
+                    patientGroupSelectAdapter.notifyDataSetChanged();
+                }
+                break;
         }
     }
+
 }

@@ -123,6 +123,25 @@ public class DialogUtils {
         dialog.show();
     }
 
+    public static void showDeletePatientGroupDialog(Context context,final DeletePatientGroupListener listener,final String groupId){
+        SweetAlertDialog pDialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText("是否删除？")
+                .setContentText("该分组下存在随访患者，如删除此分组，此分组的患者将移至默认分组下")
+                .setConfirmText("确认")
+                .setCancelText("取消")
+                .showCancelButton(true)
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismiss();
+                        listener.onDeleteGroup(groupId);
+                    }
+                });
+        pDialog.show();
+    }
+
+
+
     /**
      * 显示选择拍照或者从相册选取的对话框
      * @param context
@@ -154,6 +173,10 @@ public class DialogUtils {
 
     public interface SavePatientGroupListener {
         void onSaveGroup(String groupName);
+    }
+
+    public interface DeletePatientGroupListener {
+        void onDeleteGroup(String groupId);
     }
 
     public interface GetPicWaySelectedListener{

@@ -75,4 +75,5 @@ public class PatientGroupSelectAdapter extends BaseAdapter {
     public int getSelect() {
         return select;
     }
+
 }

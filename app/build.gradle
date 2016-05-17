@@ -8,7 +8,7 @@ android {
         applicationId "com.hxqydyl.app.ys"
         minSdkVersion 17
         targetSdkVersion 23
-        versionCode 20160510
+        versionCode 20160511
         versionName "2.3"
     }
     buildTypes {
@@ -36,6 +36,7 @@ dependencies {
 
     /*首页轮播图用到的*/
     compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.google.code.gson:gson:2.6.2'
@@ -48,7 +49,6 @@ dependencies {
     compile 'com.belerweb:pinyin4j:2.5.1'
     compile 'com.daimajia.swipelayout:library:1.2.0@aar'
     compile 'com.flyco.dialog:FlycoDialog_Lib:1.2.6@aar'
-    compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.zhy:okhttputils:2.3.8'
     compile 'fm.jiecao:jiecaovideoplayer:3.0_preview'
     compile 'com.daimajia.slider:library:1.1.5@aar'

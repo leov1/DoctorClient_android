@@ -158,7 +158,7 @@ public class FollowApplyOkActivity extends BaseRequstActivity implements View.On
 
     //获取群组
     public void getGroupList() {
-        toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), PatientGroupResponse.class, 4, UrlConstants.getWholeApiUrl(UrlConstants.GET_ALL_PATIENT_GROUP, "1.0"), "正在获取群组列表");
+        toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), PatientGroupResponse.class, 4, UrlConstants.getWholeApiUrl(UrlConstants.GET_ALL_PATIENT_GROUP, "2.0"), "正在获取群组列表");
 
     }
 
@@ -190,9 +190,6 @@ public class FollowApplyOkActivity extends BaseRequstActivity implements View.On
         final PatientGroup pg = patientGroupList.get(patientGroupSelectAdapter.getSelect());
         PostPrams postPrams = toPostParams(toParamsBaen("groupId",  pg.getGroupId()), toParamsBaen("customerUuid", customerUuid), toParamsBaen("doctorUuid",  LoginManager.getDoctorUuid()));
         toNomalNet(postPrams, BaseResponse.class, 2, UrlConstants.getWholeApiUrl(UrlConstants.MOVE_PATIENT_TO_OTHER_GROUP, "1.0"), "正在移动患者");
-//        Map<String,String> head=new HashMap<>();
-//        head.put("accept", "application/json");
-//        toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid()), toParamsBaen("groupId", pg.getGroupId()), toParamsBaen("customerUuid", customerUuid)), BaseResponse.class, 2, UrlConstants.getWholeApiUrl(UrlConstants.UPDATE_CUSTOMER_GROUP, "1.0"), "正在关联 ..");
     }
 
     @Override
@@ -217,9 +214,9 @@ public class FollowApplyOkActivity extends BaseRequstActivity implements View.On
                 break;
             case 4:
                 PatientGroupResponse pgr = (PatientGroupResponse) bean;
-                if (pgr.getRelist() != null && pgr.getRelist().size() > 0) {
+                if (pgr.value != null && pgr.value.size() > 0) {
                     patientGroupList.clear();
-                    patientGroupList.addAll(pgr.getRelist());
+                    patientGroupList.addAll(pgr.value);
                     patientGroupSelectAdapter.notifyDataSetChanged();
                 }
                 break;

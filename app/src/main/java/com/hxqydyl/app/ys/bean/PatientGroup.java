@@ -27,6 +27,11 @@ public class PatientGroup extends BaseBean implements Serializable {
         this.groupName = groupName;
     }
 
+    //该分组下是否含有患者
+    public boolean isHasPatient(){
+        return customers != null && customers.size() != 0;
+    }
+
     public String getGroupName() {
         return groupName;
     }

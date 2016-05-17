@@ -22,6 +22,7 @@
     <permission
         android:name="${applicationId}.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
+
     <uses-permission android:name="${applicationId}.permission.JPUSH_MESSAGE" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -170,21 +171,21 @@
             android:screenOrientation="portrait" />
 
 
-        <activity android:name=".activity.follow.PatientSelectActivity"></activity>
+        <activity android:name=".activity.follow.PatientSelectActivity"/>
         <activity
             android:name="galleryfinal.wq.photo.MediaChoseActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_activity_media_chose"
             android:screenOrientation="portrait"
-            android:theme="@style/AppBaseThemeLib"></activity>
+            android:theme="@style/AppBaseThemeLib"/>
         <activity
             android:name="galleryfinal.wq.photo.CropImageActivity"
             android:label="@string/title_activity_crop_image"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name="galleryfinal.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppBaseThemeLib"></activity>
+            android:theme="@style/AppBaseThemeLib"/>
         <activity
             android:name=".activity.BigPicActivity"
             android:screenOrientation="portrait" />
@@ -213,7 +214,7 @@
         <service
             android:name="cn.jpush.android.service.DownloadService"
             android:enabled="true"
-            android:exported="false"></service>
+            android:exported="false"/>
 
         <!-- Required SDK 核心功能-->
         <!-- option since 2.0.5 可配置PushService，DaemonService,PushReceiver,AlarmReceiver的android:process参数 将JPush相关组件设置为一个独立进程 -->

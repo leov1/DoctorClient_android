@@ -47,7 +47,7 @@ public class FollowMainActivity extends BaseRequstActivity implements View.OnCli
     private ArrayList<PatientGroup> patientGroups = new ArrayList<PatientGroup>();
     private PatientListAdapter patientListAdapter;
 
-
+    private Intent intent;
     private Patient curOperatePatient;
     private String groupId;
 
@@ -117,31 +117,32 @@ public class FollowMainActivity extends BaseRequstActivity implements View.OnCli
                 finish();
                 break;
             case R.id.right_img:    //添加患者
-                Intent patientAddIntent = new Intent(FollowMainActivity.this, PatientAddActivity.class);
-                startActivityForResult(patientAddIntent, REQ_MANAGE_PATIENT_GROUP);
+                intent = new Intent(FollowMainActivity.this, PatientAddActivity.class);
+                startActivityForResult(intent, REQ_MANAGE_PATIENT_GROUP);
                 break;
             case R.id.rl_apply://随访申请
-                Intent applyIntent = new Intent(FollowMainActivity.this, FollowApplyActivity.class);
-                startActivity(applyIntent);
+                intent = new Intent(FollowMainActivity.this, FollowApplyActivity.class);
+                startActivity(intent);
                 break;
             case R.id.rl_mgr://随访方案管理
-                Intent mgrIntent = new Intent(FollowMainActivity.this, PlanMgrActivity.class);
-                startActivity(mgrIntent);
+                intent = new Intent(FollowMainActivity.this, PlanMgrActivity.class);
+                startActivity(intent);
                 break;
             case R.id.rl_notice://群发通知
-                Intent noticeIntent = new Intent(FollowMainActivity.this, MassActivity.class);
-                startActivity(noticeIntent);
+                intent = new Intent(FollowMainActivity.this, MassActivity.class);
+                startActivity(intent);
                 break;
             case R.id.rl_articl://患教库
                 CommentWebActivity.toCommentWeb(UrlConstants.getWholeApiUrl(UrlConstants.PATIENT_EDUCATION), null, FollowMainActivity.this, false);
                 break;
             case R.id.ivManagePatientGroup://分组管理
-                Intent groupManageIntent = new Intent(FollowMainActivity.this, PatientGroupManageActivity.class);
-                startActivityForResult(groupManageIntent, REQ_MANAGE_PATIENT_GROUP);
+                intent = new Intent(FollowMainActivity.this, PatientGroupManageActivity.class);
+                intent.putExtra(PatientGroupManageActivity.GROUPS_INFO_KEY, patientGroups);
+                startActivityForResult(intent, REQ_MANAGE_PATIENT_GROUP);
                 break;
             case R.id.rl_follow_task:
-                Intent taskIntent = new Intent(this, FollowTaskActivity.class);
-                startActivity(taskIntent);
+                intent = new Intent(this, FollowTaskActivity.class);
+                startActivity(intent);
                 break;
         }
     }
@@ -158,11 +159,13 @@ public class FollowMainActivity extends BaseRequstActivity implements View.OnCli
                 getPatientGroup();
                 break;
             case REQ_MOVE_TO_OTHER_GROUP:
-                if (data.hasExtra(PatientGroupManageActivity.GROUPS_INFO_KEY)){
+                if (data != null && data.hasExtra(PatientGroupManageActivity.GROUPS_INFO_KEY)){
                     PatientGroup group = (PatientGroup) data.getSerializableExtra(PatientGroupManageActivity.GROUPS_INFO_KEY);
                     if (group != null && curOperatePatient != null) {
                         movePatientToOtherGroup(group.getGroupId(), curOperatePatient.getCustomerUuid(), LoginManager.getDoctorUuid());
                     }
+                }else {
+                    getPatientGroup();
                 }
                 break;
         }
@@ -190,8 +193,6 @@ public class FollowMainActivity extends BaseRequstActivity implements View.OnCli
                 }
                 break;
             case 2://移动患者分组返回
-                getPatientGroup();
-                break;
             case 3://删除患者
                 getPatientGroup();
                 break;

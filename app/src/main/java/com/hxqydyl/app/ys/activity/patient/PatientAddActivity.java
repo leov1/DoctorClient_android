@@ -23,6 +23,8 @@ import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.http.follow.CustomerNet;
 import com.hxqydyl.app.ys.http.follow.FollowCallback;
 import com.hxqydyl.app.ys.ui.UIHelper;
+import com.hxqydyl.app.ys.utils.InjectId;
+import com.hxqydyl.app.ys.utils.InjectUtils;
 import com.hxqydyl.app.ys.utils.LoginManager;
 import com.hxqydyl.app.ys.utils.StringUtils;
 
@@ -35,11 +37,17 @@ import java.util.List;
  */
 public class PatientAddActivity extends BaseRequstActivity implements View.OnClickListener {
 
+    @InjectId(id = R.id.ibAddressBook)
     private ImageView ibAddressBook;
+    @InjectId(id = R.id.etPhone)
     private EditText etPhone;
+    @InjectId(id = R.id.etRealName)
     private EditText etRealName;
+    @InjectId(id = R.id.etDiagnosis)
     private EditText etDiagnosis;
+    @InjectId(id = R.id.tvGroupName)
     private TextView tvGroupName;
+    @InjectId(id = R.id.btnAdd)
     private Button btnAdd;
 
     private PatientGroupNet patientGroupNet;
@@ -52,17 +60,12 @@ public class PatientAddActivity extends BaseRequstActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_add);
+        InjectUtils.injectView(this);
         initViewOnBaseTitle(getResources().getString(R.string.patient_add_title));
         setBackListener();
 
-        ibAddressBook = (ImageView) findViewById(R.id.ibAddressBook);
         ibAddressBook.setOnClickListener(this);
-        etPhone = (EditText) findViewById(R.id.etPhone);
-        etRealName = (EditText) findViewById(R.id.etRealName);
-        etDiagnosis = (EditText) findViewById(R.id.etDiagnosis);
-        tvGroupName = (TextView) findViewById(R.id.tvGroupName);
         tvGroupName.setOnClickListener(this);
-        btnAdd = (Button) findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(this);
 
 
