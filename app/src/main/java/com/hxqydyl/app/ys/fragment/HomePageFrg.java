@@ -319,18 +319,15 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
         switch (position) {
-            case 0://阅读
-                intent = new Intent(getActivity(), ReadingActivity.class);
-                startActivity(intent);
-                break;
-            case 1://讲堂
+
+            case 0://讲堂
                 if (!LoginManager.isHasLogin()) {
                     UIHelper.showLoginForResult(this.getActivity());
                     return;
                 }
                 CommentWebActivity.toCommentWebForResult(UrlConstants.getWholeApiUrl(UrlConstants.GET_VIDEOS), getActivity(), UIHelper.LOGIN_REQUEST_CODE, false);
                 break;
-            case 2://随访
+            case 1://随访
                 if (!LoginManager.isHasLogin()) {
                     UIHelper.showLoginForResult(this.getActivity());
                     return;
@@ -342,7 +339,7 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
                 intent = new Intent(getActivity(), FollowMainActivity.class);
                 startActivity(intent);
                 break;
-            case 3://诊所
+            case 2://诊所
                 if (!LoginManager.isHasLogin()) {
                     UIHelper.showLoginForResult(this.getActivity());
                     return;
@@ -352,6 +349,10 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
                     return;
                 }
                 CommentWebActivity.toCommentWebForResult(UrlConstants.getWholeApiUrl(UrlConstants.GET_CLINIC), getActivity(), UIHelper.LOGIN_REQUEST_CODE, false);
+                break;
+            case 3://阅读
+                intent = new Intent(getActivity(), ReadingActivity.class);
+                startActivity(intent);
                 break;
         }
     }

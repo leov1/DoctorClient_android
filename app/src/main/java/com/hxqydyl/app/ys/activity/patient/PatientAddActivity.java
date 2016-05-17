@@ -154,7 +154,6 @@ public class PatientAddActivity extends BaseRequstActivity implements View.OnCli
         if (requestCode == 0 && resultCode == 0 && data != null) {
             AddressBook ab = (AddressBook) data.getSerializableExtra("ab");
             etPhone.setText(ab.getPhone());
-            etRealName.setText(ab.getName());
             getCustomerByMobile(ab.getPhone());
         }
     }
