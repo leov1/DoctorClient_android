@@ -1,46 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_f7f7f7">
+    android:background="@color/color_f7f7f7"
+    android:orientation="vertical">
 
-    <include layout="@layout/top_title"/>
+    <include layout="@layout/top_title" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <LinearLayout
-                android:orientation="vertical"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:paddingBottom="70dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="70dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_marginTop="20dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:background="@drawable/bg_edittext"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp">
+                    android:layout_height="45dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/bg_edittext"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="手机号："
-                        android:textSize="@dimen/text_size_16"
                         android:layout_gravity="left"
-                        android:gravity="center_vertical" />
+                        android:gravity="center_vertical"
+                        android:text="手机号："
+                        android:textSize="@dimen/text_size_16" />
+
                     <EditText
                         android:id="@+id/etPhone"
-                        android:background="@color/transparent"
-                        android:inputType="phone"
-                        android:layout_weight="1"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:maxLength="11"
+                        android:layout_weight="1"
+                        android:background="@color/transparent"
+                        android:inputType="phone" />
+
                     <ImageView
                         android:id="@+id/ibAddressBook"
                         android:layout_width="30dp"
@@ -50,92 +58,103 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_marginTop="10dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:background="@drawable/bg_edittext"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp">
+                    android:layout_height="45dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_edittext"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="真实姓名："
-                        android:textSize="@dimen/text_size_16"
                         android:layout_gravity="left"
-                        android:gravity="center_vertical" />
+                        android:gravity="center_vertical"
+                        android:text="真实姓名："
+                        android:textSize="@dimen/text_size_16" />
+
                     <EditText
                         android:id="@+id/etRealName"
-                        android:background="@color/transparent"
-                        android:layout_weight="1"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/space_10"
+                        android:layout_weight="1"
+                        android:background="@color/transparent" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_marginTop="10dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:background="@drawable/bg_edittext"
                     android:layout_width="match_parent"
-                    android:layout_height="150dp">
+                    android:layout_height="150dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_edittext"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="主要诊断："
-                        android:textSize="@dimen/text_size_16"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="left"
                         android:gravity="top"
-                        android:paddingTop="@dimen/space_10" />
+                        android:paddingTop="@dimen/space_10"
+                        android:text="患者病情描述："
+                        android:textSize="@dimen/text_size_16" />
+
                     <EditText
                         android:id="@+id/etDiagnosis"
-                        android:background="@color/transparent"
-                        android:layout_weight="1"
-                        android:paddingTop="@dimen/space_10"
-                        android:gravity="top"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@color/transparent"
+                        android:gravity="top"
+                        android:padding="@dimen/space_10" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_marginTop="10dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:background="@drawable/bg_edittext"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp">
+                    android:layout_height="45dp"
+
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_edittext"
+                    android:orientation="horizontal">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@color/color_home_topbar"
+                        android:gravity="center_vertical"
+                        android:padding="10dp"
                         android:text="患者分组："
-                        android:textSize="@dimen/text_size_16"
-                        android:layout_gravity="left"
-                        android:gravity="center_vertical" />
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_16" />
+
                     <TextView
                         android:id="@+id/tvGroupName"
-                        android:background="@color/transparent"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:padding="10dp"
+                        android:drawableRight="@mipmap/icon_down_arrow"
+                        android:background="@color/transparent"
+                        android:gravity="center_vertical" />
                 </LinearLayout>
 
 
             </LinearLayout>
         </ScrollView>
+
         <Button
             android:id="@+id/btnAdd"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
+            android:layout_gravity="bottom"
+            android:background="@color/color_home_topbar"
             android:text="@string/save"
-            style="@style/btn_blue"
             android:textColor="@color/white"
-            android:layout_gravity="bottom" />
+            android:textSize="@dimen/text_size_18" />
     </FrameLayout>
-
-
 
 
 </LinearLayout>

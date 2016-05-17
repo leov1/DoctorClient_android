@@ -123,7 +123,6 @@ public class AddressBookSelectActivity extends BaseTitleActivity
                                                 int groupPosition, int childPosition, long id) {
                         AddressBook ab = adapter.getChild(groupPosition, childPosition);
                         adapter.setSelectAB(ab);
-
                         adapter.notifyDataSetChanged();
                         return false;
                     }

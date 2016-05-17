@@ -316,4 +316,11 @@
         <item name="android:textOn">"女"</item>
 
     </style>
+    <style name="dialog" parent="Theme.AppCompat">
+    <item name="android:windowFrame">@null</item><!--边框-->
+    <item name="android:windowIsFloating">true</item><!--是否浮现在activity之上-->
+    <item name="android:windowIsTranslucent">false</item><!--半透明-->
+    <item name="android:windowNoTitle">true</item><!--无标题-->
+    <item name="android:windowBackground">@color/transparent</item><!--背景透明-->
+    </style>
 </resources>

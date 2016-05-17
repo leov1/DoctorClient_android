@@ -20,8 +20,8 @@ android {
 
     productFlavors {
 //                ceshi{manifestPlaceholders = [HOST: "http://172.168.1.53",IS_TEST:true]}
-        ceshi { manifestPlaceholders = [HOST: "http://172.168.1.46:8080", IS_TEST: true] }
-        zs { manifestPlaceholders = [HOST: "http://admin.hxqydyl.com", IS_TEST: false] }
+        ceshi { manifestPlaceholders = [HOST: "http://172.168.1.46:8080", IS_TEST: true,UMENG_APPKEY:"565eb06267e58e0943002225",UMENG_CHANNEL:"cs",JPUSH_APPKEY:"6bda069a6d817d1f567a86ed"] }
+        zs { manifestPlaceholders = [HOST: "http://admin.hxqydyl.com", IS_TEST: false,UMENG_APPKEY:"565eb06267e58e0943002225",UMENG_CHANNEL:"hxq",JPUSH_APPKEY:"6bda069a6d817d1f567a86ed"] }
     }
 
 
@@ -35,6 +35,7 @@ dependencies {
     /*视频*/
 
     /*首页轮播图用到的*/
+    compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.android.support:appcompat-v7:23.3.0'

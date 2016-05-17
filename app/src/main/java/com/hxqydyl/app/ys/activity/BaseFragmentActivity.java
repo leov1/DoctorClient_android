@@ -8,6 +8,7 @@ import android.view.WindowManager;
 
 import com.hxqydyl.app.ys.utils.DialogUtils;
 import com.hxqydyl.app.ys.utils.SharedPreferences;
+import com.umeng.analytics.MobclickAgent;
 
 import cn.jpush.android.api.JPushInterface;
 import common.AppManager;
@@ -94,10 +95,14 @@ public class BaseFragmentActivity extends FragmentActivity implements RegisterSu
     protected void onResume() {
         super.onResume();
         JPushInterface.onResume(this);
+        MobclickAgent.onResume(this);
     }
 
     protected void onPause() {
         super.onPause();
         JPushInterface.onPause(this);
+        MobclickAgent.onPause(this);
+
+
     }
 }

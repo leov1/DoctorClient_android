@@ -1,5 +1,6 @@
 package com.hxqydyl.app.ys.ui;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -9,12 +10,15 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.Button;
 
+import com.hxqydyl.app.ys.R;
+import com.hxqydyl.app.ys.utils.DensityUtils;
+
 /**
  * Created by wangchao36 on 16/3/21.
  * 按字母排序列表，右侧的btn
  */
 public class AssortView extends Button {
-
+ private    Context context;
     public interface OnTouchAssortListener {
         public void onTouchAssortListener(String s);
         public void onTouchAssortUP();
@@ -23,16 +27,21 @@ public class AssortView extends Button {
     public AssortView(Context context) {
         super(context);
         // TODO Auto-generated constructor stub
+        this.context=context;
     }
 
     public AssortView(Context context, AttributeSet attrs) {
         super(context, attrs);
         // TODO Auto-generated constructor stub
+        this.context=context;
+
     }
 
     public AssortView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         // TODO Auto-generated constructor stub
+        this.context=context;
+
     }
 
     // 分类
@@ -64,14 +73,14 @@ public class AssortView extends Button {
             paint.setAntiAlias(true);
             // 默认粗体
             paint.setTypeface(Typeface.DEFAULT);
-            paint.setTextSize(40);
+            paint.setTextSize(DensityUtils.dp2px(context,15));
             // 白色
             paint.setColor(0xFF1f80b8);
             if (i == selectIndex) {
                 // 被选择的字母改变颜色和粗体
                 paint.setColor(Color.parseColor("#3399ff"));
                 paint.setFakeBoldText(true);
-                paint.setTextSize(50);
+                paint.setTextSize(DensityUtils.dp2px(context,20));
             }
             // 计算字母的X坐标
             float xPos = width / 2 - paint.measureText(assort[i]) / 2;

@@ -282,14 +282,15 @@
                 <category android:name="${applicationId}" />
             </intent-filter>
         </receiver>
-
-        <!-- Required . Enable it you can get statistics data with channel -->
         <meta-data
             android:name="JPUSH_CHANNEL"
             android:value="developer-default" />
         <meta-data
             android:name="JPUSH_APPKEY"
-            android:value="6bda069a6d817d1f567a86ed" /> <!-- </>值来自开发者平台取得的AppKey-->
+            android:value="${JPUSH_APPKEY}" /> <!-- </>值来自开发者平台取得的AppKey-->
+        <!--友盟-->
+        <meta-data android:value="${UMENG_APPKEY}" android:name="UMENG_APPKEY"></meta-data>
+        <meta-data android:value="${UMENG_CHANNEL}" android:name="UMENG_CHANNEL"></meta-data>
     </application>
 
 </manifest>
