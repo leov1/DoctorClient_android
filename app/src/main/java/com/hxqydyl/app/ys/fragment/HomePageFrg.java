@@ -54,7 +54,7 @@ import framework.listener.RegisterSucListener;
  */
 public class HomePageFrg extends BaseRequstFragment implements View.OnClickListener, ViewPagerEx.OnPageChangeListener, BaseSliderView.OnSliderClickListener
         , AdapterView.OnItemClickListener
-        ,  RegisterSucListener {
+        , RegisterSucListener {
 
     @InjectId(id = R.id.login_linear)
     private LinearLayout loginLiear;
@@ -83,8 +83,8 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
 
     @InjectId(id = R.id.slider)
     private SliderLayout mDemoSlider;
-@InjectId(id = R.id.layout_ent_gallery)
-private RelativeLayout adlayout;
+    @InjectId(id = R.id.layout_ent_gallery)
+    private RelativeLayout adlayout;
 
     private String doctorUuid;
     private String vpInfoCache;
@@ -121,9 +121,10 @@ private RelativeLayout adlayout;
     private void parseHeaderJSON() {
         if (!TextUtils.isEmpty(vpInfoCache)) {
             pageIconBeans.clear();
-            pageIconBeans = gson.fromJson(vpInfoCache,new TypeToken<List<PageIconBean>>(){}.getType());
+            pageIconBeans = gson.fromJson(vpInfoCache, new TypeToken<List<PageIconBean>>() {
+            }.getType());
             initSlider(pageIconBeans);
-        }else{
+        } else {
             adlayout.setVisibility(View.GONE);
         }
         if (!TextUtils.isEmpty(doctorInfoCache)) {
@@ -186,10 +187,10 @@ private RelativeLayout adlayout;
     }
 
     private void initSlider(List<PageIconBean> pageIconBeans) {
-        if (pageIconBeans == null || pageIconBeans.size() == 0){
+        if (pageIconBeans == null || pageIconBeans.size() == 0) {
             adlayout.setVisibility(View.GONE);
             return;
-        }else{
+        } else {
             adlayout.setVisibility(View.VISIBLE);
         }
         mDemoSlider.removeAllSliders();
@@ -403,9 +404,9 @@ private RelativeLayout adlayout;
                 break;
             case 2:
                 PageIconResponse pir = (PageIconResponse) bean;
-                    pageIconBeans = pir.value;
-                    initSlider(pageIconBeans);
-                    SharedPreferences.getInstance().putString(SharedPreferences.HOME_VP_CACHE, gson.toJson(pageIconBeans));
+                pageIconBeans = pir.value;
+                initSlider(pageIconBeans);
+                SharedPreferences.getInstance().putString(SharedPreferences.HOME_VP_CACHE, gson.toJson(pageIconBeans));
 
                 break;
         }

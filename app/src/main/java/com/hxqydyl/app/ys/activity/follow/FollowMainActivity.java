@@ -80,7 +80,6 @@ public class FollowMainActivity extends BaseRequstActivity implements View.OnCli
     public void deletePatient(String groupId, String customerUuid) {
         PostPrams postPrams = toPostParams(toParamsBaen("groupId", groupId), toParamsBaen("customerUuid", customerUuid),toParamsBaen("doctorUuid",LoginManager.getDoctorUuid()));
         toNomalNet(postPrams, BaseResponse.class, 3, UrlConstants.getWholeApiUrl(UrlConstants.DELETE_PATIENT, "1.0"), "正在删除患者");
-
     }
 
 

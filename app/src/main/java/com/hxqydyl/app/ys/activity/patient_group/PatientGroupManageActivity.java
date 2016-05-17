@@ -1,5 +1,6 @@
 package com.hxqydyl.app.ys.activity.patient_group;
 
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -47,17 +48,26 @@ public class PatientGroupManageActivity extends BaseRequstActivity implements Vi
         lvPatientGroup = (SwipeMenuListView) findViewById(R.id.lvPatientGroup);
         patientGroupAdapter = new PatientGroupAdapter(this, patientGroupArrayList);
         lvPatientGroup.setAdapter(patientGroupAdapter);
+        lvPatientGroup.setFocusable(false);
         lvPatientGroup.setMenuCreator(new SwipeMenuCreator() {
             @Override
             public void create(SwipeMenu menu) {
                 SwipeMenuItem menuItem = new SwipeMenuItem(PatientGroupManageActivity.this);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    menuItem.setBackground(new ColorDrawable(getResources().getColor(R.color.color_2080ba, null)));
+                    menuItem.setBackground(new ColorDrawable(getResources().getColor(R.color.color_fff26c4f, null)));
                 } else {
-                    menuItem.setBackground(new ColorDrawable(getResources().getColor(R.color.color_2080ba)));
+                    menuItem.setBackground(new ColorDrawable(getResources().getColor(R.color.color_fff26c4f)));
                 }
-                menuItem.setIcon(R.mipmap.ic_delete_patient_group);
-                menuItem.setWidth(DensityUtils.dp2px(PatientGroupManageActivity.this, 50));
+     //           menuItem.setIcon(R.mipmap.ic_delete_patient_group);
+                // set item width
+                menuItem.setWidth(DensityUtils.dp2px(PatientGroupManageActivity.this,90));
+                // set item title
+                menuItem.setTitle("删除");
+                // set item title fontsize
+                menuItem.setTitleSize(18);
+                // set item title font color
+                menuItem.setTitleColor(Color.WHITE);
+                menuItem.setWidth(DensityUtils.dp2px(PatientGroupManageActivity.this, 60));
                 menu.addMenuItem(menuItem);
             }
         });
