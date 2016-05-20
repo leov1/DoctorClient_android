@@ -22,6 +22,8 @@ import com.hxqydyl.app.ys.http.PatientGroupNet;
 import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.DialogUtils;
+import com.hxqydyl.app.ys.utils.InjectId;
+import com.hxqydyl.app.ys.utils.InjectUtils;
 import com.hxqydyl.app.ys.utils.LoginManager;
 import com.xus.http.httplib.model.PostPrams;
 
@@ -34,11 +36,17 @@ import java.util.List;
  */
 public class FollowApplyOkActivity extends BaseRequstActivity implements View.OnClickListener {
 
+    @InjectId(id = R.id.llAddPlan)
     private LinearLayout llAddPlan;
+    @InjectId(id = R.id.llAddGroup)
     private LinearLayout llAddGroup;
+    @InjectId(id = R.id.llGroupArea)
     private LinearLayout llGroupArea;
+    @InjectId(id = R.id.btnApply)
     private Button btnApply;
+    @InjectId(id = R.id.lvPlan)
     private ListView lvPlan;
+    @InjectId(id = R.id.lvGroup)
     private ListView lvGroup;
 
     private PlanSelectAdapter planSelectAdapter;
@@ -52,15 +60,21 @@ public class FollowApplyOkActivity extends BaseRequstActivity implements View.On
     private String customerUuid;
     private String type;
 
+    private Intent intent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_follow_apply_ok);
-        initViewOnBaseTitle("选择随访方案");
-        applyUuid = getIntent().getStringExtra("applyUuid");
-        customerUuid = getIntent().getStringExtra("customerUuid");
-        type = getIntent().getStringExtra("type");
-        setBackListener();
+        InjectUtils.injectView(this);
+
+        intent = getIntent();
+        if (intent!= null){
+            applyUuid = intent.getStringExtra("applyUuid");
+            customerUuid = intent.getStringExtra("customerUuid");
+            type = intent.getStringExtra("type");
+        }
+
         initView();
         initEvent();
         getGroupList();
@@ -74,12 +88,7 @@ public class FollowApplyOkActivity extends BaseRequstActivity implements View.On
     }
 
     private void initView() {
-        llAddPlan = (LinearLayout) findViewById(R.id.llAddPlan);
-        llAddGroup = (LinearLayout) findViewById(R.id.llAddGroup);
-        llGroupArea = (LinearLayout) findViewById(R.id.llGroupArea);
-        lvPlan = (ListView) findViewById(R.id.lvPlan);
-        lvGroup = (ListView) findViewById(R.id.lvGroup);
-        btnApply = (Button) findViewById(R.id.btnApply);
+        initViewOnBaseTitle("选择随访方案");
         planList = new ArrayList<>();
         patientGroupList = new ArrayList<>();
         planSelectAdapter = new PlanSelectAdapter(this, planList);
@@ -93,6 +102,7 @@ public class FollowApplyOkActivity extends BaseRequstActivity implements View.On
     }
 
     private void initEvent() {
+        setBackListener();
         llAddPlan.setOnClickListener(this);
         llAddGroup.setOnClickListener(this);
         btnApply.setOnClickListener(this);
@@ -117,8 +127,8 @@ public class FollowApplyOkActivity extends BaseRequstActivity implements View.On
                 addGroupDialog();
                 break;
             case R.id.llAddPlan:
-                Intent planIntent = new Intent(this, PlanEditActivity.class);
-                startActivityForResult(planIntent, 0);
+                intent = new Intent(this, PlanEditActivity.class);
+                startActivityForResult(intent, 0);
                 break;
             case R.id.btnApply:
                 if ("updateVisitRecord".equals(type)) {
@@ -149,9 +159,6 @@ public class FollowApplyOkActivity extends BaseRequstActivity implements View.On
         }
         PlanBaseInfo plan = planList.get(planSelectAdapter.getSelect());
 
-//        String url="http://172.168.1.53/app/pub/doctor/1.0/updateVisitRecord";
-//        toNomalNet(toPostParams(toParamsBaen("customerUuid", customerUuid), toParamsBaen("visitPreceptUuid", plan.getVisitUuid()), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())),
-//                BaseResponse.class, 5,url, "正更新关联信息");
         toNomalNet(toPostParams(toParamsBaen("customerUuid", customerUuid), toParamsBaen("visitPreceptUuid", plan.getVisitUuid()), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())),
                 BaseResponse.class, 5, UrlConstants.getWholeApiUrl(UrlConstants.UPDATE_VISIT_RECORD, "1.0"), "正更新关联信息");
     }
@@ -159,7 +166,6 @@ public class FollowApplyOkActivity extends BaseRequstActivity implements View.On
     //获取群组
     public void getGroupList() {
         toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), PatientGroupResponse.class, 4, UrlConstants.getWholeApiUrl(UrlConstants.GET_ALL_PATIENT_GROUP, "2.0"), "正在获取群组列表");
-
     }
 
     //获取方案列表

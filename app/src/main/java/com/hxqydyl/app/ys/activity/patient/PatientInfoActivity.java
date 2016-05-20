@@ -68,11 +68,9 @@ public class PatientInfoActivity extends BaseRequstActivity implements View.OnCl
             return;
         }
         setContentView(R.layout.activity_patient_info);
-
+        InjectUtils.injectView(this);
         initViewOnBaseTitle(getString(R.string.patient_info));
         setBackListener(this);
-
-        InjectUtils.injectView(this);
 
         refreshPatient();
     }

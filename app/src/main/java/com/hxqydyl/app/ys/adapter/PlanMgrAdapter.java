@@ -15,16 +15,14 @@ import java.util.List;
 /**
  * Created by hxq on 2016/3/10.
  */
-public class PlanMgrAdapter extends BaseAdapter{
+public class PlanMgrAdapter extends BaseAdapter {
 
     private Context context;
     private List<Plan> planList;
     private boolean isShowTag;
 
-    public PlanMgrAdapter(Context context, List<Plan> planList){
-        this.context = context;
-        this.planList = planList;
-        this.isShowTag = true;
+    public PlanMgrAdapter(Context context, List<Plan> planList) {
+        this(context, planList, true);
     }
 
     public PlanMgrAdapter(Context context, List<Plan> planList, boolean isShowTag) {
@@ -50,20 +48,20 @@ public class PlanMgrAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null){
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_article,parent, false);
+        if (convertView == null) {
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_article, parent, false);
         }
 
-        TextView name_tv = BaseViewHolder.get(convertView,R.id.name_tv);
-        TextView tag_tv = BaseViewHolder.get(convertView,R.id.tag_tv);
+        TextView name_tv = BaseViewHolder.get(convertView, R.id.name_tv);
+        TextView tag_tv = BaseViewHolder.get(convertView, R.id.tag_tv);
         final Plan plan = planList.get(position);
         name_tv.setText(plan.getPreceptName());
-        if (isShowTag) {
-            tag_tv.setText("已关联" + plan.getNum() + "人");
-        } else {
-            tag_tv.setText("");
-        }
-
+//        if (isShowTag) {
+//            tag_tv.setText("已关联" + plan.getNum() + "人");
+//        } else {
+//            tag_tv.setText("");
+//        }
+        tag_tv.setText("");
         return convertView;
     }
 }

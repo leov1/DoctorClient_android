@@ -3,7 +3,6 @@ package com.hxqydyl.app.ys.activity.patient;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 import com.google.gson.reflect.TypeToken;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseRequstActivity;
-import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.activity.CommentWebActivity;
 import com.hxqydyl.app.ys.activity.case_report.AddCaseReportActivity;
 import com.hxqydyl.app.ys.activity.case_report.FollowUpFormActivity;
@@ -23,16 +21,13 @@ import com.hxqydyl.app.ys.activity.follow.FollowApplyOkActivity;
 import com.hxqydyl.app.ys.adapter.PatientTreatInfoAdapter;
 import com.hxqydyl.app.ys.bean.Patient;
 import com.hxqydyl.app.ys.bean.PatientTreatInfo;
-import com.hxqydyl.app.ys.bean.response.BaseResponse;
-import com.hxqydyl.app.ys.bean.response.PatientGroupResponse;
-import com.hxqydyl.app.ys.http.CaseReportNet;
 import com.hxqydyl.app.ys.http.UrlConstants;
+import com.hxqydyl.app.ys.utils.InjectId;
+import com.hxqydyl.app.ys.utils.InjectUtils;
 import com.hxqydyl.app.ys.utils.LoginManager;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by shs.cn on 2016/3/19.
@@ -45,12 +40,17 @@ public class PatientDetailsActivity extends BaseRequstActivity implements View.O
     //    患者基本信息
     private PatientSimpleInfoViewHolder simpleInfoViewHolder;
     //    给患者添加治疗信息
+    @InjectId(id = R.id.bCommunicateWithPatient)
     private Button bCommunicateWithPatient;
+    @InjectId(id = R.id.bAddCaseReport)
     private Button bAddCaseReport;
+    @InjectId(id = R.id.bSelectNewFollowUpForPatient)
     private Button bSelectNewFollowUpForPatient;
+    @InjectId(id = R.id.right_txt_btn)
     private TextView right_txt_btn;
 
     //    患者治疗信息
+    @InjectId(id = R.id.lvPatientTreatInfo)
     private ListView lvPatientTreatInfo;
     private PatientTreatInfoAdapter patientTreatInfoAdapter;
     private ArrayList<PatientTreatInfo> patientTreatInfoArrayList = new ArrayList<PatientTreatInfo>();
@@ -61,6 +61,7 @@ public class PatientDetailsActivity extends BaseRequstActivity implements View.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_details);
+        InjectUtils.injectView(this);
         init();
         initView();
         initListener();
@@ -89,11 +90,6 @@ public class PatientDetailsActivity extends BaseRequstActivity implements View.O
 
     //初始化控件
     public void initView() {
-        lvPatientTreatInfo = (ListView) findViewById(R.id.lvPatientTreatInfo);
-        bCommunicateWithPatient = (Button) findViewById(R.id.bCommunicateWithPatient);
-        bAddCaseReport = (Button) findViewById(R.id.bAddCaseReport);
-        bSelectNewFollowUpForPatient = (Button) findViewById(R.id.bSelectNewFollowUpForPatient);
-        right_txt_btn = (TextView) findViewById(R.id.right_txt_btn);
         patientTreatInfoAdapter = new PatientTreatInfoAdapter(this, patientTreatInfoArrayList);
         lvPatientTreatInfo.setAdapter(patientTreatInfoAdapter);
         simpleInfoViewHolder = new PatientSimpleInfoViewHolder(this);
@@ -105,11 +101,7 @@ public class PatientDetailsActivity extends BaseRequstActivity implements View.O
         }
     }
 
-
     private void refreshTreatInfoList() {
-//        String url="http://172.168.1.53/mobile/patient/medical/record/1.0/getPatientMedicalRecordList";
-//        toNomalNetStringBack(toGetParams(toParamsBaen("customerUuid", patient.getCustomerUuid()), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid()),toParamsBaen("visitState","1")), 1, url, "正在获取患者病例");
-
         toNomalNetStringBack(toGetParams(toParamsBaen("customerUuid", patient.getCustomerUuid()), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid()),toParamsBaen("visitState","0")), 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_PATIENT_TREAT_RECORD, "1.0"), "正在获取患者病例");
     }
 

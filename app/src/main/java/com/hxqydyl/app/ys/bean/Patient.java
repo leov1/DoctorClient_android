@@ -62,6 +62,8 @@ public class Patient extends BaseBean implements Serializable {
     //患者描述
     private String illnessDescription;
 
+    private String visitPreceptUuid;
+
     @Override
     public String getId() {
         if (!TextUtils.isEmpty(customerUuid)){
@@ -290,5 +292,13 @@ public class Patient extends BaseBean implements Serializable {
 
     public void setFollowTime(String followTime) {
         this.followTime = followTime;
+    }
+
+    public String getVisitPreceptUuid() {
+        return visitPreceptUuid;
+    }
+
+    public void setVisitPreceptUuid(String visitPreceptUuid) {
+        this.visitPreceptUuid = visitPreceptUuid;
     }
 }

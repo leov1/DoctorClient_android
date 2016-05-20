@@ -24,19 +24,25 @@ import com.hxqydyl.app.ys.bean.followupform.MeasureFormRecord;
 import com.hxqydyl.app.ys.bean.followupform.OtherCheckRecord;
 import com.hxqydyl.app.ys.bean.followupform.WeightRecord;
 import com.hxqydyl.app.ys.bean.response.BaseResponse;
-import com.hxqydyl.app.ys.bean.response.FollowUpFormResponse;
 import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.ui.UIHelper;
+import com.hxqydyl.app.ys.utils.InjectId;
+import com.hxqydyl.app.ys.utils.InjectUtils;
 import com.xus.http.httplib.model.GetParams;
 
 import java.util.ArrayList;
 
 /**
+ * xxx的随访表单
  * Created by white_ash on 2016/3/23.
  */
 public class FollowUpFormActivity extends BaseRequstActivity implements View.OnClickListener, FollowUpFormAdapter.SeeHistoryButtonListener, ExpandableListView.OnGroupExpandListener {
+    @InjectId(id = R.id.lvForm)
     private ExpandableListView lvForm;
-    private Button bDoctorAdvice;
+    @InjectId(id = R.id.bModifyAdvice)
+    private Button bModifyAdvice;
+    @InjectId(id = R.id.bKeepAdvice)
+    private Button bKeepAdvice;
     private PatientSimpleInfoViewHolder simpleInfoViewHolder;
     private ArrayList<FollowUpFormGroup> formList = new ArrayList<FollowUpFormGroup>();
     private FollowUpFormAdapter followUpFormAdapter;
@@ -48,6 +54,7 @@ public class FollowUpFormActivity extends BaseRequstActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_follow_up_form);
+        InjectUtils.injectView(this);
         init();
         initView();
         initListener();
@@ -65,7 +72,6 @@ public class FollowUpFormActivity extends BaseRequstActivity implements View.OnC
 
     private void initView() {
         lvForm = (ExpandableListView) findViewById(R.id.lvForm);
-        bDoctorAdvice = (Button) findViewById(R.id.bDoctorAdvice);
         simpleInfoViewHolder = new PatientSimpleInfoViewHolder(this);
         initViewOnBaseTitle(String.format(getString(R.string.follow_up_form_title), patient.getCustomerName()));
         followUpFormAdapter = new FollowUpFormAdapter(this, formList, this);
@@ -75,7 +81,8 @@ public class FollowUpFormActivity extends BaseRequstActivity implements View.OnC
 
     private void initListener() {
         lvForm.setOnGroupExpandListener(this);
-        bDoctorAdvice.setOnClickListener(this);
+        bModifyAdvice.setOnClickListener(this);
+        bKeepAdvice.setOnClickListener(this);
         setBackListener(this);
     }
 
@@ -89,10 +96,16 @@ public class FollowUpFormActivity extends BaseRequstActivity implements View.OnC
             case R.id.back_img:
                 finish();
                 break;
-            case R.id.bDoctorAdvice:
-                Intent intent = new Intent(this, PatientAdviceInfoActivity.class);
-                intent.putExtra("customerUuid", patient.getCustomerUuid());
-                startActivity(intent);
+//            case R.id.bDoctorAdvice:
+//                Intent intent = new Intent(this, PatientAdviceInfoActivity.class);
+//                intent.putExtra("customerUuid", patient.getCustomerUuid());
+//                startActivity(intent);
+//                break;
+            case R.id.bKeepAdvice:
+
+                break;
+            case R.id.bModifyAdvice:
+
                 break;
         }
     }
@@ -106,14 +119,14 @@ public class FollowUpFormActivity extends BaseRequstActivity implements View.OnC
 
     @Override
     public void onSuccessToBean(Object bean, int flag) {
-        BaseResponse<VisitRecord> FollowUpFormResponse = (  BaseResponse<VisitRecord>) bean;
+        BaseResponse<VisitRecord> FollowUpFormResponse = (BaseResponse<VisitRecord>) bean;
         ArrayList<FollowUpFormGroup> list = toformList(FollowUpFormResponse);
         if (list != null && list.size() > 0) {
             formList.clear();
             formList.addAll(list);
             followUpFormAdapter.notifyDataSetChanged();
-        }else{
-            UIHelper.ToastMessage(this,"该表单暂无数据");
+        } else {
+            UIHelper.ToastMessage(this, "该表单暂无数据");
         }
     }
 

@@ -12,19 +12,13 @@ import android.widget.RelativeLayout;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseRequstActivity;
-import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.adapter.PlanMgrAdapter;
 import com.hxqydyl.app.ys.bean.follow.plan.Plan;
-import com.hxqydyl.app.ys.bean.follow.plan.PlanBaseInfo;
 import com.hxqydyl.app.ys.bean.response.BaseResponse;
-import com.hxqydyl.app.ys.bean.response.FollowUserApplyResponse;
 import com.hxqydyl.app.ys.bean.response.PlanInfoListResponse;
-import com.hxqydyl.app.ys.bean.response.PlanListResponse;
 import com.hxqydyl.app.ys.http.UrlConstants;
-import com.hxqydyl.app.ys.http.follow.FollowApplyNet;
-import com.hxqydyl.app.ys.http.follow.FollowCallback;
-import com.hxqydyl.app.ys.http.follow.FollowPlanNet;
 import com.hxqydyl.app.ys.ui.UIHelper;
+import com.hxqydyl.app.ys.utils.DensityUtils;
 import com.hxqydyl.app.ys.utils.LoginManager;
 
 import java.util.ArrayList;
@@ -73,7 +67,7 @@ public class PlanMgrActivity extends BaseRequstActivity implements View.OnClickL
             public void create(SwipeMenu menu) {
                 SwipeMenuItem deleteItem = new SwipeMenuItem(getApplicationContext());
                 deleteItem.setBackground(new ColorDrawable(Color.rgb(31, 128, 183)));
-                deleteItem.setWidth(dp2px(90));
+                deleteItem.setWidth(DensityUtils.dp2px(PlanMgrActivity.this,90));
                 deleteItem.setIcon(R.mipmap.ic_delete);
                 menu.addMenuItem(deleteItem);
             }
@@ -144,19 +138,14 @@ public class PlanMgrActivity extends BaseRequstActivity implements View.OnClickL
         }
     }
 
-    private int dp2px(int dp) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
-                getResources().getDisplayMetrics());
-    }
-
     //获取我的方案
     private void getMyVisitPreceptList() {
-        toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), PlanInfoListResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_MYVISIT_PRECEPTLIST, "1.0"), "正在获取方案列表");
+        toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), PlanInfoListResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_MYVISIT_PRECEPTLIST, "2.0"), "正在获取方案列表");
     }
 
     //获取推荐的随访方案
     private void getRecommendVisitpreceptByDoctorid() {
-        toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), PlanInfoListResponse.class, 2, UrlConstants.getWholeApiUrl(UrlConstants.GET_RECOMMEND_VISITPRECEPT_BY_DOCTORID, "1.0"), "正在推荐列表");
+        toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), PlanInfoListResponse.class, 2, UrlConstants.getWholeApiUrl(UrlConstants.GET_RECOMMEND_VISITPRECEPT_BY_DOCTORID, "2.0"), "正在推荐列表");
     }
 
     //删除方案
@@ -172,8 +161,8 @@ public class PlanMgrActivity extends BaseRequstActivity implements View.OnClickL
             case 1:
                 PlanInfoListResponse pilr = (PlanInfoListResponse) bean;
                 myPlanList.clear();
-                if (pilr.getRelist() != null && pilr.getRelist().size() > 0) {
-                    myPlanList.addAll(pilr.getRelist());
+                if (pilr.value != null && pilr.value.size() > 0) {
+                    myPlanList.addAll(pilr.value);
                 }
                 adapter.notifyDataSetChanged();
                 getRecommendVisitpreceptByDoctorid();
@@ -182,8 +171,8 @@ public class PlanMgrActivity extends BaseRequstActivity implements View.OnClickL
             case 2:
                 PlanInfoListResponse pilr2 = (PlanInfoListResponse) bean;
                 suggestPlanList.clear();
-                if (pilr2.getRelist() != null && pilr2.getRelist().size() > 0) {
-                    suggestPlanList.addAll(pilr2.getRelist());
+                if (pilr2.value != null && pilr2.value.size() > 0) {
+                    suggestPlanList.addAll(pilr2.value);
                 }
                 suggestPlanAdapter.notifyDataSetChanged();
                 break;

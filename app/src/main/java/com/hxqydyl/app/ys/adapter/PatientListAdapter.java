@@ -151,6 +151,11 @@ public class PatientListAdapter extends BaseExpandableListAdapter {
             tvPatientAge.setVisibility(View.VISIBLE);
         }
 
+        if (TextUtils.isEmpty(patient.getCustomerUuid())){
+            tvPatientAge.setVisibility(View.VISIBLE);
+            tvPatientAge.setText("未注册");
+        }
+
         TextView tvPatientFollowTime = BaseViewHolder.get(convertView, R.id.tvPatientFollowTime);
 
         if (TextUtils.isEmpty(patient.getApplyTime())) {
@@ -167,6 +172,14 @@ public class PatientListAdapter extends BaseExpandableListAdapter {
             tvDescription.setVisibility(View.VISIBLE);
             tvDescription.setText("问题："+patient.getCustomerMessage());
         }
+
+        ImageView ivPatientPro = BaseViewHolder.get(convertView,R.id.ivPatientPro);
+        if (TextUtils.isEmpty(patient.getVisitPreceptUuid())){
+            ivPatientPro.setVisibility(View.VISIBLE);
+        }else {
+            ivPatientPro.setVisibility(View.VISIBLE);
+        }
+
         ImageView ivMoveToOtherGroup = BaseViewHolder.get(convertView, R.id.ivMoveToOtherGroup);
         ivMoveToOtherGroup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,6 +199,15 @@ public class PatientListAdapter extends BaseExpandableListAdapter {
             }
         });
         final SwipeLayout swipeLayout = BaseViewHolder.get(convertView, R.id.swipLayout);
+
+        if (TextUtils.isEmpty(patient.getCustomerUuid())){
+            swipeLayout.setSwipeEnabled(false);
+            swipeLayout.setEnabled(false);
+        }else{
+            swipeLayout.setSwipeEnabled(true);
+            swipeLayout.setEnabled(true);
+        }
+
         swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
         swipeLayout.addDrag(SwipeLayout.DragEdge.Right, BaseViewHolder.get(convertView, R.id.llSwipMenu));
         swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {

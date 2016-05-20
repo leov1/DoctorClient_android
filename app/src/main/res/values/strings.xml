@@ -168,6 +168,8 @@
     <string name="symptoms_des">症状描述</string>
     <string name="impact">影&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;响</string>
     <string name="important_doctor_advice">重要医嘱</string>
+    <string name="keep_up_advice">维持原治疗方案</string>
+    <string name="modify_advice">修改随访方案</string>
     <string name="see_illness_change_record">查看病情变化记录</string>
     <string name="illness_change_status_in_record_list">病情变化：%s</string>
     <string name="illness_change_question">问题：%s</string>

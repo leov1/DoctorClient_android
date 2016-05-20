@@ -58,9 +58,9 @@ public class PatientGroupManageActivity extends BaseRequstActivity implements Vi
                 } else {
                     menuItem.setBackground(new ColorDrawable(getResources().getColor(R.color.color_fff26c4f)));
                 }
-     //           menuItem.setIcon(R.mipmap.ic_delete_patient_group);
+                //           menuItem.setIcon(R.mipmap.ic_delete_patient_group);
                 // set item width
-                menuItem.setWidth(DensityUtils.dp2px(PatientGroupManageActivity.this,90));
+                menuItem.setWidth(DensityUtils.dp2px(PatientGroupManageActivity.this, 90));
                 // set item title
                 menuItem.setTitle("删除");
                 // set item title fontsize
@@ -112,7 +112,6 @@ public class PatientGroupManageActivity extends BaseRequstActivity implements Vi
     private void initListData() {
         groups = (ArrayList<PatientGroup>) getIntent().getSerializableExtra(GROUPS_INFO_KEY);
         if (groups != null && groups.size() > 0) {
-            groups.remove(0);
             patientGroupArrayList.addAll(groups);
             patientGroupAdapter.notifyDataSetChanged();
         }
@@ -120,19 +119,19 @@ public class PatientGroupManageActivity extends BaseRequstActivity implements Vi
 
     //获取群组列表
     private void getGroups() {
-        toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), PatientGroupResponse.class, 3, UrlConstants.getWholeApiUrl(UrlConstants.GET_ALL_PATIENT_GROUP, "1.0"), "正在获取群组列表");
+        toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), PatientGroupResponse.class, 3, UrlConstants.getWholeApiUrl(UrlConstants.GET_ALL_PATIENT_GROUP, "2.0"), "正在获取群组列表");
     }
 
     private void delectGroups(String groupId) {
-        toNomalNet(toPostParams(toParamsBaen("groupId", groupId)), BaseResponse.class, 4, UrlConstants.getWholeApiUrl(UrlConstants.DELETE_PATIENT_GROUP, "1.0"), "正在删除");
+        toNomalNet(toPostParams(toParamsBaen("groupId", groupId)), BaseResponse.class, 4, UrlConstants.getWholeApiUrl(UrlConstants.DELETE_PATIENT_GROUP, "2.0"), "正在删除");
     }
 
     private void addGroups(String groupName) {
-        toNomalNet(toPostParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid()), toParamsBaen("groupName", groupName)), BaseResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.ADD_PATIENT_GROUP, "1.0"), "正在添加");
+        toNomalNet(toPostParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid()), toParamsBaen("groupName", groupName)), BaseResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.ADD_PATIENT_GROUP, "2.0"), "正在添加");
     }
 
     private void updateGroups(String groupId, String groupName) {
-        toNomalNet(toPostParams(toParamsBaen("groupId", groupId), toParamsBaen("groupName", groupName)), BaseResponse.class, 2, UrlConstants.getWholeApiUrl(UrlConstants.RENAME_PATIENT_GROUP, "1.0"), "正在修改");
+        toNomalNet(toPostParams(toParamsBaen("groupId", groupId), toParamsBaen("groupName", groupName)), BaseResponse.class, 2, UrlConstants.getWholeApiUrl(UrlConstants.RENAME_PATIENT_GROUP, "2.0"), "正在修改");
     }
 
     @Override
@@ -175,7 +174,7 @@ public class PatientGroupManageActivity extends BaseRequstActivity implements Vi
                 PatientGroupResponse pgr = (PatientGroupResponse) bean;
                 if (pgr.getRelist() != null) {
                     patientGroupArrayList.clear();
-                    patientGroupArrayList.addAll(pgr.getRelist());
+                    patientGroupArrayList.addAll(pgr.value);
                     patientGroupAdapter.notifyDataSetChanged();
                 }
                 break;

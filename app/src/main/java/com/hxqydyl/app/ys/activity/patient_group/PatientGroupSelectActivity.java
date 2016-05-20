@@ -66,7 +66,6 @@ public class PatientGroupSelectActivity extends BaseRequstActivity implements Vi
     private void initListData() {
         ArrayList<PatientGroup> groups = (ArrayList<PatientGroup>) getIntent().getSerializableExtra(PatientGroupManageActivity.GROUPS_INFO_KEY);
         if (groups != null && groups.size() > 0) {
-            groups.remove(0);
             patientGroupArrayList.addAll(groups);
             patientGroupSelectAdapter.notifyDataSetChanged();
         }

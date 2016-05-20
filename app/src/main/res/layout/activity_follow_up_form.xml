@@ -14,25 +14,43 @@
         <ExpandableListView
             android:id="@+id/lvForm"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:dividerHeight="@dimen/space_5"
-            android:divider="@color/color_f7f7f7"
+            android:layout_height="match_parent"
+            android:paddingBottom="100dp"
             android:background="@color/white"
-            android:layout_marginBottom="55dp">
+            android:divider="@color/color_f7f7f7"
+            android:dividerHeight="@dimen/space_5">
 
         </ExpandableListView>
 
-        <Button
-            android:id="@+id/bDoctorAdvice"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="@dimen/space_10"
-            android:layout_marginLeft="@dimen/space_15"
-            android:layout_marginRight="@dimen/space_15"
-            android:textColor="@color/white"
-            android:text="@string/important_doctor_advice"
-            android:background="@color/color_2080ba" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom">
+
+            <Button
+                android:id="@+id/bKeepAdvice"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="@dimen/space_10"
+                android:layout_marginLeft="@dimen/space_15"
+                android:layout_marginRight="@dimen/space_15"
+                android:background="@color/color_2080ba"
+                android:text="@string/keep_up_advice"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/bModifyAdvice"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/bKeepAdvice"
+                android:layout_marginBottom="@dimen/space_10"
+                android:layout_marginLeft="@dimen/space_15"
+                android:layout_marginRight="@dimen/space_15"
+                android:background="@color/color_2080ba"
+                android:text="@string/modify_advice"
+                android:textColor="@color/white" />
+        </RelativeLayout>
+
     </FrameLayout>
 
 </LinearLayout>

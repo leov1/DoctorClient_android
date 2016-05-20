@@ -225,7 +225,7 @@ public class FollowUpFormAdapter extends BaseExpandableListAdapter {
     private void bindWeightRecordData(WeightRecord record, LinearLayout llWeightRecord) {
         WeightRecordViewHolder viewHolder = new WeightRecordViewHolder();
         InjectUtils.injectView(viewHolder,llWeightRecord);
-        viewHolder.tvWeight.setText("" + record.getWeight());
+        viewHolder.tvWeight.setText(record.getWeight().toString());
     }
 
     private void bindIllnessChangeData(IllnessChange change, LinearLayout llIllnessChangeDetails) {

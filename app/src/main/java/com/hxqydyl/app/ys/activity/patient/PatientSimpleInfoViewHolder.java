@@ -31,7 +31,6 @@ public class PatientSimpleInfoViewHolder {
 
     public PatientSimpleInfoViewHolder(Activity activity) {
         wholeView = activity.findViewById(R.id.llPatientSimpleInfo);
-        InjectUtils.injectView(this, wholeView);
         options = new DisplayImageOptions.Builder()
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
