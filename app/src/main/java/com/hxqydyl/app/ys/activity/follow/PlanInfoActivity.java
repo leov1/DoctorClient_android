@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseRequstActivity;
 import com.hxqydyl.app.ys.adapter.HealthTipsAdapter;
-import com.hxqydyl.app.ys.adapter.MedicineAdapter;
+import com.hxqydyl.app.ys.adapter.MedicineInfoAdapter;
 import com.hxqydyl.app.ys.adapter.PlanCheckSycleAdapter;
 import com.hxqydyl.app.ys.adapter.PlanSelfScaleAdapter;
 import com.hxqydyl.app.ys.bean.follow.plan.CheckSycle;
@@ -43,33 +43,28 @@ public class PlanInfoActivity extends BaseRequstActivity implements View.OnClick
     private TextView tvEcgCycle;  //心电图
     private TextView tvBloodCycle;  //血
     private TextView tvLiverCycle;  //肝
+    private TextView tvCustomerTest;//自评周期
+    private TextView tvDoctorTest;//医评周期
 
     private View tvDoctorScaleLine;
     private View tvSelfScaleLine;
-
     private ListView lvMedicine;
-    private MedicineAdapter medicineAdapter;
+    private MedicineInfoAdapter medicineAdapter;
     private List<ImportantAdviceChild> medicineList;        // 药品列表
-
     private SwipeMenuListView lvOtherSycle;
     private PlanCheckSycleAdapter planCheckSycleAdapter;
     private List<CheckSycle> checkSycleList;
-
     private ListView lvSelfScale;
     private ListView lvDoctorScale;
     private PlanSelfScaleAdapter selfScaleAdapter;
     private PlanSelfScaleAdapter doctorScaleAdapter;
-
     private List<Scale> selfScaleList;
     private List<Scale> doctorScaleList;
-
     private SwipeMenuExpandableListView elvHealthTips;
     private HealthTipsAdapter healthTipsAdapter;
     private List<HealthTips> healthTipsList;
-
     private TextView tvPatientList;
     private TextView tvEdit;
-
     private String visitUuid = null;    //随访方案uuid
     private String preceptName = null;
     private String from = null; // my\suggest
@@ -104,13 +99,13 @@ public class PlanInfoActivity extends BaseRequstActivity implements View.OnClick
         tvDrugTherapy = (TextView) findViewById(R.id.tvDrugTherapy);
         tvSideEffects = (TextView) findViewById(R.id.tvSideEffects);
         tvPatientList = (TextView) findViewById(R.id.tvPatientList);
-
         tvFollowCycle = (TextView) findViewById(R.id.tvFollowCycle);
         tvWeightCycle = (TextView) findViewById(R.id.tvWeightCycle);
         tvEcgCycle = (TextView) findViewById(R.id.tvEcgCycle);
         tvBloodCycle = (TextView) findViewById(R.id.tvBloodCycle);
         tvLiverCycle = (TextView) findViewById(R.id.tvLiverCycle);
-
+        tvCustomerTest= (TextView) findViewById(R.id.tvCustomerTest);
+        tvDoctorTest= (TextView) findViewById(R.id.tvDoctorTest);
         tvDoctorScaleLine = findViewById(R.id.tvDoctorScaleLine);
         tvSelfScaleLine = findViewById(R.id.tvSelfScaleLine);
 
@@ -125,7 +120,7 @@ public class PlanInfoActivity extends BaseRequstActivity implements View.OnClick
 
         medicineList = new ArrayList<>();
         medicineList.add(new ImportantAdviceChild());
-        medicineAdapter = new MedicineAdapter(this, medicineList, lvMedicine, false);
+        medicineAdapter = new MedicineInfoAdapter(this, medicineList);
         lvMedicine.setAdapter(medicineAdapter);
 
         selfScaleList = new ArrayList<>();
@@ -182,7 +177,6 @@ public class PlanInfoActivity extends BaseRequstActivity implements View.OnClick
     public void onSuccessToString(String json, int flag) {
         //TODO 此处1.0先如此处理，2.0使用bean处理
         plan = gson.fromJson(json,Plan.class);
-        dismissDialog();
         updateUIData();
     }
 
@@ -199,7 +193,6 @@ public class PlanInfoActivity extends BaseRequstActivity implements View.OnClick
         tvEcgCycle.setText(plan.getElectrocardiogram() + "周");
         tvBloodCycle.setText(plan.getBloodRoutine() + "周");
         tvLiverCycle.setText(plan.getHepatic() + "周");
-
         medicineList.clear();
         if (plan.getDoctorAdvice() != null)
             medicineList.addAll(plan.getDoctorAdvice());

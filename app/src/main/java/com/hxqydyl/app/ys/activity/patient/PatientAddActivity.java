@@ -20,21 +20,28 @@ import com.flyco.dialog.widget.NormalListDialog;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseRequstActivity;
 import com.hxqydyl.app.ys.bean.AddressBook;
+import com.hxqydyl.app.ys.bean.NewPatient;
+import com.hxqydyl.app.ys.bean.Patient;
 import com.hxqydyl.app.ys.bean.PatientGroup;
 import com.hxqydyl.app.ys.bean.response.BaseResponse;
 import com.hxqydyl.app.ys.bean.response.PatientGroupResponse;
+import com.hxqydyl.app.ys.bean.response.SelectMobileResponse;
 import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.ui.UIHelper;
+import com.hxqydyl.app.ys.utils.DialogUtils;
 import com.hxqydyl.app.ys.utils.LoginManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by wangchao36 on 16/3/21.
  * 添加患者
  */
-public class PatientAddActivity extends BaseRequstActivity implements View.OnClickListener, TextWatcher {
+public class PatientAddActivity extends BaseRequstActivity implements View.OnClickListener, TextWatcher, SweetAlertDialog.OnSweetClickListener {
 
     private ImageView ibAddressBook;//通讯录
     private EditText etPhone;//电话输入框
@@ -45,7 +52,9 @@ public class PatientAddActivity extends BaseRequstActivity implements View.OnCli
     private List<PatientGroup> pgList = null;//群组
     private String[] groupItem = null;//群组名称
     private String selectGroupId = "0";//群组id，默认0，临时分组-1
-
+    private Patient patients;
+    private String id;
+private String uuid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +87,7 @@ public class PatientAddActivity extends BaseRequstActivity implements View.OnCli
     //验证用户手机
     public void getCustomerByMobile(String mobile) {
         if (mobile.length() >= 11) {
-            toNomalNetStringBack(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid()), toParamsBaen("mobile", mobile)), 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_CUSTOMER_BY_MOBILE, "1.0"), "正在验证手机号");
+            toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid()), toParamsBaen("mobile", mobile)), SelectMobileResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_CUSTOMER_BY_MOBILE, "2.0"), "正在验证手机号");
         }
     }
 
@@ -92,22 +101,27 @@ public class PatientAddActivity extends BaseRequstActivity implements View.OnCli
         if (TextUtils.isEmpty(mobile)) {
             UIHelper.ToastMessage(this, "请填写患者手机号!");
         }
+        if (mobile.length() < 11) {
+            UIHelper.ToastMessage(this, "请填写正确手机号！!");
+
+        }
         if (TextUtils.isEmpty(illnessDescription)) {
             UIHelper.ToastMessage(this, "请填写患者病情描述!");
         }
         toNomalNet(toPostParams(
+                toParamsBaen("id", id),
+                toParamsBaen("uuid", TextUtils.isEmpty(uuid)?"":uuid),
                 toParamsBaen("doctorUuid", LoginManager.getDoctorUuid()),
                 toParamsBaen("name", name),
                 toParamsBaen("mobile", mobile),
                 toParamsBaen("groupId", groupId),
                 toParamsBaen("illnessDescription", illnessDescription)),
-                BaseResponse.class, 2, UrlConstants.getWholeApiUrl(UrlConstants.ADD_CUSTOMER, "1.0"), "正在添加患者");
+                BaseResponse.class, 2, UrlConstants.getWholeApiUrl(UrlConstants.ADD_CUSTOMER, "2.0"), "正在添加患者");
     }
 
     //获取群组列表
     private void getGroups() {
         toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), PatientGroupResponse.class, 3, UrlConstants.getWholeApiUrl(UrlConstants.GET_ALL_PATIENT_GROUP, "1.0"), "正在获取群组列表");
-
     }
 
     @Override
@@ -128,7 +142,7 @@ public class PatientAddActivity extends BaseRequstActivity implements View.OnCli
 
     private void groupDialog(final TextView tv, final String[] items) {
         final NormalListDialog dialog = new NormalListDialog(this, items);
-        dialog.title("请选择分组").titleBgColor(ContextCompat.getColor(this,R.color.color_home_topbar))
+        dialog.title("请选择分组").titleBgColor(ContextCompat.getColor(this, R.color.color_home_topbar))
                 .layoutAnimation(null)
                 .show();
         dialog.setOnOperItemClickL(new OnOperItemClickL() {
@@ -162,6 +176,37 @@ public class PatientAddActivity extends BaseRequstActivity implements View.OnCli
     @Override
     public void onSuccessToBean(Object bean, int flag) {
         switch (flag) {
+            case 1:
+                SelectMobileResponse smr = (SelectMobileResponse) bean;
+                id = smr.value.getId() + "";
+                switch (smr.value.getId()) {
+                    case 1:
+                        DialogUtils.showNormalDialog(this, "提示", smr.value.getMsg(), this);
+                        patients = smr.value.getData();
+                        btnAdd.setEnabled(false);
+                        break;
+                    case 2:
+                        etRealName.setText(smr.value.getData().getCustomerName());
+                        tvGroupName.setEnabled(true);
+                        tvGroupName.setText("默认分组");
+                        selectGroupId = "0";
+                        uuid=smr.value.getData().getCustomerUuid();
+                        btnAdd.setEnabled(true);
+
+                        break;
+                    case 3:
+                        tvGroupName.setEnabled(false);
+                        tvGroupName.setText("临时分组");
+                        selectGroupId = "-1";
+                        btnAdd.setEnabled(true);
+
+                        break;
+                    case 4:
+                        UIHelper.ToastMessage(this, smr.value.getMsg());
+                        btnAdd.setEnabled(false);
+                        break;
+                }
+                break;
             case 2:
                 UIHelper.ToastMessage(this, "添加成功");
                 setResult(RESULT_OK);
@@ -185,29 +230,6 @@ public class PatientAddActivity extends BaseRequstActivity implements View.OnCli
         }
     }
 
-    @Override
-    public void onSuccessToString(String json, int flag) {
-        //TODO 需要接口返回新的数据
-        JSONObject object = JSONObject.parseObject(json);
-        JSONObject queryObj = object.getJSONObject("query");
-        String status = queryObj.getString("success");
-        if ("1".equals(status)) {
-            String name = object.getString("name");
-            etRealName.setText(name);
-            tvGroupName.setEnabled(true);
-            tvGroupName.setText("默认分组");
-            selectGroupId = "0";
-        } else {
-            tvGroupName.setEnabled(false);
-            tvGroupName.setText("临时分组");
-            selectGroupId = "-1";
-            String msg = queryObj.getString("message");
-            Log.e("doctorClient", msg);
-            UIHelper.ToastMessage(PatientAddActivity.this, msg);
-            PatientAddActivity.this.dismissDialog();
-        }
-    }
-
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -220,5 +242,15 @@ public class PatientAddActivity extends BaseRequstActivity implements View.OnCli
 
     @Override
     public void afterTextChanged(Editable s) {
+    }
+
+
+    @Override
+    public void onClick(SweetAlertDialog sweetAlertDialog) {
+        Intent intent = new Intent(this, PatientDetailsActivity.class);
+
+        intent.putExtra(PatientDetailsActivity.KEY_PATIENT, patients);
+        startActivity(intent);
+        this.finish();
     }
 }

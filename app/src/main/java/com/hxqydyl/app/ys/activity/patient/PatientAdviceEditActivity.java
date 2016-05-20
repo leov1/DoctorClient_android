@@ -2,9 +2,6 @@ package com.hxqydyl.app.ys.activity.patient;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,18 +12,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseRequstActivity;
-import com.hxqydyl.app.ys.activity.BaseTitleActivity;
-import com.hxqydyl.app.ys.adapter.MedicineAdapter;
-import com.hxqydyl.app.ys.adapter.MedicineDosageAdapter;
-import com.hxqydyl.app.ys.bean.Advice;
+import com.hxqydyl.app.ys.adapter.MedicineDosageEditAdapter;
+import com.hxqydyl.app.ys.adapter.MedicineEditAdapter;
 import com.hxqydyl.app.ys.bean.follow.plan.ImportantAdvice;
 import com.hxqydyl.app.ys.bean.follow.plan.ImportantAdviceChild;
-import com.hxqydyl.app.ys.bean.follow.plan.Medicine;
 import com.hxqydyl.app.ys.bean.follow.plan.MedicineDosage;
 import com.hxqydyl.app.ys.bean.response.BaseResponse;
-import com.hxqydyl.app.ys.http.PatientAdviceNet;
 import com.hxqydyl.app.ys.http.UrlConstants;
-import com.hxqydyl.app.ys.http.follow.FollowCallback;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.LoginManager;
 import com.hxqydyl.app.ys.utils.StringUtils;
@@ -44,7 +36,7 @@ public class PatientAdviceEditActivity extends BaseRequstActivity implements Vie
     private EditText etSideEffects; //其他治疗
     private LinearLayout llAddMedicine;  //   添加其他药品
     private ListView lvMedicine;
-    private MedicineAdapter medicineAdapter;
+    private MedicineEditAdapter medicineAdapter;
     private ArrayList<ImportantAdviceChild> medicineList;        // 药品列表
     private Button btnSave;
     private ImportantAdvice advice = null;
@@ -70,7 +62,7 @@ public class PatientAdviceEditActivity extends BaseRequstActivity implements Vie
         lvMedicine = (ListView) findViewById(R.id.lvMedicine);
         medicineList = new ArrayList<>();
         medicineList.add(new ImportantAdviceChild());
-        medicineAdapter = new MedicineAdapter(this, medicineList, lvMedicine, true);
+        medicineAdapter = new MedicineEditAdapter(this, medicineList, lvMedicine);
         lvMedicine.setAdapter(medicineAdapter);
         btnSave = (Button) findViewById(R.id.btnSave);
     }
@@ -86,7 +78,7 @@ public class PatientAdviceEditActivity extends BaseRequstActivity implements Vie
         switch (v.getId()) {
             case R.id.llAddMedicine:
                 medicineList.add(new ImportantAdviceChild());
-                medicineAdapter.notifyDataSetChanged(true);
+                medicineAdapter.notifyDataSetChanged();
                 break;
             case R.id.btnSave:
                 saveInfo();
@@ -114,7 +106,7 @@ public class PatientAdviceEditActivity extends BaseRequstActivity implements Vie
 
         ArrayList<ImportantAdviceChild> mList = new ArrayList<>();
         for (int i = 0; i < lvMedicine.getChildCount(); i++) {
-            MedicineAdapter.ViewHolder vh = (MedicineAdapter.ViewHolder) lvMedicine.getChildAt(i).getTag();
+            MedicineEditAdapter.ViewHolder vh = (MedicineEditAdapter.ViewHolder) lvMedicine.getChildAt(i).getTag();
             ImportantAdviceChild m = new ImportantAdviceChild();
             m.setMedicineUuid(vh.etName.getText().toString());
             m.setFood(vh.tvFoodRelation.getText().toString());
@@ -125,7 +117,7 @@ public class PatientAdviceEditActivity extends BaseRequstActivity implements Vie
             ListView lvDosage = vh.lvDosage;
             ArrayList<MedicineDosage> mdList = new ArrayList<>();
             for (int j = 0; j < lvDosage.getChildCount(); j++) {
-                MedicineDosageAdapter.ViewHolder mdVh = (MedicineDosageAdapter.ViewHolder) lvDosage.getChildAt(j).getTag();
+                MedicineDosageEditAdapter.ViewHolder mdVh = (MedicineDosageEditAdapter.ViewHolder) lvDosage.getChildAt(j).getTag();
                 MedicineDosage md = new MedicineDosage();
                 md.setDay(mdVh.etDay.getText().toString());
                 md.setSize(mdVh.etSize.getText().toString());

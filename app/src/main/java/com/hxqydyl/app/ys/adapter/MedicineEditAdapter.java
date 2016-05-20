@@ -1,10 +1,7 @@
 package com.hxqydyl.app.ys.adapter;
 
 import android.content.Context;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,34 +15,29 @@ import android.widget.TextView;
 import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.NormalListDialog;
 import com.hxqydyl.app.ys.R;
-import com.hxqydyl.app.ys.bean.follow.plan.ImportantAdvice;
 import com.hxqydyl.app.ys.bean.follow.plan.ImportantAdviceChild;
 import com.hxqydyl.app.ys.bean.follow.plan.Medicine;
 import com.hxqydyl.app.ys.bean.follow.plan.MedicineDosage;
 import com.hxqydyl.app.ys.utils.StringUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 药品用量adapter
  * Created by hxq on 2016/3/9.
  */
-public class MedicineAdapter extends BaseAdapter {
+public class MedicineEditAdapter extends BaseAdapter {
 
     private Context context;
     private List<ImportantAdviceChild> list;
     private ListView listView;
-    private boolean isEdit;
     private StringBuffer uuidDeleteSb;
 
-    public MedicineAdapter(Context context, List<ImportantAdviceChild> list, ListView listView, boolean isEdit) {
+    public MedicineEditAdapter(Context context, List<ImportantAdviceChild> list, ListView listView) {
         this.context = context;
         this.list = list;
         this.listView = listView;
-        this.isEdit = isEdit;
         uuidDeleteSb = new StringBuffer();
     }
 
@@ -64,29 +56,27 @@ public class MedicineAdapter extends BaseAdapter {
         return position;
     }
 
-    public void notifyDataSetChanged(boolean updateData) {
-        if (updateData && isEdit) {
-            for (int i = 0; i < listView.getChildCount() && i < list.size(); i++) {
-                ViewHolder vh = (ViewHolder) listView.getChildAt(i).getTag();
-                ImportantAdviceChild m = list.get(i);
-                m.setMedicineUuid(vh.etName.getText().toString());
-
-                List<MedicineDosage> mdList = m.getMd();
-                if (mdList == null) {
-                    mdList = new ArrayList<>();
-                    m.setMd(mdList);
-                }
-                for (int j = 0; j < vh.lvDosage.getChildCount() && i < mdList.size(); j++) {
-                    MedicineDosageAdapter.ViewHolder mdVh =
-                            (MedicineDosageAdapter.ViewHolder) vh.lvDosage.getChildAt(j).getTag();
-                    MedicineDosage md = mdList.get(j);
-                    md.setDay(mdVh.etDay.getText().toString());
-                    md.setSize(mdVh.etSize.getText().toString());
-                    md.setUnit(mdVh.tvUnit.getText().toString());
-                }
+    @Override
+    public void notifyDataSetChanged() {
+        for (int i = 0; i < listView.getChildCount() && i < list.size(); i++) {
+            ViewHolder vh = (ViewHolder) listView.getChildAt(i).getTag();
+            ImportantAdviceChild m = list.get(i);
+            m.setMedicineUuid(vh.etName.getText().toString());
+            List<MedicineDosage> mdList = m.getMd();
+            if (mdList == null) {
+                mdList = new ArrayList<>();
+                m.setMd(mdList);
             }
-
+            for (int j = 0; j < vh.lvDosage.getChildCount() && i < mdList.size(); j++) {
+                MedicineDosageEditAdapter.ViewHolder mdVh =
+                        (MedicineDosageEditAdapter.ViewHolder) vh.lvDosage.getChildAt(j).getTag();
+                MedicineDosage md = mdList.get(j);
+                md.setDay(mdVh.etDay.getText().toString());
+                md.setSize(mdVh.etSize.getText().toString());
+                md.setUnit(mdVh.tvUnit.getText().toString());
+            }
         }
+
         super.notifyDataSetChanged();
     }
 
@@ -120,40 +110,35 @@ public class MedicineAdapter extends BaseAdapter {
             timeSelected(holder.tvTimeNight, m.isTimeNight(), holder);
         }
         List<MedicineDosage> mdList = m.getMd();
-        MedicineDosageAdapter adapter;
+        MedicineDosageEditAdapter adapter;
         if (mdList.size() == 0) {
             mdList.add(new MedicineDosage("", "", "mg"));
         }
-        adapter = new MedicineDosageAdapter(context, mdList, holder.lvDosage, this, isEdit);
+        adapter = new MedicineDosageEditAdapter(context, mdList, holder.lvDosage, this);
         holder.lvDosage.setAdapter(adapter);
-        if (isEdit) {
-            holder.etName.setEnabled(true);
-            holder.ibDelete.setVisibility(View.VISIBLE);
-            setTimeClick(holder.tvTimeMorning, m, holder);
-            setTimeClick(holder.tvTimeNoon, m, holder);
-            setTimeClick(holder.tvTimeNight, m, holder);
-            holder.ibDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ImportantAdviceChild m = list.get(position);
-                    if (StringUtils.isNotEmpty(m.getMedicineUuid())) {
-                        if (uuidDeleteSb.length() > 0) uuidDeleteSb.append(",");
-                        uuidDeleteSb.append(m.getMedicineUuid());
-                    }
-                    list.remove(position);
-                    MedicineAdapter.this.notifyDataSetChanged(true);
+        holder.etName.setEnabled(true);
+        holder.ibDelete.setVisibility(View.VISIBLE);
+        setTimeClick(holder.tvTimeMorning, m, holder);
+        setTimeClick(holder.tvTimeNoon, m, holder);
+        setTimeClick(holder.tvTimeNight, m, holder);
+        holder.ibDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ImportantAdviceChild m = list.get(position);
+                if (StringUtils.isNotEmpty(m.getMedicineUuid())) {
+                    if (uuidDeleteSb.length() > 0) uuidDeleteSb.append(",");
+                    uuidDeleteSb.append(m.getMedicineUuid());
                 }
-            });
-            holder.tvFoodRelation.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    foodRelationDialog((TextView) v, m);
-                }
-            });
-        } else {
-            holder.etName.setEnabled(false);
-            holder.ibDelete.setVisibility(View.GONE);
-        }
+                list.remove(position);
+                MedicineEditAdapter.this.notifyDataSetChanged();
+            }
+        });
+        holder.tvFoodRelation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                foodRelationDialog((TextView) v, m);
+            }
+        });
         return convertView;
     }
 

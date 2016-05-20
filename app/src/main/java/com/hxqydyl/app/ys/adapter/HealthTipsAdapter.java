@@ -107,9 +107,7 @@ public class HealthTipsAdapter extends BaseExpandableListAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_health_tips_child, null);
             holder = new ChildViewHolder();
             holder.etDay = (EditText) convertView.findViewById(R.id.etDay);
-            holder.etFood = (EditText) convertView.findViewById(R.id.etFood);
-            holder.etSport = (EditText) convertView.findViewById(R.id.etSport);
-            holder.etSleep = (EditText) convertView.findViewById(R.id.etSleep);
+
             holder.etOther = (EditText) convertView.findViewById(R.id.etOther);
 
             convertView.setTag(holder);
@@ -118,9 +116,6 @@ public class HealthTipsAdapter extends BaseExpandableListAdapter {
         }
         final HealthTips tips = list.get(groupPosition);
         holder.etDay.setText(String.valueOf(tips.getPeriod()));
-        holder.etFood.setText(tips.getDiet());
-        holder.etSport.setText(tips.getSports());
-        holder.etSleep.setText(tips.getSleep());
         holder.etOther.setText(tips.getRest());
         return convertView;
     }
@@ -132,9 +127,6 @@ public class HealthTipsAdapter extends BaseExpandableListAdapter {
 
     public final class ChildViewHolder {
         public EditText etDay;
-        public EditText etFood;
-        public EditText etSport;
-        public EditText etSleep;
         public EditText etOther;
 
     }

@@ -13,24 +13,16 @@ import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.NormalListDialog;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseRequstActivity;
-import com.hxqydyl.app.ys.adapter.MedicineAdapter;
-import com.hxqydyl.app.ys.bean.Advice;
+import com.hxqydyl.app.ys.adapter.MedicineInfoAdapter;
 import com.hxqydyl.app.ys.bean.follow.plan.ImportantAdvice;
 import com.hxqydyl.app.ys.bean.follow.plan.ImportantAdviceChild;
-import com.hxqydyl.app.ys.bean.follow.plan.Medicine;
-import com.hxqydyl.app.ys.bean.response.ImportantAdviceResponse;
-import com.hxqydyl.app.ys.http.PatientAdviceNet;
 import com.hxqydyl.app.ys.http.UrlConstants;
-import com.hxqydyl.app.ys.http.follow.FollowApplyNet;
-import com.hxqydyl.app.ys.http.follow.FollowCallback;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.LoginManager;
 import com.xus.http.httplib.model.GetParams;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import okhttp3.Call;
 
 /**
  * 医嘱
@@ -42,7 +34,7 @@ public class PatientAdviceInfoActivity extends BaseRequstActivity implements Vie
     private TextView tvSideEffects; //其他治疗
 
     private ListView lvMedicine;
-    private MedicineAdapter medicineAdapter;
+    private MedicineInfoAdapter medicineAdapter;
     private List<ImportantAdviceChild> medicineList;        // 药品列表
 
     private String customerUuid = null;    //患者uuid
@@ -89,7 +81,7 @@ public class PatientAdviceInfoActivity extends BaseRequstActivity implements Vie
         tvSideEffects = (TextView) findViewById(R.id.tvSideEffects);
         lvMedicine = (ListView) findViewById(R.id.lvMedicine);
         medicineList = new ArrayList<>();
-        medicineAdapter = new MedicineAdapter(this, medicineList, lvMedicine, false);
+        medicineAdapter = new MedicineInfoAdapter(this, medicineList);
         lvMedicine.setAdapter(medicineAdapter);
     }
 

@@ -5,7 +5,7 @@
             <solid android:color="#ededed" />
         </shape>
     </item>
-    <item android:bottom="1dp" android:top="1dp"> <!--设置只有底部有边框-->
+    <item android:top="1px"> <!--设置只有底部有边框-->
         <shape>
             <solid android:color="#ffffff" />
         </shape>

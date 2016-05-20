@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_f7f7f7"
     android:orientation="vertical">
 
-    <include layout="@layout/top_title"></include>
+    <include
+        android:id="@+id/title"
+        layout="@layout/top_title"></include>
+
     <ScrollView
+        android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_above="@+id/btnSave"
+        android:scrollbars="none"
+
+        android:layout_below="@+id/title"
         android:layout_weight="1">
 
         <LinearLayout
@@ -17,313 +25,421 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:background="@drawable/bg_plan_item"
                 android:layout_width="match_parent"
-                android:layout_height="60dp">
+                android:layout_height="60dp"
+                android:background="@drawable/bg_plan_item">
+
                 <TextView
-                    android:text="方案名称："
-                    android:gravity="center_vertical|right"
-                    android:textSize="@dimen/text_size_18"
-                    android:layout_marginLeft="@dimen/space_20"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/space_20"
+                    android:gravity="center_vertical|right"
+                    android:text="方案名称："
+                    android:textSize="@dimen/text_size_18" />
+
                 <EditText
                     android:id="@+id/etTitle"
-                    android:hint="方案名称"
-                    android:textSize="@dimen/text_size_16"
-                    android:background="@color/transparent"
-                    android:textColor="#747474"
                     android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:layout_height="match_parent" />
+                    android:background="@color/transparent"
+                    android:hint="方案名称"
+                    android:textColor="#747474"
+                    android:textSize="@dimen/text_size_16" />
             </LinearLayout>
 
             <com.hxqydyl.app.ys.ui.scrollviewandgridview.MyScrollListView
                 android:id="@+id/lvMedicine"
-                android:background="@color/white"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:background="@color/white" />
 
             <LinearLayout
                 android:id="@+id/llAddMedicine"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/bg_plan_item"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_plan_item">
+
                 <TextView
-                    android:text="添加其他药物信息"
-                    android:drawablePadding="10dp"
-                    android:layout_marginLeft="@dimen/space_25"
-                    android:textSize="@dimen/text_size_16"
-                    android:drawableLeft="@mipmap/ic_add_patient_group"
-                    android:gravity="center"
                     android:layout_width="wrap_content"
-                    android:layout_height="45dp" />
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="@dimen/space_25"
+                    android:drawableLeft="@mipmap/ic_add_patient_group"
+                    android:drawablePadding="10dp"
+                    android:gravity="center"
+                    android:text="添加其他药物信息"
+                    android:textSize="@dimen/text_size_16" />
             </LinearLayout>
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_plan_item"
                 android:orientation="vertical"
                 android:paddingLeft="@dimen/space_20"
-                android:paddingRight="@dimen/space_20"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/bg_plan_item"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:paddingRight="@dimen/space_20">
+
                 <TextView
-                    android:text="药物不良反应处理"
-                    android:textColor="#696969"
-                    android:gravity="center_vertical|left"
-                    android:textSize="@dimen/text_size_16"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp" />
+                    android:layout_height="45dp"
+                    android:gravity="center_vertical|left"
+                    android:text="药物不良反应处理"
+                    android:textColor="#1b1b1b"
+                    android:textSize="@dimen/text_size_16" />
+
                 <EditText
                     android:id="@+id/etDrugTherapy"
-                    android:hint="请输入药物不良反应处理方案"
-                    android:gravity="top|left"
-                    android:textSize="@dimen/text_size_16"
-                    android:textColor="#696969"
-                    android:background="@color/transparent"
-                    android:layout_marginTop="@dimen/space_10"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp" />
+                    android:layout_height="80dp"
+                    android:layout_marginTop="@dimen/space_10"
+                    android:background="@color/transparent"
+                    android:gravity="top|left"
+                    android:hint="请输入药物不良反应处理方案"
+                    android:textColor="#696969"
+                    android:textSize="@dimen/text_size_16" />
             </LinearLayout>
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_plan_item"
                 android:orientation="vertical"
                 android:paddingLeft="@dimen/space_20"
-                android:paddingRight="@dimen/space_20"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/bg_plan_item"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:paddingRight="@dimen/space_20">
+
                 <TextView
-                    android:text="其他治疗"
-                    android:textColor="#696969"
-                    android:gravity="center_vertical|left"
-                    android:textSize="@dimen/text_size_16"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp" />
+                    android:layout_height="45dp"
+                    android:gravity="center_vertical|left"
+                    android:text="其他治疗"
+                    android:textColor="#1b1b1b"
+                    android:textSize="@dimen/text_size_16" />
+
                 <EditText
                     android:id="@+id/etSideEffects"
-                    android:hint="请输入其他治疗"
-                    android:gravity="top|left"
-                    android:textSize="@dimen/text_size_16"
-                    android:textColor="#696969"
-                    android:background="@color/transparent"
-                    android:layout_marginTop="@dimen/space_10"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp" />
+                    android:layout_height="80dp"
+                    android:layout_marginTop="@dimen/space_10"
+                    android:background="@color/transparent"
+                    android:gravity="top|left"
+                    android:hint="请输入其他治疗"
+                    android:textColor="#696969"
+                    android:textSize="@dimen/text_size_16" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal"
+            <TextView
                 android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="周期表"
+                android:textColor="#1b1b1b"
+                android:textSize="@dimen/text_size_16" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:background="@drawable/bg_plan_item"
-                android:layout_height="50dp">
+                android:orientation="horizontal">
+
                 <TextView
-                    android:text="随访周期"
-                    style="@style/plan_cycle_left_title"/>
+                    style="@style/plan_cycle_left_title"
+                    android:text="随访周期" />
+
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="match_parent"
+                    android:background="#ededed" />
+
                 <TextView
                     android:id="@+id/tvFollowCycle"
-                    android:text="1周"
-                    style="@style/plan_cycle_right_title" />
+                    style="@style/plan_cycle_right_title"
+                    android:text="1周" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:background="@drawable/bg_plan_item"
-                android:layout_height="50dp">
+                android:orientation="horizontal">
+
                 <TextView
-                    android:text="体重测量周期"
-                    style="@style/plan_cycle_left_title"/>
+                    style="@style/plan_cycle_left_title"
+                    android:text="体重测量周期" />
+
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="match_parent"
+                    android:background="#ededed" />
+
                 <TextView
                     android:id="@+id/tvWeightCycle"
-                    android:text="1周"
-                    style="@style/plan_cycle_right_title" />
+                    style="@style/plan_cycle_right_title"
+                    android:text="1周" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:background="@drawable/bg_plan_item"
-                android:layout_height="50dp">
+                android:orientation="horizontal">
+
                 <TextView
-                    android:text="心电图检查周期"
-                    style="@style/plan_cycle_left_title"/>
+                    style="@style/plan_cycle_left_title"
+                    android:text="患者自测量表周期" />
+
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="match_parent"
+                    android:background="#ededed" />
+
+                <TextView
+                    android:id="@+id/tvCustomerTest"
+                    style="@style/plan_cycle_right_title"
+                    android:text="1周" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_plan_item"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/plan_cycle_left_title"
+                    android:text="医评量表周期" />
+
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="match_parent"
+                    android:background="#ededed" />
+
+                <TextView
+                    android:id="@+id/tvDoctorTest"
+                    style="@style/plan_cycle_right_title"
+                    android:text="1周" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_plan_item"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/plan_cycle_left_title"
+                    android:text="心电图检查周期" />
+
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="match_parent"
+                    android:background="#ededed" />
+
                 <TextView
                     android:id="@+id/tvEcgCycle"
-                    android:text="1周"
-                    style="@style/plan_cycle_right_title" />
+                    style="@style/plan_cycle_right_title"
+                    android:text="1周" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:background="@drawable/bg_plan_item"
-                android:layout_height="50dp">
+                android:orientation="horizontal">
+
                 <TextView
-                    android:text="血常规"
-                    style="@style/plan_cycle_left_title"/>
+                    style="@style/plan_cycle_left_title"
+                    android:text="血常规" />
+
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="match_parent"
+                    android:background="#ededed" />
+
                 <TextView
                     android:id="@+id/tvBloodCycle"
-                    android:text="1周"
-                    style="@style/plan_cycle_right_title" />
+                    style="@style/plan_cycle_right_title"
+                    android:text="1周" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:background="@drawable/bg_plan_item"
-                android:layout_height="50dp">
+                android:orientation="horizontal">
+
                 <TextView
-                    android:text="肝功能"
-                    style="@style/plan_cycle_left_title"/>
+                    style="@style/plan_cycle_left_title"
+                    android:text="肝功能" />
+
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="match_parent"
+                    android:background="#ededed" />
+
                 <TextView
                     android:id="@+id/tvLiverCycle"
-                    android:text="1周"
-                    style="@style/plan_cycle_right_title" />
+                    style="@style/plan_cycle_right_title"
+                    android:text="1周" />
             </LinearLayout>
 
             <ui.swipemenulistview.SwipeMenuListView
                 android:id="@+id/lvOtherSycle"
-                android:layout_marginTop="@dimen/space_10"
-                android:background="@color/color_f7f7f7"
-                android:dividerHeight="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1px"
+                android:background="@color/color_f7f7f7"
+                android:divider="@color/transparent"
+                android:dividerHeight="0px" />
 
             <LinearLayout
                 android:id="@+id/llAddOtherSycle"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/bg_plan_item"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_plan_item"
+                android:gravity="center">
+
                 <TextView
-                    android:text="添加其他检查周期"
-                    android:drawablePadding="10dp"
-                    android:layout_marginLeft="@dimen/space_25"
-                    android:textSize="@dimen/text_size_16"
-                    android:drawableLeft="@mipmap/ic_add_patient_group"
-                    android:gravity="center"
                     android:layout_width="wrap_content"
-                    android:layout_height="45dp" />
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="@dimen/space_25"
+                    android:drawableLeft="@mipmap/ic_add_patient_group"
+                    android:drawablePadding="10dp"
+                    android:gravity="center"
+                    android:text="添加其他检查周期"
+                    android:textSize="@dimen/text_size_16" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_marginTop="10dp"
-                android:orientation="vertical"
-                android:background="@drawable/bg_plan_item"
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="为患者选择量表"
+                android:textColor="#1b1b1b"
+                android:textSize="@dimen/text_size_16" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_plan_item"
+                android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/tvSelfScale"
-                    android:text="为患者选择自评量表"
-                    android:textSize="@dimen/text_size_18"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="@dimen/space_25"
                     android:drawableRight="@mipmap/icon_right_arrow"
                     android:gravity="center_vertical"
                     android:paddingRight="@dimen/space_20"
-                    android:layout_marginLeft="@dimen/space_25"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp" />
+                    android:text="为患者选择自评量表"
+                    android:textSize="@dimen/text_size_18" />
 
                 <View
                     android:id="@+id/tvSelfScaleLine"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginLeft="@dimen/space_15"
-                    android:background="#d9d9d9"/>
+                    android:background="#d9d9d9" />
 
                 <com.hxqydyl.app.ys.ui.scrollviewandgridview.MyScrollListView
                     android:id="@+id/lvSelfScale"
-                    android:layout_marginLeft="@dimen/space_25"
-                    android:layout_marginRight="@dimen/space_15"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_25"
+                    android:layout_marginRight="@dimen/space_15" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="10dp"
-                android:orientation="vertical"
-                android:background="@drawable/bg_plan_item"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_plan_item"
+                android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/tvDoctorScale"
-                    android:text="为患者选择医评量表"
-                    android:paddingRight="@dimen/space_20"
-                    android:drawableRight="@mipmap/icon_right_arrow"
-                    android:layout_marginLeft="@dimen/space_25"
-                    android:textSize="@dimen/text_size_18"
-                    android:gravity="center_vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp" />
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="@dimen/space_25"
+                    android:drawableRight="@mipmap/icon_right_arrow"
+                    android:gravity="center_vertical"
+                    android:paddingRight="@dimen/space_20"
+                    android:text="为患者选择医评量表"
+                    android:textSize="@dimen/text_size_18" />
 
                 <View
                     android:id="@+id/tvDoctorScaleLine"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginLeft="@dimen/space_15"
-                    android:background="#d9d9d9"/>
+                    android:background="#d9d9d9" />
 
                 <com.hxqydyl.app.ys.ui.scrollviewandgridview.MyScrollListView
                     android:id="@+id/lvDoctorScale"
-                    android:layout_marginLeft="@dimen/space_25"
-                    android:layout_marginRight="@dimen/space_15"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/space_25"
+                    android:layout_marginRight="@dimen/space_15" />
 
             </LinearLayout>
 
             <TextView
-                android:text="健康小贴士"
-                android:gravity="center_vertical"
-                android:textSize="@dimen/text_size_16"
-                android:layout_marginLeft="@dimen/space_25"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/space_40" />
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="健康小贴士"
+                android:textColor="#1b1b1b"
+                android:textSize="@dimen/text_size_16" />
 
             <ui.swipemenulistview.SwipeMenuExpandableListView
                 android:id="@+id/elvHealthTips"
-                android:dividerHeight="@dimen/space_10"
-                android:divider="@color/color_f7f7f7"
-                android:childDivider="@color/color_f7f7f7"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:childDivider="@color/color_f7f7f7"
+                android:divider="@color/color_f7f7f7"
+                android:dividerHeight="10dp" />
 
             <LinearLayout
                 android:id="@+id/llAddTips"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="60dp"
-                android:background="@drawable/bg_plan_item"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="60dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_plan_item"
+                android:gravity="center">
 
                 <TextView
-                    android:text="添加其他健康小贴士"
-                    android:drawablePadding="10dp"
-                    android:layout_marginLeft="@dimen/space_25"
-                    android:textSize="@dimen/text_size_16"
-                    android:drawableLeft="@mipmap/ic_add_patient_group"
-                    android:gravity="center"
                     android:layout_width="wrap_content"
-                    android:layout_height="45dp" />
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="@dimen/space_25"
+                    android:drawableLeft="@mipmap/ic_add_patient_group"
+                    android:drawablePadding="10dp"
+                    android:gravity="center"
+                    android:text="添加其他健康小贴士"
+                    android:textSize="@dimen/text_size_16" />
 
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
     <Button
         android:id="@+id/btnSave"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:background="@color/color_home_topbar"
         android:text="@string/save"
-        style="@style/btn_blue"
         android:textColor="@color/white"
-        android:layout_gravity="bottom" />
+        android:textSize="@dimen/text_size_18" />
 
-</LinearLayout>
+</RelativeLayout>

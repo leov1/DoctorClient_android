@@ -212,7 +212,7 @@ public static String ADD_VISIT_PRECEPT = "/app/pub/doctor/%s/addVisitPrecept";
     //获取状态
     public static String GET_SERVICE_STAFFINFO = "/app/pub/doctor/%s/getServiceStaffInfo";
     //获取患者随访状态
-    public static String GET_CUSTOMER_BY_MOBILE = "/app/service/customer/%s/getCustomerByMobile";
+    public static String GET_CUSTOMER_BY_MOBILE = "/app/service/customer/%s/SelectCustomerMobile";
     //添加随访患者
 
 }

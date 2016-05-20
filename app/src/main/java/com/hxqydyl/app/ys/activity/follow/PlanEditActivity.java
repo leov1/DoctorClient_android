@@ -18,8 +18,8 @@ import com.google.gson.GsonBuilder;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseRequstActivity;
 import com.hxqydyl.app.ys.adapter.HealthTipsAdapter;
-import com.hxqydyl.app.ys.adapter.MedicineAdapter;
-import com.hxqydyl.app.ys.adapter.MedicineDosageAdapter;
+import com.hxqydyl.app.ys.adapter.MedicineDosageEditAdapter;
+import com.hxqydyl.app.ys.adapter.MedicineEditAdapter;
 import com.hxqydyl.app.ys.adapter.PlanCheckSycleAdapter;
 import com.hxqydyl.app.ys.adapter.PlanSelfScaleAdapter;
 import com.hxqydyl.app.ys.bean.follow.plan.CheckSycle;
@@ -52,6 +52,9 @@ import ui.swipemenulistview.SwipeMenuListView;
 public class PlanEditActivity extends BaseRequstActivity implements View.OnClickListener {
 
     private EditText etTitle;
+
+
+    private LinearLayout llAddMedicine;  //   添加其他药品
     private EditText etDrugTherapy; // 不良反应
     private EditText etSideEffects; //其他治疗
 
@@ -60,16 +63,16 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
     private TextView tvEcgCycle;  //心电图
     private TextView tvBloodCycle;  //血
     private TextView tvLiverCycle;  //肝
-
-    private LinearLayout llAddMedicine;  //   添加其他药品
-    private LinearLayout llAddOtherSycle;      // 添加其他检查周期
     private TextView tvSelfScale;  //   添加自评量表
     private TextView tvDoctorScale;  // 添加医评量表
+    private LinearLayout llAddOtherSycle;      // 添加其他检查周期
+
+
     private View tvDoctorScaleLine;
     private View tvSelfScaleLine;
 
     private ListView lvMedicine;
-    private MedicineAdapter medicineAdapter;
+    private MedicineEditAdapter medicineAdapter;
     private ArrayList<ImportantAdviceChild> medicineList;        // 药品列表
 
     private SwipeMenuListView lvOtherSycle;
@@ -88,24 +91,15 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
     private HealthTipsAdapter healthTipsAdapter;
     private ArrayList<HealthTips> healthTipsList;
     private LinearLayout llAddTips;
-
+    private TextView tvCustomerTest;//自评周期
+    private TextView tvDoctorTest;//医评周期
     private Button btnSave;
-
     private String from = null; // my\suggest
     private Plan plan = null;
 
-    //    private FollowCallback updateFollowCallback;
     private StringBuffer ortherMapDelete = new StringBuffer();
     private StringBuffer healthGuideDelete = new StringBuffer();
 
-//    private Handler handler = new Handler() {
-//        @Override
-//        public void handleMessage(Message msg) {
-//            super.handleMessage(msg);
-//            if (msg.what == 100) {
-//            }
-//        }
-//    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +117,6 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
 
         initView();
         bindEvent();
-//        initUpdateFollowCallback();
         updateUIData();
     }
 
@@ -131,41 +124,36 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
         etTitle = (EditText) findViewById(R.id.etTitle);
         etDrugTherapy = (EditText) findViewById(R.id.etDrugTherapy);
         etSideEffects = (EditText) findViewById(R.id.etSideEffects);
-
         tvFollowCycle = (TextView) findViewById(R.id.tvFollowCycle);
         tvWeightCycle = (TextView) findViewById(R.id.tvWeightCycle);
         tvEcgCycle = (TextView) findViewById(R.id.tvEcgCycle);
         tvBloodCycle = (TextView) findViewById(R.id.tvBloodCycle);
         tvLiverCycle = (TextView) findViewById(R.id.tvLiverCycle);
-
         llAddMedicine = (LinearLayout) findViewById(R.id.llAddMedicine);
         llAddOtherSycle = (LinearLayout) findViewById(R.id.llAddOtherSycle);
         tvSelfScale = (TextView) findViewById(R.id.tvSelfScale);
         tvDoctorScale = (TextView) findViewById(R.id.tvDoctorScale);
+        tvCustomerTest = (TextView) findViewById(R.id.tvCustomerTest);
+        tvDoctorTest = (TextView) findViewById(R.id.tvDoctorTest);
         tvDoctorScaleLine = findViewById(R.id.tvDoctorScaleLine);
         tvSelfScaleLine = findViewById(R.id.tvSelfScaleLine);
-
         lvMedicine = (ListView) findViewById(R.id.lvMedicine);
         lvSelfScale = (ListView) findViewById(R.id.lvSelfScale);
         lvDoctorScale = (ListView) findViewById(R.id.lvDoctorScale);
-
         lvOtherSycle = (SwipeMenuListView) findViewById(R.id.lvOtherSycle);
         checkSycleList = new ArrayList<>();
         planCheckSycleAdapter = new PlanCheckSycleAdapter(this, checkSycleList);
         lvOtherSycle.setAdapter(planCheckSycleAdapter);
-
         medicineList = new ArrayList<>();
         medicineList.add(new ImportantAdviceChild());
-        medicineAdapter = new MedicineAdapter(this, medicineList, lvMedicine, true);
+        medicineAdapter = new MedicineEditAdapter(this, medicineList, lvMedicine);
         lvMedicine.setAdapter(medicineAdapter);
-
         selfScaleList = new ArrayList<>();
         selfScaleAdapter = new PlanSelfScaleAdapter(this, selfScaleList, tvSelfScaleLine);
         lvSelfScale.setAdapter(selfScaleAdapter);
         doctorScaleList = new ArrayList<>();
         doctorScaleAdapter = new PlanSelfScaleAdapter(this, doctorScaleList, tvDoctorScaleLine);
         lvDoctorScale.setAdapter(doctorScaleAdapter);
-
         elvHealthTips = (SwipeMenuExpandableListView) findViewById(R.id.elvHealthTips);
         elvHealthTips.setGroupIndicator(null);
         healthTipsList = new ArrayList<>();
@@ -192,7 +180,8 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
         tvDoctorScale.setOnClickListener(this);
         llAddTips.setOnClickListener(this);
         btnSave.setOnClickListener(this);
-
+        tvCustomerTest.setOnClickListener(this);
+        tvDoctorTest.setOnClickListener(this);
         lvOtherSycle.setMenuCreator(new SwipeMenuCreator() {
             @Override
             public void create(SwipeMenu menu) {
@@ -221,7 +210,6 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
                 return false;
             }
         });
-
         elvHealthTips.setMenuCreator(new SwipeMenuCreator() {
             @Override
             public void create(SwipeMenu menu) {
@@ -246,6 +234,7 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
                         healthTipsList.remove(position);
                         healthTipsAdapter.notifyDataSetChanged();
                         break;
+
                 }
                 return false;
             }
@@ -274,6 +263,12 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
                 Intent choiceSelfIntent = new Intent(this, ChoiceSelfActivity.class);
                 startActivityForResult(choiceSelfIntent, 10);
                 break;
+            case R.id.tvCustomerTest:
+                DialogUtils.cycleDialog(this, (TextView) v, CheckSycle.cycleItem2);
+                break;
+            case R.id.tvDoctorTest:
+                DialogUtils.cycleDialog(this, (TextView) v, CheckSycle.cycleItem2);
+                break;
             case R.id.tvDoctorScale:
                 Intent choiceScaleIntent = new Intent(this, ChoiceScaleActivity.class);
                 startActivityForResult(choiceScaleIntent, 10);
@@ -287,7 +282,7 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
                 break;
             case R.id.llAddMedicine:
                 medicineList.add(new ImportantAdviceChild());
-                medicineAdapter.notifyDataSetChanged(true);
+                medicineAdapter.notifyDataSetChanged();
                 break;
             case R.id.llAddOtherSycle:
                 DialogUtils.showAddCheckSycleDialog(this, new DialogUtils.SaveCheckSycleListener() {
@@ -344,6 +339,7 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
             UIHelper.ToastMessage(this, "药物不良反应处理不能为空");
             return;
         }
+
         String sideEffects = etSideEffects.getText().toString();
         if (StringUtils.isEmpty(sideEffects)) {
             UIHelper.ToastMessage(this, "其他治疗不能为空");
@@ -357,7 +353,7 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
 
         ArrayList<ImportantAdviceChild> mList = new ArrayList<>();
         for (int i = 0; i < lvMedicine.getChildCount(); i++) {
-            MedicineAdapter.ViewHolder vh = (MedicineAdapter.ViewHolder) lvMedicine.getChildAt(i).getTag();
+            MedicineEditAdapter.ViewHolder vh = (MedicineEditAdapter.ViewHolder) lvMedicine.getChildAt(i).getTag();
             ImportantAdviceChild m = new ImportantAdviceChild();
             m.setMedicineUuid(vh.etName.getText().toString());
             m.setFood(vh.tvFoodRelation.getText().toString());
@@ -368,7 +364,7 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
             ListView lvDosage = vh.lvDosage;
             ArrayList<MedicineDosage> mdList = new ArrayList<>();
             for (int j = 0; j < lvDosage.getChildCount(); j++) {
-                MedicineDosageAdapter.ViewHolder mdVh = (MedicineDosageAdapter.ViewHolder) lvDosage.getChildAt(j).getTag();
+                MedicineDosageEditAdapter.ViewHolder mdVh = (MedicineDosageEditAdapter.ViewHolder) lvDosage.getChildAt(j).getTag();
                 MedicineDosage md = new MedicineDosage();
                 md.setDay(mdVh.etDay.getText().toString());
                 md.setSize(mdVh.etSize.getText().toString());
@@ -393,9 +389,6 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
             HealthTipsAdapter.ChildViewHolder vh = (HealthTipsAdapter.ChildViewHolder) elvHealthTips.getChildAt(i).getTag();
             HealthTips ht = new HealthTips();
             ht.setPeriod(vh.etDay.getText().toString());
-            ht.setDiet(vh.etFood.getText().toString());
-            ht.setSports(vh.etSport.getText().toString());
-            ht.setSleep(vh.etSleep.getText().toString());
             ht.setRest(vh.etOther.getText().toString());
             htList.add(ht);
         }
@@ -432,15 +425,13 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
 
     //新建随访方案
     private void addViditPrecept(Plan plan) {
-//        FollowPlanNet.addVisitPrecept(plan, updateFollowCallback);
-
         List<ImportantAdviceChild> advice = new ArrayList<>();
         for (int i = 0; i < plan.getDoctorAdvice().size(); i++) {
             advice.add(plan.getDoctorAdvice().get(i).toJsonBean());
         }
         Gson myJson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
-        String doctorAdvice =  myJson.toJson(advice);
+        String doctorAdvice = myJson.toJson(advice);
         PostPrams postPrams = toPostParams(
                 toParamsBaen("doctorUuid", LoginManager.getDoctorUuid()),//医生ID
                 toParamsBaen("preceptName", plan.getPreceptName()),  //方案名称
@@ -462,15 +453,13 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
 
 
     private void upViditPrecept(Plan plan) {
-//        FollowPlanNet.editVisitPrecept(plan, medicineAdapter.getUuidDeleteSb().toString(),
-////                ortherMapDelete.toString(), healthGuideDelete.toString(), updateFollowCallback);
         List<ImportantAdviceChild> advice = new ArrayList<>();
         for (int i = 0; i < plan.getDoctorAdvice().size(); i++) {
             advice.add(plan.getDoctorAdvice().get(i).toJsonBean());
         }
         Gson myJson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
-        String doctorAdvice =  myJson.toJson(advice);
+        String doctorAdvice = myJson.toJson(advice);
         PostPrams postPrams = toPostParams(
 
                 toParamsBaen("visitUuid", plan.getVisitUuid()),  //方案id
@@ -492,8 +481,6 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
                 toParamsBaen("doctorAdviceDelete", medicineAdapter.getUuidDeleteSb().toString()),//医评量表删除
                 toParamsBaen("ortherMapDelete", ortherMapDelete.toString())//健康小贴士删除
         );
-//        String url = "http://172.168.1.63/app/pub/doctor/1.0/editVisitPrecept";
-//        toNomalNet(postPrams, BaseResponse.class, 1, url, "正在修改随访方案");
         toNomalNet(postPrams, BaseResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.EDIT_VISIT_PRECEPT, "1.0"), "正在修改随访方案");
 
     }

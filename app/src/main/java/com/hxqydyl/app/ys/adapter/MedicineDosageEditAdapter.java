@@ -1,8 +1,6 @@
 package com.hxqydyl.app.ys.adapter;
 
 import android.content.Context;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +14,6 @@ import android.widget.TextView;
 import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.NormalListDialog;
 import com.hxqydyl.app.ys.R;
-import com.hxqydyl.app.ys.bean.follow.plan.Medicine;
 import com.hxqydyl.app.ys.bean.follow.plan.MedicineDosage;
 
 import java.util.List;
@@ -25,23 +22,21 @@ import java.util.List;
  * 药品用量adapter
  * Created by hxq on 2016/3/9.
  */
-public class MedicineDosageAdapter extends BaseAdapter{
+public class MedicineDosageEditAdapter extends BaseAdapter {
 
     private Context context;
     private List<MedicineDosage> list;
     private ListView listView;
-    private MedicineAdapter medicineAdapter;
-    private boolean isEdit;
+    private MedicineEditAdapter medicineAdapter;
 
-    public MedicineDosageAdapter(Context context, List<MedicineDosage> list,
-                                 ListView listView, MedicineAdapter medicineAdapter,
-                                 boolean isEdit){
+    public MedicineDosageEditAdapter(Context context, List<MedicineDosage> list,
+                                     ListView listView, MedicineEditAdapter medicineAdapter) {
         this.context = context;
         this.list = list;
         this.listView = listView;
         this.medicineAdapter = medicineAdapter;
-        this.isEdit = isEdit;
     }
+
     @Override
     public int getCount() {
         return list.size();
@@ -57,17 +52,13 @@ public class MedicineDosageAdapter extends BaseAdapter{
         return 0;
     }
 
-    public void notifyDataSetChanged(boolean updateData) {
-        if (updateData) {
-            medicineAdapter.notifyDataSetChanged(true);
-        }
-        super.notifyDataSetChanged();
-    }
+
+
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;
         final MedicineDosage md = list.get(position);
-        if (convertView == null){
+        if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_medicine_dosage, parent, false);
             holder = new ViewHolder();
             holder.etDay = (EditText) convertView.findViewById(R.id.etDay);
@@ -82,38 +73,32 @@ public class MedicineDosageAdapter extends BaseAdapter{
         holder.etDay.setText(md.getDay());
         holder.etSize.setText(md.getSize());
         holder.tvUnit.setText(md.getUnit());
-        if (isEdit) {
-            holder.etDay.setEnabled(true);
-            holder.etSize.setEnabled(true);
-            holder.tvUnit.setOnClickListener(new View.OnClickListener() {
+        holder.etDay.setEnabled(true);
+        holder.etSize.setEnabled(true);
+        holder.tvUnit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                unitDialog(holder.tvUnit);
+            }
+        });
+        if (position == list.size() - 1) {
+            holder.ibBtn.setImageDrawable(convertView.getResources().getDrawable(R.mipmap.tianjiayongliang));
+            holder.ibBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    unitDialog(holder.tvUnit);
+                    list.add(new MedicineDosage("", "", "mg"));
+                    MedicineDosageEditAdapter.this.notifyDataSetChanged();
                 }
             });
-            if (position == list.size() - 1) {
-                holder.ibBtn.setImageDrawable(convertView.getResources().getDrawable(R.mipmap.tianjiayongliang));
-                holder.ibBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        list.add(new MedicineDosage("", "", "mg"));
-                        MedicineDosageAdapter.this.notifyDataSetChanged(true);
-                    }
-                });
-            } else {
-                holder.ibBtn.setImageDrawable(convertView.getResources().getDrawable(R.mipmap.shanchuyongliang));
-                holder.ibBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        list.remove(position);
-                        MedicineDosageAdapter.this.notifyDataSetChanged();
-                    }
-                });
-            }
         } else {
-            holder.etDay.setEnabled(false);
-            holder.etSize.setEnabled(false);
-            holder.ibBtn.setVisibility(View.GONE);
+            holder.ibBtn.setImageDrawable(convertView.getResources().getDrawable(R.mipmap.shanchuyongliang));
+            holder.ibBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    list.remove(position);
+                    MedicineDosageEditAdapter.this.notifyDataSetChanged();
+                }
+            });
         }
 
         return convertView;

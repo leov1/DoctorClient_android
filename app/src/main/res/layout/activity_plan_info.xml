@@ -125,7 +125,34 @@
                     android:text=""
                     style="@style/plan_cycle_right_title" />
             </LinearLayout>
-
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:background="@drawable/bg_plan_item"
+                android:layout_height="50dp">
+                <TextView
+                    android:text="患者自测量表周期"
+                    style="@style/plan_cycle_left_title"/>
+                <TextView
+                    android:id="@+id/tvCustomerTest"
+                    android:text=""
+                    style="@style/plan_cycle_right_title" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:background="@drawable/bg_plan_item"
+                android:layout_height="50dp">
+                <TextView
+                    android:text="医评量表周期"
+                    style="@style/plan_cycle_left_title"/>
+                <TextView
+                    android:id="@+id/tvDoctorTest"
+                    android:text=""
+                    style="@style/plan_cycle_right_title" />
+            </LinearLayout>
             <LinearLayout
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_marginTop="10dp"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:background="@drawable/bg_plan_item"
@@ -11,6 +10,10 @@
         android:text="肝功能"
         android:layout_height="50dp"
         style="@style/plan_cycle_left_title"/>
+    <View
+        android:layout_width="1px"
+        android:layout_height="match_parent"
+        android:background="#ededed" />
     <TextView
         android:id="@+id/tvLiverCycle"
         android:text="1周"
