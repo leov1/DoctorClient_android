@@ -137,9 +137,6 @@ public class PlanInfoActivity extends BaseRequstActivity implements View.OnClick
         healthTipsList.add(new HealthTips());
         healthTipsAdapter = new HealthTipsAdapter(this, healthTipsList, elvHealthTips);
         elvHealthTips.setAdapter(healthTipsAdapter);
-        for (int i = 0; i < healthTipsAdapter.getGroupCount(); i++) {
-            elvHealthTips.expandGroup(i);
-        }
         if ("my".equals(from)) {
             tvPatientList.setVisibility(View.VISIBLE);
         } else {

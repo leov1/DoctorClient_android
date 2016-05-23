@@ -15,7 +15,6 @@
         android:layout_height="0dp"
         android:layout_above="@+id/btnSave"
         android:scrollbars="none"
-
         android:layout_below="@+id/title"
         android:layout_weight="1">
 
@@ -27,6 +26,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                
+
                 android:background="@drawable/bg_plan_item">
 
                 <TextView
@@ -58,6 +59,8 @@
                 android:id="@+id/llAddMedicine"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                
+
                 android:layout_marginTop="10dp"
                 android:background="@drawable/bg_plan_item">
 
@@ -108,6 +111,8 @@
                 android:background="@drawable/bg_plan_item"
                 android:orientation="vertical"
                 android:paddingLeft="@dimen/space_20"
+               
+
                 android:paddingRight="@dimen/space_20">
 
                 <TextView
@@ -137,6 +142,8 @@
                 android:background="@color/white"
                 android:gravity="center"
                 android:text="周期表"
+               
+
                 android:textColor="#1b1b1b"
                 android:textSize="@dimen/text_size_16" />
 

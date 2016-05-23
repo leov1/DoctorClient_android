@@ -48,7 +48,7 @@
                 android:orientation="vertical"
                 android:paddingLeft="@dimen/space_20"
                 android:paddingRight="@dimen/space_20"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/bg_plan_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -74,7 +74,7 @@
                 android:orientation="vertical"
                 android:paddingLeft="@dimen/space_20"
                 android:paddingRight="@dimen/space_20"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/bg_plan_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -95,9 +95,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="100dp" />
             </LinearLayout>
-
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="周期表"
+                android:textColor="#1b1b1b"
+                android:textSize="@dimen/text_size_16" />
             <LinearLayout
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="1px"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:background="@drawable/bg_plan_item"
@@ -108,11 +116,11 @@
                 <TextView
                     android:id="@+id/tvFollowCycle"
                     android:text=""
-                    style="@style/plan_cycle_right_title" />
+                    style="@style/plan_cycle_right_title_no_icon" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="1px"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:background="@drawable/bg_plan_item"
@@ -123,10 +131,10 @@
                 <TextView
                     android:id="@+id/tvWeightCycle"
                     android:text=""
-                    style="@style/plan_cycle_right_title" />
+                    style="@style/plan_cycle_right_title_no_icon" />
             </LinearLayout>
             <LinearLayout
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="1px"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:background="@drawable/bg_plan_item"
@@ -137,10 +145,10 @@
                 <TextView
                     android:id="@+id/tvCustomerTest"
                     android:text=""
-                    style="@style/plan_cycle_right_title" />
+                    style="@style/plan_cycle_right_title_no_icon" />
             </LinearLayout>
             <LinearLayout
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="1px"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:background="@drawable/bg_plan_item"
@@ -151,10 +159,10 @@
                 <TextView
                     android:id="@+id/tvDoctorTest"
                     android:text=""
-                    style="@style/plan_cycle_right_title" />
+                    style="@style/plan_cycle_right_title_no_icon" />
             </LinearLayout>
             <LinearLayout
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="1px"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:background="@drawable/bg_plan_item"
@@ -165,11 +173,11 @@
                 <TextView
                     android:id="@+id/tvEcgCycle"
                     android:text=""
-                    style="@style/plan_cycle_right_title" />
+                    style="@style/plan_cycle_right_title_no_icon" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="1px"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:background="@drawable/bg_plan_item"
@@ -180,11 +188,11 @@
                 <TextView
                     android:id="@+id/tvBloodCycle"
                     android:text=""
-                    style="@style/plan_cycle_right_title" />
+                    style="@style/plan_cycle_right_title_no_icon" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="1px"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:background="@drawable/bg_plan_item"
@@ -195,14 +203,14 @@
                 <TextView
                     android:id="@+id/tvLiverCycle"
                     android:text=""
-                    style="@style/plan_cycle_right_title" />
+                    style="@style/plan_cycle_right_title_no_icon" />
             </LinearLayout>
 
             <ui.swipemenulistview.SwipeMenuListView
                 android:id="@+id/lvOtherSycle"
-                android:layout_marginTop="@dimen/space_10"
+                android:layout_marginTop="1px"
                 android:background="@color/color_f7f7f7"
-                android:dividerHeight="10dp"
+                android:dividerHeight="1px"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -272,12 +280,14 @@
             </LinearLayout>
 
             <TextView
-                android:text="健康小贴士"
-                android:gravity="center_vertical"
-                android:textSize="@dimen/text_size_16"
-                android:background="@drawable/bg_plan_item"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/space_40" />
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:text="健康小贴士"
+                android:textColor="#1b1b1b"
+                android:textSize="@dimen/text_size_16" />
 
             <ui.swipemenulistview.SwipeMenuExpandableListView
                 android:id="@+id/elvHealthTips"
@@ -290,7 +300,6 @@
             <TextView
                 android:id="@+id/tvPatientList"
                 android:text="已关联患者"
-                android:visibility="gone"
                 android:background="@drawable/bg_plan_item"
                 android:layout_marginTop="@dimen/space_15"
                 android:paddingRight="@dimen/space_20"

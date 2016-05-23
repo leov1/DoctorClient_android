@@ -67,7 +67,8 @@ public class HealthTipsEditAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
-    public void notifyDataSetChanged() {
+    public void notifyDataSetChanged(List<HealthTips> list) {
+        this.list=list;
         BaseExpandableListAdapter adapter =
                 (BaseExpandableListAdapter) listView.getExpandableListAdapter();
         adapter.notifyDataSetChanged();

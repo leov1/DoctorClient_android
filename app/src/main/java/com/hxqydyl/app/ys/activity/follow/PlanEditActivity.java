@@ -164,6 +164,8 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
         elvHealthTips.setAdapter(HealthTipsEditAdapter);
         llAddTips = (LinearLayout) findViewById(R.id.llAddTips);
         btnSave = (Button) findViewById(R.id.btnSave);
+
+
     }
 
     private void bindEvent() {
@@ -231,7 +233,7 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
                             healthGuideDelete.append(tmp.getUuid());
                         }
                         healthTipsList.remove(position);
-                        HealthTipsEditAdapter.notifyDataSetChanged();
+                        HealthTipsEditAdapter.notifyDataSetChanged(healthTipsList);
                         break;
 
                 }
@@ -274,7 +276,7 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
                 break;
             case R.id.llAddTips:
                 healthTipsList.add(new HealthTips());
-                HealthTipsEditAdapter.notifyDataSetChanged();
+                HealthTipsEditAdapter.notifyDataSetChanged(healthTipsList);
                 for (int i = 0; i < HealthTipsEditAdapter.getGroupCount(); i++) {
                     elvHealthTips.expandGroup(i);
                 }
@@ -331,6 +333,7 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
         for (int i = 0; i < HealthTipsEditAdapter.getGroupCount(); i++) {
             elvHealthTips.expandGroup(i);
         }
+
         String delFlag = "1";
         String title = etTitle.getText().toString();
         if (StringUtils.isEmpty(title)) {
@@ -554,6 +557,10 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
         BaseExpandableListAdapter adapter =
                 (BaseExpandableListAdapter) elvHealthTips.getExpandableListAdapter();
         adapter.notifyDataSetChanged();
+        HealthTipsEditAdapter.notifyDataSetChanged(healthTipsList);
+        for (int i = 0; i < HealthTipsEditAdapter.getGroupCount(); i++) {
+            elvHealthTips.expandGroup(i);
+        }
     }
 
     @Override
