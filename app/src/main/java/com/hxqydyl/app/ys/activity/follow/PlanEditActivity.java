@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.BaseExpandableListAdapter;
@@ -17,7 +18,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseRequstActivity;
-import com.hxqydyl.app.ys.adapter.HealthTipsAdapter;
+import com.hxqydyl.app.ys.adapter.HealthTipsEditAdapter;
 import com.hxqydyl.app.ys.adapter.MedicineDosageEditAdapter;
 import com.hxqydyl.app.ys.adapter.MedicineEditAdapter;
 import com.hxqydyl.app.ys.adapter.PlanCheckSycleAdapter;
@@ -85,7 +86,7 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
     private ArrayList<Scale> doctorScaleList;
 
     private SwipeMenuExpandableListView elvHealthTips;
-    private HealthTipsAdapter healthTipsAdapter;
+    private HealthTipsEditAdapter HealthTipsEditAdapter;
     private ArrayList<HealthTips> healthTipsList;
     private LinearLayout llAddTips;
     private TextView tvCustomerTest;//自评周期
@@ -109,10 +110,10 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
         from = intent.getStringExtra("from");
         isAdd = (plan == null);
         if (!isAdd) {
-            isdraft = true;
+            isdraft = plan.getDelFlag().equals("0");
 
         } else {
-            isdraft = plan.getDelFlag().equals("0");
+            isdraft = true;
 
         }
         initViewOnBaseTitle(isAdd ? "新增方案" : "编辑方案");
@@ -159,12 +160,9 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
         elvHealthTips.setGroupIndicator(null);
         healthTipsList = new ArrayList<>();
         healthTipsList.add(new HealthTips());
-        healthTipsAdapter = new HealthTipsAdapter(this, healthTipsList, elvHealthTips);
-        elvHealthTips.setAdapter(healthTipsAdapter);
+        HealthTipsEditAdapter = new HealthTipsEditAdapter(this, healthTipsList, elvHealthTips);
+        elvHealthTips.setAdapter(HealthTipsEditAdapter);
         llAddTips = (LinearLayout) findViewById(R.id.llAddTips);
-        for (int i = 0; i < healthTipsAdapter.getGroupCount(); i++) {
-            elvHealthTips.expandGroup(i);
-        }
         btnSave = (Button) findViewById(R.id.btnSave);
     }
 
@@ -233,7 +231,7 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
                             healthGuideDelete.append(tmp.getUuid());
                         }
                         healthTipsList.remove(position);
-                        healthTipsAdapter.notifyDataSetChanged();
+                        HealthTipsEditAdapter.notifyDataSetChanged();
                         break;
 
                 }
@@ -276,8 +274,8 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
                 break;
             case R.id.llAddTips:
                 healthTipsList.add(new HealthTips());
-                healthTipsAdapter.notifyDataSetChanged();
-                for (int i = 0; i < healthTipsAdapter.getGroupCount(); i++) {
+                HealthTipsEditAdapter.notifyDataSetChanged();
+                for (int i = 0; i < HealthTipsEditAdapter.getGroupCount(); i++) {
                     elvHealthTips.expandGroup(i);
                 }
                 break;
@@ -330,6 +328,9 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
 
 
     private void saveInfo() {
+        for (int i = 0; i < HealthTipsEditAdapter.getGroupCount(); i++) {
+            elvHealthTips.expandGroup(i);
+        }
         String delFlag = "1";
         String title = etTitle.getText().toString();
         if (StringUtils.isEmpty(title)) {
@@ -401,13 +402,17 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
         }
 
         ArrayList<HealthTips> htList = new ArrayList<>();
-        for (int i = 1; i < elvHealthTips.getChildCount(); i += 2) {
-            HealthTipsAdapter.ChildViewHolder vh = (HealthTipsAdapter.ChildViewHolder) elvHealthTips.getChildAt(i).getTag();
+        for (int i = 1; i < elvHealthTips.getChildCount(); i =i+2) {
+            HealthTipsEditAdapter.ChildViewHolder vh = (HealthTipsEditAdapter.ChildViewHolder) elvHealthTips.getChildAt(i).getTag();
             HealthTips ht = new HealthTips();
             ht.setPeriod(vh.etDay.getText().toString());
             ht.setRest(vh.etOther.getText().toString());
+            if (!TextUtils.isEmpty(vh.uuid)){
+                ht.setUuid(vh.uuid);
+            }
             htList.add(ht);
         }
+
         if (plan == null) {
             plan = new Plan();
         }
@@ -461,8 +466,8 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
                 toParamsBaen("hepatic", plan.getHepatic()),//肝功能周期
                 toParamsBaen("bloodRoutine", plan.getBloodRoutine()), //血常规周期
                 toParamsBaen("weight", plan.getWeight()), //体重功能周期
-                toParamsBaen("selfPeriod", plan.getWeight()), //自评周期
-                toParamsBaen("doctorPeriod", plan.getWeight()), //医评周期周期
+                toParamsBaen("selfPeriod", plan.getSelfPeriod()), //自评周期
+                toParamsBaen("doctorPeriod", plan.getDoctorPeriod()), //医评周期周期
                 toParamsBaen("selfTest", Scale.parseIdStr(plan.getSelfTest())),///自评量表
                 toParamsBaen("doctorTest", Scale.parseIdStr(plan.getDoctorTest())),//医评量表
                 toParamsBaen("healthGuide", gson.toJson(plan.getHealthGuide())),//健康小贴士
@@ -492,8 +497,8 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
                 toParamsBaen("hepatic", plan.getHepatic()),//肝功能周期
                 toParamsBaen("bloodRoutine", plan.getBloodRoutine()), //血常规周期
                 toParamsBaen("weight", plan.getWeight()), //体重功能周期
-                toParamsBaen("selfPeriod", plan.getWeight()), //自评周期
-                toParamsBaen("doctorPeriod", plan.getWeight()), //医评周期周期
+                toParamsBaen("selfPeriod", plan.getSelfPeriod()), //自评周期
+                toParamsBaen("doctorPeriod", plan.getDoctorPeriod()), //医评周期周期
 
                 toParamsBaen("selfTest", Scale.parseIdStr(plan.getSelfTest())),///自评量表
                 toParamsBaen("doctorTest", Scale.parseIdStr(plan.getDoctorTest())),//医评量表
@@ -503,7 +508,7 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
                 toParamsBaen("ortherMapDelete", ortherMapDelete.toString()),//健康小贴士删除
                 toParamsBaen("delFlag", delFlag)//是否是完成的方案
         );
-        toNomalNet(postPrams, BaseResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.EDIT_VISIT_PRECEPT, "1.0"), "正在修改随访方案");
+        toNomalNet(postPrams, BaseResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.EDIT_VISIT_PRECEPT, "2.0"), "正在修改随访方案");
 
     }
 

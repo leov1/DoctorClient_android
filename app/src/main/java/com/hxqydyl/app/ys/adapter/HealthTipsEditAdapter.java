@@ -15,29 +15,23 @@ import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.bean.follow.plan.HealthTips;
 import com.hxqydyl.app.ys.utils.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * Created by wangchao36 on 16/3/22.
  * 健康小贴士 适配器
  */
-public class HealthTipsAdapter extends BaseExpandableListAdapter {
+public class HealthTipsEditAdapter extends BaseExpandableListAdapter {
 
     private Context context;
     private List<HealthTips> list;
     private ExpandableListView listView;
 
-    public HealthTipsAdapter(Context context, List<HealthTips> list, ExpandableListView listView) {
+    public HealthTipsEditAdapter(Context context, List<HealthTips> list, ExpandableListView listView) {
         this.context = context;
         this.list = list;
         this.listView = listView;
     }
-
     @Override
     public int getGroupCount() {
         return list.size();
@@ -86,9 +80,12 @@ public class HealthTipsAdapter extends BaseExpandableListAdapter {
         }
         TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
         ImageView imgIcon=(ImageView)convertView.findViewById(R.id.imgIcon);
-
         final HealthTips tips = list.get(groupPosition);
-        tvTitle.setText("第" + tips.getPeriod() + "天");
+        if (StringUtils.isEmpty(tips.getPeriod())) {
+            tvTitle.setText("新增");
+        } else {
+            tvTitle.setText("修改");
+        }
         Log.e("wangxu",isExpanded+"");
         imgIcon.setEnabled(isExpanded);
         return convertView;
@@ -109,8 +106,6 @@ public class HealthTipsAdapter extends BaseExpandableListAdapter {
         } else {
             holder = (ChildViewHolder) convertView.getTag();
         }
-        holder.etDay.setEnabled(false);
-        holder.etOther.setEnabled(false);
         holder.etDay.setText(String.valueOf(tips.getPeriod()));
         holder.etOther.setText(tips.getRest());
         return convertView;

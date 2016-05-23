@@ -18,6 +18,7 @@ import com.hxqydyl.app.ys.bean.follow.plan.HealthTips;
 import com.hxqydyl.app.ys.bean.follow.plan.ImportantAdviceChild;
 import com.hxqydyl.app.ys.bean.follow.plan.Plan;
 import com.hxqydyl.app.ys.bean.follow.plan.Scale;
+import com.hxqydyl.app.ys.bean.response.PlanResponse;
 import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.LoginManager;
@@ -104,8 +105,8 @@ public class PlanInfoActivity extends BaseRequstActivity implements View.OnClick
         tvEcgCycle = (TextView) findViewById(R.id.tvEcgCycle);
         tvBloodCycle = (TextView) findViewById(R.id.tvBloodCycle);
         tvLiverCycle = (TextView) findViewById(R.id.tvLiverCycle);
-        tvCustomerTest= (TextView) findViewById(R.id.tvCustomerTest);
-        tvDoctorTest= (TextView) findViewById(R.id.tvDoctorTest);
+        tvCustomerTest = (TextView) findViewById(R.id.tvCustomerTest);
+        tvDoctorTest = (TextView) findViewById(R.id.tvDoctorTest);
         tvDoctorScaleLine = findViewById(R.id.tvDoctorScaleLine);
         tvSelfScaleLine = findViewById(R.id.tvSelfScaleLine);
 
@@ -170,13 +171,14 @@ public class PlanInfoActivity extends BaseRequstActivity implements View.OnClick
 
 
     private void visitPreceptDetail(String visitUuid) {
-        toNomalNetStringBack(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid()), toParamsBaen("visitUuid", visitUuid)), 1, UrlConstants.getWholeApiUrl(UrlConstants.VISIT_PRECEPT_DETAIL, "1.0"), "正在获取方案详情");
+        toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid()), toParamsBaen("visitUuid", visitUuid)), PlanResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.VISIT_PRECEPT_DETAIL, "2.0"), "正在获取方案详情");
     }
 
+
     @Override
-    public void onSuccessToString(String json, int flag) {
-        //TODO 此处1.0先如此处理，2.0使用bean处理
-        plan = gson.fromJson(json,Plan.class);
+    public void onSuccessToBean(Object bean, int flag) {
+        PlanResponse plans = (PlanResponse) bean;
+        plan = plans.value;
         updateUIData();
     }
 
@@ -193,6 +195,8 @@ public class PlanInfoActivity extends BaseRequstActivity implements View.OnClick
         tvEcgCycle.setText(plan.getElectrocardiogram() + "周");
         tvBloodCycle.setText(plan.getBloodRoutine() + "周");
         tvLiverCycle.setText(plan.getHepatic() + "周");
+        tvCustomerTest.setText(plan.getSelfPeriod() + "周");
+        tvDoctorTest.setText(plan.getDoctorPeriod() + "周");
         medicineList.clear();
         if (plan.getDoctorAdvice() != null)
             medicineList.addAll(plan.getDoctorAdvice());

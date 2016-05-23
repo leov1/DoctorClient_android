@@ -52,6 +52,7 @@ public class BaseRequstActivity<T> extends BaseTitleActivity implements HttpUtil
 
     @Override
     public <T> void onSuccess(int i, String s, Class<T> aClass, Map<String, String> map) {
+        Log.e("wangxu","params"+map.get("params"));
         Log.e("wangxu", "json=" + s);
         try {
             dismissDialog();

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -88,7 +89,7 @@ public class SwipeMenuExpandableAdapter extends BaseExpandableListAdapter implem
             layout = (SwipeMenuLayout) convertView;
             layout.closeMenu();
             layout.setPosition(groupPosition);
-            View view = mAdapter.getGroupView(groupPosition, true, layout.getContentView(), parent);
+            View view = mAdapter.getGroupView(groupPosition, isExpanded, layout.getContentView(), parent);
         }
         if (mAdapter instanceof BaseSwipListAdapter) {
             boolean swipEnable = (((BaseSwipListAdapter) mAdapter).getSwipEnableByPosition(groupPosition));
@@ -99,7 +100,9 @@ public class SwipeMenuExpandableAdapter extends BaseExpandableListAdapter implem
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        return mAdapter.getChildView(groupPosition, childPosition, isLastChild, convertView, parent);
+        convertView=mAdapter.getChildView(groupPosition, childPosition, isLastChild, convertView, parent);
+        Log.e("wangxu",convertView.getTag().toString());
+        return convertView ;
     }
 
     @Override

@@ -276,13 +276,12 @@
                 android:gravity="center_vertical"
                 android:textSize="@dimen/text_size_16"
                 android:background="@drawable/bg_plan_item"
-                android:layout_marginLeft="@dimen/space_25"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/space_40" />
 
             <ui.swipemenulistview.SwipeMenuExpandableListView
                 android:id="@+id/elvHealthTips"
-                android:dividerHeight="@dimen/space_10"
+                android:dividerHeight="1px"
                 android:divider="@color/color_f7f7f7"
                 android:childDivider="@color/color_f7f7f7"
                 android:layout_width="match_parent"

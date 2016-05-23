@@ -406,7 +406,7 @@
                 android:layout_height="wrap_content"
                 android:childDivider="@color/color_f7f7f7"
                 android:divider="@color/color_f7f7f7"
-                android:dividerHeight="10dp" />
+                android:dividerHeight="1px" />
 
             <LinearLayout
                 android:id="@+id/llAddTips"

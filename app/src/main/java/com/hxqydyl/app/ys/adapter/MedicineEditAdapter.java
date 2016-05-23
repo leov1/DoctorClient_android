@@ -125,9 +125,9 @@ public class MedicineEditAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 ImportantAdviceChild m = list.get(position);
-                if (StringUtils.isNotEmpty(m.getMedicineUuid())) {
+                if (StringUtils.isNotEmpty(m.getUuid())) {
                     if (uuidDeleteSb.length() > 0) uuidDeleteSb.append(",");
-                    uuidDeleteSb.append(m.getMedicineUuid());
+                    uuidDeleteSb.append(m.getUuid());
                 }
                 list.remove(position);
                 MedicineEditAdapter.this.notifyDataSetChanged();

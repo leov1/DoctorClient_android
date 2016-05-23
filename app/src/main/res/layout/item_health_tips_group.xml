@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:background="@color/white"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="horizontal"
+    android:padding="5dp">
 
     <TextView
         android:id="@+id/tvTitle"
-        android:paddingLeft="30dp"
-        android:drawableRight="@mipmap/icon_right_arrow"
-        android:textSize="@dimen/text_size_18"
-        android:singleLine="true"
-        android:gravity="center_vertical"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginRight="@dimen/space_25" />
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:paddingLeft="30dp"
+        android:singleLine="true"
+        android:textSize="@dimen/text_size_18" />
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/imgIcon"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_alignParentRight="true"
+        android:paddingRight="5dp"
+        android:layout_centerVertical="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/icon_select_arrow_selector" />
+</RelativeLayout>
