@@ -54,7 +54,8 @@ public class PatientAddActivity extends BaseRequstActivity implements View.OnCli
     private String selectGroupId = "0";//群组id，默认0，临时分组-1
     private Patient patients;
     private String id;
-private String uuid;
+    private String uuid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,7 +111,7 @@ private String uuid;
         }
         toNomalNet(toPostParams(
                 toParamsBaen("id", id),
-                toParamsBaen("uuid", TextUtils.isEmpty(uuid)?"":uuid),
+                toParamsBaen("uuid", TextUtils.isEmpty(uuid) ? "" : uuid),
                 toParamsBaen("doctorUuid", LoginManager.getDoctorUuid()),
                 toParamsBaen("name", name),
                 toParamsBaen("mobile", mobile),
@@ -190,7 +191,7 @@ private String uuid;
                         tvGroupName.setEnabled(true);
                         tvGroupName.setText("默认分组");
                         selectGroupId = "0";
-                        uuid=smr.value.getData().getCustomerUuid();
+                        uuid = smr.value.getData().getCustomerUuid();
                         btnAdd.setEnabled(true);
 
                         break;

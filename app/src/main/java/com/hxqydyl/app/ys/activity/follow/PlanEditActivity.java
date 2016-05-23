@@ -52,12 +52,9 @@ import ui.swipemenulistview.SwipeMenuListView;
 public class PlanEditActivity extends BaseRequstActivity implements View.OnClickListener {
 
     private EditText etTitle;
-
-
     private LinearLayout llAddMedicine;  //   添加其他药品
     private EditText etDrugTherapy; // 不良反应
     private EditText etSideEffects; //其他治疗
-
     private TextView tvFollowCycle; //随访
     private TextView tvWeightCycle;  //体重
     private TextView tvEcgCycle;  //心电图
@@ -100,6 +97,8 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
     private StringBuffer ortherMapDelete = new StringBuffer();
     private StringBuffer healthGuideDelete = new StringBuffer();
 
+    private boolean isdraft = true;//是否可以保存为草稿
+    private boolean isAdd = true;//是否为新增方案
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,13 +107,15 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
         Intent intent = getIntent();
         plan = (Plan) intent.getSerializableExtra("plan");
         from = intent.getStringExtra("from");
-        if (plan != null) {
-            // 编辑
-            initViewOnBaseTitle("编辑方案");
-        } else {
-            initViewOnBaseTitle("新增方案");
-        }
+        isAdd = (plan == null);
+        if (!isAdd) {
+            isdraft = true;
 
+        } else {
+            isdraft = plan.getDelFlag().equals("0");
+
+        }
+        initViewOnBaseTitle(isAdd ? "新增方案" : "编辑方案");
         initView();
         bindEvent();
         updateUIData();
@@ -327,28 +328,43 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
 
     }
 
+
     private void saveInfo() {
+        String delFlag = "1";
         String title = etTitle.getText().toString();
         if (StringUtils.isEmpty(title)) {
-            UIHelper.ToastMessage(this, "方案名称不能为空");
-            return;
+            if (isdraft) {
+                delFlag = "0";
+            } else {
+                UIHelper.ToastMessage(this, "方案名称不能为空");
+                return;
+            }
         }
-
         String drugTherapy = etDrugTherapy.getText().toString();
         if (StringUtils.isEmpty(drugTherapy)) {
-            UIHelper.ToastMessage(this, "药物不良反应处理不能为空");
-            return;
+            if (isdraft) {
+                delFlag = "0";
+            } else {
+                UIHelper.ToastMessage(this, "药物不良反应处理不能为空");
+                return;
+            }
         }
-
         String sideEffects = etSideEffects.getText().toString();
         if (StringUtils.isEmpty(sideEffects)) {
-            UIHelper.ToastMessage(this, "其他治疗不能为空");
-            return;
+            if (isdraft) {
+                delFlag = "0";
+            } else {
+                UIHelper.ToastMessage(this, "其他治疗不能为空");
+                return;
+            }
         }
-
         if (lvMedicine.getChildCount() == 0) {
-            UIHelper.ToastMessage(this, "请添加药品信息");
-            return;
+            if (isdraft) {
+                delFlag = "0";
+            } else {
+                UIHelper.ToastMessage(this, "请添加药品信息");
+                return;
+            }
         }
 
         ArrayList<ImportantAdviceChild> mList = new ArrayList<>();
@@ -405,16 +421,18 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
         plan.setHepatic(cycleNum(tvLiverCycle));
         plan.setBloodRoutine(cycleNum(tvBloodCycle));
         plan.setElectrocardiogram(cycleNum(tvEcgCycle));
+        plan.setSelfPeriod(cycleNum(tvCustomerTest));
+        plan.setDoctorPeriod(cycleNum(tvDoctorTest));
 
         plan.setDoctorAdvice(mList);
         plan.setOtherMap(csList);
         plan.setHealthGuide(htList);
         try {
-            if (StringUtils.isEmpty(plan.getVisitUuid())) {
+            if (isAdd) {
                 //新建
-                addViditPrecept(plan);
+                addViditPrecept(plan, delFlag);
             } else {
-                upViditPrecept(plan);
+                upViditPrecept(plan, delFlag);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -424,13 +442,12 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
     }
 
     //新建随访方案
-    private void addViditPrecept(Plan plan) {
+    private void addViditPrecept(Plan plan, String delFlag) {
         List<ImportantAdviceChild> advice = new ArrayList<>();
         for (int i = 0; i < plan.getDoctorAdvice().size(); i++) {
             advice.add(plan.getDoctorAdvice().get(i).toJsonBean());
         }
         Gson myJson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-
         String doctorAdvice = myJson.toJson(advice);
         PostPrams postPrams = toPostParams(
                 toParamsBaen("doctorUuid", LoginManager.getDoctorUuid()),//医生ID
@@ -438,48 +455,53 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
                 toParamsBaen("drugTherapy", plan.getDrugTherapy()),  //药物不良反应处理
                 toParamsBaen("sideEffects", plan.getSideEffects()),     //其他治疗
                 toParamsBaen("doctorAdvice", doctorAdvice),//药物信息
-                toParamsBaen("ortherMap", gson.toJson(plan.getOtherMap())),//其他自定义随访周期
+                toParamsBaen("otherMap", gson.toJson(plan.getOtherMap())),//其他自定义随访周期
                 toParamsBaen("period", plan.getPeriod()),//随访周期
                 toParamsBaen("electrocardiogram", plan.getElectrocardiogram()),//心电图周期
                 toParamsBaen("hepatic", plan.getHepatic()),//肝功能周期
                 toParamsBaen("bloodRoutine", plan.getBloodRoutine()), //血常规周期
                 toParamsBaen("weight", plan.getWeight()), //体重功能周期
+                toParamsBaen("selfPeriod", plan.getWeight()), //自评周期
+                toParamsBaen("doctorPeriod", plan.getWeight()), //医评周期周期
                 toParamsBaen("selfTest", Scale.parseIdStr(plan.getSelfTest())),///自评量表
                 toParamsBaen("doctorTest", Scale.parseIdStr(plan.getDoctorTest())),//医评量表
-                toParamsBaen("healthGuide", gson.toJson(plan.getHealthGuide()))//健康小贴士
+                toParamsBaen("healthGuide", gson.toJson(plan.getHealthGuide())),//健康小贴士
+                toParamsBaen("delFlag", delFlag)//是否是完成的方案
         );
-        toNomalNet(postPrams, BaseResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.ADD_VISIT_PRECEPT, "1.0"), "正在添加随访方案");
+        toNomalNet(postPrams, BaseResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.ADD_VISIT_PRECEPT, "2.0"), "正在添加随访方案");
     }
 
 
-    private void upViditPrecept(Plan plan) {
+    private void upViditPrecept(Plan plan, String delFlag) {
         List<ImportantAdviceChild> advice = new ArrayList<>();
         for (int i = 0; i < plan.getDoctorAdvice().size(); i++) {
             advice.add(plan.getDoctorAdvice().get(i).toJsonBean());
         }
         Gson myJson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-
         String doctorAdvice = myJson.toJson(advice);
         PostPrams postPrams = toPostParams(
-
                 toParamsBaen("visitUuid", plan.getVisitUuid()),  //方案id
                 toParamsBaen("doctorUuid", LoginManager.getDoctorUuid()),//医生ID
-                toParamsBaen("preceptName", plan.getPreceptName()),  //方案名称
-                toParamsBaen("drugTherapy", plan.getDrugTherapy()),  //药物不良反应处理
-                toParamsBaen("sideEffects", plan.getSideEffects()),     //其他治疗
+                toParamsBaen("preceptName", plan.getPreceptName()),//方案名称
+                toParamsBaen("drugTherapy", plan.getDrugTherapy()),//药物不良反应处理
+                toParamsBaen("sideEffects", plan.getSideEffects()),//其他治疗
                 toParamsBaen("doctorAdvice", doctorAdvice),//药物信息
-                toParamsBaen("ortherMap", gson.toJson(plan.getOtherMap())),//其他自定义随访周期
+                toParamsBaen("otherMap", gson.toJson(plan.getOtherMap())),//其他自定义随访周期
                 toParamsBaen("period", plan.getPeriod()),//随访周期
                 toParamsBaen("electrocardiogram", plan.getElectrocardiogram()),//心电图周期
                 toParamsBaen("hepatic", plan.getHepatic()),//肝功能周期
                 toParamsBaen("bloodRoutine", plan.getBloodRoutine()), //血常规周期
                 toParamsBaen("weight", plan.getWeight()), //体重功能周期
+                toParamsBaen("selfPeriod", plan.getWeight()), //自评周期
+                toParamsBaen("doctorPeriod", plan.getWeight()), //医评周期周期
+
                 toParamsBaen("selfTest", Scale.parseIdStr(plan.getSelfTest())),///自评量表
                 toParamsBaen("doctorTest", Scale.parseIdStr(plan.getDoctorTest())),//医评量表
                 toParamsBaen("healthGuide", gson.toJson(plan.getHealthGuide())),//健康小贴士
                 toParamsBaen("healthGuideDelete", healthGuideDelete.toString()),///自评量表删除
                 toParamsBaen("doctorAdviceDelete", medicineAdapter.getUuidDeleteSb().toString()),//医评量表删除
-                toParamsBaen("ortherMapDelete", ortherMapDelete.toString())//健康小贴士删除
+                toParamsBaen("ortherMapDelete", ortherMapDelete.toString()),//健康小贴士删除
+                toParamsBaen("delFlag", delFlag)//是否是完成的方案
         );
         toNomalNet(postPrams, BaseResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.EDIT_VISIT_PRECEPT, "1.0"), "正在修改随访方案");
 
