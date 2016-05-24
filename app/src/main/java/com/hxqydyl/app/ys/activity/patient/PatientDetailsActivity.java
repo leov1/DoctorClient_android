@@ -18,6 +18,7 @@ import com.hxqydyl.app.ys.activity.case_report.FollowUpFormActivity;
 import com.hxqydyl.app.ys.activity.case_report.InPatientCaseReportActivity;
 import com.hxqydyl.app.ys.activity.case_report.OutPatientCaseReportActivity;
 import com.hxqydyl.app.ys.activity.follow.FollowApplyOkActivity;
+import com.hxqydyl.app.ys.activity.follow.PlanInfoActivity;
 import com.hxqydyl.app.ys.adapter.PatientTreatInfoAdapter;
 import com.hxqydyl.app.ys.bean.Patient;
 import com.hxqydyl.app.ys.bean.PatientTreatInfo;
@@ -25,6 +26,7 @@ import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.InjectId;
 import com.hxqydyl.app.ys.utils.InjectUtils;
 import com.hxqydyl.app.ys.utils.LoginManager;
+import com.hxqydyl.app.ys.utils.StringUtils;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -55,6 +57,7 @@ public class PatientDetailsActivity extends BaseRequstActivity implements View.O
     private PatientTreatInfoAdapter patientTreatInfoAdapter;
     private ArrayList<PatientTreatInfo> patientTreatInfoArrayList = new ArrayList<PatientTreatInfo>();
     private Patient patient;
+    private boolean hasProject = false;
 
 
     @Override
@@ -99,10 +102,20 @@ public class PatientDetailsActivity extends BaseRequstActivity implements View.O
         } else {
             initViewTitle("患者详情");
         }
+        if (TextUtils.isEmpty(patient.getVisitPreceptUuid())) {
+            hasProject = false;
+        } else {
+            hasProject = true;
+        }
+        initFollowBtn();
+    }
+
+    private void initFollowBtn() {
+        bSelectNewFollowUpForPatient.setText(hasProject ? String.format("%s的随访方案", patient.getCustomerName()) : "为患者选择新的随访方案");
     }
 
     private void refreshTreatInfoList() {
-        toNomalNetStringBack(toGetParams(toParamsBaen("customerUuid", patient.getCustomerUuid()), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid()),toParamsBaen("visitState","0")), 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_PATIENT_TREAT_RECORD, "1.0"), "正在获取患者病例");
+        toNomalNetStringBack(toGetParams(toParamsBaen("customerUuid", patient.getCustomerUuid()), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid()), toParamsBaen("visitState", "0")), 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_PATIENT_TREAT_RECORD, "1.0"), "正在获取患者病例");
     }
 
     @Override
@@ -140,10 +153,18 @@ public class PatientDetailsActivity extends BaseRequstActivity implements View.O
                 startActivityForResult(intent, REQ_ADD_CASE_REPORT);
                 break;
             case R.id.bSelectNewFollowUpForPatient:
-                intent = new Intent(this, FollowApplyOkActivity.class);
-                intent.putExtra("customerUuid", patient.getCustomerUuid());
-                intent.putExtra("type", "updateVisitRecord");
-                startActivity(intent);
+                if (hasProject){
+                    intent = new Intent(PatientDetailsActivity.this, PlanInfoActivity.class);
+                    intent.putExtra("visitUuid", patient.getVisitPreceptUuid());
+                    intent.putExtra("from", "my");
+                    intent.putExtra("preceptName", String.format("%s的", patient.getCustomerName()));
+                    startActivity(intent);
+                }else {
+                    intent = new Intent(this, FollowApplyOkActivity.class);
+                    intent.putExtra("customerUuid", patient.getCustomerUuid());
+                    intent.putExtra("type", "updateVisitRecord");
+                    startActivity(intent);
+                }
                 break;
             case R.id.llPatientSimpleInfo://患者详情
                 intent = new Intent(PatientDetailsActivity.this, PatientInfoActivity.class);
@@ -160,7 +181,7 @@ public class PatientDetailsActivity extends BaseRequstActivity implements View.O
         if (requestCode == REQ_ADD_CASE_REPORT && resultCode == RESULT_OK) {
             refreshTreatInfoList();
 
-        }else if(requestCode == REQ_ADD_CASE_REPORT && resultCode == RESULT_OK){
+        } else if (requestCode == REQ_ADD_CASE_REPORT && resultCode == RESULT_OK) {
             refreshTreatInfoList();
         }
     }

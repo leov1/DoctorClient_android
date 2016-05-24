@@ -56,12 +56,11 @@ public class PlanMgrAdapter extends BaseAdapter {
         TextView tag_tv = BaseViewHolder.get(convertView, R.id.tag_tv);
         final Plan plan = planList.get(position);
         name_tv.setText(plan.getPreceptName());
-//        if (isShowTag) {
-//            tag_tv.setText("已关联" + plan.getNum() + "人");
-//        } else {
-//            tag_tv.setText("");
-//        }
-        tag_tv.setText("");
+        if (isShowTag) {
+            tag_tv.setText(plan.isComplete() ? "" : "未完成");
+        } else {
+            tag_tv.setText("");
+        }
         return convertView;
     }
 }

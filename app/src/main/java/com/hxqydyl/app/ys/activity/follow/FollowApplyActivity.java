@@ -64,12 +64,7 @@ public class FollowApplyActivity extends BaseRequstActivity implements View.OnCl
     }
 
     private void getVisitApplyList() {
-//        String url = "http://172.168.1.53/app/pub/doctor/2.0/getVisitApplyList";
-//        GetParams params = toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid()));
-//        toNomalNet(params, FollowUserApplyResponse.class, 1, url, "正在获取关联列表...");
-
         toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), FollowUserApplyResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_VISIT_APPLYLIST, "2.0"), "正在获取关联列表...");
-//        toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())),FollowUserApplyResponse.class,1, UrlConstants.getWholeApiUrl(UrlConstants.GET_VISIT_APPLYLIST, "1.0"), "正在获取关联列表...");
     }
 
 
@@ -80,7 +75,7 @@ public class FollowApplyActivity extends BaseRequstActivity implements View.OnCl
         if (rs.value != null && rs.value.size() > 0) {
             list.addAll(rs.value);
         } else {
-            Toast.makeText(FollowApplyActivity.this, "没有数据", Toast.LENGTH_SHORT).show();
+            UIHelper.ToastMessage(FollowApplyActivity.this, "没有数据");
         }
         adapter.notifyDataSetChanged();
 

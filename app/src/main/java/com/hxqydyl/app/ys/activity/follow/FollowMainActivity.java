@@ -22,11 +22,12 @@ import com.hxqydyl.app.ys.bean.response.PatientGroupResponse;
 import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.ui.fullshowview.FullShowExpandableListView;
 import com.hxqydyl.app.ys.utils.DialogUtils;
+import com.hxqydyl.app.ys.utils.InjectId;
+import com.hxqydyl.app.ys.utils.InjectUtils;
 import com.hxqydyl.app.ys.utils.LoginManager;
 import com.xus.http.httplib.model.PostPrams;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 /**
  * 随访主页
@@ -35,13 +36,21 @@ public class FollowMainActivity extends BaseRequstActivity implements View.OnCli
 
     private static final int REQ_MANAGE_PATIENT_GROUP = 1;
     private static final int REQ_MOVE_TO_OTHER_GROUP = 2;
+    @InjectId(id = R.id.right_img)
     private ImageView addBtn;//添加患者
+    @InjectId(id = R.id.rl_apply)
     private RelativeLayout applyBtn;
+    @InjectId(id = R.id.rl_mgr)
     private RelativeLayout mgrBtn;
+    @InjectId(id = R.id.ivManagePatientGroup)
     private ImageView ivManagePatientGroup;
+    @InjectId(id = R.id.rl_notice)
     private RelativeLayout noticeBtn;
+    @InjectId(id = R.id.rl_articl)
     private RelativeLayout articeBtn;
+    @InjectId(id = R.id.rl_follow_task)
     private RelativeLayout followTaskBtn;
+    @InjectId(id = R.id.elvPatientList)
     private FullShowExpandableListView elvPatientList;
     private int lastExpandGroupPosition = -1;
     private ArrayList<PatientGroup> patientGroups = new ArrayList<PatientGroup>();
@@ -56,6 +65,7 @@ public class FollowMainActivity extends BaseRequstActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_follow);
+        InjectUtils.injectView(this);
         initViews();
         patientListAdapter = new PatientListAdapter(this, patientGroups);
         elvPatientList.setGroupIndicator(null);
@@ -87,16 +97,8 @@ public class FollowMainActivity extends BaseRequstActivity implements View.OnCli
 
     private void initViews() {
         initViewOnBaseTitle("随访");
-        addBtn = (ImageView) findViewById(R.id.right_img);
         addBtn.setVisibility(View.VISIBLE);
         addBtn.setImageDrawable(getResources().getDrawable(R.mipmap.btn_add_white));
-        applyBtn = (RelativeLayout) findViewById(R.id.rl_apply);
-        mgrBtn = (RelativeLayout) findViewById(R.id.rl_mgr);
-        ivManagePatientGroup = (ImageView) findViewById(R.id.ivManagePatientGroup);
-        noticeBtn = (RelativeLayout) findViewById(R.id.rl_notice);
-        articeBtn = (RelativeLayout) findViewById(R.id.rl_articl);
-        followTaskBtn = (RelativeLayout) findViewById(R.id.rl_follow_task);
-        elvPatientList = (FullShowExpandableListView) findViewById(R.id.elvPatientList);
     }
 
     private void initListeners() {
