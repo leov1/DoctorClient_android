@@ -109,6 +109,11 @@ public class PlanEditActivity extends BaseRequstActivity implements View.OnClick
         plan = (Plan) intent.getSerializableExtra("plan");
         from = intent.getStringExtra("from");
         isAdd = (plan == null);
+
+        if (from.equals("suggest")){
+            plan.setVisitUuid("");
+            isAdd=true;
+        }
         if (!isAdd) {
             isdraft = plan.getDelFlag().equals("0");
 

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +27,8 @@ import com.xus.http.httplib.model.GetParams;
 import com.xus.http.httplib.model.PostPrams;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import framework.listener.RegisterSucListener;
 import framework.listener.RegisterSucMag;
@@ -33,7 +36,7 @@ import framework.listener.RegisterSucMag;
 /**
  * 注册页面
  */
-public class RegisterActivity extends BaseRequstActivity implements View.OnClickListener{
+public class RegisterActivity extends BaseRequstActivity implements View.OnClickListener {
 
     @InjectId(id = R.id.textview_register_order)
     private TextView registerOrderBtn;
@@ -57,7 +60,7 @@ public class RegisterActivity extends BaseRequstActivity implements View.OnClick
     private String captcha = "";//验证码
     private String mobile = "";//手机号
     private String password = "";//密码
-
+    private String ServiceCaptcha;
     private Intent intent;
 
     private int timeCount = 60;
@@ -149,15 +152,21 @@ public class RegisterActivity extends BaseRequstActivity implements View.OnClick
         timeCount = 60;
         handler.sendEmptyMessage(GET_VERIFICATION);
         GetParams params = toGetParams(toParamsBaen("mobile", mobile));
-        toNomalNetStringBack(params,2,UrlConstants.getWholeApiUrl(UrlConstants.GET_VERIFICATION_CODE),"");
+        toNomalNetStringBack(params, 2, UrlConstants.getWholeApiUrl(UrlConstants.GET_VERIFICATION_CODE), "");
     }
 
     /**
      * 注册请求
      */
     private void registerOne() {
-        PostPrams params = toPostParams(toParamsBaen("mobile",mobile),toParamsBaen("password", password),toParamsBaen("captcha", captcha));
-        toNomalNet(params, RegiserResult.class,1,UrlConstants.getWholeApiUrl(UrlConstants.REGISTER_ONE,"2.0"),"请稍等...");
+        Map<String,String > header=new HashMap<String,String>();
+        if (ServiceCaptcha!=null){
+            Log.e("wangxu",ServiceCaptcha);
+            String JSESSIONID[]=ServiceCaptcha.split(";");
+            header.put("cookie",JSESSIONID[0]);
+        }
+        PostPrams params = toPostParams(header,toParamsBaen("mobile", mobile), toParamsBaen("password", password), toParamsBaen("captcha", captcha));
+        toNomalNet(params, RegiserResult.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.REGISTER_ONE, "2.0"), "请稍等...");
     }
 
     /**
@@ -172,7 +181,7 @@ public class RegisterActivity extends BaseRequstActivity implements View.OnClick
 
         password = passwordEdit.getText().toString();
         if (TextUtils.isEmpty(password)) return "密码不能为空";
-     //   if (!Validator.isPassword(password)) return "密码只能字母加数字";
+        //   if (!Validator.isPassword(password)) return "密码只能字母加数字";
 
         if (!agreeCheckBox.isChecked()) return "请同意医师协议";
         return "";
@@ -190,31 +199,32 @@ public class RegisterActivity extends BaseRequstActivity implements View.OnClick
         return "";
     }
 
-    private boolean isMobile(String str){
+    private boolean isMobile(String str) {
         return str.length() < 11;
     }
 
     @Override
     public void onSuccessToBean(Object bean, int flag) {
-        switch (flag){
+        switch (flag) {
             case 1: //注册成功
                 UIHelper.ToastMessage(RegisterActivity.this, "注册成功");
-                    LoginManager.setDoctorUuid(((RegiserResult)bean).value.getUuid());
-                    removeBeforViews();
-                    finish();
+                LoginManager.setDoctorUuid(((RegiserResult) bean).value.getUuid());
+                removeBeforViews();
+                finish();
                 break;
 
         }
     }
 
     @Override
-    public void onSuccessToString(String json, int flag) {
-        switch (flag){
-            case 2://验证码
-                CaptchaResult captchaResult = JsonUtils.JsonCaptchResult(json);
-                UIHelper.ToastMessage(RegisterActivity.this, captchaResult.getQuery().getMessage());
-                break;
-        }
+    public void onSuccessToStringWithMap(String json, int flag, Map map) {
+            switch (flag) {
+                case 2://验证码
+                    ServiceCaptcha= (String)map.get("Cookie");
+                    CaptchaResult captchaResult = JsonUtils.JsonCaptchResult(json);
+                    UIHelper.ToastMessage(RegisterActivity.this, captchaResult.getQuery().getMessage());
+                    break;
+            }
     }
 
     /**

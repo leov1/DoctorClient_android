@@ -52,6 +52,7 @@ public class BaseRequstActivity<T> extends BaseTitleActivity implements HttpUtil
 
     @Override
     public <T> void onSuccess(int i, String s, Class<T> aClass, Map<String, String> map) {
+        Log.e("wangxu","cookie"+map.get("Cookie"));
         Log.e("wangxu","params"+map.get("params"));
         Log.e("wangxu", "json=" + s);
         try {
@@ -60,6 +61,7 @@ public class BaseRequstActivity<T> extends BaseTitleActivity implements HttpUtil
                 BaseResponse t = (BaseResponse) gson.fromJson(s, aClass);
                 if (t.code == 200 || (t.query != null && !TextUtils.isEmpty(t.query.success) && t.query.success.equals("1")) || (t.value != null && t.value.equals("true"))) {
                     onSuccessToBean(t, i);
+                    onSuccessToBeanWithMap(t, i,map);
                 } else if (t.code != 200 && !TextUtils.isEmpty(t.message)) {
                     UIHelper.ToastMessage(this, t.message);
                     if (isTest&&t.code!=406){
@@ -75,6 +77,7 @@ public class BaseRequstActivity<T> extends BaseTitleActivity implements HttpUtil
                 }
             } else {
                 onSuccessToString(s, i);
+                onSuccessToStringWithMap(s, i,map);
             }
         } catch (Exception e) {
             Log.e("wangxu", e.toString());
@@ -96,11 +99,15 @@ public class BaseRequstActivity<T> extends BaseTitleActivity implements HttpUtil
     public <T> void onSuccessToBean(T bean, int flag) {
 
     }
+    public <T> void onSuccessToBeanWithMap(T bean, int flag,Map<String, String> map) {
 
+    }
     public void onSuccessToString(String json, int flag) {
 
     }
+    public void onSuccessToStringWithMap(String json, int flag,Map<String, String> map) {
 
+    }
     /**
      * @param params 使用toPostParams或者toGetParams方法
      * @param flag   表示该次请求的flag
