@@ -29,7 +29,6 @@ public class Plan extends PlanBaseInfo implements Serializable {
     private ArrayList<Scale> selfTest;   //自评量表
     private ArrayList<Scale> doctorTest; //医评量表
     private ArrayList<HealthTips> healthGuide;        //健康小贴士
-    private String delFlag;//0未完成 1已完成
 
     public String getSelfPeriod() {
         return selfPeriod;
@@ -47,12 +46,6 @@ public class Plan extends PlanBaseInfo implements Serializable {
         this.doctorPeriod = doctorPeriod;
     }
 
-    public String getDelFlag() {
-        return delFlag;
-    }
-    public void setDelFlag(String delFlag) {
-        this.delFlag = delFlag;
-    }
 
     public void setDoctorAdvice(ArrayList<ImportantAdviceChild> doctorAdvice) {
         this.doctorAdvice = doctorAdvice;
