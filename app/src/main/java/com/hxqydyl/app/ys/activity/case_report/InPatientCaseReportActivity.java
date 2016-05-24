@@ -6,6 +6,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
+import com.hxqydyl.app.ys.activity.BaseRequstActivity;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
 import com.hxqydyl.app.ys.activity.patient.PatientDetailsActivity;
 import com.hxqydyl.app.ys.activity.patient.PatientSimpleInfoViewHolder;
@@ -14,17 +15,19 @@ import com.hxqydyl.app.ys.bean.CaseReport;
 import com.hxqydyl.app.ys.bean.Patient;
 import com.hxqydyl.app.ys.bean.PatientTreatInfo;
 import com.hxqydyl.app.ys.bean.Pic;
+import com.hxqydyl.app.ys.bean.response.CaseReportResponse;
 import com.hxqydyl.app.ys.http.CaseReportNet;
 import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.InjectId;
 import com.hxqydyl.app.ys.utils.InjectUtils;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by white_ash on 2016/3/23.
  */
-public class InPatientCaseReportActivity extends BaseTitleActivity implements View.OnClickListener{
+public class InPatientCaseReportActivity extends BaseRequstActivity implements View.OnClickListener {
     private PatientSimpleInfoViewHolder patientSimpleInfo;
     @InjectId(id = R.id.tvTreatMentType)
     private TextView tvTreatMentType;
@@ -44,7 +47,6 @@ public class InPatientCaseReportActivity extends BaseTitleActivity implements Vi
     private Patient patient;
     private PatientTreatInfo treatInfo;
 
-    private CaseReportNet caseReportNet;
     private CaseReport caseReport;
 
     @Override
@@ -52,7 +54,7 @@ public class InPatientCaseReportActivity extends BaseTitleActivity implements Vi
         super.onCreate(savedInstanceState);
         patient = (Patient) getIntent().getSerializableExtra(PatientDetailsActivity.KEY_PATIENT);
         treatInfo = (PatientTreatInfo) getIntent().getSerializableExtra(PatientDetailsActivity.KEY_TREAT_INFO);
-        if(patient == null || treatInfo == null){
+        if (patient == null || treatInfo == null) {
             finish();
             return;
         }
@@ -64,43 +66,44 @@ public class InPatientCaseReportActivity extends BaseTitleActivity implements Vi
         InjectUtils.injectView(this);
         patientSimpleInfo.setPatient(patient);
 
-        caseHistoryAdapter = new CaseHistoryAdapter(this,picList,null);
+        caseHistoryAdapter = new CaseHistoryAdapter(this, picList, null);
         gvPatientCaseHistory.setAdapter(caseHistoryAdapter);
 
-        caseReportNet = new CaseReportNet(this);
-        caseReportNet.getCaseRecordDetails(treatInfo.getId());
+        initData();
+    }
+
+    private void initData() {
+        toNomalNet(toGetParams(toParamsBaen("medicalRecordUuid", treatInfo.getId())), CaseReportResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_PATIENT_CASE_REPORT_DETAILS, "2.0"), "");
     }
 
     @Override
-    public void onClick(View v) {
-        switch(v.getId()){
-            case R.id.back_img:
-                finish();
-                break;
-        }
-    }
-
-    @Override
-    public void onResponse(String url, Object result) {
-        super.onResponse(url, result);
-        if(url.endsWith(UrlConstants.GET_PATIENT_CASE_REPORT_DETAILS)){
-            caseReport = (CaseReport) result;
-            initViewData();
-        }
+    public void onSuccessToBean(Object bean, int flag) {
+        caseReport = ((CaseReportResponse) bean).value;
+        initViewData();
     }
 
     private void initViewData() {
-        if(caseReport!=null){
+        if (caseReport != null) {
             tvTreatMentType.setText("住院");
             tvBeInHospitalTime.setText(caseReport.getInHospitalTime());
             tvOutHospitalTime.setText(caseReport.getOutHospitalTime());
             tvHospital.setText(caseReport.getHospitalName());
             tvDoctor.setText(caseReport.getDoctorName());
-            if(caseReport.getPics()!=null&&caseReport.getPics().size()>0){
+            if (caseReport.getPics() != null && caseReport.getPics().size() > 0) {
                 picList.clear();
                 picList.addAll(caseReport.getPics());
                 caseHistoryAdapter.notifyDataSetChanged();
             }
         }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.back_img:
+                this.finish();
+                break;
+        }
+
     }
 }

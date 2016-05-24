@@ -68,10 +68,7 @@ public class FollowTaskActivity extends BaseRequstActivity
         PatientTreatInfo pti = new PatientTreatInfo();
         pti.setId(task.getApplyUuid());
 
-        Intent intent = new Intent(this, FollowUpFormActivity.class);
-        intent.putExtra("treat_info", pti);
-        intent.putExtra("patient", p);
-        startActivity(intent);
+        FollowUpFormActivity.newIntent(this, pti, p);
     }
 
     public void getProcessedVisitList() {

@@ -11,6 +11,7 @@ public class PatientTreatInfo extends BaseBean implements Serializable {
     public static final int TREAT_TYPE_MEN_ZHEN = 1;
     public static final int TREAT_TYPE_ZHU_YUAN = 2;
     public static final int TREAT_TYPE_BIAO_DAN = 3;
+
     private String dt;
     private int treatType;
     private boolean unread;
@@ -78,9 +79,7 @@ public class PatientTreatInfo extends BaseBean implements Serializable {
 
     public int getTreatType() {
         if(!TextUtils.isEmpty(type)){
-
-
-        if (type.equals("0")) {
+        if (type.equals("0")) {//病例
             if ("1".equals(caseCategoryType)) {
 //                门诊
                 setTreatType(PatientTreatInfo.TREAT_TYPE_MEN_ZHEN);
@@ -88,7 +87,7 @@ public class PatientTreatInfo extends BaseBean implements Serializable {
 //                住院
                 setTreatType(PatientTreatInfo.TREAT_TYPE_ZHU_YUAN);
             }
-        } else if (type.equals("1")) {
+        } else if (type.equals("1")) {//表单
             setTreatType(PatientTreatInfo.TREAT_TYPE_BIAO_DAN);
             if ("1".equals(caseCategoryType)) {
                 //已读
