@@ -70,6 +70,8 @@ public class OutPatientCaseReportActivity extends BaseTitleActivity implements V
         caseReportNet.getCaseRecordDetails(treatInfo.getId());
     }
 
+
+
     @Override
     public void onClick(View v) {
         switch(v.getId()){

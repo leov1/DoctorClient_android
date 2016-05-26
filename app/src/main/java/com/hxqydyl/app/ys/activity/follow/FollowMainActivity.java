@@ -140,9 +140,7 @@ public class FollowMainActivity extends BaseRequstActivity implements View.OnCli
                 CommentWebActivity.toCommentWeb(UrlConstants.getWholeApiUrl(UrlConstants.PATIENT_EDUCATION), null, FollowMainActivity.this, false);
                 break;
             case R.id.ivManagePatientGroup://分组管理
-                intent = new Intent(FollowMainActivity.this, PatientGroupManageActivity.class);
-                intent.putExtra(PatientGroupManageActivity.GROUPS_INFO_KEY, removeDefaultGroup(patientGroups));
-                startActivityForResult(intent, REQ_MANAGE_PATIENT_GROUP);
+                PatientGroupManageActivity.newInstent(FollowMainActivity.this,removeDefaultGroup(patientGroups),REQ_MANAGE_PATIENT_GROUP);
                 break;
             case R.id.rl_follow_task://待处理随访任务
                 intent = new Intent(this, FollowTaskActivity.class);
@@ -206,10 +204,8 @@ public class FollowMainActivity extends BaseRequstActivity implements View.OnCli
     //点击患者
     @Override
     public void onChildClick(int groupPosition, int childPosition) {
-        Intent intent = new Intent(FollowMainActivity.this, PatientDetailsActivity.class);
         Patient patient = (Patient) patientListAdapter.getChild(groupPosition, childPosition);
-        intent.putExtra(PatientDetailsActivity.KEY_PATIENT, patient);
-        startActivity(intent);
+        PatientDetailsActivity.newIntent(FollowMainActivity.this,patient);
     }
 
     //移除默认分组和临时分组
@@ -231,9 +227,7 @@ public class FollowMainActivity extends BaseRequstActivity implements View.OnCli
         curOperatePatient = (Patient) patientListAdapter.getChild(groupPosition, childPosition);
         switch (menu) {
             case PatientListAdapter.MOVE:
-                Intent intent = new Intent(FollowMainActivity.this, PatientGroupSelectActivity.class);
-                intent.putExtra(PatientGroupManageActivity.GROUPS_INFO_KEY, removeDefaultGroup(patientGroups));
-                startActivityForResult(intent, REQ_MOVE_TO_OTHER_GROUP);
+                PatientGroupSelectActivity.newIntent(FollowMainActivity.this,removeDefaultGroup(patientGroups),REQ_MOVE_TO_OTHER_GROUP);
                 break;
             case PatientListAdapter.DELETE:
                 PatientGroup patientGroup = (PatientGroup) patientListAdapter.getGroup(groupPosition);

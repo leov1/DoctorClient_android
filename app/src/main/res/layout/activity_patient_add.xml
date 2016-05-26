@@ -44,7 +44,6 @@
                         android:id="@+id/etPhone"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:maxLength="11"
                         android:layout_weight="1"
                         android:background="@color/transparent"
                         android:inputType="phone" />
