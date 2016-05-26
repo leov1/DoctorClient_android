@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main"
-    android:clickable="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
     android:orientation="vertical">
 
     <include layout="@layout/top_title"></include>
@@ -69,8 +69,8 @@
                 android:layout_marginTop="@dimen/space_18"
                 android:digits="0123456789abcdefghigklmnopqrstuvwxyz"
                 android:hint="@string/register_password"
-                android:paddingLeft="@dimen/space_15"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:paddingLeft="@dimen/space_15" />
 
             <EditText
                 android:id="@+id/visit_edit"
@@ -79,8 +79,8 @@
                 android:layout_height="45dp"
                 android:layout_marginTop="@dimen/space_18"
                 android:hint="@string/visit_code"
-                android:paddingLeft="@dimen/space_15"
-                android:inputType="number" />
+                android:inputType="number"
+                android:paddingLeft="@dimen/space_15" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -106,8 +106,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
                 android:layout_marginBottom="12dp"
+                android:layout_marginTop="14dp"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <CheckBox
@@ -116,14 +117,16 @@
                     android:layout_height="wrap_content"
                     android:button="@drawable/check_box_bg"
                     android:checked="true"
+                    android:gravity="center_vertical"
                     android:paddingLeft="5dp"
                     android:text="@string/register_agree"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/text_size_14" />
 
                 <TextView
                     android:id="@+id/textview_register_order"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
                     android:text="@string/register_order"
                     android:textColor="#ff788c"
                     android:textSize="16sp" />
