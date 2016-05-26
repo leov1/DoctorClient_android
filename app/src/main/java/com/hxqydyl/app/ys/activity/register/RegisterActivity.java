@@ -57,6 +57,7 @@ public class RegisterActivity extends BaseRequstActivity implements View.OnClick
     private String captcha = "";//验证码
     private String mobile = "";//手机号
     private String password = "";//密码
+    private String visitCode = "";//邀请码
 
     private Intent intent;
 
@@ -156,7 +157,7 @@ public class RegisterActivity extends BaseRequstActivity implements View.OnClick
      * 注册请求
      */
     private void registerOne() {
-        PostPrams params = toPostParams(toParamsBaen("mobile",mobile),toParamsBaen("password", password),toParamsBaen("captcha", captcha));
+        PostPrams params = toPostParams(toParamsBaen("mobile",mobile),toParamsBaen("password", password),toParamsBaen("captcha", captcha),toParamsBaen("invite",visitCode));
         toNomalNet(params, RegiserResult.class,1,UrlConstants.getWholeApiUrl(UrlConstants.REGISTER_ONE,"2.0"),"请稍等...");
     }
 
@@ -167,10 +168,11 @@ public class RegisterActivity extends BaseRequstActivity implements View.OnClick
         String isMobile = validateMobile();
         if (!TextUtils.isEmpty(isMobile)) return isMobile;
 
-        captcha = captchaEdit.getText().toString();
+        captcha = captchaEdit.getText().toString().trim();
+        visitCode = visitEdit.getText().toString().trim();
 //        if (TextUtils.isEmpty(captcha)) return "验证码不能为空";
 
-        password = passwordEdit.getText().toString();
+        password = passwordEdit.getText().toString().trim();
         if (TextUtils.isEmpty(password)) return "密码不能为空";
      //   if (!Validator.isPassword(password)) return "密码只能字母加数字";
 
