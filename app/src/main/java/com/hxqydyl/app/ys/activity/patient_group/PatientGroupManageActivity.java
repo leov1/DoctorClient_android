@@ -1,5 +1,8 @@
 package com.hxqydyl.app.ys.activity.patient_group;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -10,6 +13,7 @@ import android.widget.RelativeLayout;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseRequstActivity;
+import com.hxqydyl.app.ys.activity.follow.FollowMainActivity;
 import com.hxqydyl.app.ys.adapter.PatientGroupAdapter;
 import com.hxqydyl.app.ys.bean.PatientGroup;
 import com.hxqydyl.app.ys.bean.response.BaseResponse;
@@ -37,6 +41,12 @@ public class PatientGroupManageActivity extends BaseRequstActivity implements Vi
     private PatientGroupAdapter patientGroupAdapter;
     private ArrayList<PatientGroup> patientGroupArrayList = new ArrayList<PatientGroup>();
     private ArrayList<PatientGroup> groups;
+
+    public static void newInstent(Activity activity, ArrayList<PatientGroup> patientGroups, int requestCode){
+        Intent intent = new Intent(activity, PatientGroupManageActivity.class);
+        intent.putExtra(PatientGroupManageActivity.GROUPS_INFO_KEY, patientGroups);
+        activity.startActivityForResult(intent, requestCode);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

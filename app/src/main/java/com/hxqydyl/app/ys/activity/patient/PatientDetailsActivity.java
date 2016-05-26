@@ -1,5 +1,6 @@
 package com.hxqydyl.app.ys.activity.patient;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -59,6 +60,12 @@ public class PatientDetailsActivity extends BaseRequstActivity implements View.O
     private Patient patient;
     private boolean hasProject = false;
 
+
+    public static void newIntent(Context context,Patient patient){
+        Intent intent = new Intent(context, PatientDetailsActivity.class);
+        intent.putExtra(KEY_PATIENT, patient);
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

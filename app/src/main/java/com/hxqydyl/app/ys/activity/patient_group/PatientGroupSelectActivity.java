@@ -1,5 +1,6 @@
 package com.hxqydyl.app.ys.activity.patient_group;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -37,6 +38,12 @@ public class PatientGroupSelectActivity extends BaseRequstActivity implements Vi
 
     @InjectId(id = R.id.bAddPatientGroup)
     private Button bAddPatientGroup;
+
+    public static void newIntent(Activity activity,ArrayList<PatientGroup> patientGroups,int requestCode){
+        Intent intent = new Intent(activity, PatientGroupSelectActivity.class);
+        intent.putExtra(PatientGroupManageActivity.GROUPS_INFO_KEY, patientGroups);
+        activity.startActivityForResult(intent, requestCode);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
