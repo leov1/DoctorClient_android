@@ -63,6 +63,10 @@ public class PatientTreatInfoAdapter extends BaseAdapter{
                 tvTreatName.setText(context.getString(R.string.sui_fang_biao_dan));
                 ivTreatIcon.setImageResource(R.mipmap.suifangbiaodan);
                 break;
+            default:
+                tvTreatName.setText(context.getString(R.string.men_zhen_bing_li));
+                ivTreatIcon.setImageResource(R.mipmap.menzhenbingli);
+                break;
         }
         if(treatInfo.isUnread()){
             tvUnreadIcon.setVisibility(View.VISIBLE);

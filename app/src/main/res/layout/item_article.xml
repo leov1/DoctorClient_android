@@ -1,30 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/white"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/white">
 
-    <TextView
-        android:id="@+id/name_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="60dip"
-        android:textColor="@color/black"
-        android:gravity="center_vertical"
-        android:textSize="@dimen/text_size_18"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/space_20"
-        android:text="精神压力对血压有何影响"/>
 
     <TextView
         android:id="@+id/tag_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="已选用"
         android:layout_alignParentRight="true"
-        android:textColor="#696969"
-        android:textSize="@dimen/text_size_14"
-        android:layout_marginRight="20dp"
         android:layout_centerVertical="true"
+        android:layout_marginRight="20dp"
         android:drawablePadding="10dp"
-        android:drawableRight="@mipmap/icon_right_arrow"/>
+        tools:drawableRight="@mipmap/icon_right_arrow"
+        android:textColor="@color/red"
+        android:textSize="@dimen/text_size_14"
+        tools:text="已选用" />
+
+    <TextView
+        android:id="@+id/name_tv"
+        android:layout_width="match_parent"
+        android:layout_height="60dip"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/space_20"
+        android:layout_toLeftOf="@+id/tag_tv"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_18"
+        tools:text="精神压力对血压有何影响" />
 </RelativeLayout>

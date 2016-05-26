@@ -175,7 +175,7 @@ public class PatientListAdapter extends BaseExpandableListAdapter {
 
         ImageView ivPatientPro = BaseViewHolder.get(convertView,R.id.ivPatientPro);
         if (TextUtils.isEmpty(patient.getVisitPreceptUuid())){
-            ivPatientPro.setVisibility(View.VISIBLE);
+            ivPatientPro.setVisibility(View.GONE);
         }else {
             ivPatientPro.setVisibility(View.VISIBLE);
         }

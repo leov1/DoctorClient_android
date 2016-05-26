@@ -22,11 +22,11 @@ import com.hxqydyl.app.ys.activity.follow.PlanInfoActivity;
 import com.hxqydyl.app.ys.adapter.PatientTreatInfoAdapter;
 import com.hxqydyl.app.ys.bean.Patient;
 import com.hxqydyl.app.ys.bean.PatientTreatInfo;
+import com.hxqydyl.app.ys.bean.response.PatientTreatResponse;
 import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.utils.InjectId;
 import com.hxqydyl.app.ys.utils.InjectUtils;
 import com.hxqydyl.app.ys.utils.LoginManager;
-import com.hxqydyl.app.ys.utils.StringUtils;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -115,14 +115,12 @@ public class PatientDetailsActivity extends BaseRequstActivity implements View.O
     }
 
     private void refreshTreatInfoList() {
-        toNomalNetStringBack(toGetParams(toParamsBaen("customerUuid", patient.getCustomerUuid()), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid()), toParamsBaen("visitState", "0")), 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_PATIENT_TREAT_RECORD, "1.0"), "正在获取患者病例");
+        toNomalNet(toGetParams(toParamsBaen("customerUuid", patient.getCustomerUuid()), toParamsBaen("doctorUuid", LoginManager.getDoctorUuid()), toParamsBaen("visitState", "1")), PatientTreatResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_PATIENT_TREAT_RECORD, "2.0"), "正在获取患者病例");
     }
 
     @Override
-    public void onSuccessToString(String json, int flag) {
-        Type listType = new TypeToken<ArrayList<PatientTreatInfo>>() {
-        }.getType();
-        ArrayList<PatientTreatInfo> list = gson.fromJson(json, listType);
+    public void onSuccessToBean(Object bean, int flag) {
+        ArrayList<PatientTreatInfo> list = ((PatientTreatResponse) bean).value;
         if (list != null && list.size() > 0) {
             patientTreatInfoArrayList.clear();
             patientTreatInfoArrayList.addAll(list);
@@ -153,13 +151,13 @@ public class PatientDetailsActivity extends BaseRequstActivity implements View.O
                 startActivityForResult(intent, REQ_ADD_CASE_REPORT);
                 break;
             case R.id.bSelectNewFollowUpForPatient:
-                if (hasProject){
+                if (hasProject) {
                     intent = new Intent(PatientDetailsActivity.this, PlanInfoActivity.class);
                     intent.putExtra("visitUuid", patient.getVisitPreceptUuid());
                     intent.putExtra("from", "my");
                     intent.putExtra("preceptName", String.format("%s的", patient.getCustomerName()));
                     startActivity(intent);
-                }else {
+                } else {
                     intent = new Intent(this, FollowApplyOkActivity.class);
                     intent.putExtra("customerUuid", patient.getCustomerUuid());
                     intent.putExtra("type", "updateVisitRecord");

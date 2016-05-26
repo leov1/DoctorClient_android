@@ -144,7 +144,7 @@ public class FollowMainActivity extends BaseRequstActivity implements View.OnCli
                 intent.putExtra(PatientGroupManageActivity.GROUPS_INFO_KEY, removeDefaultGroup(patientGroups));
                 startActivityForResult(intent, REQ_MANAGE_PATIENT_GROUP);
                 break;
-            case R.id.rl_follow_task:
+            case R.id.rl_follow_task://待处理随访任务
                 intent = new Intent(this, FollowTaskActivity.class);
                 startActivity(intent);
                 break;

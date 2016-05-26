@@ -1,5 +1,6 @@
 package com.hxqydyl.app.ys.activity.case_report;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -52,6 +53,13 @@ public class FollowUpFormActivity extends BaseRequstActivity implements View.OnC
     private PatientTreatInfo treatInfo;
     private Patient patient;
 
+    public static void newIntent(Context mContext,PatientTreatInfo pti, Patient p){
+        Intent intent = new Intent(mContext, FollowUpFormActivity.class);
+        intent.putExtra(PatientDetailsActivity.KEY_TREAT_INFO, pti);
+        intent.putExtra(PatientDetailsActivity.KEY_PATIENT, p);
+        mContext.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,14 +76,12 @@ public class FollowUpFormActivity extends BaseRequstActivity implements View.OnC
         patient = (Patient) getIntent().getSerializableExtra(PatientDetailsActivity.KEY_PATIENT);
         if (treatInfo == null || patient == null) {
             finish();
-            return;
         }
     }
 
     private void initView() {
-        lvForm = (ExpandableListView) findViewById(R.id.lvForm);
         simpleInfoViewHolder = new PatientSimpleInfoViewHolder(this);
-        initViewOnBaseTitle(String.format(getString(R.string.follow_up_form_title), patient.getCustomerName()));
+        initViewOnBaseTitle(String.format(getString(R.string.follow_up_form_title), patient.getRealName()));
         followUpFormAdapter = new FollowUpFormAdapter(this, formList, this);
         lvForm.setAdapter(followUpFormAdapter);
         lvForm.setGroupIndicator(null);
