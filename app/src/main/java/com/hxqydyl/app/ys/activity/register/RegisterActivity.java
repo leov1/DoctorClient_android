@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -27,8 +26,6 @@ import com.xus.http.httplib.model.GetParams;
 import com.xus.http.httplib.model.PostPrams;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import framework.listener.RegisterSucListener;
 import framework.listener.RegisterSucMag;
@@ -36,7 +33,7 @@ import framework.listener.RegisterSucMag;
 /**
  * 注册页面
  */
-public class RegisterActivity extends BaseRequstActivity implements View.OnClickListener {
+public class RegisterActivity extends BaseRequstActivity implements View.OnClickListener{
 
     @InjectId(id = R.id.textview_register_order)
     private TextView registerOrderBtn;
@@ -60,7 +57,8 @@ public class RegisterActivity extends BaseRequstActivity implements View.OnClick
     private String captcha = "";//验证码
     private String mobile = "";//手机号
     private String password = "";//密码
-    private String ServiceCaptcha;
+    private String visitCode = "";//邀请码
+
     private Intent intent;
 
     private int timeCount = 60;
@@ -152,7 +150,7 @@ public class RegisterActivity extends BaseRequstActivity implements View.OnClick
         timeCount = 60;
         handler.sendEmptyMessage(GET_VERIFICATION);
         GetParams params = toGetParams(toParamsBaen("mobile", mobile));
-        toNomalNetStringBack(params, 2, UrlConstants.getWholeApiUrl(UrlConstants.GET_VERIFICATION_CODE), "");
+        toNomalNetStringBack(params,2,UrlConstants.getWholeApiUrl(UrlConstants.GET_VERIFICATION_CODE),"");
     }
 
     /**
@@ -165,8 +163,8 @@ public class RegisterActivity extends BaseRequstActivity implements View.OnClick
             String JSESSIONID[]=ServiceCaptcha.split(";");
             header.put("cookie",JSESSIONID[0]);
         }
-        PostPrams params = toPostParams(header,toParamsBaen("mobile", mobile), toParamsBaen("password", password), toParamsBaen("captcha", captcha));
-        toNomalNet(params, RegiserResult.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.REGISTER_ONE, "2.0"), "请稍等...");
+        PostPrams params = toPostParams(header,toParamsBaen("mobile", mobile), toParamsBaen("password", password), toParamsBaen("captcha", captcha),toParamsBaen("invite",visitCode));
+        toNomalNet(params, RegiserResult.class,1,UrlConstants.getWholeApiUrl(UrlConstants.REGISTER_ONE,"2.0"),"请稍等...");
     }
 
     /**
@@ -176,10 +174,11 @@ public class RegisterActivity extends BaseRequstActivity implements View.OnClick
         String isMobile = validateMobile();
         if (!TextUtils.isEmpty(isMobile)) return isMobile;
 
-        captcha = captchaEdit.getText().toString();
+        captcha = captchaEdit.getText().toString().trim();
+        visitCode = visitEdit.getText().toString().trim();
 //        if (TextUtils.isEmpty(captcha)) return "验证码不能为空";
 
-        password = passwordEdit.getText().toString();
+        password = passwordEdit.getText().toString().trim();
         if (TextUtils.isEmpty(password)) return "密码不能为空";
         //   if (!Validator.isPassword(password)) return "密码只能字母加数字";
 
