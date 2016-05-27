@@ -41,7 +41,7 @@ public class SelectHosActivity extends BaseRequstActivity {
         provinceId=getIntent().getExtras().getString("provinceId");
         ragionCode=getIntent().getExtras().getString("ragionCode");
         cityId=getIntent().getExtras().getString("cityId");
-        initViewOnBaseTitle("自评量表选择");
+        initViewOnBaseTitle("选择医院");
         setBackListener();
         initViews();
         getHos();

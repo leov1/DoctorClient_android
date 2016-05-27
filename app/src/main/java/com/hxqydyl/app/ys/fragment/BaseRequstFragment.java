@@ -19,6 +19,7 @@ import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.CommonUtils;
 import com.hxqydyl.app.ys.utils.DialogUtils;
+import com.hxqydyl.app.ys.utils.SharedPreferences;
 import com.xus.http.httplib.https.HttpUtil;
 import com.xus.http.httplib.interfaces.HttpUtilBack;
 import com.xus.http.httplib.model.BaseParams;
@@ -42,9 +43,10 @@ public class BaseRequstFragment<T> extends BaseFragment implements HttpUtilBack 
     private int pickPic = 1;//选择图片模式
     private int pickNum = 1;//允许选择张数
     private static final int CODE_FOR_WRITE_PERMISSION = 1119;
-private boolean isTest= CommonUtils.isTest(AppContext.getInstance());
+    private boolean isTest = CommonUtils.isTest(AppContext.getInstance());
+
     public void showDialog(String text) {
-        if (!(pDialog!=null&&pDialog.isShowing())){
+        if (!(pDialog != null && pDialog.isShowing())) {
             pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
             pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
             pDialog.setCancelable(true);
@@ -59,26 +61,34 @@ private boolean isTest= CommonUtils.isTest(AppContext.getInstance());
             pDialog.dismissWithAnimation();
         }
     }
+
     @Override
     public <T> void onSuccess(int i, String s, Class<T> aClass, Map<String, String> map) {
-        Log.e("wangxu", "json=" + s);
         try {
+            Log.e("wangxu", "cookie" + map.get("Cookie"));
+            Log.e("wangxu", "params" + map.get("params"));
+            Log.e("wangxu", "json=" + s);
+            SharedPreferences.getInstance().putString("Http_Cookie", map.get("Cookie"));
             dismissDialog();
             if (map.get("IsString").equals("false")) {
                 BaseResponse t = (BaseResponse) gson.fromJson(s, aClass);
                 if (t.code == 200 || (t.query != null && !TextUtils.isEmpty(t.query.success) && t.query.success.equals("1")) || (t.value != null && t.value.equals("true"))) {
                     onSuccessToBean(t, i);
                 } else if (t.code != 200 && !TextUtils.isEmpty(t.message)) {
-                    UIHelper.ToastMessage(getActivity(), t.message);
-                    if (isTest&&t.code!=406){
-                        DialogUtils.showNormalDialog(getActivity(),"此弹框仅在测试弹出","服务器错误:请测试人员区分是否为bug后记录-\nurl:"+map.get("url")+"\n请求数据:"+map.get("params")+"\n请求方式:"+map.get("httpType")+"\n"+"返回数据:"+s);
+                    if (t.code == 500) {
+                        UIHelper.ToastMessage(getActivity(), "服务器正在升级，请稍后再试");
+                    } else {
+                        UIHelper.ToastMessage(getActivity(), t.message);
+                        if (isTest && t.code != 406) {
+                            DialogUtils.showNormalDialog(getActivity(), "此弹框仅在测试弹出", "服务器错误:请测试人员区分是否为bug后记录-\nurl:" + map.get("url") + "\n请求数据:" + map.get("params") + "\n请求方式:" + map.get("httpType") + "\n" + "返回数据:" + s);
+                        }
                     }
                 } else if (t.query != null && !TextUtils.isEmpty(t.query.message)) {
                     UIHelper.ToastMessage(getActivity(), t.query.message);
                 } else {
                     UIHelper.ToastMessage(getActivity(), "请求异常！请稍后再试");
-                    if (isTest){
-                        DialogUtils.showNormalDialog(getActivity(),"此弹框仅在测试弹出","服务端请求头有误，请确认json\n"+s);
+                    if (isTest) {
+                        DialogUtils.showNormalDialog(getActivity(), "此弹框仅在测试弹出", "服务端请求头有误，请确认json\n" + s);
                     }
                 }
             } else {
@@ -87,8 +97,8 @@ private boolean isTest= CommonUtils.isTest(AppContext.getInstance());
         } catch (Exception e) {
             Log.e("wangxu", e.toString());
             UIHelper.ToastMessage(getActivity(), "加载失败，请稍后再试");
-            if (isTest){
-                DialogUtils.showNormalDialog(getActivity(),"此弹框仅在测试弹出","android程序内部错误"+e.toString());
+            if (isTest) {
+                DialogUtils.showNormalDialog(getActivity(), "此弹框仅在测试弹出", "android程序内部错误" + e.toString());
             }
             onfail(i, 9999, map);
         }
@@ -112,26 +122,17 @@ private boolean isTest= CommonUtils.isTest(AppContext.getInstance());
      * @param params 使用toPostParams或者toGetParams方法
      * @param flag   表示该次请求的flag
      * @param url    请求地址
-     *               <p>
+     *               <p/>
      *               onSuccessString中回调
      */
-    public void toNomalNetStringBack(BaseParams params, int flag, String url,String showdialog) {
-        if (!TextUtils.isEmpty(showdialog)){
-            showDialog(showdialog);
-        }
+    public void toNomalNetStringBack(BaseParams params, int flag, String url, String showdialog) {
+
         Map<String, String> map = new HashMap<>();
         map.put("IsString", "true");
-        map.put("url",url);
-        map.put("params",params.toString());
-        if (params instanceof GetParams) {
-            GetParams get = (GetParams) params;
-            httpUtil.doGet(flag, url, get, String.class, map);
-            map.put("httpType","get");
-        } else if (params instanceof PostPrams) {
-            PostPrams post = (PostPrams) params;
-            httpUtil.doPost(flag, url, post, String.class, map);
-            map.put("httpType","post");
-        }
+        map.put("url", url);
+        map.put("params", params.toString());
+        doNet(params, flag, url, map,null,showdialog);
+
     }
 
     /**
@@ -141,87 +142,89 @@ private boolean isTest= CommonUtils.isTest(AppContext.getInstance());
      * @param aClass 转换成bean类的class
      * @param flag   表示该次请求的flag
      * @param url    请求地址
-     *               <p>
+     *               <p/>
      *               在onSuccessToBean中回调
      */
-    public void toNomalNet(BaseParams params, Class<T> aClass, int flag, String url,String showdialog) {
-        if (!TextUtils.isEmpty(showdialog)){
-            showDialog(showdialog);
-        }
+    public void toNomalNet(BaseParams params, Class<T> aClass, int flag, String url, String showdialog) {
         Map<String, String> map = new HashMap<>();
         map.put("IsString", "false");
-        map.put("url",url);
-        map.put("params",params.toString());
-        if (params instanceof GetParams) {
-            GetParams get = (GetParams) params;
-            httpUtil.doGet(flag, url, get, aClass, map);
-            map.put("httpType","get");
+        map.put("url", url);
+        map.put("params", params.toString());
+        doNet(params, flag, url, map,aClass,showdialog);
 
-        } else if (params instanceof PostPrams) {
-            PostPrams post = (PostPrams) params;
-            httpUtil.doPost(flag, url, post, aClass, map);
-            map.put("httpType","post");
-
-        }
     }
-    public void toNomalNet(BaseParams params, int flag, String url,String showdialog) {
-        if (!TextUtils.isEmpty(showdialog)){
-            showDialog(showdialog);
-        }
+
+    public void toNomalNet(BaseParams params, int flag, String url, String showdialog) {
         Map<String, String> map = new HashMap<>();
         map.put("IsString", "false");
+        doNet(params, flag, url, map,null,showdialog);
+
+    }
+
+    private void doNet(BaseParams params, int flag, String url, Map<String, String> map,Class<T> tClass, String showdialog){
+        if (!TextUtils.isEmpty(showdialog)) {
+            showDialog(showdialog);
+        }
+        if (!TextUtils.isEmpty(SharedPreferences.getInstance().getString("Http_Cookie", ""))) {
+            params.addHeader("cookie", SharedPreferences.getInstance().getString("Http_Cookie", ""));
+        }
         if (params instanceof GetParams) {
             GetParams get = (GetParams) params;
-            httpUtil.doGet(flag, url, get, BaseResponse.class, map);
+            httpUtil.doGet(flag, url, get,tClass!=null?tClass:BaseResponse.class, map);
         } else if (params instanceof PostPrams) {
             PostPrams post = (PostPrams) params;
-            httpUtil.doPost(flag, url, post,  BaseResponse.class, map);
+            httpUtil.doPost(flag, url, post, tClass!=null?tClass:BaseResponse.class, map);
         }
     }
 
-    public GetParams toGetParams( ParamsBean... keys) {
+    public GetParams toGetParams(ParamsBean... keys) {
         return toGetParams(null, keys);
     }
-    public PostPrams toPostParams( ParamsBean... keys) {
-        return toPostParams(null,keys);
+
+    public PostPrams toPostParams(ParamsBean... keys) {
+        return toPostParams(null, keys);
     }
+
     /**
      * @param keys 通过toParamsBaen获取键值对
      * @return
      */
-    public PostPrams toPostParams(Map<String,String> header, ParamsBean... keys) {
+    public PostPrams toPostParams(Map<String, String> header, ParamsBean... keys) {
         PostPrams params = new PostPrams();
         for (ParamsBean s : keys) {
             params.put(s.getKey(), s.getValue());
         }
-        if (header!=null){
+        if (header != null) {
             params.setHeader(header);
         }
         return params;
     }
-    public PostPrams toPostFileParams(Map<String,String> header, ParamsBean... keys) {
+
+    public PostPrams toPostFileParams(Map<String, String> header, ParamsBean... keys) {
         PostPrams params = new PostPrams();
         for (ParamsBean s : keys) {
             params.addFilePrams(s.getKey(), s.getValue());
         }
-        if (header!=null){
+        if (header != null) {
             params.setHeader(header);
         }
         return params;
     }
-    public PostPrams toPostFileParams( ParamsBean... keys) {
+
+    public PostPrams toPostFileParams(ParamsBean... keys) {
         PostPrams params = new PostPrams();
         for (ParamsBean s : keys) {
             params.addFilePrams(s.getKey(), s.getValue());
         }
         return params;
     }
-    public GetParams toGetParams(Map<String,String> header,ParamsBean... keys) {
+
+    public GetParams toGetParams(Map<String, String> header, ParamsBean... keys) {
         GetParams params = new GetParams();
         for (ParamsBean s : keys) {
             params.put(s.getKey(), s.getValue());
         }
-        if (header!=null){
+        if (header != null) {
             params.setHeader(header);
         }
         return params;
@@ -281,7 +284,7 @@ private boolean isTest= CommonUtils.isTest(AppContext.getInstance());
                 .isneedcamera(true)
                 .isSqureCrop(false)
                 .setUropOptions(options)
-                .maxPickSize(pickNum )
+                .maxPickSize(pickNum)
                 .spanCount(Integer.parseInt("3"))
                 .pickMode(pickPic).build();
     }

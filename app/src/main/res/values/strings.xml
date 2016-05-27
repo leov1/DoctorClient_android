@@ -49,9 +49,8 @@
     <!--register-->
     <string name="register_password">登录密码</string>
     <string name="register_login">已有账号,登录</string>
-    <string name="register_agree">我已阅读并同意</string>
     <string name="visit_code">请输入邀请码,没有可以不填</string>
-    <string name="register_order">《好心情用户服务协议》</string>
+    <string name="register_order">我已阅读并同意《好心情用户服务协议》</string>
 
     <!--forgetpassword-->
     <string name="forget_pw_text">忘记密码</string>

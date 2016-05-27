@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
+    android:background="@color/background_color"
     android:orientation="vertical">
 
-    <include layout="@layout/top_title"></include>
+    <include
+        android:id="@+id/title"
+        layout="@layout/top_title"></include>
 
     <LinearLayout
+        android:layout_below="@+id/title"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/background_color"
         android:fitsSystemWindows="true"
         android:gravity="center_horizontal"
@@ -17,7 +21,7 @@
         android:paddingLeft="@dimen/space_30"
         android:paddingRight="@dimen/space_30">
 
-        <ImageView
+ <!--       <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -31,13 +35,13 @@
             android:text="@string/login"
             android:textColor="@color/login_text_color"
             android:textSize="@dimen/text_size_22" />
-
+-->
         <EditText
             android:id="@+id/mobile_edit"
             style="@style/edit_blue"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:layout_marginTop="@dimen/space_26"
+            android:layout_marginTop="50dp"
             android:hint="@string/phone"
             android:inputType="number"
             android:maxLength="11"
@@ -74,7 +78,7 @@
             android:id="@+id/login_btn"
             android:layout_width="match_parent"
             android:layout_height="40dip"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="15dp"
             android:background="@drawable/btn_bg_selecter"
             android:text="@string/login"
             android:textColor="@color/text_color_white"
@@ -82,13 +86,26 @@
 
         <TextView
             android:id="@+id/register_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="right"
+            android:paddingTop="10dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_10"
             android:text="@string/login_toregister"
             android:textColor="@color/login_forget_color"
-            android:textSize="@dimen/text_size_18" />
+            android:textSize="@dimen/text_size_14" />
+
     </LinearLayout>
+    <TextView
+        android:layout_gravity="bottom"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:textColor="@color/color_home_topbar"
+        android:text="如遇问题，请拨打客服400-135-8858"
+        />
 
-
-</LinearLayout>
+</RelativeLayout>

@@ -1,134 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main"
-    android:clickable="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
+    android:background="@color/background_color"
     android:orientation="vertical">
 
-    <include layout="@layout/top_title"></include>
+    <include
+        android:id="@+id/title"
+        layout="@layout/top_title"></include>
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:fitsSystemWindows="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/space_30"
+        android:paddingRight="@dimen/space_30">
+
+        <EditText
+            android:id="@+id/mobile_edit"
+            style="@style/edit_blue"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="45dp"
+            android:hint="@string/phone"
+            android:inputType="number"
+            android:maxLength="11"
+            android:paddingLeft="@dimen/space_15" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/background_color"
-            android:fitsSystemWindows="true"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/space_30"
-            android:paddingRight="@dimen/space_30">
+            android:layout_height="45dp"
+            android:layout_marginTop="@dimen/space_18"
+            android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/mobile_edit"
+                android:id="@+id/captcha_edit"
                 style="@style/edit_blue"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginTop="45dp"
-                android:hint="@string/phone"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="6"
+                android:hint="@string/code"
                 android:inputType="number"
-                android:maxLength="11"
                 android:paddingLeft="@dimen/space_15" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginTop="@dimen/space_18"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/captcha_edit"
-                    style="@style/edit_blue"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="6"
-                    android:hint="@string/code"
-                    android:inputType="number"
-                    android:paddingLeft="@dimen/space_15" />
-
-
-                <Button
-                    android:id="@+id/btn_code"
-                    style="@style/btn_blue"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="7dp"
-                    android:layout_weight="4"
-                    android:text="@string/phone_code" />
-            </LinearLayout>
-
-            <EditText
-                android:id="@+id/password_edit"
-                style="@style/edit_blue"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginTop="@dimen/space_18"
-                android:digits="0123456789abcdefghigklmnopqrstuvwxyz"
-                android:hint="@string/register_password"
-                android:paddingLeft="@dimen/space_15"
-                android:inputType="textPassword" />
-
-            <EditText
-                android:id="@+id/visit_edit"
-                style="@style/edit_blue"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginTop="@dimen/space_18"
-                android:hint="@string/visit_code"
-                android:paddingLeft="@dimen/space_15"
-                android:inputType="number" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_18">
-
-                <TextView
-                    android:id="@+id/login_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:padding="@dimen/space_10"
-                    android:text="@string/register_login"
-                    android:textColor="@color/gray"
-                    android:textSize="@dimen/text_size_18" />
-            </RelativeLayout>
 
             <Button
-                android:id="@+id/next_btn"
+                android:id="@+id/btn_code"
                 style="@style/btn_blue"
-                android:text="@string/register" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="12dp"
-                android:orientation="horizontal">
-
-                <CheckBox
-                    android:id="@+id/checkbox_agree"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:button="@drawable/check_box_bg"
-                    android:checked="true"
-                    android:paddingLeft="5dp"
-                    android:text="@string/register_agree"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/textview_register_order"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/register_order"
-                    android:textColor="#ff788c"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="7dp"
+                android:layout_weight="4"
+                android:text="@string/phone_code" />
         </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+
+        <EditText
+            android:id="@+id/password_edit"
+            style="@style/edit_blue"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="@dimen/space_18"
+            android:digits="0123456789abcdefghigklmnopqrstuvwxyz"
+            android:hint="@string/register_password"
+            android:inputType="textPassword"
+            android:paddingLeft="@dimen/space_15" />
+
+        <EditText
+            android:id="@+id/visit_edit"
+            style="@style/edit_blue"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="@dimen/space_18"
+            android:hint="@string/visit_code"
+            android:paddingLeft="@dimen/space_15" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:id="@+id/login_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:padding="@dimen/space_10"
+                android:text="@string/register_login"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/text_size_14" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/next_btn"
+            style="@style/btn_blue"
+            android:text="@string/register" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/checkbox_agree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/check_box_bg"
+                android:checked="true"
+                android:paddingLeft="5dp"
+                android:textColor="@color/gray"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/textview_register_order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/register_order"
+                android:textColor="@color/gray"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="如遇问题，请拨打客服400-135-8858"
+        android:textColor="@color/color_home_topbar" />
+</RelativeLayout>

@@ -13,12 +13,24 @@ import android.widget.TextView;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.bean.Query;
 import com.hxqydyl.app.ys.bean.register.CaptchaResult;
+import com.hxqydyl.app.ys.bean.register.DoctorResult;
+import com.hxqydyl.app.ys.bean.register.RegiserResult;
 import com.hxqydyl.app.ys.http.JsonUtils;
 import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.http.login.UpdatePasswordNet;
 import com.hxqydyl.app.ys.ui.UIHelper;
+import com.hxqydyl.app.ys.utils.LoginManager;
+import com.hxqydyl.app.ys.utils.SharedPreferences;
 import com.hxqydyl.app.ys.utils.Validator;
 import com.xus.http.httplib.model.GetParams;
+import com.xus.http.httplib.model.PostPrams;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import framework.listener.RegisterSucListener;
+import framework.listener.RegisterSucMag;
 
 /**
  * 忘记密码
@@ -125,9 +137,13 @@ public class ForgetPasswordActivity extends BaseRequstActivity implements View.O
     /**
      * 修改网络请求
      */
+
+
     private void updatePassword() {
-        updatePasswordNet.updatePassword(mobile, password, captcha);
+        PostPrams params = toPostParams(toParamsBaen("mobile", mobile), toParamsBaen("password", password), toParamsBaen("captcha", captcha));
+        toNomalNet(params, RegiserResult.class,1,UrlConstants.getWholeApiUrl(UrlConstants.UPDATE_PASSWORD,"2.0"),"请稍等...");
     }
+
 
     /**
      * 获取验证码网络请求
@@ -194,15 +210,36 @@ public class ForgetPasswordActivity extends BaseRequstActivity implements View.O
     public void requestUpdatePwFail() {
 
     }
-
     @Override
-    public void onSuccessToString(String json, int flag) {
+    public void onSuccessToBean(Object bean, int flag) {
         switch (flag) {
-            case 2:
+            case 1: //修改成功
+                UIHelper.ToastMessage(ForgetPasswordActivity.this, "修改成功！");
+                LoginManager.setDoctorUuid(((RegiserResult) bean).value.getUuid());
+                SharedPreferences.getInstance().putString(SharedPreferences.USER_INFO_COMPLETE, ((RegiserResult) bean).value.getSate());
+                removeBeforViews();
+                finish();
+                break;
+
+        }
+    }
+    /**
+     * 观察者移除之前页面
+     */
+    private void removeBeforViews() {
+        ArrayList<RegisterSucListener> registerSucListeners = RegisterSucMag.getInstance().downloadListeners;
+        if (registerSucListeners == null || registerSucListeners.size() == 0) return;
+        for (int i = 0; i < registerSucListeners.size(); i++) {
+            registerSucListeners.get(i).onRegisterSuc();
+        }
+    }
+    @Override
+    public void onSuccessToStringWithMap(String json, int flag, Map map) {
+        switch (flag) {
+            case 2://验证码
                 CaptchaResult captchaResult = JsonUtils.JsonCaptchResult(json);
                 UIHelper.ToastMessage(ForgetPasswordActivity.this, captchaResult.getQuery().getMessage());
                 break;
         }
-
     }
 }

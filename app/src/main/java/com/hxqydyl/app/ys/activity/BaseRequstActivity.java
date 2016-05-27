@@ -27,6 +27,7 @@ import com.hxqydyl.app.ys.push.toactivity.PushType;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.CommonUtils;
 import com.hxqydyl.app.ys.utils.DialogUtils;
+import com.hxqydyl.app.ys.utils.SharedPreferences;
 import com.xus.http.httplib.https.HttpUtil;
 import com.xus.http.httplib.interfaces.HttpUtilBack;
 import com.xus.http.httplib.model.BaseParams;
@@ -48,42 +49,51 @@ public class BaseRequstActivity<T> extends BaseTitleActivity implements HttpUtil
     public Gson gson = new Gson();
     private int pickPic = 1;//选择图片模式
     private int pickNum = 1;//允许选择张数
-    private boolean isTest= CommonUtils.isTest(AppContext.getInstance());
+    private boolean isTest = CommonUtils.isTest(AppContext.getInstance());
 
     @Override
     public <T> void onSuccess(int i, String s, Class<T> aClass, Map<String, String> map) {
-        Log.e("wangxu","cookie"+map.get("Cookie"));
-        Log.e("wangxu","params"+map.get("params"));
+        Log.e("wangxu", "cookie" + map.get("Cookie"));
+        Log.e("wangxu", "params" + map.get("params"));
         Log.e("wangxu", "json=" + s);
         try {
+            String cookie = map.get("Cookie");
+            if (!TextUtils.isEmpty(cookie)){
+                SharedPreferences.getInstance().putString("Http_Cookie",cookie);
+            }
             dismissDialog();
             if (map.get("IsString").equals("false")) {
                 BaseResponse t = (BaseResponse) gson.fromJson(s, aClass);
                 if (t.code == 200 || (t.query != null && !TextUtils.isEmpty(t.query.success) && t.query.success.equals("1")) || (t.value != null && t.value.equals("true"))) {
                     onSuccessToBean(t, i);
-                    onSuccessToBeanWithMap(t, i,map);
+                    onSuccessToBeanWithMap(t, i, map);
                 } else if (t.code != 200 && !TextUtils.isEmpty(t.message)) {
-                    UIHelper.ToastMessage(this, t.message);
-                    if (isTest&&t.code!=406){
-                        DialogUtils.showNormalDialog(this,"此弹框仅在测试弹出","服务器错误:请测试人员区分是否为bug后记录-\nurl:"+map.get("url")+"\n请求数据:"+map.get("params")+"\n请求方式:"+map.get("httpType")+"\n"+"返回数据:"+s);
+                    if (t.code == 500) {
+                        UIHelper.ToastMessage(this, "服务器正在升级，请稍后再试");
+                    } else {
+                        UIHelper.ToastMessage(this, t.message);
+                        if (isTest && t.code != 406) {
+                            DialogUtils.showNormalDialog(this, "此弹框仅在测试弹出", "服务器错误:请测试人员区分是否为bug后记录-\nurl:" + map.get("url") + "\n请求数据:" + map.get("params") + "\n请求方式:" + map.get("httpType") + "\n" + "返回数据:" + s);
+                        }
                     }
+
                 } else if (t.query != null && !TextUtils.isEmpty(t.query.message)) {
                     UIHelper.ToastMessage(this, t.query.message);
                 } else {
                     UIHelper.ToastMessage(this, "请求异常！请稍后再试");
-                    if (isTest){
-                        DialogUtils.showNormalDialog(this,"此弹框仅在测试弹出","服务端请求头有误 \nurl:"+map.get("url")+"\n请求数据:"+map.get("params")+"\n请求方式:"+map.get("httpType")+"\n"+"返回数据:"+s);
+                    if (isTest) {
+                        DialogUtils.showNormalDialog(this, "此弹框仅在测试弹出", "服务端请求头有误 \nurl:" + map.get("url") + "\n请求数据:" + map.get("params") + "\n请求方式:" + map.get("httpType") + "\n" + "返回数据:" + s);
                     }
                 }
             } else {
                 onSuccessToString(s, i);
-                onSuccessToStringWithMap(s, i,map);
+                onSuccessToStringWithMap(s, i, map);
             }
         } catch (Exception e) {
             Log.e("wangxu", e.toString());
             UIHelper.ToastMessage(this, "加载失败，请稍后再试");
-            if (isTest){
-                DialogUtils.showNormalDialog(this,"此弹框仅在测试弹出","android程序内部错误"+e.toString());
+            if (isTest) {
+                DialogUtils.showNormalDialog(this, "此弹框仅在测试弹出", "android程序内部错误" + e.toString());
             }
             onfail(i, 9999, map);
         }
@@ -99,41 +109,32 @@ public class BaseRequstActivity<T> extends BaseTitleActivity implements HttpUtil
     public <T> void onSuccessToBean(T bean, int flag) {
 
     }
-    public <T> void onSuccessToBeanWithMap(T bean, int flag,Map<String, String> map) {
+
+    public <T> void onSuccessToBeanWithMap(T bean, int flag, Map<String, String> map) {
 
     }
+
     public void onSuccessToString(String json, int flag) {
 
     }
-    public void onSuccessToStringWithMap(String json, int flag,Map<String, String> map) {
+
+    public void onSuccessToStringWithMap(String json, int flag, Map<String, String> map) {
 
     }
+
     /**
      * @param params 使用toPostParams或者toGetParams方法
      * @param flag   表示该次请求的flag
      * @param url    请求地址
-     *               <p>
+     *               <p/>
      *               onSuccessString中回调
      */
     public void toNomalNetStringBack(BaseParams params, int flag, String url, String showdialog) {
-        if (!TextUtils.isEmpty(showdialog)) {
-            showDialog(showdialog);
-        }
         Map<String, String> map = new HashMap<>();
         map.put("IsString", "true");
-        map.put("url",url);
-        map.put("params",params.toString());
-        if (params instanceof GetParams) {
-            GetParams get = (GetParams) params;
-            httpUtil.doGet(flag, url, get, String.class, map);
-            map.put("httpType","get");
-
-        } else if (params instanceof PostPrams) {
-            PostPrams post = (PostPrams) params;
-            httpUtil.doPost(flag, url, post, String.class, map);
-            map.put("httpType","post");
-
-        }
+        map.put("url", url);
+        map.put("params", params.toString());
+        doNet(params,flag,url,map,null,showdialog);
     }
 
     /**
@@ -143,43 +144,38 @@ public class BaseRequstActivity<T> extends BaseTitleActivity implements HttpUtil
      * @param aClass 转换成bean类的class
      * @param flag   表示该次请求的flag
      * @param url    请求地址
-     *               <p>
+     *               <p/>
      *               在onSuccessToBean中回调
      */
     public void toNomalNet(BaseParams params, Class<T> aClass, int flag, String url, String showdialog) {
-        if (!TextUtils.isEmpty(showdialog)) {
-            showDialog(showdialog);
-        }
         Map<String, String> map = new HashMap<>();
         map.put("IsString", "false");
-        map.put("url",url);
-        map.put("params",params.toString());
-        if (params instanceof GetParams) {
-            GetParams get = (GetParams) params;
-            httpUtil.doGet(flag, url, get, aClass, map);
-            map.put("httpType","get");
-        } else if (params instanceof PostPrams) {
-            PostPrams post = (PostPrams) params;
-            httpUtil.doPost(flag, url, post, aClass, map);
-            map.put("httpType","post");
-        }
+        map.put("url", url);
+        map.put("params", params.toString());
+        doNet(params,flag,url,map,aClass,showdialog);
     }
 
     public void toNomalNet(BaseParams params, int flag, String url, String showdialog) {
+        Map<String, String> map = new HashMap<>();
+        map.put("IsString", "false");
+        doNet(params,flag,url,map,null,showdialog);
+    }
+
+    private void doNet(BaseParams params, int flag, String url, Map<String, String> map,Class<T> tClass, String showdialog){
         if (!TextUtils.isEmpty(showdialog)) {
             showDialog(showdialog);
         }
-        Map<String, String> map = new HashMap<>();
-        map.put("IsString", "false");
+        if (!TextUtils.isEmpty(SharedPreferences.getInstance().getString("Http_Cookie", ""))) {
+            params.addHeader("cookie", SharedPreferences.getInstance().getString("Http_Cookie", ""));
+        }
         if (params instanceof GetParams) {
             GetParams get = (GetParams) params;
-            httpUtil.doGet(flag, url, get, BaseResponse.class, map);
+            httpUtil.doGet(flag, url, get,tClass!=null?tClass:BaseResponse.class, map);
         } else if (params instanceof PostPrams) {
             PostPrams post = (PostPrams) params;
-            httpUtil.doPost(flag, url, post, BaseResponse.class, map);
+            httpUtil.doPost(flag, url, post, tClass!=null?tClass:BaseResponse.class, map);
         }
     }
-
     public GetParams toGetParams(ParamsBean... keys) {
         return toGetParams(null, keys);
     }
@@ -277,7 +273,7 @@ public class BaseRequstActivity<T> extends BaseTitleActivity implements HttpUtil
                 .isneedcamera(true)
                 .isSqureCrop(false)
                 .setUropOptions(options)
-                .maxPickSize(pickNum )
+                .maxPickSize(pickNum)
                 .spanCount(Integer.parseInt("3"))
                 .pickMode(pickPic).build();
     }
@@ -293,19 +289,29 @@ public class BaseRequstActivity<T> extends BaseTitleActivity implements HttpUtil
         return new ParamsBean(key, value);
     }
 
-    public <L>void setPushListener(final OnMessageGet<L> listeners, final PushType type){
+    public BroadcastReceiver pushListener;
+
+    public <L> void setPushListener(final OnMessageGet<L> listeners, final PushType type) {
         IntentFilter dynamic_filter = new IntentFilter();
         dynamic_filter.addAction("com.push.sendMessage");
-            registerReceiver(new BroadcastReceiver() {
+        pushListener = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-              BasePushBean basePushBean=  gson.fromJson(intent.getExtras().getString("json"),type.getBean());
-                if (basePushBean.id.equals(type.getId())){
-                    L t=(L)basePushBean;
+                BasePushBean basePushBean = gson.fromJson(intent.getExtras().getString("json"), type.getBean());
+                if (basePushBean.id.equals(type.getId())) {
+                    L t = (L) basePushBean;
                     listeners.onMessageGet(t);
                 }
             }
-        }, dynamic_filter);
+        };
+        registerReceiver(pushListener, dynamic_filter);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (pushListener != null) {
+            unregisterReceiver(pushListener);
+        }
+    }
 }

@@ -26,6 +26,8 @@ import com.xus.http.httplib.model.GetParams;
 import com.xus.http.httplib.model.PostPrams;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import framework.listener.RegisterSucListener;
 import framework.listener.RegisterSucMag;
@@ -53,7 +55,6 @@ public class RegisterActivity extends BaseRequstActivity implements View.OnClick
     private EditText visitEdit;//邀请码
     @InjectId(id = R.id.checkbox_agree)
     private CheckBox agreeCheckBox;
-
     private String captcha = "";//验证码
     private String mobile = "";//手机号
     private String password = "";//密码
@@ -157,13 +158,7 @@ public class RegisterActivity extends BaseRequstActivity implements View.OnClick
      * 注册请求
      */
     private void registerOne() {
-        Map<String,String > header=new HashMap<String,String>();
-        if (ServiceCaptcha!=null){
-            Log.e("wangxu",ServiceCaptcha);
-            String JSESSIONID[]=ServiceCaptcha.split(";");
-            header.put("cookie",JSESSIONID[0]);
-        }
-        PostPrams params = toPostParams(header,toParamsBaen("mobile", mobile), toParamsBaen("password", password), toParamsBaen("captcha", captcha),toParamsBaen("invite",visitCode));
+        PostPrams params = toPostParams(toParamsBaen("mobile", mobile), toParamsBaen("password", password), toParamsBaen("captcha", captcha),toParamsBaen("invite",visitCode));
         toNomalNet(params, RegiserResult.class,1,UrlConstants.getWholeApiUrl(UrlConstants.REGISTER_ONE,"2.0"),"请稍等...");
     }
 
@@ -219,7 +214,6 @@ public class RegisterActivity extends BaseRequstActivity implements View.OnClick
     public void onSuccessToStringWithMap(String json, int flag, Map map) {
             switch (flag) {
                 case 2://验证码
-                    ServiceCaptcha= (String)map.get("Cookie");
                     CaptchaResult captchaResult = JsonUtils.JsonCaptchResult(json);
                     UIHelper.ToastMessage(RegisterActivity.this, captchaResult.getQuery().getMessage());
                     break;

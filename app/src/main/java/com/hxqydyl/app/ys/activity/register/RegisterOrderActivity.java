@@ -6,6 +6,8 @@ import android.webkit.WebView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+import com.hxqydyl.app.ys.http.UrlConstants;
+
 /**
  * 注册协议
  */
@@ -30,7 +32,7 @@ public class RegisterOrderActivity extends BaseTitleActivity implements View.OnC
         initViewOnBaseTitle("注册协议");
         webView = (WebView) findViewById(R.id.webview_order);
 //        webView.loadUrl("file:///android_asset/register/register_order.html");
-        webView.loadUrl("http://172.168.1.41/html/reg/addreginfo_amet.shtml");
+        webView.loadUrl(UrlConstants.getWholeApiUrl(UrlConstants.ADD_REGINFO));
     }
 
     @Override

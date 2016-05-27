@@ -48,6 +48,7 @@ public class LoginManager {
      */
     public static void quitLogin() {
         SharedPreferences.getInstance().putString("doctorUuid", "");
+        SharedPreferences.getInstance().putString("Http_Cookie", "");
         SharedPreferences.getInstance().putString(SharedPreferences.HOME_DOCTOR_INFO_CACHE_NEW, "");
         isQuit_home = true;
         isQuit_myPatient = true;

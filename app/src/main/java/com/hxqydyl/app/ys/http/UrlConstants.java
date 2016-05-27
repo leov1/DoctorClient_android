@@ -121,7 +121,7 @@ public class UrlConstants {
     //第三步
     public static String REGISTER_THREE = "/app/pub/doctor/registerThree";
     //修改密码
-    public static String UPDATE_PASSWORD = "/app/pub/doctor/updatePassword";
+    public static String UPDATE_PASSWORD = "/app/pub/doctor/%s/updatePassword";
     //退出登陆
     public static String STAFF_OUT_OF = "/app/pub/doctor/staffOutOf";
 
@@ -213,6 +213,7 @@ public static String ADD_VISIT_PRECEPT = "/app/pub/doctor/%s/addVisitPrecept";
     public static String GET_SERVICE_STAFFINFO = "/app/pub/doctor/%s/getServiceStaffInfo";
     //获取患者随访状态
     public static String GET_CUSTOMER_BY_MOBILE = "/app/service/customer/%s/SelectCustomerMobile";
-    //添加随访患者
+    //注册协议
+    public static String ADD_REGINFO = "/html/reg/addreginfo_amet.shtml";
 
 }
