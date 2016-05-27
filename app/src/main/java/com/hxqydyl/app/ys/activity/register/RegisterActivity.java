@@ -29,32 +29,37 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import framework.listener.RegisterSucListener;
 import framework.listener.RegisterSucMag;
 
 /**
  * 注册页面
  */
-public class RegisterActivity extends BaseRequstActivity implements View.OnClickListener{
+public class RegisterActivity extends BaseRequstActivity implements View.OnClickListener {
 
-    @InjectId(id = R.id.textview_register_order)
-    private TextView registerOrderBtn;
-    @InjectId(id = R.id.login_btn)
-    private TextView loginBtn;
-    @InjectId(id = R.id.next_btn)
-    private Button nextBtn;//下一步
-    @InjectId(id = R.id.btn_code)
-    private Button codeBtn;//获取验证码
-    @InjectId(id = R.id.captcha_edit)
-    private EditText captchaEdit;//验证码
-    @InjectId(id = R.id.mobile_edit)
-    private EditText mobileEdit;//手机号
-    @InjectId(id = R.id.password_edit)
-    private EditText passwordEdit;//密码
-    @InjectId(id = R.id.visit_edit)
-    private EditText visitEdit;//邀请码
-    @InjectId(id = R.id.checkbox_agree)
-    private CheckBox agreeCheckBox;
+
+    @Bind(R.id.textview_register_order)
+    TextView registerOrderBtn;
+    @Bind(R.id.login_btn)
+    TextView loginBtn;
+    @Bind(R.id.next_btn)
+    Button nextBtn;//下一步
+    @Bind(R.id.btn_code)
+    Button codeBtn;//获取验证码
+    @Bind(R.id.captcha_edit)
+    EditText captchaEdit;//验证码
+    @Bind(R.id.mobile_edit)
+    EditText mobileEdit;//手机号
+    @Bind(R.id.password_edit)
+    EditText passwordEdit;//密码
+    @Bind(R.id.visit_edit)
+    EditText visitEdit;//邀请码
+    @Bind(R.id.checkbox_agree)
+    CheckBox agreeCheckBox;
+
     private String captcha = "";//验证码
     private String mobile = "";//手机号
     private String password = "";//密码
@@ -87,17 +92,13 @@ public class RegisterActivity extends BaseRequstActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        InjectUtils.injectView(this);
+        ButterKnife.bind(this);
         initViews();
         initListeners();
     }
 
     private void initListeners() {
         setBackListener(this);
-        registerOrderBtn.setOnClickListener(this);
-        nextBtn.setOnClickListener(this);
-        codeBtn.setOnClickListener(this);
-        loginBtn.setOnClickListener(this);
     }
 
     private void initViews() {
@@ -105,10 +106,10 @@ public class RegisterActivity extends BaseRequstActivity implements View.OnClick
 
     }
 
-    @Override
-    public void onClick(View v) {
+    @OnClick({R.id.textview_register_order, R.id.next_btn, R.id.btn_code, R.id.login_btn})
+    public void buttonClicks(View view) {
         String isCan = "";
-        switch (v.getId()) {
+        switch (view.getId()) {
             case R.id.textview_register_order:
                 intent = new Intent(this, RegisterOrderActivity.class);
                 startActivity(intent);
@@ -133,6 +134,13 @@ public class RegisterActivity extends BaseRequstActivity implements View.OnClick
                 UIHelper.showLogin(RegisterActivity.this);
                 finish();
                 break;
+        }
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
             case R.id.back_img:
                 finish();
                 break;
@@ -151,7 +159,7 @@ public class RegisterActivity extends BaseRequstActivity implements View.OnClick
         timeCount = 60;
         handler.sendEmptyMessage(GET_VERIFICATION);
         GetParams params = toGetParams(toParamsBaen("mobile", mobile));
-        toNomalNetStringBack(params,2,UrlConstants.getWholeApiUrl(UrlConstants.GET_VERIFICATION_CODE),"");
+        toNomalNetStringBack(params, 2, UrlConstants.getWholeApiUrl(UrlConstants.GET_VERIFICATION_CODE), "");
     }
 
     /**
@@ -211,13 +219,13 @@ public class RegisterActivity extends BaseRequstActivity implements View.OnClick
     }
 
     @Override
-    public void onSuccessToStringWithMap(String json, int flag, Map map) {
-            switch (flag) {
-                case 2://验证码
-                    CaptchaResult captchaResult = JsonUtils.JsonCaptchResult(json);
-                    UIHelper.ToastMessage(RegisterActivity.this, captchaResult.getQuery().getMessage());
-                    break;
-            }
+    public void onSuccessToString(String json, int flag) {
+        switch (flag) {
+            case 2://验证码
+                CaptchaResult captchaResult = JsonUtils.JsonCaptchResult(json);
+                UIHelper.ToastMessage(RegisterActivity.this, captchaResult.getQuery().getMessage());
+                break;
+        }
     }
 
     /**

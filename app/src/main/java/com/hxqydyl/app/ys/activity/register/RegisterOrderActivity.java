@@ -6,6 +6,10 @@ import android.webkit.WebView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseTitleActivity;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 import com.hxqydyl.app.ys.http.UrlConstants;
 
 /**
@@ -13,13 +17,13 @@ import com.hxqydyl.app.ys.http.UrlConstants;
  */
 public class RegisterOrderActivity extends BaseTitleActivity implements View.OnClickListener{
 
-    private WebView webView;
+    @Bind(R.id.webview_order) WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_order);
-
+        ButterKnife.bind(this);
         initViews();
         initListeners();
     }
@@ -30,7 +34,6 @@ public class RegisterOrderActivity extends BaseTitleActivity implements View.OnC
 
     private void initViews() {
         initViewOnBaseTitle("注册协议");
-        webView = (WebView) findViewById(R.id.webview_order);
 //        webView.loadUrl("file:///android_asset/register/register_order.html");
         webView.loadUrl(UrlConstants.getWholeApiUrl(UrlConstants.ADD_REGINFO));
     }
