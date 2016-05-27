@@ -311,7 +311,7 @@ public class EvpiUserActivity extends BaseTitleActivity implements View.OnClickL
     }
 
     @Override
-    public void onRegisterSuc() {
+    public void onRegisterSuc(boolean isRegister) {
         finish();
     }
 

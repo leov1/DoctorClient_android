@@ -35,7 +35,7 @@ import framework.listener.RegisterSucMag;
 /**
  * 忘记密码
  */
-public class ForgetPasswordActivity extends BaseRequstActivity implements View.OnClickListener, UpdatePasswordNet.OnUpdatePasswordListener {
+public class ForgetPasswordActivity extends BaseRequstActivity implements View.OnClickListener{
 
     private TextView loginBtn;
     private Button next_btn;
@@ -47,9 +47,6 @@ public class ForgetPasswordActivity extends BaseRequstActivity implements View.O
     private String captcha = "";//验证码
     private String mobile = "";//手机号
     private String password = "";//密码
-
-    private Intent intent;
-    private UpdatePasswordNet updatePasswordNet;
 
     private int timeCount = 60;
     public static final int GET_VERIFICATION = 0x23;
@@ -99,10 +96,6 @@ public class ForgetPasswordActivity extends BaseRequstActivity implements View.O
         mobile_edit = (EditText) findViewById(R.id.mobile_edit);
         captcha_edit = (EditText) findViewById(R.id.captcha_edit);
         password_edit = (EditText) findViewById(R.id.password_edit);
-
-        updatePasswordNet = new UpdatePasswordNet();
-        updatePasswordNet.setListener(this);
-
     }
 
     @Override
@@ -190,25 +183,15 @@ public class ForgetPasswordActivity extends BaseRequstActivity implements View.O
         if (!Validator.isMobile(mobile)) return "手机号码格式不正确";
         return "";
     }
-
-    @Override
-    public void requestUpdatePwSuc(Query query) {
-        System.out.println("query--->" + query.toString());
-        if (query == null) {
-            UIHelper.ToastMessage(ForgetPasswordActivity.this, "请求出错");
-            return;
+    /**
+     * 观察者移除之前页面
+     */
+    private void removeBeforViews() {
+        ArrayList<RegisterSucListener> registerSucListeners = RegisterSucMag.getInstance().downloadListeners;
+        if (registerSucListeners == null || registerSucListeners.size() == 0) return;
+        for (int i = 0; i < registerSucListeners.size(); i++) {
+            registerSucListeners.get(i).onRegisterSuc(false);
         }
-        if (query.getSuccess().equals("1")) {
-            UIHelper.ToastMessage(ForgetPasswordActivity.this, "修改成功");
-            finish();
-        } else {
-            UIHelper.ToastMessage(ForgetPasswordActivity.this, query.getMessage());
-        }
-    }
-
-    @Override
-    public void requestUpdatePwFail() {
-
     }
     @Override
     public void onSuccessToBean(Object bean, int flag) {
@@ -223,16 +206,7 @@ public class ForgetPasswordActivity extends BaseRequstActivity implements View.O
 
         }
     }
-    /**
-     * 观察者移除之前页面
-     */
-    private void removeBeforViews() {
-        ArrayList<RegisterSucListener> registerSucListeners = RegisterSucMag.getInstance().downloadListeners;
-        if (registerSucListeners == null || registerSucListeners.size() == 0) return;
-        for (int i = 0; i < registerSucListeners.size(); i++) {
-            registerSucListeners.get(i).onRegisterSuc();
-        }
-    }
+
     @Override
     public void onSuccessToStringWithMap(String json, int flag, Map map) {
         switch (flag) {
@@ -242,4 +216,5 @@ public class ForgetPasswordActivity extends BaseRequstActivity implements View.O
                 break;
         }
     }
+
 }

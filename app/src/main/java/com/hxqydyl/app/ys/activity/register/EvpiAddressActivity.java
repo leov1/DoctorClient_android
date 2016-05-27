@@ -89,7 +89,7 @@ public class EvpiAddressActivity extends BaseTitleActivity implements View.OnCli
     private Type type;
 
     @Override
-    public void onRegisterSuc() {
+    public void onRegisterSuc(boolean isRegister) {
         finish();
     }
 

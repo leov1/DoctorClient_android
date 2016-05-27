@@ -186,7 +186,7 @@ public class EvpiPhotoActivity extends BaseTitleActivity implements View.OnClick
         ArrayList<RegisterSucListener> registerSucListeners = RegisterSucMag.getInstance().downloadListeners;
         if (registerSucListeners == null || registerSucListeners.size() == 0) return;
         for (int i = 0; i < registerSucListeners.size(); i++) {
-            registerSucListeners.get(i).onRegisterSuc();
+            registerSucListeners.get(i).onRegisterSuc(true);
         }
     }
 

@@ -197,7 +197,7 @@ public class GoodChoiceActivity extends BaseTitleActivity implements View.OnClic
     }
 
     @Override
-    public void onRegisterSuc() {
+    public void onRegisterSuc(boolean isRegister) {
         finish();
     }
 

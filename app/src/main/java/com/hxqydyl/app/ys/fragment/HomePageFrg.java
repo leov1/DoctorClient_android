@@ -358,7 +358,7 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
     }
 
     @Override
-    public void onRegisterSuc() {
+    public void onRegisterSuc(boolean isRegister) {
         startRefreshing();
     }
 

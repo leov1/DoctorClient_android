@@ -83,9 +83,11 @@ public class LoginActivity extends BaseRequstActivity implements View.OnClickLis
             case R.id.forget_btn:
                 Intent forgetIntent = new Intent(this, ForgetPasswordActivity.class);
                 startActivity(forgetIntent);
+                finish();
                 break;
             case R.id.register_btn:
                 UIHelper.showRegister(this);
+                finish();
                 break;
             case R.id.login_btn:
                 toNomalNet(toPostParams(toParamsBaen("mobile", mobileEdit.getText().toString()), toParamsBaen("password", passwordEdit.getText().toString())), DoctorResult.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.LOGIN_URL, "2.0"), "登陆中...");
@@ -119,7 +121,7 @@ public class LoginActivity extends BaseRequstActivity implements View.OnClickLis
     }
 
     @Override
-    public void onRegisterSuc() {
+    public void onRegisterSuc(boolean isRegister) {
         setLoginResult();
     }
 

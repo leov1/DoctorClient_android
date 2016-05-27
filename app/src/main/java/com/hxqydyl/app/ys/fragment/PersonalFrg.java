@@ -38,6 +38,12 @@ public class PersonalFrg extends BaseWebFragment implements BaseWebFragment.DoJs
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+            webView.getRefreshableView().reload();
+    }
+
+    @Override
     public void doJs(String url) {
         if (url != null){
             CommentWebActivity.toCommentWeb(url, null, getActivity(), true);

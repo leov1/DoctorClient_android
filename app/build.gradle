@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.hxqydyl.app.ys"
-        minSdkVersion 17
+        minSdkVersion 14
         targetSdkVersion 23
         versionCode 20160511
         versionName "2.3"
@@ -20,11 +20,11 @@ android {
 
     productFlavors {
 //                ceshi{manifestPlaceholders = [HOST: "http://172.168.1.53",IS_TEST:true]}
- //  ceshi{manifestPlaceholders = [HOST: "http://172.168.1.22", IS_TEST: true,UMENG_APPKEY:"565eb06267e58e0943002225",UMENG_CHANNEL:"cs",JPUSH_APPKEY:"6bda069a6d817d1f567a86ed"]}//刘阳
+//   ceshi{manifestPlaceholders = [HOST: "http://172.168.1.22", IS_TEST: true,UMENG_APPKEY:"565eb06267e58e0943002225",UMENG_CHANNEL:"cs",JPUSH_APPKEY:"6bda069a6d817d1f567a86ed"]}//刘阳
 //     ceshi{manifestPlaceholders = [HOST: "http://172.168.1.16", IS_TEST: true,UMENG_APPKEY:"565eb06267e58e0943002225",UMENG_CHANNEL:"cs",JPUSH_APPKEY:"6bda069a6d817d1f567a86ed"]}//苏日娜
-        ceshi{manifestPlaceholders = [HOST: "http://172.168.1.57", IS_TEST: true,UMENG_APPKEY:"565eb06267e58e0943002225",UMENG_CHANNEL:"cs",JPUSH_APPKEY:"6bda069a6d817d1f567a86ed"]}//请金玉
-//        ceshi { manifestPlaceholders = [HOST: "http://172.168.1.46:8080", IS_TEST: true,UMENG_APPKEY:"565eb06267e58e0943002225",UMENG_CHANNEL:"cs",JPUSH_APPKEY:"6bda069a6d817d1f567a86ed"] }//测试环境
-        zs { manifestPlaceholders = [HOST: "http://admin.hxqydyl.com", IS_TEST: false,UMENG_APPKEY:"565eb06267e58e0943002225",UMENG_CHANNEL:"hxq",JPUSH_APPKEY:"6bda069a6d817d1f567a86ed"] }
+//        ceshi{manifestPlaceholders = [HOST: "http://172.168.1.57", IS_TEST: true,UMENG_APPKEY:"565eb06267e58e0943002225",UMENG_CHANNEL:"cs",JPUSH_APPKEY:"6bda069a6d817d1f567a86ed"]}//请金玉
+        ceshi { manifestPlaceholders = [HOST: "http://172.168.1.46:8080", IS_TEST: true,UMENG_APPKEY:"565eb06267e58e0943002225",UMENG_CHANNEL:"cs",JPUSH_APPKEY:"6bda069a6d817d1f567a86ed"] }//测试环境
+//        zs { manifestPlaceholders = [HOST: "http://admin.hxqydyl.com", IS_TEST: false,UMENG_APPKEY:"565eb06267e58e0943002225",UMENG_CHANNEL:"hxq",JPUSH_APPKEY:"6bda069a6d817d1f567a86ed"] }
     }
 }
 

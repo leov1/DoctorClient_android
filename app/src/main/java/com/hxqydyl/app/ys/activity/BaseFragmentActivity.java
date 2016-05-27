@@ -89,7 +89,8 @@ public class BaseFragmentActivity extends FragmentActivity implements RegisterSu
     }
 
     @Override
-    public void onRegisterSuc() {
+    public void onRegisterSuc(boolean isRegister) {
+        if (isRegister)
         DialogUtils.showNormalDialog(this);
     }
     protected void onResume() {
