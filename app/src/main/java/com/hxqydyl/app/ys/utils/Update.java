@@ -46,11 +46,12 @@ public class Update {
     //获取服务器请求 是否更新
     public void cheackIsUp() {
 
-        OkHttpUtils.get().addHeader("Accept","application/json").url(UrlConstants.getWholeApiUrl(UrlConstants.UPDATE)).build().execute(new StringCallback() {
+        OkHttpUtils.get().addHeader("Accept", "application/json").url(UrlConstants.getWholeApiUrl(UrlConstants.UPDATE)).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e) {
 
             }
+
             @Override
             public void onResponse(String response) {
                 Gson gson = new Gson();
@@ -58,8 +59,8 @@ public class Update {
                 try {
                     if (version == null || TextUtils.isEmpty(version.getVersion()))
                         return;
-                    float f=Float.parseFloat(version.getVersion());
-                    if (f!=getVersionName(context)) {
+                    float f = Float.parseFloat(version.getVersion());
+                    if (f >getVersionName(context)) {
                         showUpdataDialog(context, version.getUrl(), "检测到有新的版本，是否更新");
                     }
                 } catch (Exception e) {
@@ -147,10 +148,11 @@ public class Update {
     private float getVersionName(Context context) throws Exception {
         PackageManager packageManager = context.getPackageManager();
         PackageInfo packInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
-        float v=Float.parseFloat(packInfo.versionName);
+        float v = packInfo.versionCode;
         return v;
     }
-public static  void clearUpdate(){
-    update=null;
-}
+
+    public static void clearUpdate() {
+        update = null;
+    }
 }
