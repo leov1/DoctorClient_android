@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -15,14 +16,17 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.google.gson.Gson;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.reading.VitamioPlayerActivity;
+import com.hxqydyl.app.ys.bean.ShareBean;
 import com.hxqydyl.app.ys.bean.response.ImageResponse;
 import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.ui.library.RefreshProgressWebView;
 import com.hxqydyl.app.ys.ui.web.ProgressWebClient;
 import com.hxqydyl.app.ys.utils.LoginManager;
+import com.hxqydyl.app.ys.utils.ShareUtil;
 import com.xus.http.httplib.model.PostPrams;
 
 import java.io.File;
@@ -203,17 +207,23 @@ public class BaseWebActivity extends BaseRequstActivity {
 //            case "setRightMenu":
 //                IniRightMenu(parameters);
 //                break;
-//            case "share":
+            case "share":
+                Log.e("wangxu", parameters);
+                try {
+                    ShareUtil.getIntense(this).showShareDialog(new Gson().fromJson(parameters, ShareBean.class));
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 //                showsharePop();
-//                shareobj = new JSONObject(parameters);
-//                break;
+                break;
 //            case "openContacts":
 //                Intent intent = new Intent(this, ContactListActivity.class);
 //                startActivityForResult(intent, CONTRACTCODE);
 //                break;
             case "takephoto":
                 webIsAvatar = parameters;
-                access(PickConfig.MODE_SINGLE_PICK,1);
+                access(PickConfig.MODE_SINGLE_PICK, 1);
                 break;
 //            case "saveImage":
 //                new RemoteImageHelper().downloadImage2local(this, parameters, this);
@@ -297,7 +307,7 @@ public class BaseWebActivity extends BaseRequstActivity {
     public void onBackPressed() {
         if (webView.getRefreshableView().canGoBack()) {
             webView.getRefreshableView().goBack();
-        }else {
+        } else {
             super.onBackPressed();
         }
     }
