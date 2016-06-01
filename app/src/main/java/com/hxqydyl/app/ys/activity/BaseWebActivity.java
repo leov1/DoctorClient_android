@@ -9,12 +9,14 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.hxqydyl.app.ys.R;
@@ -52,7 +54,6 @@ public class BaseWebActivity extends BaseRequstActivity {
     private String beanPath;
     private String webIsAvatar;
 
-
     public void setIsNeedLogin(boolean isNeedLogin, OnLoginSuccess onLoginSuccess) {
         this.isNeedLogin = isNeedLogin;
         this.onLoginSuccess = onLoginSuccess;
@@ -71,7 +72,8 @@ public class BaseWebActivity extends BaseRequstActivity {
         if (getIntent().hasExtra("beanPath")) {
             beanPath = getIntent().getStringExtra("beanPath");
         }
-        initViewOnBaseTitle("加载中...");
+        initViewOnBaseTitle("加载中...","关闭");
+        setLeftListener();
         webView = (RefreshProgressWebView) findViewById(R.id.webview);
         initWebSetting();
     }
@@ -123,6 +125,10 @@ public class BaseWebActivity extends BaseRequstActivity {
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             webView.getRefreshableView().loadUrl("javascript:gm.user.setDoctor('" + LoginManager.getDoctorUuid() + "')");
+            if (!webView.getRefreshableView().canGoBack()) {
+                leftTv.setVisibility(View.GONE);
+            }
+
         }
 
         @Override
@@ -307,6 +313,11 @@ public class BaseWebActivity extends BaseRequstActivity {
     public void onBackPressed() {
         if (webView.getRefreshableView().canGoBack()) {
             webView.getRefreshableView().goBack();
+            if (webView.getRefreshableView().canGoBack()){
+                leftTv.setVisibility(View.VISIBLE);
+            }else{
+                leftTv.setVisibility(View.GONE);
+            }
         } else {
             super.onBackPressed();
         }

@@ -30,6 +30,7 @@ public class BaseTitleActivity extends SwipeBackActivity implements NetRequestLi
     public LoginManager.OnLoginSuccess onLoginSuccess;
     private ImageView backImg;
     public TextView topTv;
+    public TextView leftTv;
 
     private SweetAlertDialog pDialog;
 
@@ -52,6 +53,38 @@ public class BaseTitleActivity extends SwipeBackActivity implements NetRequestLi
         }
     }
 
+    public void initViewOnBaseTitle(String title, String left) {
+        try {
+            backImg = (ImageView) findViewById(R.id.back_img);
+            topTv = (TextView) findViewById(R.id.title_name);
+            leftTv = (TextView) findViewById(R.id.left_txt_btn);
+            if (!TextUtils.isEmpty(title)) {
+                topTv.setText(title);
+            } else {
+                topTv.setVisibility(View.GONE);
+            }
+            if (!TextUtils.isEmpty(left)) {
+                leftTv.setText(left);
+            } else {
+                leftTv.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setLeftListener(View.OnClickListener l) {
+        leftTv.setOnClickListener(l);
+    }
+    public void setLeftListener() {
+        leftTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
     public void setBackListener(View.OnClickListener l) {
         backImg.setOnClickListener(l);
     }
@@ -71,7 +104,13 @@ public class BaseTitleActivity extends SwipeBackActivity implements NetRequestLi
             public void onClick(View v) {
                 if (webView.canGoBack()) {
                     webView.goBack();
+                    if (webView.canGoBack()){
+                        leftTv.setVisibility(View.VISIBLE);
+                    }else{
+                        leftTv.setVisibility(View.GONE);
+                    }
                 } else {
+
                     finish();
                 }
             }
