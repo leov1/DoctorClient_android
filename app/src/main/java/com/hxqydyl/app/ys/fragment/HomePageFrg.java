@@ -22,6 +22,7 @@ import com.google.gson.reflect.TypeToken;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseFragmentActivity;
 import com.hxqydyl.app.ys.activity.CommentWebActivity;
+import com.hxqydyl.app.ys.activity.TranslateActivity;
 import com.hxqydyl.app.ys.activity.follow.FollowMainActivity;
 import com.hxqydyl.app.ys.activity.reading.ReadingActivity;
 import com.hxqydyl.app.ys.activity.register.QualidicationActivity;
@@ -129,7 +130,7 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
         }
         if (!TextUtils.isEmpty(doctorInfoCache)) {
             doctorInfoNew = gson.fromJson(doctorInfoCache, DoctorInfoNew.class);
-            updateDoctorInfo(doctorInfoNew);
+        updateLinear(true);
         } else {
             updateLinear(false);
         }
@@ -244,25 +245,25 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
         }
     }
 
-    /**
-     * 更新数据显示
-     *
-     * @param doctorInfo
-     */
-    private void updateDoctorInfo(DoctorInfoNew doctorInfo) {
-        updateLinear(true);
-        System.out.println("doctorInfo--->" + doctorInfo);
-        if (doctorInfo.getImage() != null) {
-            ImageLoader.getInstance().displayImage(doctorInfo.getImage().getSmall(), headImg, Utils.initImageLoader(R.mipmap.portrait_man, true));
-        } else {
-            ImageLoader.getInstance().displayImage("", headImg, Utils.initImageLoader(R.mipmap.portrait_man, true));
-
-        }
-        headName.setText(doctorInfo.getRealName());
-        suffererNum.setText(doctorInfo.getCustomerNum() + "");
-        followNum.setText(doctorInfo.getVisitNum() + "");
-        income.setText(doctorInfo.getIncome());
-    }
+//    /**
+//     * 更新数据显示
+//     *
+//     * @param doctorInfo
+//     */
+//    private void updateDoctorInfo(DoctorInfoNew doctorInfo) {
+//        updateLinear(true);
+//        System.out.println("doctorInfo--->" + doctorInfo);
+//        if (doctorInfo.getImage() != null) {
+//            ImageLoader.getInstance().displayImage(doctorInfo.getImage().getSmall(), headImg, Utils.initImageLoader(R.mipmap.portrait_man, true));
+//        } else {
+//            ImageLoader.getInstance().displayImage("", headImg, Utils.initImageLoader(R.mipmap.portrait_man, true));
+//
+//        }
+//        headName.setText(doctorInfo.getRealName());
+//        suffererNum.setText(doctorInfo.getCustomerNum() + "");
+//        followNum.setText(doctorInfo.getVisitNum() + "");
+//        income.setText(doctorInfo.getIncome());
+//    }
 
     /**
      * 更新登陆条
@@ -272,7 +273,7 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
     private void updateLinear(Boolean isLogin) {
         if (isLogin) {
             noLoginLinear.setVisibility(View.GONE);
-            loginLiear.setVisibility(View.VISIBLE);
+            loginLiear.setVisibility(View.GONE);
         } else {
             noLoginLinear.setVisibility(View.VISIBLE);
             loginLiear.setVisibility(View.GONE);
@@ -336,7 +337,9 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
                     UIHelper.ToastMessage(this.getActivity(), ((BaseFragmentActivity) getActivity()).isIdenyInfo());
                     return;
                 }
-                intent = new Intent(getActivity(), FollowMainActivity.class);
+//                intent = new Intent(getActivity(), FollowMainActivity.class);
+                intent = new Intent(getActivity(), TranslateActivity.class);
+                intent.putExtra("title","随访");
                 startActivity(intent);
                 break;
             case 2://诊所
@@ -348,7 +351,10 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
                     UIHelper.ToastMessage(this.getActivity(), ((BaseFragmentActivity) getActivity()).isIdenyInfo());
                     return;
                 }
-                CommentWebActivity.toCommentWebForResult(UrlConstants.getWholeApiUrl(UrlConstants.GET_CLINIC), getActivity(), UIHelper.LOGIN_REQUEST_CODE, false);
+//                CommentWebActivity.toCommentWebForResult(UrlConstants.getWholeApiUrl(UrlConstants.GET_CLINIC), getActivity(), UIHelper.LOGIN_REQUEST_CODE, false);
+                intent = new Intent(getActivity(), TranslateActivity.class);
+                intent.putExtra("title","诊所");
+                startActivity(intent);
                 break;
             case 3://阅读
                 intent = new Intent(getActivity(), ReadingActivity.class);
@@ -398,7 +404,9 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
                 DoctorInfoNew sb = dinr.value;
                 stopRefreshing();
                 if (sb != null) {
-                    updateDoctorInfo(sb);
+//                    updateDoctorInfo(sb);
+                    updateLinear(true);
+
                     SharedPreferences.getInstance().putString(SharedPreferences.HOME_DOCTOR_INFO_CACHE_NEW, gson.toJson(sb));
                     SharedPreferences.getInstance().putString(SharedPreferences.USER_INFO_COMPLETE, sb.getSate());
                 }

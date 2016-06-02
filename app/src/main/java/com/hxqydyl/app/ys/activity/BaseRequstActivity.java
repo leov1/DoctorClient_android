@@ -28,6 +28,7 @@ import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.CommonUtils;
 import com.hxqydyl.app.ys.utils.DialogUtils;
 import com.hxqydyl.app.ys.utils.SharedPreferences;
+import com.hxqydyl.app.ys.utils.Utils;
 import com.xus.http.httplib.https.HttpUtil;
 import com.xus.http.httplib.interfaces.HttpUtilBack;
 import com.xus.http.httplib.model.BaseParams;
@@ -162,6 +163,10 @@ public class BaseRequstActivity<T> extends BaseTitleActivity implements HttpUtil
     }
 
     private void doNet(BaseParams params, int flag, String url, Map<String, String> map,Class<T> tClass, String showdialog){
+        if (!Utils.isNetWorkConnected(this)){
+            UIHelper.ToastMessage(this,"当前网络不可用，请检查网络");
+        }
+
         if (!TextUtils.isEmpty(showdialog)) {
             showDialog(showdialog);
         }

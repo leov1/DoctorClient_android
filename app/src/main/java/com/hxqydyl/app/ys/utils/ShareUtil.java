@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.bean.ShareBean;
+import com.hxqydyl.app.ys.common.AppContext;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -26,6 +27,27 @@ public class ShareUtil {
     public synchronized static ShareUtil getIntense(Activity context) {
         if (util == null) {
             util = new ShareUtil(context);
+            umShareListener=  new UMShareListener() {
+                @Override
+                public void onResult(SHARE_MEDIA platform) {
+                    Log.e("wangxu", platform + " 分享成功啦");
+
+                    Toast.makeText(AppContext.getInstance(), platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onError(SHARE_MEDIA platform, Throwable t) {
+                    Log.e("wangxu", platform + " 分享失败啦");
+
+                    Toast.makeText(AppContext.getInstance(), platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onCancel(SHARE_MEDIA platform) {
+                    Log.e("wangxu", platform + " 分享取消了");
+                    Toast.makeText(AppContext.getInstance(), platform + " 分享取消了", Toast.LENGTH_SHORT).show();
+                }
+            };
         }
         return util;
     }
@@ -34,22 +56,7 @@ public class ShareUtil {
         this.context = context;
     }
 
-    private UMShareListener umShareListener = new UMShareListener() {
-        @Override
-        public void onResult(SHARE_MEDIA platform) {
-            Toast.makeText(context, platform + " 分享成功啦", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onError(SHARE_MEDIA platform, Throwable t) {
-            Toast.makeText(context, platform + " 分享失败啦", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onCancel(SHARE_MEDIA platform) {
-            Toast.makeText(context, platform + " 分享取消了", Toast.LENGTH_SHORT).show();
-        }
-    };
+    private static  UMShareListener umShareListener ;
 
     public void showShareDialog(ShareBean bean) throws UnsupportedEncodingException {
         Log.e("wangxu","showShareDialog");

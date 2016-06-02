@@ -28,7 +28,6 @@ public class AppContext extends BaseApplication {
         //新浪微博 appkey appsecret
         PlatformConfig.setQQZone("100424468", "c7394704798a158208a74ab60104f0ba");
         // QQ和Qzone appid appkey
-
     }
 
 }

@@ -99,9 +99,9 @@ public class MainActivity extends BaseFragmentActivity {
                         case R.id.foot_bar_im:
                             chageIndex(1);
                             break;
-                        case R.id.foot_bar_interest:
+                      /*  case R.id.foot_bar_interest:
                             chageIndex(2);
-                            break;
+                            break;*/
                         case R.id.main_footbar_user:
                             chageIndex(3);
                             break;
@@ -170,8 +170,8 @@ public class MainActivity extends BaseFragmentActivity {
                 return new HomePageFrg();
             case 1:
                 return new MyPatientFrg();
-            case 2:
-                return new MyTaskFrg();
+//            case 2:
+//                return new MyTaskFrg();
             case 3:
                 return new PersonalFrg();
             default:

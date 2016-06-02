@@ -179,13 +179,13 @@ public class RegisterActivity extends BaseRequstActivity implements View.OnClick
 
         captcha = captchaEdit.getText().toString().trim();
         visitCode = visitEdit.getText().toString().trim();
-//        if (TextUtils.isEmpty(captcha)) return "验证码不能为空";
+        if (TextUtils.isEmpty(captcha)) return "验证码不能为空";
 
         password = passwordEdit.getText().toString().trim();
         if (TextUtils.isEmpty(password)) return "密码不能为空";
         //   if (!Validator.isPassword(password)) return "密码只能字母加数字";
 
-        if (!agreeCheckBox.isChecked()) return "请同意医师协议";
+        if (!agreeCheckBox.isChecked()) return "请先阅读并同意《好心情用户服务协议》";
         return "";
     }
 

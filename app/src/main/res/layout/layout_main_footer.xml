@@ -29,12 +29,12 @@
             style="@style/main_footer_bar_radio"
             android:drawableTop="@drawable/widget_bar_im_bg"
             android:text="@string/main_navigation_patient" />
-
+<!--
         <RadioButton
             android:id="@+id/foot_bar_interest"
             style="@style/main_footer_bar_radio"
             android:drawableTop="@drawable/widget_bar_interest_bg"
-            android:text="@string/main_navigation_task" />
+            android:text="@string/main_navigation_task" />-->
 
         <RadioButton
             android:id="@+id/main_footbar_user"
@@ -86,12 +86,13 @@
                 android:layout_marginTop="2dp"
                 android:layout_toEndOf="@+id/viewSplitLine"
                 android:layout_toRightOf="@+id/viewSplitLine"
-                android:background="@mipmap/ic_bg_unread_count"
                 android:gravity="center"
                 android:text="1"
                 android:visibility="gone"
                 android:textColor="#ffffff"
                 android:textSize="@dimen/text_size_13" />
+            <!--                android:background="@mipmap/ic_bg_unread_count"
+-->
         </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>

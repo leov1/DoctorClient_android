@@ -195,6 +195,9 @@
         <activity
             android:name=".activity.register.QualidicationActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.TranslateActivity"
+            android:screenOrientation="portrait" />
         <!--极光推送-->
         <!-- Required SDK核心功能-->
         <activity
@@ -327,6 +330,12 @@
             android:name="com.sina.weibo.sdk.net.DownloadService"
             android:exported="false">
         </service>
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
