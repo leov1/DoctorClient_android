@@ -11,7 +11,7 @@
         <ImageView
             android:id="@+id/back_img"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:padding="8dp"
@@ -20,14 +20,14 @@
         <TextView
             android:id="@+id/left_txt_btn"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
-            android:layout_marginRight="18dp"
+            android:layout_marginLeft="18dp"
             android:visibility="gone"
             android:layout_toRightOf="@+id/back_img"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_18"
-            android:text="关闭"/>
+            android:drawableLeft="@mipmap/btn_close"/>
     </RelativeLayout>
 
     <TextView

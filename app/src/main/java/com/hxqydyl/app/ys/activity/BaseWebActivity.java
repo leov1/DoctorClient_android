@@ -72,7 +72,7 @@ public class BaseWebActivity extends BaseRequstActivity {
         if (getIntent().hasExtra("beanPath")) {
             beanPath = getIntent().getStringExtra("beanPath");
         }
-        initViewOnBaseTitle("加载中...","关闭");
+        initViewOnBaseTitle("加载中...","");
         setLeftListener();
         webView = (RefreshProgressWebView) findViewById(R.id.webview);
         initWebSetting();
