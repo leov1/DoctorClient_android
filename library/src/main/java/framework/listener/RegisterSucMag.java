@@ -9,9 +9,14 @@ public class RegisterSucMag {
 
     public ArrayList<RegisterSucListener> downloadListeners = new ArrayList<RegisterSucListener>();
     private static RegisterSucMag instance;
-    public static RegisterSucMag getInstance(){
-        if (instance == null){
-            instance = new RegisterSucMag();
+
+    public static RegisterSucMag getInstance() {
+        if (instance == null) {
+            synchronized (RegisterSucMag.class) {
+                if (instance == null) {
+                    instance = new RegisterSucMag();
+                }
+            }
         }
         return instance;
     }

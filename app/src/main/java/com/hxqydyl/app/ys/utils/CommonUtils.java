@@ -1,10 +1,8 @@
 package com.hxqydyl.app.ys.utils;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -13,7 +11,6 @@ import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -24,27 +21,25 @@ import com.hxqydyl.app.ys.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import java.io.File;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CommonUtils {
     public static ImageLoader mImageLoader = ImageLoader.getInstance();
-    public static CommonUtils util;
     public static InputMethodManager imm;
+
+    private static class CommonUtilsLoader {
+        private static final CommonUtils util = new CommonUtils();
+    }
 
     public CommonUtils(Context context) {
         imm = (InputMethodManager) context
@@ -55,11 +50,7 @@ public class CommonUtils {
     }
 
     public static CommonUtils getUtilInstance() {
-        if (util == null) {
-
-            util = new CommonUtils();
-        }
-        return util;
+        return CommonUtilsLoader.util;
     }
 
     public void getViewHeight(View view, View view2) {
@@ -214,21 +205,22 @@ public class CommonUtils {
 //		}
 //	}
     public static String getHostString(Application context) {
-        String msg="";
+        String msg = "";
         try {
             ApplicationInfo info = context.getPackageManager().getApplicationInfo(context.getPackageName(),
-                            PackageManager.GET_META_DATA);
+                    PackageManager.GET_META_DATA);
 //                    .getActivityInfo(context.getComponentName(),
 //                            PackageManager.GET_META_DATA);
-             msg = info.metaData.getString("host_ip");
+            msg = info.metaData.getString("host_ip");
 
         } catch (NameNotFoundException e) {
         }
         return msg;
 
     }
+
     public static Boolean isTest(Application context) {
-        boolean istest=true;
+        boolean istest = true;
         try {
             ApplicationInfo info = context.getPackageManager().getApplicationInfo(context.getPackageName(),
                     PackageManager.GET_META_DATA);
@@ -241,6 +233,7 @@ public class CommonUtils {
         return istest;
 
     }
+
     public int dp2px(Context context, int dp) {
         float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dp * scale + 0.5f);

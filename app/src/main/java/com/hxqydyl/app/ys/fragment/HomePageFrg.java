@@ -1,6 +1,7 @@
 package com.hxqydyl.app.ys.fragment;
 
 import android.content.Intent;
+import android.net.Network;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -26,6 +27,7 @@ import com.hxqydyl.app.ys.activity.TranslateActivity;
 import com.hxqydyl.app.ys.activity.follow.FollowMainActivity;
 import com.hxqydyl.app.ys.activity.reading.ReadingActivity;
 import com.hxqydyl.app.ys.activity.register.QualidicationActivity;
+import com.hxqydyl.app.ys.activity.video.VideoListActivity;
 import com.hxqydyl.app.ys.adapter.LineGridViewAdapter;
 import com.hxqydyl.app.ys.bean.homepage.PageIconBean;
 import com.hxqydyl.app.ys.bean.register.DoctorInfoNew;
@@ -322,11 +324,14 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
         switch (position) {
 
             case 0://讲堂
-                if (!LoginManager.isHasLogin()) {
-                    UIHelper.showLoginForResult(this.getActivity());
-                    return;
-                }
+//                if (!LoginManager.isHasLogin()) {
+//                    UIHelper.showLoginForResult(this.getActivity());
+//                    return;
+//                }
                 CommentWebActivity.toCommentWebForResult(UrlConstants.getWholeApiUrl(UrlConstants.GET_VIDEOS), getActivity(), UIHelper.LOGIN_REQUEST_CODE, false);
+//                intent = new Intent(getActivity(), VideoListActivity.class);
+//                startActivity(intent);
+
                 break;
             case 1://随访
                 if (!LoginManager.isHasLogin()) {
@@ -346,6 +351,7 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
                 if (!LoginManager.isHasLogin()) {
                     UIHelper.showLoginForResult(this.getActivity());
                     return;
+
                 }
                 if (!TextUtils.isEmpty(((BaseFragmentActivity) getActivity()).isIdenyInfo())) {
                     UIHelper.ToastMessage(this.getActivity(), ((BaseFragmentActivity) getActivity()).isIdenyInfo());

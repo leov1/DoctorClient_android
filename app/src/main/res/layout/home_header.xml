@@ -4,11 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/home_user_no_login"></include>
+    <include layout="@layout/home_user_no_login"/>
 
-    <include layout="@layout/home_info_top"></include>
+    <include layout="@layout/home_info_top"/>
 
-    <include layout="@layout/layout_autoloop_viewpage"></include>
+    <include layout="@layout/layout_autoloop_viewpage"/>
 
     <com.hxqydyl.app.ys.ui.linegridview.LineGridView
         android:id="@+id/home_gridview"
@@ -19,6 +19,6 @@
         android:numColumns="2"
         android:scrollbars="none"
         android:stretchMode="columnWidth"
-        android:verticalSpacing="0dip"></com.hxqydyl.app.ys.ui.linegridview.LineGridView>
+        android:verticalSpacing="0dip"/>
 
 </LinearLayout>

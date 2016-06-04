@@ -198,11 +198,7 @@ public class BaseWebActivity extends BaseRequstActivity {
                 ps = parameters.split("\\|");
                 String sourceUrl = ps[0];
                 String duration = ps[1];
-
-                intent = new Intent(this, VitamioPlayerActivity.class);
-                intent.putExtra("VideoUrl", sourceUrl);
-                intent.putExtra("VideoTitle", duration);
-                startActivity(intent);
+                VitamioPlayerActivity.startActivity(this, sourceUrl, duration);
                 break;
 //            case "getFriendList":
 //                new ContactHelper().init(this, this);

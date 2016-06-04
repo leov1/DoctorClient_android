@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.bean.follow.FollowApply;
 import com.hxqydyl.app.ys.bean.follow.FollowTask;
+import com.hxqydyl.app.ys.utils.imageloader.ImageLoaderFactory;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
@@ -69,7 +70,7 @@ public class FollowTaskAdapter extends BaseAdapter{
             holder.ivSex.setImageDrawable(context.getResources().getDrawable(R.mipmap.female));
         }
         String img=(fa.getImgUrl()!=null&&fa.getImgUrl().size()>0)?fa.getImgUrl().get(0):"";
-        ImageLoader.getInstance().displayImage(img, holder.ivAvatar);
+        ImageLoaderFactory.getLoader().displayImage(holder.ivAvatar,img, null);
 
         return convertView;
     }

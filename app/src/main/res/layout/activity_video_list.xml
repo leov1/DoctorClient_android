@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@null"
+    android:orientation="vertical"
+    tools:context="com.hxqydyl.app.ys.activity.video.VideoListActivity">
+
+    <include layout="@layout/top_title" />
+
+<!--    <include layout="@layout/include_search" />-->
+
+    <include layout="@layout/layout_autoloop_viewpage" />
+
+    <com.hxqydyl.app.ys.ui.tabstrip.PagerSlidingTabStrip
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="38dip"
+        app:pstsDividerColor="@android:color/transparent"
+        app:pstsIndicatorColor="@android:color/holo_blue_light"
+        app:pstsIndicatorHeight="2dp"
+        app:pstsTabPaddingLeftRight="12dp"
+        app:pstsUnderlineColor="@color/gray_light"
+        app:pstsUnderlineHeight="0.5dp"
+        app:selectedTabTextColor="@android:color/holo_blue_light"
+        app:tabTextColor="@color/black"
+        app:tabTextSize="@dimen/text_size_14" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>

@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.bean.Pic;
+import com.hxqydyl.app.ys.utils.imageloader.ImageLoaderFactory;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -23,13 +24,7 @@ import java.util.ArrayList;
 public class CaseHistoryAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<Pic> picList;
-    private ImageLoader loader;
     private DeleteListener listener;
-    private DisplayImageOptions options = new DisplayImageOptions.Builder()
-            .cacheInMemory(true)
-            .cacheOnDisk(true)
-            .bitmapConfig(Bitmap.Config.RGB_565)
-            .build();
 
     public CaseHistoryAdapter(Context context, ArrayList<Pic> picList,DeleteListener listener) {
         this.context = context;
@@ -59,7 +54,7 @@ public class CaseHistoryAdapter extends BaseAdapter {
         }
         final Pic pic = (Pic) getItem(position);
         ImageView iv = BaseViewHolder.get(convertView, R.id.iv);
-        ImageLoader.getInstance().displayImage(pic.getDisplayThumbUri(),iv,options);
+        ImageLoaderFactory.getLoader().displayImage(iv,pic.getDisplayThumbUri(),null);
         ImageView ivDeletePic = BaseViewHolder.get(convertView,R.id.ivDeletePic);
         if(pic.isCanDel()){
             ivDeletePic.setVisibility(View.VISIBLE);
