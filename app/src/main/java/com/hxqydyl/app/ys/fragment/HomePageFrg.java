@@ -172,7 +172,7 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
 
 
     private void initViews() {
-        initViewOnBaseTitle("首页", view);
+        initViewOnBaseTitle("好心情", view);
         backImg.setVisibility(View.VISIBLE);
         backImg.setImageResource(R.mipmap.erweima);
         pullToRefreshListView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);

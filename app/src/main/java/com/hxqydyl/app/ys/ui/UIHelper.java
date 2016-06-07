@@ -8,6 +8,9 @@ import android.widget.Toast;
 import com.hxqydyl.app.ys.activity.LoginActivity;
 import com.hxqydyl.app.ys.activity.MainActivity;
 import com.hxqydyl.app.ys.activity.register.RegisterActivity;
+import com.hxqydyl.app.ys.utils.DialogUtils;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * 应用程序UI工具包：封装UI相关的一些操作
@@ -57,9 +60,17 @@ public class UIHelper {
         context.startActivity(intent);
     }
 
-    public static void showLoginForResult(Activity context){
-        Intent intent = new Intent(context, LoginActivity.class);
-        intent.putExtra("isNeedCallBack",true);
-        context.startActivityForResult(intent,LOGIN_REQUEST_CODE);
+    public static void showLoginForResult(final  Activity context){
+     DialogUtils.showNormalDialog(context,"登陆才能使用该功能","登陆","取消",new SweetAlertDialog.OnSweetClickListener(){
+
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                Intent intent = new Intent(context, LoginActivity.class);
+                intent.putExtra("isNeedCallBack",true);
+                context.startActivityForResult(intent,LOGIN_REQUEST_CODE);
+                sweetAlertDialog.dismiss();
+            }
+        });
+
     }
 }

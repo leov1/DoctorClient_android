@@ -5,7 +5,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- 页面名称 -->
-    <string name="main_navigation_home">首页</string>
+    <string name="main_navigation_home">好心情</string>
     <string name="main_navigation_patient">我的患者</string>
     <string name="main_navigation_task">我的任务</string>
     <string name="main_navigation_user">个人中心</string>

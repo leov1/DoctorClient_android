@@ -28,7 +28,7 @@ public class DialogUtils {
     /**
      *
      */
-    public static void showDeleteDialog(Context context,final DeleteListener deleteListener,String message){
+    public static void showDeleteDialog(Context context, final DeleteListener deleteListener, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(context.getString(R.string.prompt));
         builder.setMessage(message);
@@ -36,7 +36,7 @@ public class DialogUtils {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                if(deleteListener!=null){
+                if (deleteListener != null) {
                     deleteListener.onConfirmDelete();
                 }
             }
@@ -45,7 +45,7 @@ public class DialogUtils {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                if(deleteListener!=null){
+                if (deleteListener != null) {
                     deleteListener.onCancelDelete();
                 }
             }
@@ -53,19 +53,20 @@ public class DialogUtils {
         builder.create().show();
     }
 
-    public interface DeleteListener{
+    public interface DeleteListener {
         void onConfirmDelete();
+
         void onCancelDelete();
     }
 
 
-
     /**
      * 显示重命名分组的对话框
+     *
      * @param context
      * @param renameGroupListener
      */
-    public static void showRenamePatientGroupDialog(Context context, final RenameGroupListener renameGroupListener,final String groupId,String groupName) {
+    public static void showRenamePatientGroupDialog(Context context, final RenameGroupListener renameGroupListener, final String groupId, String groupName) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_add_patient_group, null);
         builder.setView(view);
@@ -82,7 +83,7 @@ public class DialogUtils {
                 if (!TextUtils.isEmpty(groupName)) {
                     dialog.dismiss();
                     if (renameGroupListener != null) {
-                        renameGroupListener.onConfirmRename(groupId,groupName);
+                        renameGroupListener.onConfirmRename(groupId, groupName);
                     }
                 } else {
                 }
@@ -91,12 +92,13 @@ public class DialogUtils {
         dialog.show();
     }
 
-    public interface RenameGroupListener{
-        void onConfirmRename(String groupId,String groupName);
+    public interface RenameGroupListener {
+        void onConfirmRename(String groupId, String groupName);
     }
 
     /**
      * 显示添加患者分组的对话框
+     *
      * @param context
      * @param savePatientGroupListener
      */
@@ -123,7 +125,7 @@ public class DialogUtils {
         dialog.show();
     }
 
-    public static void showDeletePatientGroupDialog(Context context,final DeletePatientGroupListener listener,final String groupId){
+    public static void showDeletePatientGroupDialog(Context context, final DeletePatientGroupListener listener, final String groupId) {
         SweetAlertDialog pDialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
                 .setTitleText("是否删除？")
                 .setContentText("该分组下存在随访患者，如删除此分组，此分组的患者将移至默认分组下")
@@ -141,13 +143,13 @@ public class DialogUtils {
     }
 
 
-
     /**
      * 显示选择拍照或者从相册选取的对话框
+     *
      * @param context
      * @param listener
      */
-    public static void showSelcetGetPicWayDialog(Context context,final GetPicWaySelectedListener listener){
+    public static void showSelcetGetPicWayDialog(Context context, final GetPicWaySelectedListener listener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(context.getString(R.string.select_pic_source))
                 .setItems(new String[]{context.getString(R.string.camera), context.getString(R.string.photo_album)}, new DialogInterface.OnClickListener() {
@@ -179,12 +181,13 @@ public class DialogUtils {
         void onDeleteGroup(String groupId);
     }
 
-    public interface GetPicWaySelectedListener{
+    public interface GetPicWaySelectedListener {
         void onWaySelected(int way);
     }
 
     /**
      * 弹窗，选择周期
+     *
      * @param tv
      * @param items
      */
@@ -205,6 +208,7 @@ public class DialogUtils {
 
     /**
      * 添加其他检查项周期dialog
+     *
      * @param context
      * @param saveCheckSycleListener
      */
@@ -226,7 +230,7 @@ public class DialogUtils {
         View.OnClickListener sycleClick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String scyle = ((TextView)v).getText().toString();
+                String scyle = ((TextView) v).getText().toString();
                 tvSycle.setText(scyle);
                 llSelectSycle.setVisibility(View.GONE);
                 ibSelectSycle.setImageDrawable(context.getResources().getDrawable(R.mipmap.icon_down_arrow));
@@ -279,6 +283,7 @@ public class DialogUtils {
 
     /**
      * 仅有一个输入框的
+     *
      * @param context
      * @param listener
      */
@@ -334,7 +339,8 @@ public class DialogUtils {
         pDialog.show();
 
     }
-    public static void showNormalDialog(Context context,String title,String content) {
+
+    public static void showNormalDialog(Context context, String title, String content) {
         SweetAlertDialog pDialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
                 .setTitleText(title)
                 .setContentText(content)
@@ -349,7 +355,8 @@ public class DialogUtils {
         pDialog.show();
 
     }
-    public static void showNormalDialog(Context context,String title,String content,SweetAlertDialog.OnSweetClickListener onSweetClickListener) {
+
+    public static void showNormalDialog(Context context, String title, String content, SweetAlertDialog.OnSweetClickListener onSweetClickListener) {
         SweetAlertDialog pDialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
                 .setTitleText(title)
                 .setContentText(content)
@@ -358,5 +365,16 @@ public class DialogUtils {
                 .setConfirmClickListener(onSweetClickListener);
         pDialog.show();
 
+    }
+
+    public static SweetAlertDialog showNormalDialog(Context context, String content, String confirmText, String cancelText, SweetAlertDialog.OnSweetClickListener onSweetClickListener) {
+        SweetAlertDialog pDialog = new SweetAlertDialog(context, SweetAlertDialog.NORMAL_TYPE)
+                .setTitleText(content)
+                .setCancelText("")
+                .setConfirmText(confirmText)
+                .setCancelText(cancelText)
+                .setConfirmClickListener(onSweetClickListener);
+        pDialog.show();
+        return pDialog;
     }
 }

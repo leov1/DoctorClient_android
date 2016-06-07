@@ -209,6 +209,10 @@ public class BaseWebActivity extends BaseRequstActivity {
 //            case "setRightMenu":
 //                IniRightMenu(parameters);
 //                break;
+
+            case "login":
+                UIHelper.showLoginForResult(this);
+                break;
             case "share":
                 Log.e("wangxu", parameters);
                 try {
@@ -294,6 +298,7 @@ public class BaseWebActivity extends BaseRequstActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        webView.getRefreshableView().reload();
         if (isNeedLogin) {
             if (!TextUtils.isEmpty(LoginManager.getDoctorUuid())) {
                 onLoginSuccess.onLoginSuccess();
