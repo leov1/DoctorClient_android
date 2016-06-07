@@ -224,6 +224,8 @@ public class BaseTitleActivity extends SwipeBackActivity implements NetRequestLi
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == UIHelper.LOGIN_REQUEST_CODE) {
+                if (onLoginSuccess==null)
+                    return;
                 if (data.getBooleanExtra("isLogin", false)) {
                     onLoginSuccess.onLoginSuccess(LoginManager.getDoctorUuid());
                 } else {
