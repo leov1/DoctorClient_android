@@ -324,14 +324,7 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
         switch (position) {
 
             case 0://讲堂
-//                if (!LoginManager.isHasLogin()) {
-//                    UIHelper.showLoginForResult(this.getActivity());
-//                    return;
-//                }
                 CommentWebActivity.toCommentWebForResult(UrlConstants.getWholeApiUrl(UrlConstants.GET_VIDEOS), getActivity(), UIHelper.LOGIN_REQUEST_CODE, false);
-//                intent = new Intent(getActivity(), VideoListActivity.class);
-//                startActivity(intent);
-
                 break;
             case 1://随访
                 if (!LoginManager.isHasLogin()) {

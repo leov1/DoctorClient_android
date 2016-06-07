@@ -83,7 +83,7 @@ public class MainActivity extends BaseFragmentActivity {
 
     private void initData() {
         currIndex = 0;
-        fragmentTags = new ArrayList<>(Arrays.asList("HomeFragment", "PatientFragment", "TaskFragment", "UserFragment"));
+        fragmentTags = new ArrayList<>(Arrays.asList("HomeFragment", "PatientFragment", "UserFragment"));// "TaskFragment",
     }
 
     private void initView() {
@@ -103,7 +103,7 @@ public class MainActivity extends BaseFragmentActivity {
                             chageIndex(2);
                             break;*/
                         case R.id.main_footbar_user:
-                            chageIndex(3);
+                            chageIndex(2);
                             break;
                         default:
                             break;
@@ -116,19 +116,19 @@ public class MainActivity extends BaseFragmentActivity {
 
     public void chageIndex(int index) {
 
-        if ((!TextUtils.isEmpty(isCompleteInfo())) && LoginManager.isHasLogin()) {
-            if (index == 1 || index == 2) {
-                UIHelper.ToastMessage(this, isCompleteInfo());
-                checkGroup(currIndex);
-                return;
-            }
-        }
-        currIndex = index;
-        if (index == 0 || LoginManager.isHasLogin()) {
-            showFragment();
-        } else {
+        if ((!LoginManager.isHasLogin()) && (index == 1 || index == 2)) {
             UIHelper.showLoginForResult(this);
+            checkGroup(currIndex);
+            return;
         }
+        if (index == 1 && (!TextUtils.isEmpty(isCompleteInfo()))) {
+            UIHelper.ToastMessage(this, isCompleteInfo());
+            checkGroup(currIndex);
+            return;
+        }
+
+        currIndex = index;
+        showFragment();
     }
 
     private void checkGroup(int idex) {
@@ -136,7 +136,7 @@ public class MainActivity extends BaseFragmentActivity {
             case 0:
                 group.check(R.id.foot_bar_home);
                 break;
-            case 3:
+            case 2:
                 group.check(R.id.main_footbar_user);
                 break;
         }
@@ -172,7 +172,7 @@ public class MainActivity extends BaseFragmentActivity {
                 return new MyPatientFrg();
 //            case 2:
 //                return new MyTaskFrg();
-            case 3:
+            case 2:
                 return new PersonalFrg();
             default:
                 return null;
@@ -212,9 +212,9 @@ public class MainActivity extends BaseFragmentActivity {
                 case UIHelper.LOGIN_REQUEST_CODE:
                     if (LoginManager.isHasLogin()) {
 
-                        if(TextUtils.isEmpty(isCompleteInfo())){
+                        if (TextUtils.isEmpty(isCompleteInfo())) {
                             showFragment();
-                        }else {
+                        } else {
                             currIndex = 0;
                             checkGroup(currIndex);
                         }

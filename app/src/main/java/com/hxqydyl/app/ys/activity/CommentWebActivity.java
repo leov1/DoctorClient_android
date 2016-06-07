@@ -55,8 +55,13 @@ public class CommentWebActivity extends BaseWebActivity implements BaseWebActivi
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
     public void onLoginSuccess() {
-       loadUrl(url);
+        loadUrl(url);
     }
 
     @Override
