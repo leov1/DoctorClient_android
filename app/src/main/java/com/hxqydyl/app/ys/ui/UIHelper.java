@@ -60,17 +60,24 @@ public class UIHelper {
         context.startActivity(intent);
     }
 
-    public static void showLoginForResult(final  Activity context){
-     DialogUtils.showNormalDialog(context,"登陆才能使用该功能","登陆","取消",new SweetAlertDialog.OnSweetClickListener(){
+    public static void showLoginForResult(final  Activity context,boolean isBtn){
+        if (isBtn){
+            Intent intent = new Intent(context, LoginActivity.class);
+            intent.putExtra("isNeedCallBack",true);
+            context.startActivityForResult(intent,LOGIN_REQUEST_CODE);
+        }else{
+            DialogUtils.showNormalDialog(context,"登陆才能使用该功能","登陆","取消",new SweetAlertDialog.OnSweetClickListener(){
 
-            @Override
-            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                Intent intent = new Intent(context, LoginActivity.class);
-                intent.putExtra("isNeedCallBack",true);
-                context.startActivityForResult(intent,LOGIN_REQUEST_CODE);
-                sweetAlertDialog.dismiss();
-            }
-        });
+                @Override
+                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    Intent intent = new Intent(context, LoginActivity.class);
+                    intent.putExtra("isNeedCallBack",true);
+                    context.startActivityForResult(intent,LOGIN_REQUEST_CODE);
+                    sweetAlertDialog.dismiss();
+                }
+            });
+        }
+
 
     }
 }

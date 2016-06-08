@@ -117,7 +117,7 @@ public class MainActivity extends BaseFragmentActivity {
     public void chageIndex(int index) {
 
         if ((!LoginManager.isHasLogin()) && (index == 1 || index == 2)) {
-            UIHelper.showLoginForResult(this);
+            UIHelper.showLoginForResult(this,false);
             checkGroup(currIndex);
             return;
         }

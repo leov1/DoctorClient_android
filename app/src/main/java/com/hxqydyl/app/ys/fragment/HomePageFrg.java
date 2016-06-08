@@ -132,7 +132,7 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
         }
         if (!TextUtils.isEmpty(doctorInfoCache)) {
             doctorInfoNew = gson.fromJson(doctorInfoCache, DoctorInfoNew.class);
-        updateLinear(true);
+            updateLinear(true);
         } else {
             updateLinear(false);
         }
@@ -298,7 +298,7 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.login_btn:
-                UIHelper.showLoginForResult(getActivity());
+                UIHelper.showLoginForResult(getActivity(), true);
                 break;
             case R.id.register_btn:
                 UIHelper.showRegister(getActivity());
@@ -307,6 +307,10 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
                 QualidicationActivity.toQualidicationActivity(getActivity(), SharedPreferences.getInstance().getString(SharedPreferences.USER_INFO_COMPLETE, "0"));
                 break;
             case R.id.back_img:
+                if (!LoginManager.isHasLogin()) {
+                    UIHelper.showLoginForResult(getActivity(), false);
+                    return;
+                }
                 CommentWebActivity.toCommentWeb(UrlConstants.getWholeApiUrl(UrlConstants.CURPAGE), null, getActivity(), true);
                 break;
         }
@@ -328,7 +332,7 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
                 break;
             case 1://随访
                 if (!LoginManager.isHasLogin()) {
-                    UIHelper.showLoginForResult(this.getActivity());
+                    UIHelper.showLoginForResult(this.getActivity(),false);
                     return;
                 }
                 if (!TextUtils.isEmpty(((BaseFragmentActivity) getActivity()).isIdenyInfo())) {
@@ -337,12 +341,12 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
                 }
 //                intent = new Intent(getActivity(), FollowMainActivity.class);
                 intent = new Intent(getActivity(), TranslateActivity.class);
-                intent.putExtra("title","随访");
+                intent.putExtra("title", "随访");
                 startActivity(intent);
                 break;
             case 2://诊所
                 if (!LoginManager.isHasLogin()) {
-                    UIHelper.showLoginForResult(this.getActivity());
+                    UIHelper.showLoginForResult(this.getActivity(),false);
                     return;
 
                 }
@@ -352,7 +356,7 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
                 }
 //                CommentWebActivity.toCommentWebForResult(UrlConstants.getWholeApiUrl(UrlConstants.GET_CLINIC), getActivity(), UIHelper.LOGIN_REQUEST_CODE, false);
                 intent = new Intent(getActivity(), TranslateActivity.class);
-                intent.putExtra("title","诊所");
+                intent.putExtra("title", "诊所");
                 startActivity(intent);
                 break;
             case 3://阅读

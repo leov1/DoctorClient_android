@@ -173,7 +173,7 @@ public class BaseTitleActivity extends SwipeBackActivity implements NetRequestLi
     public void getDoctorUuid(LoginManager.OnLoginSuccess onLoginSuccess) {
         this.onLoginSuccess = onLoginSuccess;
         if (TextUtils.isEmpty(LoginManager.getDoctorUuid())) {
-            UIHelper.showLoginForResult(this);
+            UIHelper.showLoginForResult(this,false);
         } else {
             onLoginSuccess.onLoginSuccess(LoginManager.getDoctorUuid());
         }

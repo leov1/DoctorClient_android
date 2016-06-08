@@ -211,7 +211,7 @@ public class BaseWebActivity extends BaseRequstActivity {
 //                break;
 
             case "login":
-                UIHelper.showLoginForResult(this);
+                UIHelper.showLoginForResult(this,false);
                 break;
             case "share":
                 Log.e("wangxu", parameters);
