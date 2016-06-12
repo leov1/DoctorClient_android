@@ -121,8 +121,9 @@ public class MainActivity extends BaseFragmentActivity {
             checkGroup(currIndex);
             return;
         }
-        if (index == 1 && (!TextUtils.isEmpty(isCompleteInfo()))) {
-            UIHelper.ToastMessage(this, isCompleteInfo());
+     //   if (index == 1 && (!TextUtils.isEmpty(isCompleteInfo()))) {
+        if(index == 1){
+            UIHelper.ToastMessage(this, "该功能即将开通，敬请期待。");
             checkGroup(currIndex);
             return;
         }

@@ -59,25 +59,25 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
         , AdapterView.OnItemClickListener
         , RegisterSucListener {
 
-    @InjectId(id = R.id.login_linear)
-    private LinearLayout loginLiear;
-    @InjectId(id = R.id.not_login_linear)
-    private RelativeLayout noLoginLinear;
-    @InjectId(id = R.id.login_btn)
-    private TextView loginBtn;
-    @InjectId(id = R.id.register_btn)
-    private TextView registerBtn;
-
-    @InjectId(id = R.id.head_img)
-    private CircleImageView headImg;//医生头像
-    @InjectId(id = R.id.head_name)
-    private TextView headName;//医生名字
-    @InjectId(id = R.id.sufferer_num)
-    private TextView suffererNum;//患者数量
-    @InjectId(id = R.id.follow_num)
-    private TextView followNum;//随访数量
-    @InjectId(id = R.id.income)
-    private TextView income;//医生收入
+//    @InjectId(id = R.id.login_linear)
+//    private LinearLayout loginLiear;
+//    @InjectId(id = R.id.not_login_linear)
+//    private RelativeLayout noLoginLinear;
+//    @InjectId(id = R.id.login_btn)
+//    private TextView loginBtn;
+//    @InjectId(id = R.id.register_btn)
+//    private TextView registerBtn;
+//
+//    @InjectId(id = R.id.head_img)
+//    private CircleImageView headImg;//医生头像
+//    @InjectId(id = R.id.head_name)
+//    private TextView headName;//医生名字
+//    @InjectId(id = R.id.sufferer_num)
+//    private TextView suffererNum;//患者数量
+//    @InjectId(id = R.id.follow_num)
+//    private TextView followNum;//随访数量
+//    @InjectId(id = R.id.income)
+//    private TextView income;//医生收入
 
     private View view;
     @InjectId(id = R.id.home_gridview)
@@ -132,9 +132,9 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
         }
         if (!TextUtils.isEmpty(doctorInfoCache)) {
             doctorInfoNew = gson.fromJson(doctorInfoCache, DoctorInfoNew.class);
-            updateLinear(true);
+   //     updateLinear(true);
         } else {
-            updateLinear(false);
+  //          updateLinear(false);
         }
     }
 
@@ -151,9 +151,9 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
     private void initListeners() {
         ((BaseFragmentActivity) getActivity()).addRegisterListener(this);
         lineGridView.setOnItemClickListener(this);
-        loginBtn.setOnClickListener(this);
-        registerBtn.setOnClickListener(this);
-        headImg.setOnClickListener(this);
+//        loginBtn.setOnClickListener(this);
+//        registerBtn.setOnClickListener(this);
+//        headImg.setOnClickListener(this);
         backImg.setOnClickListener(this);
         pullToRefreshListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ScrollView>() {
             @Override
@@ -270,17 +270,17 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
     /**
      * 更新登陆条
      *
-     * @param isLogin
+//     * @param isLogin
      */
-    private void updateLinear(Boolean isLogin) {
-        if (isLogin) {
-            noLoginLinear.setVisibility(View.GONE);
-            loginLiear.setVisibility(View.GONE);
-        } else {
-            noLoginLinear.setVisibility(View.VISIBLE);
-            loginLiear.setVisibility(View.GONE);
-        }
-    }
+//    private void updateLinear(Boolean isLogin) {
+//        if (isLogin) {
+//            noLoginLinear.setVisibility(View.GONE);
+//            loginLiear.setVisibility(View.GONE);
+//        } else {
+//            noLoginLinear.setVisibility(View.VISIBLE);
+//            loginLiear.setVisibility(View.GONE);
+//        }
+//    }
 
     @Override
     public void onResume() {
@@ -331,33 +331,33 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
                 CommentWebActivity.toCommentWebForResult(UrlConstants.getWholeApiUrl(UrlConstants.GET_VIDEOS), getActivity(), UIHelper.LOGIN_REQUEST_CODE, false);
                 break;
             case 1://随访
-                if (!LoginManager.isHasLogin()) {
-                    UIHelper.showLoginForResult(this.getActivity(),false);
-                    return;
-                }
-                if (!TextUtils.isEmpty(((BaseFragmentActivity) getActivity()).isIdenyInfo())) {
-                    UIHelper.ToastMessage(this.getActivity(), ((BaseFragmentActivity) getActivity()).isIdenyInfo());
-                    return;
-                }
-//                intent = new Intent(getActivity(), FollowMainActivity.class);
-                intent = new Intent(getActivity(), TranslateActivity.class);
-                intent.putExtra("title", "随访");
-                startActivity(intent);
+//                if (!LoginManager.isHasLogin()) {
+//                    UIHelper.showLoginForResult(this.getActivity());
+//                    return;
+//                }
+//                if (!TextUtils.isEmpty(((BaseFragmentActivity) getActivity()).isIdenyInfo())) {
+//                    UIHelper.ToastMessage(this.getActivity(), ((BaseFragmentActivity) getActivity()).isIdenyInfo());
+//                    return;
+//                }
+////                intent = new Intent(getActivity(), FollowMainActivity.class);
+//                intent = new Intent(getActivity(), TranslateActivity.class);
+//                intent.putExtra("title","随访");
+//                startActivity(intent);
                 break;
             case 2://诊所
-                if (!LoginManager.isHasLogin()) {
-                    UIHelper.showLoginForResult(this.getActivity(),false);
-                    return;
-
-                }
-                if (!TextUtils.isEmpty(((BaseFragmentActivity) getActivity()).isIdenyInfo())) {
-                    UIHelper.ToastMessage(this.getActivity(), ((BaseFragmentActivity) getActivity()).isIdenyInfo());
-                    return;
-                }
-//                CommentWebActivity.toCommentWebForResult(UrlConstants.getWholeApiUrl(UrlConstants.GET_CLINIC), getActivity(), UIHelper.LOGIN_REQUEST_CODE, false);
-                intent = new Intent(getActivity(), TranslateActivity.class);
-                intent.putExtra("title", "诊所");
-                startActivity(intent);
+//                if (!LoginManager.isHasLogin()) {
+//                    UIHelper.showLoginForResult(this.getActivity());
+//                    return;
+//
+//                }
+//                if (!TextUtils.isEmpty(((BaseFragmentActivity) getActivity()).isIdenyInfo())) {
+//                    UIHelper.ToastMessage(this.getActivity(), ((BaseFragmentActivity) getActivity()).isIdenyInfo());
+//                    return;
+//                }
+////                CommentWebActivity.toCommentWebForResult(UrlConstants.getWholeApiUrl(UrlConstants.GET_CLINIC), getActivity(), UIHelper.LOGIN_REQUEST_CODE, false);
+//                intent = new Intent(getActivity(), TranslateActivity.class);
+//                intent.putExtra("title","诊所");
+//                startActivity(intent);
                 break;
             case 3://阅读
                 intent = new Intent(getActivity(), ReadingActivity.class);
@@ -408,7 +408,7 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
                 stopRefreshing();
                 if (sb != null) {
 //                    updateDoctorInfo(sb);
-                    updateLinear(true);
+//                    updateLinear(true);
 
                     SharedPreferences.getInstance().putString(SharedPreferences.HOME_DOCTOR_INFO_CACHE_NEW, gson.toJson(sb));
                     SharedPreferences.getInstance().putString(SharedPreferences.USER_INFO_COMPLETE, sb.getSate());

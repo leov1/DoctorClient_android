@@ -53,6 +53,7 @@ public class BaseWebActivity extends BaseRequstActivity {
     private Intent intent;
     private String beanPath;
     private String webIsAvatar;
+    private boolean isLoadImg = false;
 
     public void setIsNeedLogin(boolean isNeedLogin, OnLoginSuccess onLoginSuccess) {
         this.isNeedLogin = isNeedLogin;
@@ -116,6 +117,7 @@ public class BaseWebActivity extends BaseRequstActivity {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
+            isLoadImg = false;
             if (isNeedLogin && TextUtils.isEmpty(LoginManager.getDoctorUuid())) {
                 UIHelper.showLogin(BaseWebActivity.this);
             }
@@ -229,6 +231,7 @@ public class BaseWebActivity extends BaseRequstActivity {
 //                break;
             case "takephoto":
                 webIsAvatar = parameters;
+                isLoadImg = true;
                 access(PickConfig.MODE_SINGLE_PICK, 1);
                 break;
 //            case "saveImage":
@@ -298,7 +301,8 @@ public class BaseWebActivity extends BaseRequstActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        webView.getRefreshableView().reload();
+        if (!isLoadImg)
+            webView.getRefreshableView().reload();
         if (isNeedLogin) {
             if (!TextUtils.isEmpty(LoginManager.getDoctorUuid())) {
                 onLoginSuccess.onLoginSuccess();

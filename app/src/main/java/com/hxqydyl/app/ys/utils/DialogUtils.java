@@ -324,45 +324,41 @@ public class DialogUtils {
         boolean save(String text);
     }
 
-    public static void showNormalDialog(Context context) {
-        SweetAlertDialog pDialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
-                .setTitleText("恭喜您成功注册好心情医生版!")
-                .setContentText("您可以点击头像或个人中心进行认证。")
-                .setConfirmText("确认")
-                .showCancelButton(true)
-                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        sweetAlertDialog.dismiss();
-                    }
-                });
-        pDialog.show();
+    //视屏播放前的网络判断提示
+    public static void showNetType(Context context, SweetAlertDialog.OnSweetClickListener onConfirmClickListener, SweetAlertDialog.OnSweetClickListener onCancelClickListener) {
+        showNormalDialog(context, "提示", "您当前正在使用移动网络，继续播放将消耗流量。", true, onConfirmClickListener, onCancelClickListener);
+    }
 
+    //无网络提醒
+    public static void showNetNo(Context context, SweetAlertDialog.OnSweetClickListener onConfirmClickListener) {
+        showNormalDialog(context, "提示", "暂无网络。", false, onConfirmClickListener, null);
+    }
+
+    public static void showNormalDialog(Context context) {
+        showNormalDialog(context, "恭喜您成功注册好心情医生版!", "您可以进入个人中心进行认证。");
     }
 
     public static void showNormalDialog(Context context, String title, String content) {
-        SweetAlertDialog pDialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
-                .setTitleText(title)
-                .setContentText(content)
-                .setConfirmText("确认")
-                .showCancelButton(true)
-                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        sweetAlertDialog.dismiss();
-                    }
-                });
-        pDialog.show();
-
+        showNormalDialog(context, title, content, new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                sweetAlertDialog.dismiss();
+            }
+        });
     }
 
-    public static void showNormalDialog(Context context, String title, String content, SweetAlertDialog.OnSweetClickListener onSweetClickListener) {
+    public static void showNormalDialog(Context context, String title, String content, SweetAlertDialog.OnSweetClickListener onConfirmClickListener) {
+        showNormalDialog(context, title, content, true, onConfirmClickListener, null);
+    }
+
+    public static void showNormalDialog(Context context, String title, String content, boolean isShowCancel, SweetAlertDialog.OnSweetClickListener onConfirmClickListener, SweetAlertDialog.OnSweetClickListener onCancelClickListener) {
         SweetAlertDialog pDialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
                 .setTitleText(title)
                 .setContentText(content)
                 .setConfirmText("确认")
-                .showCancelButton(true)
-                .setConfirmClickListener(onSweetClickListener);
+                .setCancelText(isShowCancel ? "取消" : null)
+                .setConfirmClickListener(onConfirmClickListener)
+                .setCancelClickListener(onCancelClickListener);
         pDialog.show();
 
     }

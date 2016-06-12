@@ -69,7 +69,7 @@ public class BaseFragmentActivity extends FragmentActivity implements RegisterSu
         String code = SharedPreferences.getInstance().getString(SharedPreferences.USER_INFO_COMPLETE, "0");
         String text = "";
         if (code.equals("0")) {
-            text = "您还未完善个人信息，您可以点击头像或个人中心进行认证";
+            text = "您还未完善个人信息，您可以进入个人中心进行认证";
         } else if (code.equals("2")) {
             text = "未通过审核/未通过认证";
         } else if (code.equals("3")) {
@@ -83,7 +83,7 @@ public class BaseFragmentActivity extends FragmentActivity implements RegisterSu
         String code = SharedPreferences.getInstance().getString(SharedPreferences.USER_INFO_COMPLETE, "0");
         String text = "";
         if (code.equals("0")) {
-            text = "您还未完善个人信息，您可以点击头像或个人中心进行认证";
+            text = "您还未完善个人信息，您可以进入个人中心进行认证";
         }
         return text;
     }

@@ -8,8 +8,8 @@ android {
         applicationId "com.hxqydyl.app.ys"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 20160531
-        versionName "2.4.1"
+        versionCode 20160607
+        versionName "1.5"
     }
     buildTypes {
         release {

@@ -4,9 +4,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/home_user_no_login"/>
+    <!--<include layout="@layout/home_user_no_login"/>
 
-    <include layout="@layout/home_info_top"/>
+    <include layout="@layout/home_info_top"/>-->
 
     <include layout="@layout/layout_autoloop_viewpage"/>
 
