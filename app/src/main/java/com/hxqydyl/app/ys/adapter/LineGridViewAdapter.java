@@ -14,11 +14,11 @@ import com.hxqydyl.app.ys.R;
 /**
  * Created by hxq on 2016/2/25.
  */
-public class LineGridViewAdapter extends  BaseAdapter{
+public class LineGridViewAdapter extends BaseAdapter {
     private Context mContext;
 
-    public String[] img_text = { "讲堂", "随访即将开通", "诊所即将开通",  "阅读" };
-    public int[] imgs = {  R.mipmap.app_media,R.mipmap.app_follow, R.mipmap.app_clinic,R.mipmap.app_read};
+    public String[] img_text = {"讲堂", "阅读", "诊所", "随访"};
+    public int[] imgs = {R.mipmap.app_media, R.mipmap.app_read, R.mipmap.app_clinic, R.mipmap.app_follow};
 
     public LineGridViewAdapter(Context mContext) {
         super();
@@ -48,8 +48,11 @@ public class LineGridViewAdapter extends  BaseAdapter{
         }
         TextView tv = BaseViewHolder.get(convertView, R.id.tv_item);
         ImageView iv = BaseViewHolder.get(convertView, R.id.iv_item);
+        ImageView yet_open = BaseViewHolder.get(convertView, R.id.yet_open);
         iv.setBackgroundResource(imgs[position]);
-
+        if (position == 2 || position == 3) {
+            yet_open.setVisibility(View.VISIBLE);
+        }
         tv.setText(img_text[position]);
         return convertView;
     }

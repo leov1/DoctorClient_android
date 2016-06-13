@@ -132,9 +132,9 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
         }
         if (!TextUtils.isEmpty(doctorInfoCache)) {
             doctorInfoNew = gson.fromJson(doctorInfoCache, DoctorInfoNew.class);
-   //     updateLinear(true);
+            //     updateLinear(true);
         } else {
-  //          updateLinear(false);
+            //          updateLinear(false);
         }
     }
 
@@ -269,8 +269,8 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
 
     /**
      * 更新登陆条
-     *
-//     * @param isLogin
+     * <p>
+     * //     * @param isLogin
      */
 //    private void updateLinear(Boolean isLogin) {
 //        if (isLogin) {
@@ -281,7 +281,6 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
 //            loginLiear.setVisibility(View.GONE);
 //        }
 //    }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -330,22 +329,13 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
             case 0://讲堂
                 CommentWebActivity.toCommentWebForResult(UrlConstants.getWholeApiUrl(UrlConstants.GET_VIDEOS), getActivity(), UIHelper.LOGIN_REQUEST_CODE, false);
                 break;
-            case 1://随访
-//                if (!LoginManager.isHasLogin()) {
-//                    UIHelper.showLoginForResult(this.getActivity());
-//                    return;
-//                }
-//                if (!TextUtils.isEmpty(((BaseFragmentActivity) getActivity()).isIdenyInfo())) {
-//                    UIHelper.ToastMessage(this.getActivity(), ((BaseFragmentActivity) getActivity()).isIdenyInfo());
-//                    return;
-//                }
-////                intent = new Intent(getActivity(), FollowMainActivity.class);
-//                intent = new Intent(getActivity(), TranslateActivity.class);
-//                intent.putExtra("title","随访");
-//                startActivity(intent);
+            case 1://阅读
+                intent = new Intent(getActivity(), ReadingActivity.class);
+                startActivity(intent);
+
                 break;
             case 2://诊所
-//                if (!LoginManager.isHasLogin()) {
+                //                if (!LoginManager.isHasLogin()) {
 //                    UIHelper.showLoginForResult(this.getActivity());
 //                    return;
 //
@@ -359,10 +349,23 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
 //                intent.putExtra("title","诊所");
 //                startActivity(intent);
                 break;
-            case 3://阅读
-                intent = new Intent(getActivity(), ReadingActivity.class);
-                startActivity(intent);
+            case 3://随访
+                //                if (!LoginManager.isHasLogin()) {
+//                    UIHelper.showLoginForResult(this.getActivity());
+//                    return;
+//                }
+//                if (!TextUtils.isEmpty(((BaseFragmentActivity) getActivity()).isIdenyInfo())) {
+//                    UIHelper.ToastMessage(this.getActivity(), ((BaseFragmentActivity) getActivity()).isIdenyInfo());
+//                    return;
+//                }
+////                intent = new Intent(getActivity(), FollowMainActivity.class);
+//                intent = new Intent(getActivity(), TranslateActivity.class);
+//                intent.putExtra("title","随访");
+//                startActivity(intent);
+
+
                 break;
+
         }
     }
 

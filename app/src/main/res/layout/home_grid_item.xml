@@ -31,5 +31,13 @@
             android:textColor="@color/text_color_black"
             android:textSize="14.0sp" />
     </RelativeLayout>
-
+<ImageView
+    android:id="@+id/yet_open"
+    android:layout_width="60dp"
+    android:layout_height="40dp"
+    android:visibility="gone"
+    android:layout_alignParentRight="true"
+    android:scaleType="fitXY"
+    android:layout_alignParentTop="true"
+    android:src="@mipmap/yet_open"/>
 </RelativeLayout>
