@@ -335,7 +335,7 @@ public class DialogUtils {
     }
 
     public static void showNormalDialog(Context context) {
-        showNormalDialog(context, "恭喜您成功注册好心情医生版!", "您可以进入个人中心进行认证。");
+        showNoChacelNormalDialog(context, "恭喜您成功注册好心情医生版!", "您可以进入个人中心进行认证。");
     }
 
     public static void showNormalDialog(Context context, String title, String content) {
@@ -346,11 +346,20 @@ public class DialogUtils {
             }
         });
     }
-
+    public static void showNoChacelNormalDialog(Context context, String title, String content) {
+        showNoChacelNormalDialog(context, title, content, new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                sweetAlertDialog.dismiss();
+            }
+        });
+    }
     public static void showNormalDialog(Context context, String title, String content, SweetAlertDialog.OnSweetClickListener onConfirmClickListener) {
         showNormalDialog(context, title, content, true, onConfirmClickListener, null);
     }
-
+    public static void showNoChacelNormalDialog(Context context, String title, String content, SweetAlertDialog.OnSweetClickListener onConfirmClickListener) {
+        showNormalDialog(context, title, content, false, onConfirmClickListener, null);
+    }
     public static void showNormalDialog(Context context, String title, String content, boolean isShowCancel, SweetAlertDialog.OnSweetClickListener onConfirmClickListener, SweetAlertDialog.OnSweetClickListener onCancelClickListener) {
         SweetAlertDialog pDialog = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE)
                 .setTitleText(title)

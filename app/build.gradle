@@ -8,8 +8,8 @@ android {
         applicationId "com.hxqydyl.app.ys"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 20160607
-        versionName "1.5"
+        versionCode 20160614
+        versionName "2.4.2"
     }
     buildTypes {
         release {
@@ -26,9 +26,36 @@ android {
         ceshi {
             manifestPlaceholders = [HOST: "http://172.168.1.46:8080", IS_TEST: false, UMENG_APPKEY: "565eb06267e58e0943002225", UMENG_CHANNEL: "cs", JPUSH_APPKEY: "6bda069a6d817d1f567a86ed"]
         }//测试环境
-        zs { manifestPlaceholders = [HOST: "http://admin.hxqydyl.com", IS_TEST: false,UMENG_APPKEY:"565eb06267e58e0943002225",UMENG_CHANNEL:"hxq",JPUSH_APPKEY:"6bda069a6d817d1f567a86ed"] }
+        zs {
+            manifestPlaceholders = [HOST: "http://admin.hxqydyl.com", IS_TEST: false, UMENG_APPKEY: "565eb06267e58e0943002225", UMENG_CHANNEL: "hxq", JPUSH_APPKEY: "6bda069a6d817d1f567a86ed"]
+        }
+    }
+    //修改生成的apk名字
+    applicationVariants.all { variant ->
+
+        variant.outputs.each { output ->
+            def appName = 'hxq_d_'
+            def oldFile = output.outputFile
+            def buildName
+            def releaseApkName
+
+            variant.productFlavors.each { product ->
+                buildName = product.name
+            }
+
+            releaseApkName = buildName + '_' + appName +versionName + '_' + getDate() + '.apk'
+            output.outputFile = new File(oldFile.parent, releaseApkName)
+        }
     }
 }
+
+def getDate() {
+    def date = new Date()
+    def formattedDate = date.format('yyyyMMdd_HHmm')
+    return formattedDate
+}
+
+
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
