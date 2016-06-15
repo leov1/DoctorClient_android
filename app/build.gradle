@@ -17,7 +17,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
     productFlavors {
 //                ceshi{manifestPlaceholders = [HOST: "http://172.168.1.53",IS_TEST:true]}
 //   ceshi{manifestPlaceholders = [HOST: "http://172.168.1.22", IS_TEST: true,UMENG_APPKEY:"565eb06267e58e0943002225",UMENG_CHANNEL:"cs",JPUSH_APPKEY:"6bda069a6d817d1f567a86ed"]}//刘阳
@@ -32,19 +31,20 @@ android {
     }
     //修改生成的apk名字
     applicationVariants.all { variant ->
+        if (variant.buildType.name.equals('release')) {
+            variant.outputs.each { output ->
+                def appName = 'hxq_d_'
+                def oldFile = output.outputFile
+                def buildName
+                def releaseApkName
 
-        variant.outputs.each { output ->
-            def appName = 'hxq_d_'
-            def oldFile = output.outputFile
-            def buildName
-            def releaseApkName
+                variant.productFlavors.each { product ->
+                    buildName = product.name
+                }
 
-            variant.productFlavors.each { product ->
-                buildName = product.name
+                releaseApkName = buildName + '_' + appName + 'v_' + versionName + '_' + getDate() + '.apk'
+                output.outputFile = new File(oldFile.parent, releaseApkName)
             }
-
-            releaseApkName = buildName + '_' + appName +versionName + '_' + getDate() + '.apk'
-            output.outputFile = new File(oldFile.parent, releaseApkName)
         }
     }
 }
