@@ -351,15 +351,6 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
 //                intent = new Intent(getActivity(), TranslateActivity.class);
 //                intent.putExtra("title","诊所");
 //                startActivity(intent);
-                ShareBean shareBean=new ShareBean();
-                shareBean.setTitle("测试");
-                shareBean.setLink("http://www.baidu.com");
-                shareBean.setDesc("没错这个是个百度链接");
-                try {
-                    ShareUtil.getIntense(getActivity()).showShareDialog(shareBean);
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
                 break;
             case 3://随访
                 //                if (!LoginManager.isHasLogin()) {
