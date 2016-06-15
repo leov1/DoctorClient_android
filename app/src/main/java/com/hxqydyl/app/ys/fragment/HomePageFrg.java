@@ -29,6 +29,7 @@ import com.hxqydyl.app.ys.activity.reading.ReadingActivity;
 import com.hxqydyl.app.ys.activity.register.QualidicationActivity;
 import com.hxqydyl.app.ys.activity.video.VideoListActivity;
 import com.hxqydyl.app.ys.adapter.LineGridViewAdapter;
+import com.hxqydyl.app.ys.bean.ShareBean;
 import com.hxqydyl.app.ys.bean.homepage.PageIconBean;
 import com.hxqydyl.app.ys.bean.register.DoctorInfoNew;
 import com.hxqydyl.app.ys.bean.response.DoctorInfoNewResponse;
@@ -43,10 +44,12 @@ import com.hxqydyl.app.ys.ui.linegridview.LineGridView;
 import com.hxqydyl.app.ys.utils.InjectId;
 import com.hxqydyl.app.ys.utils.InjectUtils;
 import com.hxqydyl.app.ys.utils.LoginManager;
+import com.hxqydyl.app.ys.utils.ShareUtil;
 import com.hxqydyl.app.ys.utils.SharedPreferences;
 import com.hxqydyl.app.ys.utils.Utils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -348,6 +351,15 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
 //                intent = new Intent(getActivity(), TranslateActivity.class);
 //                intent.putExtra("title","诊所");
 //                startActivity(intent);
+                ShareBean shareBean=new ShareBean();
+                shareBean.setTitle("测试");
+                shareBean.setLink("http://www.baidu.com");
+                shareBean.setDesc("没错这个是个百度链接");
+                try {
+                    ShareUtil.getIntense(getActivity()).showShareDialog(shareBean);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 break;
             case 3://随访
                 //                if (!LoginManager.isHasLogin()) {

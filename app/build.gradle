@@ -11,10 +11,23 @@ android {
         versionCode 20160614
         versionName "2.4.2"
     }
+    signingConfigs {
+        myConfig {
+            storeFile file('D:/androidwork/DoctorClient_android/hxqydyl.keystore')
+            storePassword '123456'
+            keyAlias 'haoxinqing'
+            keyPassword '123456'
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.myConfig
+        }
+        debug {
+            signingConfig signingConfigs.myConfig
         }
     }
     productFlavors {
@@ -54,7 +67,6 @@ def getDate() {
     def formattedDate = date.format('yyyyMMdd_HHmm')
     return formattedDate
 }
-
 
 
 dependencies {

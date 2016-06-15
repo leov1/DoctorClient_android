@@ -22,7 +22,7 @@ public class AppContext extends BaseApplication {
     }
 
     private void initShare() {
-        PlatformConfig.setWeixin("wx967daebe835fbeac", "5bb696d9ccd75a38c8a0bfe0675559b3");
+        PlatformConfig.setWeixin("wx4ab9879d6d249090", "68241ec26a6b59dcdf3593db65a1bed2");
         //微信 appid appsecret
         PlatformConfig.setSinaWeibo("3921700954", "04b48b094faeb16683c32669824ebdad");
         //新浪微博 appkey appsecret
