@@ -218,7 +218,7 @@ public class BaseWebActivity extends BaseRequstActivity {
             case "share":
                 Log.e("wangxu", parameters);
                 try {
-                    ShareUtil.getIntense(this).showShareDialog(new Gson().fromJson(parameters, ShareBean.class));
+                    ShareUtil.getIntense(this).showShareDialog(new Gson().fromJson(URLDecoder.decode(parameters, "UTF-8"), ShareBean.class));
 
                 } catch (Exception e) {
                     e.printStackTrace();
