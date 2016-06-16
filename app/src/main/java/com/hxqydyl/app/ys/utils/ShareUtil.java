@@ -48,7 +48,6 @@ public class ShareUtil {
     };
 
     public synchronized static ShareUtil getIntense(Activity context) {
-        if (util == null) {
             util = new ShareUtil(context);
             umShareListener = new UMShareListener() {
                 @Override
@@ -67,7 +66,6 @@ public class ShareUtil {
                     Toast.makeText(AppContext.getInstance(),  " 您分享了取消", Toast.LENGTH_SHORT).show();
                 }
             };
-        }
         return util;
     }
 

@@ -31,6 +31,7 @@ public class BaseTitleActivity extends SwipeBackActivity implements NetRequestLi
     private ImageView backImg;
     public TextView topTv;
     public TextView leftTv;
+    public ImageView rightImg;
 
     private SweetAlertDialog pDialog;
 
@@ -43,6 +44,8 @@ public class BaseTitleActivity extends SwipeBackActivity implements NetRequestLi
         try {
             backImg = (ImageView) findViewById(R.id.back_img);
             topTv = (TextView) findViewById(R.id.title_name);
+            rightImg = (ImageView) findViewById(R.id.right_img);
+
             if (!TextUtils.isEmpty(title)) {
                 topTv.setText(title);
             } else {
@@ -58,6 +61,8 @@ public class BaseTitleActivity extends SwipeBackActivity implements NetRequestLi
             backImg = (ImageView) findViewById(R.id.back_img);
             topTv = (TextView) findViewById(R.id.title_name);
             leftTv = (TextView) findViewById(R.id.left_txt_btn);
+            rightImg = (ImageView) findViewById(R.id.right_img);
+
             if (!TextUtils.isEmpty(title)) {
                 topTv.setText(title);
             } else {
@@ -99,6 +104,8 @@ public class BaseTitleActivity extends SwipeBackActivity implements NetRequestLi
     }
 
     public void setWebBackListener(final WebView webView) {
+        rightImg.setVisibility(View.GONE);
+
         backImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -52,6 +53,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import framework.listener.RegisterSucListener;
 
@@ -136,7 +138,10 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
         if (!TextUtils.isEmpty(doctorInfoCache)) {
             doctorInfoNew = gson.fromJson(doctorInfoCache, DoctorInfoNew.class);
             //     updateLinear(true);
+            updateDoctorInfo(doctorInfoNew);
         } else {
+            updateDoctorInfo(null);
+
             //          updateLinear(false);
         }
     }
@@ -157,6 +162,7 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
 //        loginBtn.setOnClickListener(this);
 //        registerBtn.setOnClickListener(this);
 //        headImg.setOnClickListener(this);
+        rightImg.setOnClickListener(this);
         backImg.setOnClickListener(this);
         pullToRefreshListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ScrollView>() {
             @Override
@@ -177,7 +183,9 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
     private void initViews() {
         initViewOnBaseTitle("好心情", view);
         backImg.setVisibility(View.VISIBLE);
-        backImg.setImageResource(R.mipmap.erweima);
+        backImg.setImageResource(R.mipmap.portrait_man);
+        rightImg.setImageResource(R.mipmap.erweima);
+        rightImg.setVisibility(View.VISIBLE);
         pullToRefreshListView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
         lineGridViewAdapter = new LineGridViewAdapter(this.getContext());
         lineGridView.setAdapter(lineGridViewAdapter);
@@ -250,12 +258,19 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
         }
     }
 
-//    /**
-//     * 更新数据显示
-//     *
-//     * @param doctorInfo
-//     */
-//    private void updateDoctorInfo(DoctorInfoNew doctorInfo) {
+    /**
+     * 更新数据显示
+     *
+     * @param doctorInfo
+     */
+    private void updateDoctorInfo(DoctorInfoNew doctorInfo) {
+        backImg.setScaleType(ImageView.ScaleType.FIT_XY);
+        if (doctorInfo!=null&&doctorInfo.getImage() != null) {
+            ImageLoader.getInstance().displayImage(doctorInfo.getImage().getSmall(), backImg, Utils.initImageLoader(R.mipmap.portrait_man, true,50));
+        } else {
+            ImageLoader.getInstance().displayImage("", backImg, Utils.initImageLoader(R.mipmap.portrait_man, true,50));
+
+        }
 //        updateLinear(true);
 //        System.out.println("doctorInfo--->" + doctorInfo);
 //        if (doctorInfo.getImage() != null) {
@@ -268,13 +283,13 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
 //        suffererNum.setText(doctorInfo.getCustomerNum() + "");
 //        followNum.setText(doctorInfo.getVisitNum() + "");
 //        income.setText(doctorInfo.getIncome());
-//    }
-
-    /**
-     * 更新登陆条
-     * <p>
-     * //     * @param isLogin
-     */
+    }
+//
+//    /**
+//     * 更新登陆条
+//     * <p>
+//     * //     * @param isLogin
+//     */
 //    private void updateLinear(Boolean isLogin) {
 //        if (isLogin) {
 //            noLoginLinear.setVisibility(View.GONE);
@@ -306,6 +321,10 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
                 UIHelper.showRegister(getActivity());
                 break;
             case R.id.head_img:
+                if (!LoginManager.isHasLogin()) {
+                    UIHelper.showLoginForResult(getActivity(), false);
+                    return;
+                }
                 QualidicationActivity.toQualidicationActivity(getActivity(), SharedPreferences.getInstance().getString(SharedPreferences.USER_INFO_COMPLETE, "0"));
                 break;
             case R.id.back_img:
@@ -313,7 +332,15 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
                     UIHelper.showLoginForResult(getActivity(), false);
                     return;
                 }
+                QualidicationActivity.toQualidicationActivity(getActivity(), SharedPreferences.getInstance().getString(SharedPreferences.USER_INFO_COMPLETE, "0"));
+                break;
+            case R.id.right_img:
+                if (!LoginManager.isHasLogin()) {
+                    UIHelper.showLoginForResult(getActivity(), false);
+                    return;
+                }
                 CommentWebActivity.toCommentWeb(UrlConstants.getWholeApiUrl(UrlConstants.CURPAGE), null, getActivity(), true);
+
                 break;
         }
     }
@@ -413,7 +440,7 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
                 DoctorInfoNew sb = dinr.value;
                 stopRefreshing();
                 if (sb != null) {
-//                    updateDoctorInfo(sb);
+                    updateDoctorInfo(sb);
 //                    updateLinear(true);
 
                     SharedPreferences.getInstance().putString(SharedPreferences.HOME_DOCTOR_INFO_CACHE_NEW, gson.toJson(sb));
@@ -428,5 +455,11 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
 
                 break;
         }
+    }
+
+    @Override
+    public void onfail(int i, int i1, Map map) {
+        super.onfail(i, i1, map);
+        stopRefreshing();
     }
 }

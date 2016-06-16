@@ -14,6 +14,7 @@ import com.hxqydyl.app.ys.common.AppContext;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -203,6 +204,24 @@ public class Utils {
         } else {
             options = new DisplayImageOptions.Builder().bitmapConfig(Bitmap.Config.RGB_565).showImageOnLoading(defaultImageId).showImageOnFail(defaultImageId).showImageForEmptyUri(defaultImageId)
                     .imageScaleType(ImageScaleType.EXACTLY).cacheInMemory(true).cacheOnDisk(true).considerExifParams(true).build();
+        }
+        return options;
+    }
+    /**
+     * 加载园图
+     * @param defaultImageId
+     * @param isFadeIn
+     * @return
+     */
+    public static DisplayImageOptions initImageLoader(int defaultImageId, boolean isFadeIn,int conner){
+        DisplayImageOptions options;
+        if (isFadeIn) {
+            options = new DisplayImageOptions.Builder().bitmapConfig(Bitmap.Config.RGB_565).showImageOnLoading(defaultImageId).showImageOnFail(defaultImageId).showImageForEmptyUri(defaultImageId)
+                    .imageScaleType(ImageScaleType.EXACTLY).cacheInMemory(true).cacheOnDisk(true).displayer(new RoundedBitmapDisplayer(conner)).considerExifParams(true)
+                    .displayer(new RoundedBitmapDisplayer(conner)).build();
+        } else {
+            options = new DisplayImageOptions.Builder().bitmapConfig(Bitmap.Config.RGB_565).showImageOnLoading(defaultImageId).showImageOnFail(defaultImageId).showImageForEmptyUri(defaultImageId)
+                    .imageScaleType(ImageScaleType.EXACTLY).cacheInMemory(true).cacheOnDisk(true).considerExifParams(true).displayer(new RoundedBitmapDisplayer(conner)).build();
         }
         return options;
     }

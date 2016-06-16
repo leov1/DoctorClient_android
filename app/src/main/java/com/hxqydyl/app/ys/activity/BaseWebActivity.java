@@ -5,30 +5,38 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.reading.VitamioPlayerActivity;
 import com.hxqydyl.app.ys.bean.ShareBean;
+import com.hxqydyl.app.ys.bean.js.SetRightBean;
 import com.hxqydyl.app.ys.bean.response.ImageResponse;
+import com.hxqydyl.app.ys.common.AppContext;
 import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.ui.library.RefreshProgressWebView;
 import com.hxqydyl.app.ys.ui.web.ProgressWebClient;
 import com.hxqydyl.app.ys.utils.LoginManager;
 import com.hxqydyl.app.ys.utils.ShareUtil;
+import com.hxqydyl.app.ys.utils.Utils;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xus.http.httplib.model.PostPrams;
 
 import java.io.File;
@@ -54,7 +62,6 @@ public class BaseWebActivity extends BaseRequstActivity {
     private String beanPath;
     private String webIsAvatar;
     private boolean isLoadImg = false;
-
     public void setIsNeedLogin(boolean isNeedLogin, OnLoginSuccess onLoginSuccess) {
         this.isNeedLogin = isNeedLogin;
         this.onLoginSuccess = onLoginSuccess;
@@ -73,8 +80,9 @@ public class BaseWebActivity extends BaseRequstActivity {
         if (getIntent().hasExtra("beanPath")) {
             beanPath = getIntent().getStringExtra("beanPath");
         }
-        initViewOnBaseTitle("加载中...","");
+        initViewOnBaseTitle("加载中...", "");
         setLeftListener();
+
         webView = (RefreshProgressWebView) findViewById(R.id.webview);
         initWebSetting();
     }
@@ -95,6 +103,7 @@ public class BaseWebActivity extends BaseRequstActivity {
         webSettings.setJavaScriptEnabled(true);
         mChromeClient = new WebClient(this);
         webView.getRefreshableView().setWebViewClient(webViewClient);
+        webView.getRefreshableView().addJavascriptInterface(new JsToJava(), "local_obj");
 //        webView.addJavascriptInterface(this, CLIENT_INTERFACE_NAME);
     }
 
@@ -117,6 +126,7 @@ public class BaseWebActivity extends BaseRequstActivity {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
+            iniRightMenu(null);
             isLoadImg = false;
             if (isNeedLogin && TextUtils.isEmpty(LoginManager.getDoctorUuid())) {
                 UIHelper.showLogin(BaseWebActivity.this);
@@ -127,10 +137,12 @@ public class BaseWebActivity extends BaseRequstActivity {
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             webView.getRefreshableView().loadUrl("javascript:gm.user.setDoctor('" + LoginManager.getDoctorUuid() + "')");
+            webView.getRefreshableView().loadUrl("javascript:window.local_obj.setRightTitle(document.getElementById('______goodmoodrightmenu').innerHTML)");
+
             if (!webView.getRefreshableView().canGoBack()) {
                 leftTv.setVisibility(View.GONE);
             }
-
+            super.onPageFinished(view,url);
         }
 
         @Override
@@ -208,12 +220,12 @@ public class BaseWebActivity extends BaseRequstActivity {
 //            case "setLeftMenu":
 //                IniLeftMenu(parameters);
 //                break;
-//            case "setRightMenu":
-//                IniRightMenu(parameters);
-//                break;
+            case "setRightMenu":
+                iniRightMenu(parameters);
+                break;
 
             case "login":
-                UIHelper.showLoginForResult(this,false);
+                UIHelper.showLoginForResult(this, false);
                 break;
             case "share":
                 Log.e("wangxu", parameters);
@@ -222,7 +234,7 @@ public class BaseWebActivity extends BaseRequstActivity {
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                }
+        }
 //                showsharePop();
                 break;
 //            case "openContacts":
@@ -316,11 +328,12 @@ public class BaseWebActivity extends BaseRequstActivity {
 
     @Override
     public void onBackPressed() {
+        rightImg.setVisibility(View.GONE);
         if (webView.getRefreshableView().canGoBack()) {
             webView.getRefreshableView().goBack();
-            if (webView.getRefreshableView().canGoBack()){
+            if (webView.getRefreshableView().canGoBack()) {
                 leftTv.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 leftTv.setVisibility(View.GONE);
             }
         } else {
@@ -354,6 +367,33 @@ public class BaseWebActivity extends BaseRequstActivity {
 
     }
 
+    private void iniRightMenu(final String parameters) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (TextUtils.isEmpty(parameters)){
+                        rightImg.setVisibility(View.GONE);
+                    }else{
+                        Log.e("wangxu", "parameters=" + URLDecoder.decode(parameters, "UTF-8"));
+                        final SetRightBean srb = new Gson().fromJson(URLDecoder.decode(parameters, "UTF-8"), SetRightBean.class);
+                        rightImg.setVisibility(View.VISIBLE);
+                        ImageLoader.getInstance().displayImage(srb.getMenuimg(), rightImg, Utils.initImageLoader(R.mipmap.bg_line_timepicker, true));
+                        rightImg.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                webView.getRefreshableView().loadUrl("javascript:"+srb.getMenuevent()+"()");
+                            }
+                        });
+                    }
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+    }
+
     @Override
     public void onSuccessToBean(Object bean, int flag) {
         ImageResponse ir = (ImageResponse) bean;
@@ -379,6 +419,13 @@ public class BaseWebActivity extends BaseRequstActivity {
 
 
     public class WebClient extends ProgressWebClient {
+        @Override
+        public void onReceivedTitle(WebView view, String title) {
+            super.onReceivedTitle(view, title);
+            initViewOnBaseTitle("title", "");
+
+        }
+
         public WebClient(Context context) {
             super(context, webView);
         }
@@ -391,5 +438,12 @@ public class BaseWebActivity extends BaseRequstActivity {
             }
         }
 
+    }
+
+    private class JsToJava {
+        @JavascriptInterface
+        public void setRightTitle(String paramFromJS) {
+            iniRightMenu(paramFromJS);
+        }
     }
 }
