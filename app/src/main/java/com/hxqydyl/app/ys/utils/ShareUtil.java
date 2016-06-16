@@ -48,24 +48,24 @@ public class ShareUtil {
     };
 
     public synchronized static ShareUtil getIntense(Activity context) {
-            util = new ShareUtil(context);
-            umShareListener = new UMShareListener() {
-                @Override
-                public void onResult(SHARE_MEDIA platform) {
-                    Toast.makeText(AppContext.getInstance()," 分享成功！", Toast.LENGTH_SHORT).show();
-                }
+        util = new ShareUtil(context);
+        umShareListener = new UMShareListener() {
+            @Override
+            public void onResult(SHARE_MEDIA platform) {
+                Toast.makeText(AppContext.getInstance(), " 分享成功！", Toast.LENGTH_SHORT).show();
+            }
 
-                @Override
-                public void onError(SHARE_MEDIA platform, Throwable t) {
+            @Override
+            public void onError(SHARE_MEDIA platform, Throwable t) {
 
-                    Toast.makeText(AppContext.getInstance(), " 分享失败！", Toast.LENGTH_SHORT).show();
-                }
+                Toast.makeText(AppContext.getInstance(), " 分享失败！", Toast.LENGTH_SHORT).show();
+            }
 
-                @Override
-                public void onCancel(SHARE_MEDIA platform) {
-                    Toast.makeText(AppContext.getInstance(),  " 您分享了取消", Toast.LENGTH_SHORT).show();
-                }
-            };
+            @Override
+            public void onCancel(SHARE_MEDIA platform) {
+                Toast.makeText(AppContext.getInstance(), " 您分享了取消", Toast.LENGTH_SHORT).show();
+            }
+        };
         return util;
     }
 
@@ -115,19 +115,14 @@ public class ShareUtil {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 dialog.dismiss();
-
-                try {
-                    new ShareAction(context)
-                            .setPlatform(displaylist[position])
-                            .setCallback(umShareListener)
-                            .withText(URLDecoder.decode(bean.getDesc(), "UTF-8"))
-                            .withTitle(URLDecoder.decode(bean.getTitle(), "UTF-8"))
-                            .withTargetUrl(bean.getLink()).withMedia(TextUtils.isEmpty(bean.getImg()) ? new UMImage(context, R.mipmap.ic_logo) : new UMImage(context, bean.getImg()))
-                            .setListenerList(umShareListener)
-                            .share();
-                } catch (UnsupportedEncodingException e) {
-                    Toast.makeText(AppContext.getInstance(), " 分享失败啦", Toast.LENGTH_SHORT).show();
-                }
+                new ShareAction(context)
+                        .setPlatform(displaylist[position])
+                        .setCallback(umShareListener)
+                        .withText(TextUtils.isEmpty(bean.getDesc()) ? "" : bean.getDesc())
+                        .withTitle(TextUtils.isEmpty(bean.getTitle()) ? "" : bean.getTitle())
+                        .withTargetUrl(TextUtils.isEmpty(bean.getLink()) ? "" : bean.getLink()).withMedia(TextUtils.isEmpty(bean.getImg()) ? new UMImage(context, R.mipmap.ic_logo) : new UMImage(context, bean.getImg()))
+                        .setListenerList(umShareListener)
+                        .share();
             }
         });
 
