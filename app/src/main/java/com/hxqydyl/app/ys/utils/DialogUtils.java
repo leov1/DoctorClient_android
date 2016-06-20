@@ -335,7 +335,7 @@ public class DialogUtils {
     }
 
     public static void showNormalDialog(Context context) {
-        showNoChacelNormalDialog(context, "恭喜您成功注册好心情医生版!", "您可以进入个人中心进行认证。");
+        showNoChacelNormalDialog(context, "恭喜您成功注册好心情医生版!", "您可以点击头像或进入个人中心进行认证。");
     }
 
     public static void showNormalDialog(Context context, String title, String content) {

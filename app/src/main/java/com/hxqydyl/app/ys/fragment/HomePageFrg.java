@@ -266,7 +266,7 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
     private void updateDoctorInfo(DoctorInfoNew doctorInfo) {
         backImg.setScaleType(ImageView.ScaleType.FIT_XY);
         if (doctorInfo!=null&&doctorInfo.getImage() != null) {
-            ImageLoader.getInstance().displayImage(doctorInfo.getImage().getSmall(), backImg, Utils.initImageLoader(R.mipmap.portrait_man, true,50));
+            ImageLoader.getInstance().displayImage(TextUtils.isEmpty(doctorInfo.getImage().getSmall())?doctorInfo.getImage().getLarge():doctorInfo.getImage().getSmall(), backImg, Utils.initImageLoader(R.mipmap.portrait_man, true,50));
         } else {
             ImageLoader.getInstance().displayImage("", backImg, Utils.initImageLoader(R.mipmap.portrait_man, true,50));
 

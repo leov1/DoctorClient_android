@@ -246,7 +246,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="5dp"
                 android:gravity="center"
-                android:text="职业医师证或胸牌:"
+                android:text="执业医师证或胸牌:"
                 android:textColor="@color/color_646464"
                 android:textSize="20dp" />
 
