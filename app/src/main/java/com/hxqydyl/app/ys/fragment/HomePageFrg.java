@@ -24,6 +24,7 @@ import com.google.gson.reflect.TypeToken;
 import com.hxqydyl.app.ys.R;
 import com.hxqydyl.app.ys.activity.BaseFragmentActivity;
 import com.hxqydyl.app.ys.activity.CommentWebActivity;
+import com.hxqydyl.app.ys.activity.MainActivity;
 import com.hxqydyl.app.ys.activity.TranslateActivity;
 import com.hxqydyl.app.ys.activity.follow.FollowMainActivity;
 import com.hxqydyl.app.ys.activity.reading.ReadingActivity;
@@ -172,6 +173,7 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
                     @Override
                     public void run() {
                         System.out.println("--onRefresh-->");
+                        ((MainActivity)getActivity()).getIconRdePoi();
                         loadDoctorInfo();
                     }
                 }, 200);
@@ -239,6 +241,7 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
         if (pullToRefreshListView != null) {
             pullToRefreshListView.onRefreshComplete();
         }
+
     }
 
     /**

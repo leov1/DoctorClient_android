@@ -4,19 +4,25 @@ package com.hxqydyl.app.ys.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IntegerRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.hxqydyl.app.ys.R;
+import com.hxqydyl.app.ys.bean.response.BaseResponse;
 import com.hxqydyl.app.ys.fragment.HomePageFrg;
 import com.hxqydyl.app.ys.fragment.MyPatientFrg;
 import com.hxqydyl.app.ys.fragment.MyTaskFrg;
 import com.hxqydyl.app.ys.fragment.PersonalFrg;
+import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.InjectId;
 import com.hxqydyl.app.ys.utils.InjectUtils;
@@ -30,7 +36,7 @@ import java.util.TimerTask;
 
 import common.AppManager;
 
-public class MainActivity extends BaseFragmentActivity {
+public class MainActivity extends BaseRequstActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String FRAGMENT_TAGS = "fragmentTags";
@@ -60,6 +66,7 @@ public class MainActivity extends BaseFragmentActivity {
             initFromSavedInstantsState(savedInstanceState);
         }
         Update.getIncetence(this).cheackIsUp();
+        getIconRdePoi();
     }
 
     @Override
@@ -117,16 +124,16 @@ public class MainActivity extends BaseFragmentActivity {
     public void chageIndex(int index) {
 
         if ((!LoginManager.isHasLogin()) && (index == 1 || index == 2)) {
-            UIHelper.showLoginForResult(this,false);
+            UIHelper.showLoginForResult(this, false);
             checkGroup(currIndex);
             return;
         }
-     //   if (index == 1 && (!TextUtils.isEmpty(isCompleteInfo()))) {
-        if(index == 1){
-            UIHelper.ToastMessage(this, "该功能即将开通，敬请期待。");
-            checkGroup(currIndex);
-            return;
-        }
+        //   if (index == 1 && (!TextUtils.isEmpty(isCompleteInfo()))) {
+//        if(index == 1){
+//            UIHelper.ToastMessage(this, "该功能即将开通，敬请期待。");
+//            checkGroup(currIndex);
+//            return;
+//        }
 
         currIndex = index;
         showFragment();
@@ -242,5 +249,27 @@ public class MainActivity extends BaseFragmentActivity {
     protected void onDestroy() {
         removeRegisterListener(this);
         super.onDestroy();
+    }
+
+    public void getIconRdePoi() {
+        if (LoginManager.isHasLogin()){
+            toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), BaseResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_UNREADCONS_ULTRECORD, "2.0"), "正在获取未读信息");
+        }else {
+            showOrHidePoi(false);
+        }
+    }
+
+    public void showOrHidePoi(boolean b) {
+        TextView poi = (TextView) findViewById(R.id.textUnreadLabel2);
+        poi.setVisibility(b ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void onSuccessToBean(Object bean, int flag) {
+        super.onSuccessToBean(bean, flag);
+        BaseResponse<Double> baseResponse = (BaseResponse<Double>) bean;
+        if (bean != null) {
+            showOrHidePoi(baseResponse.value > 0);
+        }
     }
 }

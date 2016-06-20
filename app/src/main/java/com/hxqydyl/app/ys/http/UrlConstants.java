@@ -216,4 +216,9 @@ public static String ADD_VISIT_PRECEPT = "/app/pub/doctor/%s/addVisitPrecept";
     //注册协议
     public static String ADD_REGINFO = "/html/reg/addreginfo_amet.shtml";
 
+    public static String GET_UNREADCONS_ULTRECORD = "/app/service/customer/%s/getUnreadConsultRecord";
+
+
+
+
 }
