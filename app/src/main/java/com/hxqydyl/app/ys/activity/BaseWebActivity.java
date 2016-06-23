@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
@@ -18,8 +17,6 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.hxqydyl.app.ys.R;
@@ -27,7 +24,6 @@ import com.hxqydyl.app.ys.activity.reading.VitamioPlayerActivity;
 import com.hxqydyl.app.ys.bean.ShareBean;
 import com.hxqydyl.app.ys.bean.js.SetRightBean;
 import com.hxqydyl.app.ys.bean.response.ImageResponse;
-import com.hxqydyl.app.ys.common.AppContext;
 import com.hxqydyl.app.ys.http.UrlConstants;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.ui.library.RefreshProgressWebView;
@@ -35,7 +31,6 @@ import com.hxqydyl.app.ys.ui.web.ProgressWebClient;
 import com.hxqydyl.app.ys.utils.LoginManager;
 import com.hxqydyl.app.ys.utils.ShareUtil;
 import com.hxqydyl.app.ys.utils.Utils;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.xus.http.httplib.model.PostPrams;
 
@@ -62,6 +57,7 @@ public class BaseWebActivity extends BaseRequstActivity {
     private String beanPath;
     private String webIsAvatar;
     private boolean isLoadImg = false;
+
     public void setIsNeedLogin(boolean isNeedLogin, OnLoginSuccess onLoginSuccess) {
         this.isNeedLogin = isNeedLogin;
         this.onLoginSuccess = onLoginSuccess;
@@ -142,7 +138,7 @@ public class BaseWebActivity extends BaseRequstActivity {
             if (!webView.getRefreshableView().canGoBack()) {
                 leftTv.setVisibility(View.GONE);
             }
-            super.onPageFinished(view,url);
+            super.onPageFinished(view, url);
         }
 
         @Override
@@ -214,12 +210,7 @@ public class BaseWebActivity extends BaseRequstActivity {
                 String duration = ps[1];
                 VitamioPlayerActivity.startActivity(this, sourceUrl, duration);
                 break;
-//            case "getFriendList":
-//                new ContactHelper().init(this, this);
-//                break;
-//            case "setLeftMenu":
-//                IniLeftMenu(parameters);
-//                break;
+
             case "setRightMenu":
                 iniRightMenu(parameters);
                 break;
@@ -234,7 +225,7 @@ public class BaseWebActivity extends BaseRequstActivity {
 
                 } catch (Exception e) {
                     e.printStackTrace();
-        }
+                }
 //                showsharePop();
                 break;
 //            case "openContacts":
@@ -372,9 +363,9 @@ public class BaseWebActivity extends BaseRequstActivity {
             @Override
             public void run() {
                 try {
-                    if (TextUtils.isEmpty(parameters)){
+                    if (TextUtils.isEmpty(parameters)) {
                         rightImg.setVisibility(View.GONE);
-                    }else{
+                    } else {
                         Log.e("wangxu", "parameters=" + URLDecoder.decode(parameters, "UTF-8"));
                         final SetRightBean srb = new Gson().fromJson(URLDecoder.decode(parameters, "UTF-8"), SetRightBean.class);
                         rightImg.setVisibility(View.VISIBLE);
@@ -382,7 +373,7 @@ public class BaseWebActivity extends BaseRequstActivity {
                         rightImg.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                webView.getRefreshableView().loadUrl("javascript:"+srb.getMenuevent()+"()");
+                                webView.getRefreshableView().loadUrl("javascript:" + srb.getMenuevent() + "()");
                             }
                         });
                     }

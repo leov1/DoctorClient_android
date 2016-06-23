@@ -45,6 +45,8 @@ public class MainActivity extends BaseRequstActivity {
 
     @InjectId(id = R.id.group)
     private RadioGroup group;
+    @InjectId(id = R.id.textUnreadLabel2)
+    private TextView poi;
 
     private ArrayList<String> fragmentTags;
     private FragmentManager fragmentManager;
@@ -260,8 +262,16 @@ public class MainActivity extends BaseRequstActivity {
     }
 
     public void showOrHidePoi(boolean b) {
-        TextView poi = (TextView) findViewById(R.id.textUnreadLabel2);
         poi.setVisibility(b ? View.VISIBLE : View.GONE);
+    }
+
+    /**
+     * 刷新我的患者页面
+     */
+    private void refreshMyPatient(){
+        Fragment fragment = fragmentManager.findFragmentByTag(fragmentTags.get(1));
+        if (fragment == null) return;
+        ((MyPatientFrg)fragment).reload();
     }
 
     @Override
@@ -270,6 +280,7 @@ public class MainActivity extends BaseRequstActivity {
         BaseResponse<Double> baseResponse = (BaseResponse<Double>) bean;
         if (bean != null) {
             showOrHidePoi(baseResponse.value > 0);
+            refreshMyPatient();
         }
     }
 }

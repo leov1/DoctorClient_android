@@ -22,6 +22,7 @@ import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.InjectId;
 import com.hxqydyl.app.ys.utils.InjectUtils;
 import com.hxqydyl.app.ys.utils.LoginManager;
+import com.hxqydyl.app.ys.utils.TimeCount;
 import com.xus.http.httplib.model.GetParams;
 import com.xus.http.httplib.model.PostPrams;
 
@@ -66,27 +67,8 @@ public class RegisterActivity extends BaseRequstActivity implements View.OnClick
     private String visitCode = "";//邀请码
 
     private Intent intent;
+    private TimeCount time;
 
-    private int timeCount = 60;
-    public static final int GET_VERIFICATION = 0x23;
-    private Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case GET_VERIFICATION:
-                    codeBtn.setText(timeCount + "秒");
-                    if (timeCount > 0) {
-                        timeCount--;
-                        handler.sendEmptyMessageDelayed(GET_VERIFICATION, 1000);
-                    } else {
-                        codeBtn.setEnabled(true);
-                        codeBtn.setText("获取验证码");
-                    }
-                    break;
-            }
-        }
-
-        ;
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +77,7 @@ public class RegisterActivity extends BaseRequstActivity implements View.OnClick
         ButterKnife.bind(this);
         initViews();
         initListeners();
+        time = new TimeCount(60000,1000,codeBtn);
     }
 
     private void initListeners() {
@@ -155,9 +138,7 @@ public class RegisterActivity extends BaseRequstActivity implements View.OnClick
             UIHelper.ToastMessage(RegisterActivity.this, validateMobile());
             return;
         }
-        codeBtn.setEnabled(false);
-        timeCount = 60;
-        handler.sendEmptyMessage(GET_VERIFICATION);
+        time.start();
         GetParams params = toGetParams(toParamsBaen("mobile", mobile));
         toNomalNetStringBack(params, 2, UrlConstants.getWholeApiUrl(UrlConstants.GET_VERIFICATION_CODE), "");
     }

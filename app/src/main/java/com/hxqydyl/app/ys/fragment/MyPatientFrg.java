@@ -34,4 +34,11 @@ public class MyPatientFrg extends BaseWebFragment implements BaseWebFragment.DoJ
             CommentWebActivity.toCommentWeb(url,null,getActivity(),true);
         }
     }
+
+    /**
+     * 刷新页面
+     */
+    public void reload(){
+        webView.getRefreshableView().reload();
+    }
 }

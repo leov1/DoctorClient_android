@@ -16,6 +16,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.hxqydyl.app.ys.R;
+import com.hxqydyl.app.ys.activity.MainActivity;
 import com.hxqydyl.app.ys.ui.library.RefreshProgressWebView;
 import com.hxqydyl.app.ys.ui.web.ProgressWebClient;
 import com.hxqydyl.app.ys.ui.web.ProgressWebView;
@@ -143,6 +144,12 @@ public class BaseWebFragment extends BaseFragment {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
+                break;
+            case "showBadgeOnItemIndex"://显示小红点
+                ((MainActivity)getActivity()).showOrHidePoi(true);
+                break;
+            case "hideBadgeOnItemIndex":
+                ((MainActivity)getActivity()).showOrHidePoi(false);
                 break;
 //            case "takephoto":
 //                ll_popup.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.activity_translate_in));

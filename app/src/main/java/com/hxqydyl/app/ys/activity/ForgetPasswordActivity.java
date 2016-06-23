@@ -21,6 +21,7 @@ import com.hxqydyl.app.ys.http.login.UpdatePasswordNet;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.LoginManager;
 import com.hxqydyl.app.ys.utils.SharedPreferences;
+import com.hxqydyl.app.ys.utils.TimeCount;
 import com.hxqydyl.app.ys.utils.Validator;
 import com.xus.http.httplib.model.GetParams;
 import com.xus.http.httplib.model.PostPrams;
@@ -47,30 +48,7 @@ public class ForgetPasswordActivity extends BaseRequstActivity implements View.O
     private String captcha = "";//验证码
     private String mobile = "";//手机号
     private String password = "";//密码
-
-    private int timeCount = 60;
-    public static final int GET_VERIFICATION = 0x23;
-    private Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case GET_VERIFICATION:
-                    btn_code.setText(timeCount + "秒");
-                    if (timeCount > 0) {
-                        timeCount--;
-                        handler.sendEmptyMessageDelayed(GET_VERIFICATION, 1000);
-                    } else {
-                        btn_code.setEnabled(true);
-                        btn_code.setText("获取验证码");
-                    }
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        ;
-    };
+    private TimeCount time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +57,7 @@ public class ForgetPasswordActivity extends BaseRequstActivity implements View.O
 
         initViews();
         initListeners();
+        time = new TimeCount(60000,1000,btn_code);
     }
 
     private void initListeners() {
@@ -130,8 +109,6 @@ public class ForgetPasswordActivity extends BaseRequstActivity implements View.O
     /**
      * 修改网络请求
      */
-
-
     private void updatePassword() {
         PostPrams params = toPostParams(toParamsBaen("mobile", mobile), toParamsBaen("password", password), toParamsBaen("captcha", captcha));
         toNomalNet(params, RegiserResult.class,1,UrlConstants.getWholeApiUrl(UrlConstants.UPDATE_PASSWORD,"2.0"),"请稍等...");
@@ -147,9 +124,7 @@ public class ForgetPasswordActivity extends BaseRequstActivity implements View.O
             return;
         }
 
-        btn_code.setEnabled(false);
-        timeCount = 60;
-        handler.sendEmptyMessage(GET_VERIFICATION);
+        time.start();
 
         GetParams params = toGetParams(toParamsBaen("mobile", mobile));
         toNomalNetStringBack(params, 2, UrlConstants.getWholeApiUrl(UrlConstants.GET_VERIFICATION_CODE), "");
