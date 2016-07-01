@@ -255,7 +255,7 @@ public class MainActivity extends BaseRequstActivity {
 
     public void getIconRdePoi() {
         if (LoginManager.isHasLogin()){
-            toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), BaseResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_UNREADCONS_ULTRECORD, "2.0"), "正在获取未读信息");
+            toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), BaseResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_UNREADCONS_ULTRECORD, "2.0"), null);
         }else {
             showOrHidePoi(false);
         }

@@ -8,12 +8,12 @@ android {
         applicationId "com.hxqydyl.app.ys"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 20160614
-        versionName "2.4.2"
+        versionCode 20160622
+        versionName "2.4.3"
     }
     signingConfigs {
         myConfig {
-            storeFile file('D:/androidwork/DoctorClient_android/hxqydyl.keystore')
+            storeFile file('D:/git/DoctorClient_android/hxqydyl.keystore')
             storePassword '123456'
             keyAlias 'haoxinqing'
             keyPassword '123456'
@@ -39,9 +39,9 @@ android {
 
             manifestPlaceholders = [HOST: "http://172.168.1.46:8080", IS_TEST: false, UMENG_APPKEY: "565eb06267e58e0943002225", UMENG_CHANNEL: "cs", JPUSH_APPKEY: "6bda069a6d817d1f567a86ed"]
         }//测试环境
-//        zs {
-//            manifestPlaceholders = [HOST: "http://admin.hxqydyl.com", IS_TEST: false, UMENG_APPKEY: "565eb06267e58e0943002225", UMENG_CHANNEL: "hxq", JPUSH_APPKEY: "6bda069a6d817d1f567a86ed"]
-//        }
+        zs {
+            manifestPlaceholders = [HOST: "http://admin.hxqydyl.com", IS_TEST: false, UMENG_APPKEY: "565eb06267e58e0943002225", UMENG_CHANNEL: "hxq", JPUSH_APPKEY: "6bda069a6d817d1f567a86ed"]
+        }
     }
     //修改生成的apk名字
     applicationVariants.all { variant ->
@@ -79,7 +79,6 @@ dependencies {
     compile 'com.nineoldandroids:library:2.4.0'
     //    compile 'com.google.android.gms:play-services-ads:8.4.0'
     compile 'com.umeng.analytics:analytics:latest.integration'
-    compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.google.code.gson:gson:2.6.2'

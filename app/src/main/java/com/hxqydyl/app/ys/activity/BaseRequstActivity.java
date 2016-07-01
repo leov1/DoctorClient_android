@@ -54,6 +54,7 @@ public class BaseRequstActivity<T> extends BaseTitleActivity implements HttpUtil
 
     @Override
     public <T> void onSuccess(int i, String s, Class<T> aClass, Map<String, String> map) {
+        Log.e("wangxu", "url=" + map.get("url"));
         Log.e("wangxu", "cookie" + map.get("Cookie"));
         Log.e("wangxu", "params" + map.get("params"));
         Log.e("wangxu", "json=" + s);
@@ -275,7 +276,7 @@ public class BaseRequstActivity<T> extends BaseTitleActivity implements HttpUtil
                 .isneedcrop(false)
                 .actionBarcolor(Color.parseColor("#1F80B8"))
                 .statusBarcolor(Color.parseColor("#FFFFFF"))
-                .isneedcamera(true)
+                .isneedcamera(false)
                 .isSqureCrop(false)
                 .setUropOptions(options)
                 .maxPickSize(pickNum)
