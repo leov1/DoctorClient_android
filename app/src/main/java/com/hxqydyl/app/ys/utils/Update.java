@@ -11,8 +11,11 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 import com.hxqydyl.app.ys.bean.AppVersion;
 import com.hxqydyl.app.ys.http.UrlConstants;
@@ -21,6 +24,7 @@ import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.io.File;
 
+import common.AppManager;
 import okhttp3.Call;
 
 /**
@@ -45,8 +49,17 @@ public class Update {
 
     //获取服务器请求 是否更新
     public void cheackIsUp() {
+        String versionStr = "2.4.4";
+        try {
+            versionStr = String.valueOf(getVersionName(context));
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        OkHttpUtils.get().addHeader("Accept", "application/json").url(UrlConstants.getWholeApiUrl(UrlConstants.UPDATE)).build().execute(new StringCallback() {
+        OkHttpUtils.get().addHeader("Accept", "application/json")
+                .addParams("type","0")//0医生端Android软件，1患者端Android软件，4医生端IOS软件，5患者端IOS
+                .addParams("version",versionStr)
+                .url(UrlConstants.getWholeApiUrl(UrlConstants.UPDATE)).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e) {
 
@@ -54,15 +67,41 @@ public class Update {
 
             @Override
             public void onResponse(String response) {
+
+//                JSONObject jsonObj = JSON.parseObject(response);
+//                String currentIsNewVersion = (String) jsonObj.get("newest");
+//                String currentIsNewVersion = (String) jsonObj.get("version");
+//                if (!TextUtils.isEmpty(currentIsNewVersion) && currentIsNewVersion.trim().equals("false")) {
+//                    showUpdataDialog(context, version.getUrl(), "检测到有新的版本，是否更新",isForceOrder);
+//                }
+                Log.e("1------->",response+"####");
                 Gson gson = new Gson();
                 AppVersion version = gson.fromJson(response, AppVersion.class);
                 try {
-                    if (version == null || TextUtils.isEmpty(version.getVersion()))
+                    if (version == null || TextUtils.isEmpty(version.getNewest())) {
+                        Log.e("2------->",response+"####");
                         return;
-                    float f = Float.parseFloat(version.getVersion());
-                    if (f >getVersionName(context)) {
-                        showUpdataDialog(context, version.getUrl(), "检测到有新的版本，是否更新");
                     }
+
+                    if (version.getNewest().trim().equals("false") && !TextUtils.isEmpty(version.getUrl())) {
+                        //强制更新
+                        if (!TextUtils.isEmpty(version.getForceUpdate()) && version.getForceUpdate().trim().equals("true")) {
+                            showUpdataDialog(context, version.getUrl(), "检测到有新的版本，是否更新",true);
+                            Log.e("3------->",response+"####");
+                        }
+                        //不强制更新
+                        else if (!TextUtils.isEmpty(version.getForceUpdate()) && version.getForceUpdate().trim().equals("false")){
+                            showUpdataDialog(context, version.getUrl(), "检测到有新的版本，是否更新",false);
+                            Log.e("4------->",response+"####");
+                        }
+
+                    }
+//                    float f = Float.parseFloat(version.getVersion());
+//
+//                    if (f >getVersionName(context)) {
+//                        showUpdataDialog(context, version.getUrl(), "检测到有新的版本，是否更新");
+//                        showUpdataDialog(context, version.getUrl(), "检测到有新的版本，是否更新",isForceOrder);
+//                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -105,6 +144,30 @@ public class Update {
             public void onClick(DialogInterface dialog, int which) {
             }
         });
+        AlertDialog dialog = builer.create();
+        dialog.show();
+    }
+
+    protected void showUpdataDialog(final Context context, final String url, String message,final boolean isForceOrder) {
+        AlertDialog.Builder builer = new AlertDialog.Builder(context);
+        builer.setTitle("版本升级");
+        builer.setMessage(message);
+        //当点确定按钮时从服务器上下载 新的apk 然后安装
+        builer.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dwonloadApk(context, url);
+            }
+        });
+
+            builer.setNegativeButton(isForceOrder?"退出":"取消", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    if (isForceOrder) {
+                        System.exit(0);
+                        //AppManager.getAppManager().AppExit(context);
+                    }
+                }
+            });
+
         AlertDialog dialog = builer.create();
         dialog.show();
     }

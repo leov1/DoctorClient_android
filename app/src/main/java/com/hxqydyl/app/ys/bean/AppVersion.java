@@ -5,8 +5,30 @@ public class AppVersion {
     private String uuid;
     private String type;
     private String version;
-    private String url;
     private String flag;
+
+    private String newest;
+    private String forceUpdate;
+    private String url;
+
+
+
+    public String getNewest() {
+        return newest;
+    }
+
+    public void setNewest(String newest) {
+        this.newest = newest;
+    }
+
+    public String getForceUpdate() {
+        return forceUpdate;
+    }
+
+    public void setForceUpdate(String forceUpdate) {
+        this.forceUpdate = forceUpdate;
+    }
+
     public String getUuid() {
         return uuid;
     }

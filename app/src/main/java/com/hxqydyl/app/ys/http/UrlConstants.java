@@ -167,7 +167,7 @@ public class UrlConstants {
     //退出登陆
     public static String USER_SETTING = "/html/user/set.shtml";
     //版本更新
-    public static String UPDATE = "/version/app/1";
+    public static String UPDATE = "/version/getAppPushInfo";
     // 随访表单-重要医嘱-查询
     public static String GET_ADVICE_SEARCH = "/mobile/doctor/visit/advice/%s/search/%s/%s";
     // 随访表单-重要医嘱-添加
