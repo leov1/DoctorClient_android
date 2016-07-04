@@ -65,25 +65,18 @@ public class Update {
                 .url(UrlConstants.getWholeApiUrl(UrlConstants.UPDATE)).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e) {
-                    Log.e("5-------->","error....."+e.toString());
+
                 e.printStackTrace();
             }
 
             @Override
             public void onResponse(String response) {
 
-//                JSONObject jsonObj = JSON.parseObject(response);
-//                String currentIsNewVersion = (String) jsonObj.get("newest");
-//                String currentIsNewVersion = (String) jsonObj.get("version");
-//                if (!TextUtils.isEmpty(currentIsNewVersion) && currentIsNewVersion.trim().equals("false")) {
-//                    showUpdataDialog(context, version.getUrl(), "检测到有新的版本，是否更新",isForceOrder);
-//                }
-                Log.e("1------->",response+"####");
                 Gson gson = new Gson();
                 AppVersion version = gson.fromJson(response, AppVersion.class);
                 try {
                     if (version == null || TextUtils.isEmpty(version.getNewest())) {
-                        Log.e("2------->",response+"####");
+
                         return;
                     }
 
@@ -91,21 +84,16 @@ public class Update {
                         //强制更新
                         if (!TextUtils.isEmpty(version.getForceUpdate()) && version.getForceUpdate().trim().equals("true")) {
                             showUpdataDialog(context, version.getUrl(), "检测到有新的版本，是否更新",true);
-                            Log.e("3------->",response+"####");
+
                         }
                         //不强制更新
                         else if (!TextUtils.isEmpty(version.getForceUpdate()) && version.getForceUpdate().trim().equals("false")){
                             showUpdataDialog(context, version.getUrl(), "检测到有新的版本，是否更新",false);
-                            Log.e("4------->",response+"####");
+
                         }
 
                     }
-//                    float f = Float.parseFloat(version.getVersion());
-//
-//                    if (f >getVersionName(context)) {
-//                        showUpdataDialog(context, version.getUrl(), "检测到有新的版本，是否更新");
-//                        showUpdataDialog(context, version.getUrl(), "检测到有新的版本，是否更新",isForceOrder);
-//                    }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
