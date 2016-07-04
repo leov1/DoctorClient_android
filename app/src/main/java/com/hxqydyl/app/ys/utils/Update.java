@@ -51,7 +51,10 @@ public class Update {
     public void cheackIsUp() {
         String versionStr = "2.4.4";
         try {
-            versionStr = String.valueOf(getVersionName(context));
+
+            PackageManager packageManager = context.getPackageManager();
+            PackageInfo packInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
+            versionStr = packInfo.versionName;
         }catch (Exception e) {
             e.printStackTrace();
         }
@@ -62,7 +65,8 @@ public class Update {
                 .url(UrlConstants.getWholeApiUrl(UrlConstants.UPDATE)).build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e) {
-
+                    Log.e("5-------->","error....."+e.toString());
+                e.printStackTrace();
             }
 
             @Override
@@ -163,7 +167,7 @@ public class Update {
                 public void onClick(DialogInterface dialog, int which) {
                     if (isForceOrder) {
                         System.exit(0);
-                        //AppManager.getAppManager().AppExit(context);
+                        AppManager.getAppManager().AppExit(context);
                     }
                 }
             });

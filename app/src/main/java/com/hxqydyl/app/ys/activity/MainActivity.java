@@ -37,7 +37,7 @@ import java.util.TimerTask;
 
 import common.AppManager;
 
-public class MainActivity extends BaseRequstActivity {
+public class MainActivity extends BaseFragmentActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String FRAGMENT_TAGS = "fragmentTags";

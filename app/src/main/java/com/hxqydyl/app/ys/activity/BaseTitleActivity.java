@@ -33,8 +33,6 @@ public class BaseTitleActivity extends SwipeBackActivity implements NetRequestLi
     public TextView leftTv;
     public ImageView rightImg;
 
-    private SweetAlertDialog pDialog;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,23 +121,6 @@ public class BaseTitleActivity extends SwipeBackActivity implements NetRequestLi
             }
         });
 
-    }
-
-    public void showDialog(String text) {
-        if (!(pDialog != null && pDialog.isShowing())) {
-            pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
-            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-            pDialog.setCancelable(true);
-            pDialog.show();
-        }
-        pDialog.setTitleText(text);
-
-    }
-
-    public void dismissDialog() {
-        if (pDialog != null && pDialog.isShowing()) {
-            pDialog.dismissWithAnimation();
-        }
     }
 
     public void hideInput() {

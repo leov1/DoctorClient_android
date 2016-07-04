@@ -57,6 +57,7 @@ public class SplashActivity extends BaseFragmentActivity {
             @Override
             public void run() {
                 UIHelper.showHome(SplashActivity.this);
+                finish();
             }
         }, 500);
     }
@@ -69,6 +70,7 @@ public class SplashActivity extends BaseFragmentActivity {
             public void onClick(View view) {
                 SharedPreferences.getInstance().putBoolean("first-time-use", false);
                 UIHelper.showHome(SplashActivity.this);
+                finish();
             }
         });
 
