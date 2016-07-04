@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -147,7 +148,7 @@ public class Update {
         //当点确定按钮时从服务器上下载 新的apk 然后安装
         builer.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                dwonloadApk(context, url);
+                dwonloadApk(context, url,isForceOrder);
             }
         });
 
@@ -159,10 +160,11 @@ public class Update {
                     }
                 }
             });
-
+        builer.setCancelable(false);
         AlertDialog dialog = builer.create();
         dialog.show();
     }
+
 
     //下载apk
     public void dwonloadApk(final Context context, final String url) {
@@ -171,6 +173,45 @@ public class Update {
         pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         pd.setMessage("正在下载更新");
         pd.show();
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    File file = DownLoadManager.getFileFromServer(url, pd);
+                    sleep(3000);
+                    openApk(file, context);
+                    pd.dismiss(); //结束掉进度条对话框
+                } catch (Exception e) {
+                    Message msg = new Message();
+                    msg.what = DOWN_ERROR;
+                    handler.sendMessage(msg);
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+    }
+
+    //下载apk
+    public void dwonloadApk(final Context context, final String url,final boolean isForceOrder) {
+        final ProgressDialog pd;    //进度条对话框
+        pd = new ProgressDialog(context);
+        pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        pd.setMessage("正在下载更新");
+        pd.setButton(DialogInterface.BUTTON_NEGATIVE,"取消下载",new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO Auto-generated method stub
+                if (isForceOrder) {
+                    System.exit(0);
+                    AppManager.getAppManager().AppExit(context);
+                }else {
+                    pd.dismiss();
+                }
+            }
+        });
+        pd.show();
+        pd.setCancelable(false);
         new Thread() {
             @Override
             public void run() {

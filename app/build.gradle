@@ -17,7 +17,7 @@ android {
         applicationId "com.hxqydyl.app.ys"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 20160622
+        versionCode 20160704
         versionName "2.4.4"
     }
     signingConfigs {
