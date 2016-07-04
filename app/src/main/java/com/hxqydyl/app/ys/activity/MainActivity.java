@@ -23,6 +23,7 @@ import com.hxqydyl.app.ys.fragment.MyPatientFrg;
 import com.hxqydyl.app.ys.fragment.MyTaskFrg;
 import com.hxqydyl.app.ys.fragment.PersonalFrg;
 import com.hxqydyl.app.ys.http.UrlConstants;
+import com.hxqydyl.app.ys.servise.UnReadMsgService;
 import com.hxqydyl.app.ys.ui.UIHelper;
 import com.hxqydyl.app.ys.utils.InjectId;
 import com.hxqydyl.app.ys.utils.InjectUtils;
@@ -69,6 +70,9 @@ public class MainActivity extends BaseRequstActivity {
         }
         Update.getIncetence(this).cheackIsUp();
         getIconRdePoi();
+
+        Intent mIntent = new Intent(this,UnReadMsgService.class);
+        startService(mIntent);
     }
 
     @Override
@@ -256,6 +260,7 @@ public class MainActivity extends BaseRequstActivity {
     public void getIconRdePoi() {
         if (LoginManager.isHasLogin()){
             toNomalNet(toGetParams(toParamsBaen("doctorUuid", LoginManager.getDoctorUuid())), BaseResponse.class, 1, UrlConstants.getWholeApiUrl(UrlConstants.GET_UNREADCONS_ULTRECORD, "2.0"), null);
+
         }else {
             showOrHidePoi(false);
         }

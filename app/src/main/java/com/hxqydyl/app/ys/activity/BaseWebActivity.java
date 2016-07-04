@@ -1,5 +1,6 @@
 package com.hxqydyl.app.ys.activity;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
@@ -10,6 +11,8 @@ import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
@@ -304,6 +307,7 @@ public class BaseWebActivity extends BaseRequstActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        webView.getRefreshableView().onResume();
         if (!isLoadImg)
             webView.getRefreshableView().reload();
         if (isNeedLogin) {
@@ -437,4 +441,19 @@ public class BaseWebActivity extends BaseRequstActivity {
             iniRightMenu(paramFromJS);
         }
     }
+
+    @Override
+    protected void onPause() {
+        webView.getRefreshableView().reload();
+        webView.getRefreshableView().onPause();
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        webView.getRefreshableView().stopLoading();
+        webView.getRefreshableView().destroy();
+        super.onDestroy();
+    }
+
 }

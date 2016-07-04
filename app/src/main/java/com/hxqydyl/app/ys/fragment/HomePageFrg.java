@@ -368,6 +368,11 @@ public class HomePageFrg extends BaseRequstFragment implements View.OnClickListe
 
                 break;
             case 2://诊所
+
+
+
+                CommentWebActivity.toCommentWebForResult("http://172.168.1.63/haoxinqing/video.html", getActivity(), UIHelper.LOGIN_REQUEST_CODE, false);
+
                 //                if (!LoginManager.isHasLogin()) {
 //                    UIHelper.showLoginForResult(this.getActivity());
 //                    return;

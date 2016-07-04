@@ -1,5 +1,8 @@
 package com.hxqydyl.app.ys.common;
 
+import android.content.Intent;
+
+import com.hxqydyl.app.ys.servise.UnReadMsgService;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.umeng.socialize.PlatformConfig;
@@ -19,6 +22,7 @@ public class AppContext extends BaseApplication {
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
         initShare();
+
     }
 
     private void initShare() {
